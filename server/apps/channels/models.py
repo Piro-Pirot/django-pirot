@@ -17,7 +17,13 @@ class Passer(models.Model):
     passer_phone = models.CharField(max_length=64)
     level = models.IntegerField(default=1)
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
-	
+
+
+# 소속
+class Join(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	passer = models.ForeignKey(Passer, on_delete=models.CASCADE)
+
 
 # 운영진
 class Staff(models.Model):

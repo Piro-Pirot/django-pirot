@@ -1,5 +1,4 @@
 from django.db import models
-from server.apps.channels.models import *
 from django.contrib.auth.models import AbstractUser
 import uuid
 
@@ -11,12 +10,6 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=20)
     name = models.CharField(max_length=20)
     profile_img = models.ImageField(blank=True, upload_to="posts/%Y%m%d")
-
-
-# 소속
-class Join(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
-	passer = models.ForeignKey(Passer, on_delete=models.CASCADE)
 
 
 # 회원 즐겨찾기

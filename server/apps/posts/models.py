@@ -1,6 +1,6 @@
 from django.db import models
-from server.apps.local_users.models import *
-from server.apps.chat.models import *
+from server.apps.local_users.models import User
+from server.apps.chat.models import Room
 
 # Create your models here.
 

@@ -1,12 +1,12 @@
 from django.db import models
-from server.apps.channels.models import *
-from server.apps.local_users.models import *
+from server.apps.channels.models import Channel
+from server.apps.local_users.models import User
 
 # Create your models here.
 
 # 채팅 방
 class Room(models.Model):
-	room_name = models.CharField(max_length = 64)
+	room_name = models.CharField(max_length=64)
 	room_type = models.IntegerField()
 	channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
 
