@@ -12,10 +12,17 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+# reading .env file
+environ.Env.read_env(BASE_DIR / '../.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -76,8 +83,34 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': env('MYSQL_DBNAME'),
+        'USER': env('MYSQL_USERNAME'),
+        'PASSWORD': env('MYSQL_PASSWD'),
+        'HOST': env('MYSQL_HOST'),
+        'PORT': env('MYSQL_PORT'),
+    },
+    'chatdb': {
+        'ENGINE': 'djongo',
+        'ENFORCE_SCHEMA': True,
+        'LOGGING': {
+            'version': 1,
+            'loggers': {
+                'djongo': {
+                    'level': 'DEBUG',
+                    'propogate': False,                        
+                }
+            },
+         },
+        'NAME': env('MONGO_DBNAME'),
+        'CLIENT': {
+            'host': env('MONGO_HOST'),
+            'port': env('MONGO_PORT'),
+            'username': env('MONGO_USERNAME'),
+            'password': env('MONGO_PASSWD'),
+            'authSource': 'admin',
+            'authMechanism': 'SCRAM-SHA-1'
+        }
     }
 }
 
