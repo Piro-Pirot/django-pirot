@@ -1,0 +1,12 @@
+asgiref==3.7.2
+distlib==0.3.7
+Django==4.2.3
+django-environ==0.10.0
+dnspython==2.4.1
+filelock==3.12.2
+mysqlclient==2.2.0
+Pillow==10.0.0
+platformdirs==3.10.0
+sqlparse==0.4.4
+tzdata==2023.3
+virtualenv==20.24.2
