@@ -1,0 +1,15 @@
+@import 'reset.css';
+
+:root {
+  --carrot-color: #fba405;
+  --carrot-light: #face83;
+  --light-gray: #f0f0f0;
+
+}
+
+@font-face {
+  font-family: 'GowunBatang-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
