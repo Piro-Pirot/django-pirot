@@ -1,0 +1,86 @@
+body {
+  padding: 0 6rem;
+  font-size: 1rem;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  height: 6rem;
+  width: 100%;
+  border-bottom: 1px solid black;
+}
+
+nav > .nav-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 1.3rem;
+  width: 50%;
+}
+
+nav > .nav-left > .nav-left-item {
+  margin-right: 3rem;
+}
+
+nav > .nav-left > .nav-left-item:nth-child(2) {
+  margin-left: 2rem;
+}
+
+nav > .nav-left img {
+  object-fit: cover;
+  width: 8rem;
+}
+
+nav > .nav-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 50%;
+}
+
+nav > .nav-right > .nav-right-item {
+  margin-left: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+nav > .nav-right .login-btn,
+nav > .nav-right .signup-btn {
+  padding: 0.5rem 1rem 0.4rem;
+  border-radius: 1rem;
+}
+
+nav > .nav-right .login-btn {
+  border: 1px solid #b9b9b9;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+nav > .nav-right .login-btn:hover {
+  border: 1px solid var(--carrot-color);
+}
+
+nav > .nav-right .signup-btn {
+  background-color: var(--carrot-color);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+nav > .nav-right .signup-btn:hover {
+  background-color: var(--carrot-dark);
+}
+
+nav > .nav-right .login-btn > a {
+  color: #777777;
+  transition: 0.2s;
+}
+
+nav > .nav-right .login-btn:hover > a{
+  color: var(--carrot-color);
+}
+
+nav > .nav-right .signup-btn > a {
+  color: white;
+}
