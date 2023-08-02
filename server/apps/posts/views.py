@@ -5,25 +5,31 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 
-# 편의를 위해 변수명을 s만 붙인 형태로 지었어요..
+# 화면 오른쪽 게시글 READ
 def board(request):
     posts = Post.objects.all()
-    happys = Happy.objects.all()
-    sads = Sad.objects.all()
+    happy = Happy.objects.all()
+    sad = Sad.objects.all()
 
-    return render(request, "#",{"posts":posts, "happys":happys, "sads":sads})
+    # template.html
+    # {% for post in posts %}
+    # {{ post.content }}
+    # {{ post.created_at }}
+    # {{ happy.filter(post_id=post).count }}
+    # {{ sad.filter(post_id=post).count }}
+
+    return render(request, "#",{"posts":posts, "happy":happy, "sad":sad})
 
 
-# 새 게시글 버튼 누르면 작성 창 등장?
-# 작성 버튼 누르면 게시글 생성
-# 게시글 : content, room_id(FK), created_at, user_id(현재 로그인 user)
-# request : room_id, text, request.user(현재 로그인 user의 id)
+# 새 게시글 버튼 누르면 작성 창 등장
+# 작성 버튼 누르면 게시글 CREATE
+# request : room_id, text
 @csrf_exempt
 def create_ajax(request):
     req = json.loads(request.body)
     room_id = req['room_id']
     text = req['text']
-    user_id = req['user_id']
+    user_id = request.user.id # 현재 로그인한 유저의 id
 
     if text:
         post = Post.objects.create(
@@ -33,21 +39,13 @@ def create_ajax(request):
             created_at = timezone.now(),
         )
         post.save()
-        happy = Happy.objects.create(
-            post_id = post,
-            user_id = user_id,
-        )
-        happy.save()
-        sad = Sad.objects.create(
-            post_id = post,
-            user_id = user_id,
-        )
-        sad.save()
 
-        return JsonResponse({'post':post, 'happy':happy, 'sad':sad})
+        return JsonResponse({'post':post})
 
-# 삭제 버튼 누르면 게시글 삭제
-# 일단 '삭제되었습니다!' alert로 띄우고 자동 reload되면 게시글이 사라지는 걸로 생각
+
+# 삭제 버튼 누르면 게시글 DELETE
+# '삭제되었습니다!' alert로 띄우고 자동 reload되면 게시글이 사라지는 걸로 구상
+# request : post_id
 @csrf_exempt
 def delete_ajax(request):
     req = json.loads(request.body)
@@ -57,8 +55,93 @@ def delete_ajax(request):
 
     return JsonResponse()
 
-# @csrf_exempt
-# def happy_ajax(request):
-#     req = json.loads(request.body)
-#     post_id =req['post_id']
-#     post = Post.objects.get(id=post_id)
+
+# 기뻐요 버튼
+@csrf_exempt
+def happy_ajax(request):
+    req = json.loads(request.body)
+    user_id = request.user.id
+    post_id =req['post_id']
+    post = Post.objects.get(id=post_id)
+
+    try:
+        # happy가 이미 눌러져 있는 경우
+        happy = Happy.objects.get(id=post_id)
+    except Happy.DoesNotExist:
+        # 아직 happy를 누르지 않은 경우
+        happy = None
+
+    try:
+        # sad가 이미 눌러져 있는 경우
+        sad = Sad.objects.get(id=post_id)
+    except Sad.DoesNotExist:
+        # 아직 sad를 누르지 않은 경우
+        sad = None
+    
+    if sad:
+        sad.delete()
+        happy = Happy.objects.create(
+                post_id = post,
+                user_id = user_id,
+            )
+        happy.save()
+    else:
+        if happy:
+            happy.delete()
+        else:
+            happy = Happy.objects.create(
+                post_id = post,
+                user_id = user_id,
+            )
+            happy.save()
+
+    # 이 경우에는 버튼에 표시될 총 개수만 필요할 것 같아서 일단 이렇게 처리!
+    happy_count = Happy.objects.filter(id=post_id).count()
+    sad_count = Sad.objects.filter(id=post_id).count()
+
+    return JsonResponse({"happy_count":happy_count, "sad_count":sad_count})
+
+
+# 슬퍼요 버튼
+@csrf_exempt
+def sad_ajax(request):
+    req = json.loads(request.body)
+    user_id = request.user.id
+    post_id =req['post_id']
+    post = Post.objects.get(id=post_id)
+
+    try:
+        # happy가 이미 눌러져 있는 경우
+        happy = Happy.objects.get(id=post_id)
+    except Happy.DoesNotExist:
+        # 아직 happy를 누르지 않은 경우
+        happy = None
+
+    try:
+        # sad가 이미 눌러져 있는 경우
+        sad = Sad.objects.get(id=post_id)
+    except Sad.DoesNotExist:
+        # 아직 sad를 누르지 않은 경우
+        sad = None
+    
+    if happy:
+        happy.delete()
+        sad = Sad.objects.create(
+                post_id = post,
+                user_id = user_id,
+            )
+        sad.save()
+    else:
+        if sad:
+            sad.delete()
+        else:
+            sad = Sad.objects.create(
+                post_id = post,
+                user_id = user_id,
+            )
+            sad.save()
+
+    happy_count = Happy.objects.filter(id=post_id).count()
+    sad_count = Sad.objects.filter(id=post_id).count()
+
+    return JsonResponse({"happy_count":happy_count, "sad_count":sad_count})
