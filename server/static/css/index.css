@@ -184,6 +184,10 @@ nav > .nav-right .signup-btn > a {
   position: relative;
 }
 
+.start-btn::before {
+  transition: 0.2s;
+}
+
 .start-btn > span {
   position: relative;
   z-index: 1;
@@ -198,7 +202,17 @@ nav > .nav-right .signup-btn > a {
   z-index: 1;
   position: absolute;
   left: -0.4rem;
-  top: 0.01rem;
+  top: 0.01rem; 
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 
@@ -207,7 +221,7 @@ nav > .nav-right .signup-btn > a {
 
 .ui-section {
   /* background-color: cornflowerblue; */
-  height: 65rem;
+  height: 55rem;
   padding-top: 7rem;
   display: flex;
   flex-direction: column;
@@ -216,6 +230,7 @@ nav > .nav-right .signup-btn > a {
 
 .ui-section-text {
   text-align: center;
+  margin-bottom: 4rem;
 }
 
 .ui-section-title {
@@ -228,3 +243,47 @@ nav > .nav-right .signup-btn > a {
   color: var(--subtitle);
 }
 
+
+
+/* md-section */
+
+.md-section {
+  height: 48rem;
+}
+
+.md-section-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+
+.md-section-text {
+  margin-left: 4rem;  
+  font-size: 3rem;
+  width: 100%
+}
+
+.md-section-title {
+  margin-bottom: 3rem;
+}
+
+.md-section-title:nth-child(2) {
+  margin-left: 4rem;
+}
+
+.md-section-desc {
+  font-size: 2rem;
+  color: var(--subtitle);
+  margin-left: 12rem;
+}
+
+.md-section-demo {
+  margin-right: 4rem;
+  width: 75rem;
+}
+
+.md-section-demo > img {
+  width: 100%;
+}
