@@ -138,19 +138,23 @@ nav > .nav-right .signup-btn > a {
   margin-top: 10rem;
   margin-left: 7rem;
   width: 17rem;
+  border-radius: 1rem;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.15), 
+  0 2px 2px rgba(0,0,0,0.15), 
+  0 4px 4px rgba(0,0,0,0.15), 
+  0 8px 8px rgba(0,0,0,0.15);
 }
 
 .main-section-team > img {
-  width: 100%;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
+  width: 100%;
+
 }
 
 .main-section-team-text {
   background-color: rgba(217, 217, 217, 0.26);
   padding: 1rem 1rem;
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
   line-height: 1.6rem;
 }
 
