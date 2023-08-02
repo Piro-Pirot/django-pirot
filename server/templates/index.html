@@ -36,31 +36,33 @@
   
     <main>
       <section class="main-section">
-        <div class="main-section-left">
-          <div class="main-section-title">
-            <span>우리 동아리만의 커뮤니케이션</span>
-            <span><a class="orange-link" href="#">피롯</a>으로</span>
-            <span>완벽히</span>
+        <div class="main-section-container">
+          <div class="main-section-left">
+            <div class="main-section-title">
+              <span>우리 동아리만의 커뮤니케이션</span>
+              <span><a class="orange-link" href="#">피롯</a>으로</span>
+              <span>완벽히</span>
+            </div>
+            <div class="main-section-demo">
+              <img src="{% static 'image/pirot_demo.png' %}" alt="서비스메인이미지">
+            </div>
           </div>
-          <div class="main-section-demo">
-            <img src="{% static 'image/pirot_demo.png' %}" alt="서비스메인이미지">
-          </div>
-        </div>
-        <div class="main-section-right">
-          <div class="main-section-team">
-            <img src="{% static 'image/pirot_team.png' %}" alt="팀피롯 단체 사진">
-            <div class="main-section-team-text">
-              <span>안녕하세요 팀 피롯입니다</span> <br>
-              동아리용 채팅 서비스가 필요하세요? <br>
-              <a class="orange-link start-btn" href="#">
-                <span>바로 시작해보세요</span>
-              </a> 🥕
+          <div class="main-section-right">
+            <div class="main-section-team">
+              <img src="{% static 'image/pirot_team.png' %}" alt="팀피롯 단체 사진">
+              <div class="main-section-team-text">
+                <span>안녕하세요 팀 피롯입니다</span> <br>
+                동아리용 채팅 서비스가 필요하세요? <br>
+                <a class="orange-link start-btn" href="#">
+                  <span>바로 시작해보세요</span>
+                </a> 🥕
+              </div>
             </div>
           </div>
         </div>
       </section>
       <section class="ui-section">
-        <div class="ui-section-container">
+        <div class="ui-section-container animate">
           <div class="ui-section-text">
             <div class="ui-section-title">
               핵심만 담은 UI
@@ -75,7 +77,7 @@
         </div>
       </section>
       <section class="md-section">
-        <div class="md-section-container">
+        <div class="md-section-container animate">
             <div class="md-section-text">
               <div class="md-section-title">
                 <i class="fa-brands fa-markdown"></i>
@@ -101,6 +103,6 @@
   
     <footer></footer>
   </div>
-
+  <script src="{% static 'js/index.js' %}"></script>
 </body>
 </html>
