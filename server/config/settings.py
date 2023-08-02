@@ -24,6 +24,18 @@ env = environ.Env(
 # reading .env file
 environ.Env.read_env(BASE_DIR / '../.env')
 
+MYSQL_DBNAME=env('MYSQL_DBNAME')
+MYSQL_USERNAME=env('MYSQL_USERNAME')
+MYSQL_PASSWD=env('MYSQL_PASSWD')
+MYSQL_HOST=env('MYSQL_HOST')
+MYSQL_PORT=env('MYSQL_PORT')
+
+MONGO_DBNAME=env('MONGO_DBNAME')
+MONGO_USERNAME=env('MONGO_USERNAME')
+MONGO_PASSWD=env('MONGO_PASSWD')
+MONGO_HOST=env('MONGO_HOST')
+MONGO_PORT=int(env('MONGO_PORT'))
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -39,6 +51,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'server.apps.bubbles',
     'server.apps.channels',
     'server.apps.chat',
     'server.apps.local_users',
@@ -89,15 +102,15 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('MYSQL_DBNAME'),
-        'USER': env('MYSQL_USERNAME'),
-        'PASSWORD': env('MYSQL_PASSWD'),
-        'HOST': env('MYSQL_HOST'),
-        'PORT': env('MYSQL_PORT'),
+        'NAME': MYSQL_DBNAME,
+        'USER': MYSQL_USERNAME,
+        'PASSWORD': MYSQL_PASSWD,
+        'HOST': MYSQL_HOST,
+        'PORT': MYSQL_PORT,
     },
     'chatdb': {
         'ENGINE': 'djongo',
-        'ENFORCE_SCHEMA': True,
+        'ENFORCE_SCHEMA': False,
         'LOGGING': {
             'version': 1,
             'loggers': {
@@ -107,18 +120,21 @@ DATABASES = {
                 }
             },
          },
-        'NAME': env('MONGO_DBNAME'),
+        'NAME': MONGO_DBNAME,
         'CLIENT': {
-            'host': env('MONGO_HOST'),
-            'port': env('MONGO_PORT'),
-            'username': env('MONGO_USERNAME'),
-            'password': env('MONGO_PASSWD'),
+            'host': MONGO_HOST,
+            'port': MONGO_PORT,
+            'username': MONGO_USERNAME,
+            'password': MONGO_PASSWD,
             'authSource': 'admin',
             'authMechanism': 'SCRAM-SHA-1'
-        }
+        },
     }
 }
 
+DATABASE_ROUTERS = [
+    'router.BubbleRouter',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
