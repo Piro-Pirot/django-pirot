@@ -177,6 +177,10 @@ section.show-animation .animate {
   margin-top: 2rem;
 }
 
+.main-section-right {
+  height: 60rem;
+}
+
 .main-section-team {
   margin-top: 10rem;
   margin-left: 7rem;
@@ -187,6 +191,8 @@ section.show-animation .animate {
   0 4px 4px rgba(0,0,0,0.15), 
   0 8px 8px rgba(0,0,0,0.15);
   transition: 0.4s;
+  position: sticky;
+  top: 20rem;
 }
 
 .main-section-team:hover {
