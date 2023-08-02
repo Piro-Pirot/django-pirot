@@ -7,6 +7,8 @@
   }
 }); */
 
+
+// scroll 함에 따라 해당 Section 커지는 애니메이션
 let sections = document.querySelectorAll('section');
 sections = Array.from(sections);
 sections = sections.slice(1);
@@ -25,3 +27,16 @@ window.onscroll = () => {
     }
   });
 }
+
+// Navbar 고정 구현 및 스크롤 내리면 변하는 애니메이션 구현
+window.addEventListener('scroll', () => {
+  const navbar = document.querySelector('nav');
+  navbar.classList.toggle("sticky", window.scrollY > 100);
+})
+
+// 페이지 새로고침 시, 가장 상단으로 이동
+window.onload = function() {
+  setTimeout (function() {
+    scrollTo(0, 0);
+  }, 0)
+};

@@ -1,5 +1,6 @@
 body {
-  padding: 0 6rem;
+  padding: 0 6rem ;
+  padding-top: 12rem;
   font-size: 1rem;
 }
 main {
@@ -12,8 +13,15 @@ nav {
   align-items: center;
   height: 6rem;
   width: 100%;
-  border-bottom: 1px solid black;
+  padding-left: 6rem;
+  padding-right: 6rem;
+  border-bottom: 1px solid rgb(129, 129, 129);
   margin-bottom: 5rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  transition: 0.4s;
 }
 
 nav > .nav-left {
@@ -84,6 +92,15 @@ nav > .nav-right .login-btn:hover > a{
 
 nav > .nav-right .signup-btn > a {
   color: white;
+}
+
+
+/* navbar scroll animation */
+
+nav.sticky {
+  height: 4rem;
+  background-color: rgba(255, 246, 235, 0.888);
+  border-bottom: 0;
 }
 
 
