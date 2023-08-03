@@ -21,6 +21,7 @@ from apps.local_users.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('dj_rest_auth.urls')),
-    path('accounts/', include('allauth.urls')),
+    # path('login/', login, name ='login'),
+    path('signup/', signup, name="signup"),
+    # path('logout/', logout, name="logout"),
 ]

@@ -8,8 +8,10 @@ import uuid
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     phone_number = models.CharField(max_length=20)
-    name = models.CharField(max_length=20)
     profile_img = models.ImageField(blank=True, upload_to="posts/%Y%m%d")
+    class Meta:
+        app_label = 'local_users' 
+    
 
 
 # 회원 즐겨찾기
