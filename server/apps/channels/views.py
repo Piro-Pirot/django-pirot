@@ -9,6 +9,9 @@ from django.views.decorators.csrf import csrf_exempt
 def index(request):
     return render(request, 'index.html', {})
 
+def room(request):
+    return render(request, 'base.html', {})
+
 # 합격자 명단 추가 : 기수 작성
 def passer_create_level(request):
     # 채널 정보를 받아와야 함!!!! 랜딩페이지부터 쭉쭉 받아와야할 듯(직전 단계는 어디?)

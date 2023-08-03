@@ -1,6 +1,10 @@
 from django.urls import path
-from server.apps.local_users.views import *
+from .views import *
 
 urlpatterns = [
-    path("user/setting/", profile_setting),
+    path('', main),
+    path('login/', login),
+    path('logout/', logout),
+    path('signup/', signup),
+    path('setting/', profile_setting),
 ]
