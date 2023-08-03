@@ -133,7 +133,7 @@ DATABASES = {
 }
 
 DATABASE_ROUTERS = [
-    'router.BubbleRouter',
+    # 'router.BubbleRouter',
 ]
 
 # Password validation
