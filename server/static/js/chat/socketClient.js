@@ -6,10 +6,14 @@ socket.on('connect', () => {
     console.log('connect to server');
 });
 
-// 서버로부터 받은 사용자 정의 이벤트 처리
 socket.on('display_message', (data) => {
     // 서버로부터 받은 데이터를 처리
     displayMessage(data['user'], data['msg']);
+});
+
+// 익명채팅방 이벤트
+socket.on('display_secret_message', (data) => {
+    displayMessage(data['nickname'], data['msg']);
 });
 
 function onClickSendMessage(user, uuid) {
@@ -25,7 +29,9 @@ function displayMessage(user, msg) {
     //채팅방 멤버들에게 메시지 표시
     let chatContiner = document.querySelector('.chat-container');
     let msgDiv = document.createElement('div');
+    console.log(user);
     msgDiv.innerText = `${user} $$ ${msg}`;
 
     chatContiner.appendChild(msgDiv);
+    document.querySelector('.input').value = '';
 }

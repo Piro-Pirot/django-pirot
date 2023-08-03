@@ -22,7 +22,7 @@ def enter_room(request, pk):
                 'room.html',
                 {
                     'title': curRoom.room_name,
-                    'room_uuid': pk
+                    'room_uuid': pk,
                 }
             )
         
