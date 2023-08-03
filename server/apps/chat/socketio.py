@@ -12,13 +12,10 @@ app = socketio.WSGIApp(sio)
 # Socket.IO 'connect' 이벤트 핸들러
 @sio.event
 def connect(sid, environ, auth):
-    print(environ)
-    print(auth)
     print('클라이언트가 연결되었습니다:', sid)
 
 @sio.on('send_message')
 def send_message(sid, data):
-    print(sid)
     mongodb.save_msg(data)
     print('massage was saved')
 
