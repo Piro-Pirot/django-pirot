@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(Room)
 admin.site.register(RoomMember)
 admin.site.register(BlindRoomMember)
+admin.site.register(Lock)
