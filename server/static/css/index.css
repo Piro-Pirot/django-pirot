@@ -1,10 +1,15 @@
 body {
-  padding: 0 6rem ;
+  display: flex;
+  justify-content: center;
   padding-top: 12rem;
   font-size: 1rem;
 }
 main {
   font-family: 'GowunBatang-Regular';
+}
+
+.boss-container {
+  width: 81.5rem;
 }
 /* Navbar */
 nav {
@@ -183,7 +188,7 @@ section.show-animation .animate {
 
 .main-section-team {
   margin-top: 10rem;
-  margin-left: 7rem;
+  margin-left: 9em;
   width: 17rem;
   border-radius: 1rem;
   box-shadow: 0 1px 1px rgba(0,0,0,0.15), 
@@ -282,8 +287,6 @@ section.show-animation .animate {
   align-items: center;
 }
 
-
-
 .ui-section-text {
   text-align: center;
   margin-bottom: 4rem;
@@ -308,12 +311,12 @@ section.show-animation .animate {
 }
 
 .md-section-container {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 100%;
 }
-
 
 .md-section-text {
   margin-left: 4rem;  
@@ -342,4 +345,76 @@ section.show-animation .animate {
 
 .md-section-demo > img {
   width: 100%;
+}
+
+.md-section-small {
+  height: 55rem;
+  padding-top: 7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.md-section-small-text {
+  text-align: center;
+}
+
+.md-section-small-text {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.md-section-small-title {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+}
+
+.md-section-small-desc {
+  font-size: 2rem;
+  color: var(--subtitle);
+}
+
+.md-section-small-demo {
+  text-align: center;
+}
+
+
+/* 반응형 */
+
+@media screen and (max-width:1400px) {
+  .boss-container {
+    width: 60rem;
+  }
+  .main-section-title > span:first-child {
+    line-height: 6rem;
+  }
+  .main-section-team {
+    margin: 0;
+  }
+  .main-section-title {
+    padding-right: 10rem;
+  }
+  .main-section-demo {
+    margin-right: 4rem;
+  }
+  .main-section-demo > img {
+    width: 40rem;
+  }
+  .md-section-container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: none;
+  }
+  }
+
+@media all and (max-width: 1400px) {
+  .md-section {
+    display: none;
+  }
+}
+
+@media all and (min-width: 1401px) {
+  .md-section-small {
+    display: none;
+  }
 }
