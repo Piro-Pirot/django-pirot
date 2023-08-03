@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from server.apps.local_users.models import User
 
@@ -5,10 +6,11 @@ from server.apps.local_users.models import User
 
 # 채널
 class Channel(models.Model):
-	channel_name = models.CharField(max_length=64)
-	channel_desc = models.CharField(max_length=64)
-	channel_ok = models.IntegerField()
-	channel_code = models.CharField(max_length=64)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    channel_name = models.CharField(max_length=64)
+    channel_desc = models.CharField(max_length=64)
+    channel_ok = models.IntegerField()
+    channel_code = models.CharField(max_length=64)
 
 
 # 합격자
