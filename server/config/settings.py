@@ -13,9 +13,13 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 import environ
+import json
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+ROOT_DIR = os.path.dirname(BASE_DIR)
 
 env = environ.Env(
     # set casting, default value
@@ -50,7 +54,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    # django-rest-framework
+    'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
+    'rest_framework.authtoken',
+    # dj-rest-auth
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    # django-allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.kakao',
 ]
+
+SITE_ID = 1
+
+# 인증용 유저 모델이라고 장고에게 알려줌
+AUTH_USER_MODEL = 'local_users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -171,11 +193,31 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# 로그인 성공후 이동하는 URL
-LOGIN_REDIRECT_URL = '/'
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ),
+}
 
-# 로그아웃시 이동하는 URL
-LOGOUT_REDIRECT_URL = '/'
+REST_USE_JWT = True
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
 
-# 인증용 유저 모델이라고 장고에게 알려줌
-AUTH_USER_MODEL = 'local_users.User'
+# # 로그인 성공후 이동하는 URL
+# LOGIN_REDIRECT_URL = '/'
+
+# # 로그아웃시 이동하는 URL
+# LOGOUT_REDIRECT_URL = '/'
+
+kakao_login_uri = "https://kauth.kakao.com/oauth/authorize"
+kakao_token_uri = "https://kauth.kakao.com/oauth/token"
+kakao_profile_uri = "https://kapi.kakao.com/v2/user/me"
+KAKAO_REST_API_KEY = "ee279f2ac70ee40d3767f065f608cbb6"
+KAKAO_REDIRECT_URI = "http://localhost:8000/kakao/callback"
+KAKAO_CLIENT_SECRET_KEY = "SbHHklsMXsHFQY8wUBUbAE7xTRljXdez"
