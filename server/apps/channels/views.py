@@ -6,6 +6,8 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+def index(request):
+    return render(request, 'index.html', {})
 
 # 합격자 명단 추가 : 기수 작성
 def passer_create_level(request):
