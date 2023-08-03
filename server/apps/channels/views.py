@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from .models import Passer, Join, Staff
 import random
 import string
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 
 # 합격자 명단 추가 : 기수 작성
 def passer_create_level(request):
@@ -76,11 +80,16 @@ def default_profile(request):
 
 
 # 운영진 권한 설정
+@csrf_exempt
 def staff_onoff(request):
     joins = Join.objects.all()
     staffs = Staff.objects.all()
 
-    #
+    # toggle() 사용 on/off ajax
+    # js : 버튼 on/off 조작 ... 완료 ! -> 저장 POST
+    # -> if 버튼이 on인 회원 객체가 staff 목록에 없으면 추가
+    #    if 버튼이 off인 회원 객체가 staff 목록에 있으면 삭제
+    # -> staff.save() 이건 view에서?
 
     return render(request, "#", {"joins":joins, "staffs":staffs})
 
