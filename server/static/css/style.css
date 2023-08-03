@@ -1,9 +1,12 @@
 @import 'reset.css';
+@import 'index.css';
 
 :root {
   --carrot-color: #fba405;
   --carrot-light: #face83;
+  --carrot-dark: #fb9005;
   --light-gray: #f0f0f0;
+  --subtitle: #a3a3a3;
 
 }
 
@@ -12,4 +15,16 @@
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  color: black;
 }

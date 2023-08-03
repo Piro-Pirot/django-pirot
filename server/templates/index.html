@@ -1,21 +1,101 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pirot</title>
+  <title>Pirot: 당신의 동아리를 위한 완벽한 커뮤니케이션</title>
+  <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div>
     <nav>
-
+      <div class="nav-left">
+        <div class="nav-left-item">
+          <a href="/"><img src="{% static 'image/pirot_logo_long.png' %}"></a>
+        </div>
+        <div class="nav-left-item">
+          서비스 소개
+        </div>
+        <div class="nav-left-item">
+          만든 사람들
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="nav-right-item login-btn">
+          <a href="#">로그인</a>
+        </div>
+        <div class="nav-right-item signup-btn">
+          <a href="#">회원가입</a>
+        </div>
+      </div>
     </nav>
   
     <main>
-      <section></section>
-      <section></section>
-      <section></section>
+      <section class="main-section">
+        <div class="main-section-container">
+          <div class="main-section-left">
+            <div class="main-section-title">
+              <span>우리 동아리만의 커뮤니케이션</span>
+              <span><a class="orange-link" href="#">피롯</a>으로</span>
+              <span>완벽히</span>
+            </div>
+            <div class="main-section-demo">
+              <img src="{% static 'image/pirot_demo.png' %}" alt="서비스메인이미지">
+            </div>
+          </div>
+          <div class="main-section-right">
+            <div class="main-section-team">
+              <img src="{% static 'image/pirot_team.png' %}" alt="팀피롯 단체 사진">
+              <div class="main-section-team-text">
+                <span>안녕하세요 팀 피롯입니다</span> <br>
+                동아리용 채팅 서비스가 필요하세요? <br>
+                <a class="orange-link start-btn" href="#">
+                  <span>바로 시작해보세요</span>
+                </a> 🥕
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="ui-section">
+        <div class="ui-section-container animate">
+          <div class="ui-section-text">
+            <div class="ui-section-title">
+              핵심만 담은 UI
+            </div>
+            <div class="ui-section-desc">
+              온전히 필요한 기능만으로 깔끔하게.
+            </div>
+          </div>
+          <div class="ui-section-demo">
+            <img src="{% static 'image/pirot_demo.png' %}" alt="서비스UI이미지">
+          </div>
+        </div>
+      </section>
+      <section class="md-section">
+        <div class="md-section-container animate">
+            <div class="md-section-text">
+              <div class="md-section-title">
+                <i class="fa-brands fa-markdown"></i>
+                마크다운 문법,
+              </div>
+              <div class="md-section-title">
+                <i class="fa-solid fa-code"></i>
+                코드스니펫 지원
+              </div>
+              <div class="md-section-desc">
+                코드는 보기 편해야하니까.
+              </div>
+            </div>
+            <div class="md-section-demo">
+              <img src="{% static 'image/pirot_demo.png' %}" alt="서비스마크다운이미지">
+            </div>
+        </div>
+      </section>
       <section></section>
       <section></section>
       <section></section>
@@ -23,6 +103,6 @@
   
     <footer></footer>
   </div>
-
+  <script src="{% static 'js/index.js' %}"></script>
 </body>
 </html>
