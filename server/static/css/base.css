@@ -62,20 +62,42 @@
   /* background-color: pink; */
   display: flex;
   align-items: center;
+  position: relative;
+}
+
+.search-box > #channel-name {
+  font-size: 1.7rem;
+  letter-spacing: 0.3rem;
+  z-index: 0;
 }
 
 .search-box > input {
   outline: none;
   width: 11rem;
   height: 2.5rem;
-  background-color: gray;
+  background-color: rgb(235, 235, 235);
   border-radius: 2rem;
   border: none;
-  margin-right: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  z-index: 1;
+}
+
+.search-box > input:focus {
+  border: 2px solid var(--carrot-light);
+}
+
+.search-box > #channel-name,
+.search-box > input {
+  position: absolute;
+  transition: opacity 0.5s;
 }
 
 .search-box > i {
   font-size: 1.7rem;
+  position: absolute;
+  right: 4rem;
+  cursor: pointer;
 }
 
 .middle-section > .logged-in-user {
