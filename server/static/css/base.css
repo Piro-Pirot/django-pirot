@@ -54,11 +54,11 @@
 
 .middle-section-content {
   background-color: green;
-  height: calc(100vh - 8rem);
+  height: calc(100vh - 5rem);
 }
 
 .middle-section > .search-box {
-  height: 8rem;
+  height: 5rem;
   /* background-color: pink; */
   display: flex;
   align-items: center;
@@ -106,17 +106,17 @@
 }
 
 .chat-name {
-  height: 8rem;
+  height: 5rem;
   background-color: brown;
 }
 
 .chat-container {
-  height: calc(100vh - 8rem);
+  height: calc(100vh - 5rem);
   background-color: goldenrod;
 }
 
 .conversation {
-  height: 100%;
-  width: 55rem;
+  height: 80%;
+  width: 100%;
   background-color: aquamarine;
 }

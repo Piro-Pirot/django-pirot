@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="chat-name">{{ title }} 채팅 방</div>
+<div class="chat-container">
+    <div class="conversation">
+        {% if bubbles %}
+        {% for bubble in bubbles %}
+        <div class="bubble-container">
+        {% for key, value in bubble.items %}
+        {% if room_type == 1 %}
+        {% if key == 'nickname' %}
+            <h3 class="bubble-username">{{ value }}</h3>
+        {% elif key == 'content' %}
+            <p class="bubble-content">{{ value }}</p>
+        {% endif %}
+        {% else %}
+        {% if key == 'user' %}
+            <h3 class="bubble-username">{{ value }}</h3>
+        {% elif key == 'content' %}
+            <p class="bubble-content">{{ value }}</p>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <div class="chat-input">
+        <input type="text" class="input">
+        <button type="button" onclick="onClickSendMessage('{{ user }}', '{{ room_uuid }}')">SEND</button>
+    </div>
+    <div class="board"></div>
+</div>
+
+
+{% endblock %}
+
+{% block extra %}
+
+<script src="{% static 'js/chat/socketClient.js' %}"></script>
+
+{% endblock %}
