@@ -24,7 +24,6 @@ def send_message(sid, data):
             user=User.objects.get(username=data['user']),
             room=room
         )
-        print(blindUser[0].nickname)
         sio.emit('display_secret_message', {'nickname': blindUser[0].nickname, 'msg': data['msg']})
     else:
         sio.emit('display_message', data)

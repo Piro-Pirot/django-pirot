@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import *
+import server.apps.bubbles.mongodb as mongodb
 
 # Create your views here.
 
@@ -15,14 +16,19 @@ def enter_room(request, pk):
     else:
         roomMembers = RoomMember.objects.filter(room=curRoom)
 
+    bubbles = mongodb.get_msg(curRoom.pk, request.user.username)
+    print(bubbles)
+
     for member in roomMembers:
         if member.user == request.user:
             return render(
                 request,
-                'room.html',
+                'rooms/room.html',
                 {
                     'title': curRoom.room_name,
                     'room_uuid': pk,
+                    'room_type': curRoom.room_type,
+                    'bubbles': bubbles
                 }
             )
         

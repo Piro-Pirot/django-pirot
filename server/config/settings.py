@@ -35,6 +35,7 @@ MONGO_USERNAME=env('MONGO_USERNAME')
 MONGO_PASSWD=env('MONGO_PASSWD')
 MONGO_HOST=env('MONGO_HOST')
 MONGO_PORT=int(env('MONGO_PORT'))
+FERNET_KEY=env('FERNET_KEY')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
