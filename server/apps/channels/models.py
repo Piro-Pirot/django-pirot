@@ -12,6 +12,8 @@ class Channel(models.Model):
     channel_ok = models.IntegerField()
     channel_code = models.CharField(max_length=64)
 
+    def __str__(self):
+         return f'[{self.channel_name}] {self.id}'
 
 # 합격자
 class Passer(models.Model):
@@ -20,6 +22,8 @@ class Passer(models.Model):
     level = models.IntegerField(default=1)
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
 
+    def __str__(self):
+         return f'[{self.channel}] {self.level}기 {self.passer_name}'
 
 # 소속
 class Join(models.Model):
@@ -31,3 +35,6 @@ class Join(models.Model):
 class Staff(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
+
+    def __str__(self):
+         return f'[{self.channel}] {self.user}'
