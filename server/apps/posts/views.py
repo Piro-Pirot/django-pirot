@@ -5,22 +5,6 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 
-# 화면 오른쪽 게시글 READ -> chat views.py로 이동
-def board(request):
-    posts = Post.objects.all()
-    happy = Happy.objects.all()
-    sad = Sad.objects.all()
-
-    # template.html
-    # {% for post in posts %}
-    # {{ post.content }}
-    # {{ post.created_at }}
-    # {{ happy.filter(post_id=post).count }}
-    # {{ sad.filter(post_id=post).count }}
-
-    return render(request, "#",{"posts":posts, "happy":happy, "sad":sad})
-
-
 # 새 게시글 버튼 누르면 작성 창 등장 -> url : /create
 # 작성 버튼 누르면 게시글 CREATE
 # request : room_id, text
