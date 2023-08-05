@@ -6,27 +6,6 @@
 <div class="chat-name">{{ title }} 채팅 방</div>
 <div class="chat-container">
     <div class="conversation">
-        {% if bubbles %}
-        {% for bubble in bubbles %}
-        <div class="bubble-container">
-        {% for key, value in bubble.items %}
-        {% if room_type == 1 %}
-        {% if key == 'nickname' %}
-            <h3 class="bubble-username">{{ value }}</h3>
-        {% elif key == 'content' %}
-            <p class="bubble-content">{{ value }}</p>
-        {% endif %}
-        {% else %}
-        {% if key == 'user' %}
-            <h3 class="bubble-username">{{ value }}</h3>
-        {% elif key == 'content' %}
-            <p class="bubble-content">{{ value }}</p>
-        {% endif %}
-        {% endif %}
-        {% endfor %}
-        </div>
-        {% endfor %}
-        {% endif %}
     </div>
     <div class="chat-input">
         <input type="text" class="input">
@@ -41,5 +20,64 @@
 {% block extra %}
 
 <script src="{% static 'js/chat/socketClient.js' %}"></script>
+
+<script>
+    jsonBubbles = {{jsonBubbles | safe}};
+
+    let bubbleList = [];
+
+    jsonBubbles.forEach(element => {
+        bubbleList.push(element['fields']);
+    });
+
+
+    // 말풍선을 담을 곳
+    let converations = document.querySelector('.conversation');
+
+    // 말풍선을 만드는 코드
+    function createBubble(bubbleData) {
+        let bubbleDiv = document.createElement('div');
+        let bubbleContainer = document.createElement('div');
+
+        if(bubbleData['user'] === '{{ user.id }}') {
+            // 로그인 사용자의 말풍선인 경우
+            bubbleDiv.classList.add('bubble-box-me');
+            bubbleContainer.classList.add('bubble-container-me');
+        }
+        else {
+            bubbleDiv.classList.add('bubble-box');
+            bubbleContainer.classList.add('bubble-container');
+        }
+
+        // 사진, 이름
+        let bubbleHeader = document.createElement('div');
+        bubbleHeader.classList.add('bubble-header');
+
+        let profileImg = document.createElement('img');
+        profileImg.setAttribute('src', bubbleData['profile_img']);
+
+        let nameLabel = document.createElement('label');
+        nameLabel.innerText = bubbleData['nickname'];
+        nameLabel.classList.add('bubble-username');
+
+        bubbleHeader.appendChild(profileImg);
+        bubbleHeader.appendChild(nameLabel);
+
+        // 내용
+        let bubbleContent = document.createElement('div');
+        bubbleContent.classList.add('bubble-content');
+        bubbleContent.innerText = bubbleData['content'];
+
+        bubbleContainer.appendChild(bubbleHeader);
+        bubbleContainer.appendChild(bubbleContent);
+
+        bubbleDiv.appendChild(bubbleContainer);
+
+        // 화면에 추가
+        converations.appendChild(bubbleDiv);
+    }
+
+    bubbleList.forEach(element => createBubble(element));
+</script>
 
 {% endblock %}
