@@ -12,9 +12,15 @@ class User(AbstractUser):
     profile_img = models.ImageField(null=True, blank=True, upload_to="posts/%Y%m%d")
     notice = models.IntegerField(default=0)
     theme = models.CharField(max_length=16, default='#ffffff')
+    
+    def __str__(self):
+          return self.username
 
 
 # 회원 즐겨찾기
 class Bookmark(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
-	bookmarked_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmarked_user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    bookmarked_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmarked_user')
+    
+    def __str__(self):
+       return f'[{self.user}] {self.bookmarked_user}'
