@@ -30,12 +30,6 @@ MYSQL_PASSWD=env('MYSQL_PASSWD')
 MYSQL_HOST=env('MYSQL_HOST')
 MYSQL_PORT=env('MYSQL_PORT')
 
-MONGO_DBNAME=env('MONGO_DBNAME')
-MONGO_USERNAME=env('MONGO_USERNAME')
-MONGO_PASSWD=env('MONGO_PASSWD')
-MONGO_HOST=env('MONGO_HOST')
-MONGO_PORT=int(env('MONGO_PORT'))
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -94,6 +88,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = 'config.asgi.application'
 
 
 # Database
@@ -107,34 +102,8 @@ DATABASES = {
         'PASSWORD': MYSQL_PASSWD,
         'HOST': MYSQL_HOST,
         'PORT': MYSQL_PORT,
-    },
-    'chatdb': {
-        'ENGINE': 'djongo',
-        'ENFORCE_SCHEMA': False,
-        'LOGGING': {
-            'version': 1,
-            'loggers': {
-                'djongo': {
-                    'level': 'DEBUG',
-                    'propogate': False,                        
-                }
-            },
-         },
-        'NAME': MONGO_DBNAME,
-        'CLIENT': {
-            'host': MONGO_HOST,
-            'port': MONGO_PORT,
-            'username': MONGO_USERNAME,
-            'password': MONGO_PASSWD,
-            'authSource': 'admin',
-            'authMechanism': 'SCRAM-SHA-1'
-        },
     }
 }
-
-DATABASE_ROUTERS = [
-    # 'router.BubbleRouter',
-]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -180,6 +149,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
