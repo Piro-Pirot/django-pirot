@@ -112,11 +112,14 @@
 
 .chat-container {
   height: calc(100vh - 5rem);
-  background-color: goldenrod;
+  /* background-color: goldenrod; */
+  background-color: aquamarine;
 }
 
 .conversation {
   height: 80%;
   width: 100%;
-  background-color: aquamarine;
+  /* background-color: aquamarine; */
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
