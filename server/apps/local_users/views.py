@@ -62,7 +62,7 @@ def profile_setting(request):
 
     if request.method == 'POST':
         if 'delete' in request.POST:
-            current_user.profile_img = channel.default_image
+            current_user.profile_img.delete()
         elif 'change' in request.POST:
             current_user.profile_img = request.FILES['profile_img']
         current_user.save()
