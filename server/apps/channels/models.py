@@ -11,9 +11,12 @@ class Channel(models.Model):
     channel_desc = models.CharField(max_length=64)
     channel_ok = models.IntegerField()
     channel_code = models.CharField(max_length=64)
+    # 개발자가 제공하는 기본 이미지를 지정
+    default_image = models.ImageField(upload_to='default_profile/%Y%m%d', default='default_profile/default_profile.png', blank=True)
 
     def __str__(self):
          return f'[{self.channel_name}] {self.id}'
+
 
 # 합격자
 class Passer(models.Model):
@@ -24,6 +27,7 @@ class Passer(models.Model):
 
     def __str__(self):
          return f'[{self.channel}] {self.level}기 {self.passer_name}'
+
 
 # 소속
 class Join(models.Model):
