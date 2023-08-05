@@ -9,6 +9,7 @@
   <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
   <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>
   <div class="boss-container">
@@ -127,6 +128,7 @@
   </div>
   <dialog class="login-modal" id="modal">
     <div class="login-modal-content">
+      <i id="close-btn" class="ri-close-fill"></i>
       <div class="login-logo">
         <img src="{% static 'image/pirot_logo_long.png' %}" alt="피롯로고">
       </div>
@@ -140,7 +142,7 @@
         </form>
       </div>
       <div class="signup-sentence">
-        <p>피롯이 처음이신가요?<a href="#"> &nbsp회원가입</a></p>
+        <p>피롯이 처음이신가요?<a href="/user/signup/"> &nbsp회원가입</a></p>
       </div>
     </div>
   </dialog>

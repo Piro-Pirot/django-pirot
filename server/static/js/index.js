@@ -43,6 +43,11 @@ window.onload = function() {
 
 let loginButton = document.querySelector("#login");
 let modal = document.querySelector("dialog");
+let closeButton = document.querySelector("#close-btn");
+
 loginButton.addEventListener("click", () => {
   modal.showModal();
+});
+closeButton.addEventListener("click", () => {
+  modal.close();
 });

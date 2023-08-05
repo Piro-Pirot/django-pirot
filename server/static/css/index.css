@@ -480,12 +480,27 @@ section.show-animation .animate {
   0 4px 4px rgba(0,0,0,0.15), 
   0 8px 8px rgba(0,0,0,0.15);
   padding: 3rem;
+  position: relative;
 }
 
 .login-modal-content {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.login-modal-content > i {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  font-size: 2rem;
+  color: var(--subtitle);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.login-modal-content > i:hover {
+  color: gray;
 }
 
 .login-modal-content > .login-form {
