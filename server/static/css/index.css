@@ -55,7 +55,7 @@ nav > .nav-right {
   align-items: center;
 }
 
-nav > .nav-right > .nav-right-item {
+nav > .nav-right .nav-right-item {
   margin-left: 2rem;
   display: flex;
   align-items: center;
@@ -88,16 +88,16 @@ nav > .nav-right .signup-btn:hover {
   background-color: var(--carrot-dark);
 }
 
-nav > .nav-right .login-btn > a {
+nav > .nav-right .login-btn {
   color: #777777;
   transition: 0.2s;
 }
 
-nav > .nav-right .login-btn:hover > a{
+nav > .nav-right .login-btn:hover {
   color: var(--carrot-color);
 }
 
-nav > .nav-right .signup-btn > a {
+nav > .nav-right .signup-btn{
   color: white;
 }
 
@@ -131,6 +131,7 @@ section.show-animation .animate {
 
 .main-section-container {
   display: flex;
+  justify-content: center;
   animation: scaleBig 0.6s ease-out;
 }
 
@@ -407,7 +408,44 @@ section.show-animation .animate {
     align-items: center;
     justify-content: none;
   }
+}
+
+@media screen and (min-width:1980px) {
+  .boss-container {
+    width: 120rem;
   }
+
+  .ui-section {
+    padding-top: 10rem;
+    margin-bottom: 20rem;
+  }
+  .ui-section-title {
+    font-size: 4rem;
+  }
+  .ui-section-desc {
+    font-size: 3rem;
+  }
+  .ui-section-demo {
+    text-align: center;
+  }
+  .ui-section-demo img {
+    width: 60rem;
+  }
+  .md-section {
+    padding-top: 10rem;
+    height: 60rem;
+    padding-bottom: 15rem;
+  }
+  .md-section-title {
+    font-size: 4rem;
+  }
+  .md-section-desc {
+    font-size: 3rem;
+  }
+  .md-section-demo img {
+    width: 60rem;
+  }
+}
 
 @media all and (max-width: 1400px) {
   .md-section {

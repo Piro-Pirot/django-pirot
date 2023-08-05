@@ -16,7 +16,7 @@ sections = sections.slice(1);
 window.onscroll = () => {
   sections.forEach(section => {
     let top = window.scrollY;
-    let sectionTop = section.offsetTop - 400;
+    let sectionTop = section.offsetTop - 600;
     let sectionHeight = section.offsetHeight;
 
     if (top >= sectionTop && top <= sectionTop + sectionHeight + 220) {
