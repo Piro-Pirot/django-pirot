@@ -25,8 +25,8 @@
         </div>
       </div>
       <div class="nav-right">
-        <a href="/user/login/">
-          <div class="nav-right-item login-btn">
+        <a href="#">
+          <div id="login" class="nav-right-item login-btn">
             로그인
           </div>
         </a>
@@ -125,6 +125,25 @@
   
     <footer></footer>
   </div>
+  <dialog class="login-modal" id="modal">
+    <div class="login-modal-content">
+      <div class="login-logo">
+        <img src="{% static 'image/pirot_logo_long.png' %}" alt="피롯로고">
+      </div>
+      <div class="login-form">
+        <form action="#" method="post">
+          <div class="email-label">이메일</div>
+          <input type="text" placeholder="이메일을 입력하세요">
+          <div class="password-label">비밀번호</div>
+          <input type="text" placeholder="비밀번호를 입력하세요">
+          <input type="button" value="로그인">
+        </form>
+      </div>
+      <div class="signup-sentence">
+        <p>피롯이 처음이신가요?<a href="#"> &nbsp회원가입</a></p>
+      </div>
+    </div>
+  </dialog>
   <script src="{% static 'js/index.js' %}"></script>
 </body>
 </html>

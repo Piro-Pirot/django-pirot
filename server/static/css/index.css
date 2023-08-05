@@ -411,6 +411,9 @@ section.show-animation .animate {
 }
 
 @media screen and (min-width:1980px) {
+  body {
+    padding-top: 16rem;
+  }
   .boss-container {
     width: 120rem;
   }
@@ -457,4 +460,88 @@ section.show-animation .animate {
   .md-section-small {
     display: none;
   }
+}
+
+
+/* login modal */
+
+.login-modal::backdrop {
+  background: gray;
+  opacity: 0.4;
+}
+
+.login-modal {
+  width: 30rem;
+  height: 36rem;
+  border: 0;
+  border-radius: 1rem;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.15), 
+  0 2px 2px rgba(0,0,0,0.15), 
+  0 4px 4px rgba(0,0,0,0.15), 
+  0 8px 8px rgba(0,0,0,0.15);
+  padding: 3rem;
+}
+
+.login-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-modal-content > .login-form {
+  width: 100%;
+  margin-top: 3rem;
+}
+
+.login-form input {
+  width: 100%;
+  height: 4rem;
+  border-radius: 1rem;
+}
+
+.login-form div {
+  margin-bottom: 0.6rem;
+}
+
+.login-form input {
+  border: 0;
+  outline: 0;
+}
+
+.login-form input[type=text] {
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 1.2rem;
+  background-color: rgba(255, 140, 0, 0.04);
+  border: 2px solid white;
+}
+
+.login-form input[type=text]::placeholder {
+  color: rgba(128, 128, 128, 0.344);
+
+}
+
+.login-form input[type=text]:focus {
+  border: 2px solid var(--carrot-light);
+}
+
+.login-form input[type=button] {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  background-color: var(--carrot-color);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-form input[type=button]:hover {
+  background-color: var(--carrot-dark);
+}
+
+.signup-sentence {
+  margin-top: 2rem;
+}
+
+.signup-sentence a {
+  color: var(--carrot-color);
 }

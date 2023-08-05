@@ -40,3 +40,9 @@ window.onload = function() {
     scrollTo(0, 0);
   }, 0)
 };
+
+let loginButton = document.querySelector("#login");
+let modal = document.querySelector("dialog");
+loginButton.addEventListener("click", () => {
+  modal.showModal();
+});
