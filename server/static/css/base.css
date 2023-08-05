@@ -18,8 +18,8 @@
   padding-bottom: 3rem;
 }
 
-.icon-bar img {
-  width: 2.2rem;
+.icon-bar i {
+  font-size: 2rem;
 }
 
 .top-icons,
@@ -29,17 +29,19 @@
   align-items: center;
 }
 
-.top-icons > img {
-  margin-bottom: 3rem;
+.top-icons > i {
+  margin-bottom: 5rem;
 }
 
-.bottom-icons > img {
-  margin-top: 3rem;
+.bottom-icons > i {
+  margin-top: 5rem;
 }
 
 .profile-icon {
   border: 1px solid black;
   border-radius: 50%;
+  width: 2.2rem;
+  margin-top: 5rem;
 }
 
 
@@ -54,11 +56,11 @@
 
 .middle-section-content {
   background-color: green;
-  height: calc(100vh - 5rem);
+  height: calc(100vh - 6rem);
 }
 
 .middle-section > .search-box {
-  height: 5rem;
+  height: 6rem;
   /* background-color: pink; */
   display: flex;
   align-items: center;
@@ -116,7 +118,7 @@
 
 .friends {
   background-color: blue;
-  height: calc(100vh - 13rem);
+  height: calc(100vh - 11rem);
 }
 
 
@@ -124,24 +126,26 @@
 
 .chat-section {
   width: calc(100vw - 24rem);
-  background-color: aquamarine;
 }
 
 .chat-name {
-  height: 5rem;
-  background-color: brown;
+  height: 6rem;
+  background-color: yellow;
 }
 
 .chat-container {
-  height: calc(100vh - 5rem);
-  /* background-color: goldenrod; */
-  background-color: aquamarine;
+  display: flex;
+  height: calc(100vh - 6rem);
 }
 
 .conversation {
-  height: 80%;
-  width: 100%;
-  /* background-color: aquamarine; */
-  overflow-x: hidden;
-  overflow-y: scroll;
+  width: calc(100vw - 42rem);
+  height: calc(100vh - 6rem);
+  background-color: slateblue;
+}
+
+.board {
+  width: 18rem;
+  height: calc(100vh - 6rem);
+  background-color: aqua;
 }
