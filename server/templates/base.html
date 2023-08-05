@@ -22,9 +22,10 @@
             </div>
         </section>
         <section class="middle-section">
-            <div class="search-box">
-                <input type="text">
-                <i class="fa-solid fa-magnifying-glass"></i>
+            <div id="search" class="search-box">
+                <div id="channel-name">피로그래밍</div>
+                <input id="search-input" type="text">
+                <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
             </div>
             <div class="middle-section-content">
               옆에 누르는 아이콘에 따라 content 바뀜(친구, 채팅방)
@@ -37,12 +38,14 @@
                 <div class="board"></div>
             </div>
         </section>
-    </div>
+    </div>      
     {% block content %}
     {% endblock %}
 
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     {% block extra %}
     {% endblock %}
+    <script src="{% static 'js/base.js' %}"></script>
+</body>
 </body>
 </html>
