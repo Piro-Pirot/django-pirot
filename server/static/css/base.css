@@ -18,8 +18,8 @@
   padding-bottom: 3rem;
 }
 
-.icon-bar img {
-  width: 2.2rem;
+.icon-bar i {
+  font-size: 2rem;
 }
 
 .top-icons,
@@ -29,17 +29,19 @@
   align-items: center;
 }
 
-.top-icons > img {
-  margin-bottom: 3rem;
+.top-icons > i {
+  margin-bottom: 5rem;
 }
 
-.bottom-icons > img {
-  margin-top: 3rem;
+.bottom-icons > i {
+  margin-top: 5rem;
 }
 
 .profile-icon {
   border: 1px solid black;
   border-radius: 50%;
+  width: 2.2rem;
+  margin-top: 5rem;
 }
 
 
