@@ -56,11 +56,11 @@
 
 .middle-section-content {
   background-color: green;
-  height: calc(100vh - 8rem);
+  height: calc(100vh - 6rem);
 }
 
 .middle-section > .search-box {
-  height: 8rem;
+  height: 6rem;
   /* background-color: pink; */
   display: flex;
   align-items: center;
@@ -118,7 +118,7 @@
 
 .friends {
   background-color: blue;
-  height: calc(100vh - 13rem);
+  height: calc(100vh - 11rem);
 }
 
 
@@ -126,21 +126,26 @@
 
 .chat-section {
   width: calc(100vw - 24rem);
-  background-color: aquamarine;
 }
 
 .chat-name {
-  height: 8rem;
-  background-color: brown;
+  height: 6rem;
+  background-color: yellow;
 }
 
 .chat-container {
-  height: calc(100vh - 8rem);
-  background-color: goldenrod;
+  display: flex;
+  height: calc(100vh - 6rem);
 }
 
 .conversation {
-  height: 100%;
-  width: 55rem;
-  background-color: aquamarine;
+  width: calc(100vw - 42rem);
+  height: calc(100vh - 6rem);
+  background-color: slateblue;
+}
+
+.board {
+  width: 18rem;
+  height: calc(100vh - 6rem);
+  background-color: aqua;
 }
