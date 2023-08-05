@@ -480,7 +480,6 @@ section.show-animation .animate {
   0 4px 4px rgba(0,0,0,0.15), 
   0 8px 8px rgba(0,0,0,0.15);
   padding: 3rem;
-  position: relative;
 }
 
 .login-modal-content {
