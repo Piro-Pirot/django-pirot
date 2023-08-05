@@ -7,7 +7,6 @@ socket.on('connect', () => {
 });
 
 socket.on('display_message', (data) => {
-    // 서버로부터 받은 데이터를 처리
     displayMessage(data['user'], data['msg']);
 });
 
@@ -26,12 +25,12 @@ function onClickSendMessage(user, uuid) {
 }
 
 function displayMessage(user, msg) {
-    //채팅방 멤버들에게 메시지 표시
-    let chatContiner = document.querySelector('.chat-container');
+    // 채팅방 멤버들에게 메시지 표시
+    let chatContainer = document.querySelector('.conversation');
     let msgDiv = document.createElement('div');
     console.log(user);
     msgDiv.innerText = `${user} $$ ${msg}`;
 
-    chatContiner.appendChild(msgDiv);
+    chatContainer.appendChild(msgDiv);
     document.querySelector('.input').value = '';
 }

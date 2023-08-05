@@ -1,4 +1,5 @@
 @import 'reset.css';
+@import 'room.css';
 
 :root {
   --carrot-color: #fba405;
@@ -26,4 +27,21 @@ a {
 
 a:visited {
   color: black;
+}
+
+::-webkit-scrollbar {
+  /* 스크롤바 전체 영역 */
+    width: 12px;
+    height: 4px;
+}
+::-webkit-scrollbar-track {
+    /* 스크롤이 움직이는 영역  */
+    background-color: transparent;
+    margin: 1rem;
+    padding: 1rem;
+}
+::-webkit-scrollbar-thumb {
+    /*  스크롤  */
+    background-color: var(--carrot-dark);
+    border-radius: 30px;
 }

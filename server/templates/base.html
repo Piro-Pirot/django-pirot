@@ -30,19 +30,14 @@
                 <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
             </div>
             <div class="middle-section-content">
-              옆에 누르는 아이콘에 따라 content 바뀜(친구, 채팅방)
+                옆에 누르는 아이콘에 따라 content 바뀜(친구, 채팅방)
             </div>
         </section>
         <section class="chat-section">
-            <div class="chat-name"></div>
-            <div class="chat-container">
-                <div class="conversation"></div>
-                <div class="board"></div>
-            </div>
+            {% block content %}
+            {% endblock %}
         </section>
-    </div>      
-    {% block content %}
-    {% endblock %}
+    </div>
 
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     {% block extra %}
