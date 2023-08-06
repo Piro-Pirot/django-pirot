@@ -19,7 +19,7 @@
                 <a href="/room/friends/"><i class="ri-chat-3-line"></i></a>
             </div>
             <div class="bottom-icons">
-                <i class="ri-settings-3-line"></i>
+                <i id="settings" class="ri-settings-3-line"></i>
                 <a href="/user/setting/"><img class="profile-icon" src="{% static 'image/chat_room/임시프로필사진.png' %}" alt="프로필"></a>
             </div>
         </section>
@@ -39,12 +39,20 @@
         </section>
     </div>
 
+    <dialog class="modal settings-modal">
+        <div class="modal-content">
+            <i id="close-btn" class="ri-close-fill"></i>
+            <a href="/user/logout/">로그아웃!!!!</a>
+        </div>
+
+    </dialog>
+
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     {% block extra %}
     {% endblock %}
     <script src="{% static 'js/base.js' %}"></script>
     <script src="{% static 'js/chat/roomBtn.js' %}"></script>
-    <script src="{% static 'js/roomList.js' %}"></script>
+    <script src="{% static 'js/roomModal.js' %}"></script>
 </body>
 </body>
 </html>
