@@ -1,6 +1,7 @@
 .bubble-box,
 .bubble-box-me {
     display: block;
+    max-width: 50vw;
 }
 
 .bubble-box-me {
