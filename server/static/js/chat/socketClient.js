@@ -6,11 +6,24 @@ const path = location.pathname;
 
 let cnt = 0;
 let index = 0;
+let startPoint = 0;
+let endPoint = 0;
 for(index = 0; index < path.length; index++) {
-    if(cnt === 2) break;
+    if(cnt === 3) {
+        startPoint = index;
+        break;
+    }
     if(path[index] === '/') cnt += 1;
 }
-const roomIDfromUrl = path.slice(index, path.length - 1);
+cnt = 0;
+for(index; index < path.length; index++) {
+    if(cnt === 1) {
+        endPoint = index;
+        break;
+    }
+    if(path[index] === '/') cnt += 1;
+}
+const roomIDfromUrl = path.slice(startPoint, endPoint - 1);
 console.log(roomIDfromUrl);
 
 // 연결 성공 시 이벤트 리스너
@@ -52,7 +65,7 @@ function displayMessage(bubbleData) {
     let bubbleDiv = document.createElement('div');
     let bubbleContainer = document.createElement('div');
 
-    if(bubbleData['user'] === curUsername) {
+    if(bubbleData['user'] == curUsername) {
         // 로그인 사용자의 말풍선인 경우
         bubbleDiv.classList.add('bubble-box-me');
         bubbleContainer.classList.add('bubble-container-me');
