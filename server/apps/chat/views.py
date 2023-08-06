@@ -22,9 +22,9 @@ def main_room(request, channelName, type):
         myRooms = RoomMember.objects.filter(user=request.user)
     elif type == 'friends':
         # 현재 로그인 사용자
-        myPassInfo = Join.objects.get(user=request.user, passer__channel__channel_name=channelName)
+        myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel__channel_name=channelName)[0]
         # 현재 로그인 사용자의 채널 구성원들
-        myFriends = Join.objects.filter(passer__channel__channel_name=channelName).exclude(user=request.user)
+        myFriends = Passer.objects.filter(channel__channel_name=channelName).exclude(pk=myPassInfo.pk)
     else:
         return redirect('/')
 
@@ -65,9 +65,9 @@ def enter_room(request, channelName, pk, type):
         myRooms = RoomMember.objects.filter(user=request.user)
     elif type == 'friends':
         # 현재 로그인 사용자
-        myPassInfo = Join.objects.get(user=request.user, passer__channel__channel_name=channelName)
+        myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel__channel_name=channelName)[0]
         # 현재 로그인 사용자의 채널 구성원들
-        myFriends = Join.objects.filter(passer__channel__channel_name=channelName).exclude(user=request.user)
+        myFriends = Passer.objects.filter(channel__channel_name=channelName).exclude(pk=myPassInfo.pk)
     else:
         return redirect('/')
 

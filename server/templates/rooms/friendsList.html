@@ -2,8 +2,8 @@
     <li class="btn-friend-container">
         <a href="">
             <div class="btn-friend">
-                <img src="{{ myPassInfo.user.profile_img }}" alt="">
-                <label for="">{{ myPassInfo.passer }}</label>
+                <img src="{{ myPassInfo.user__set.profile_img }}" alt="">
+                <label for="">{{ myPassInfo }}</label>
             </div>
         </a>
     </li>
@@ -11,8 +11,8 @@
     <li class="btn-friend-container">
         <a href="">
             <div class="btn-friend">
-                <img src="{{ friend.user.profile_img }}" alt="">
-                <label for="">{{ friend.passer }}</label>
+                <img src="{{ friend.user__set.profile_img }}" alt="">
+                <label for="">{{ friend }}</label>
             </div>
         </a>
     </li>
