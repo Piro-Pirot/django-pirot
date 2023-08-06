@@ -64,7 +64,8 @@ def profile_setting(request):
         if 'delete' in request.POST:
             current_user.profile_img.delete()
         elif 'change' in request.POST:
-            current_user.profile_img = request.FILES['profile_img']
+            if request.FILES.get('profile_img'):
+                current_user.profile_img = request.FILES['profile_img']
         current_user.save()
 
         return redirect('/user/setting/')
