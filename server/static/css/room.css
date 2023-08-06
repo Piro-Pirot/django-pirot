@@ -59,9 +59,9 @@
 .middle-section-content .btn-room {
     background-color: var(--carrot-light);
     border-radius: 1.3rem;
-    width: 100%;
     padding: 1rem 2rem;
     position: relative;
+    text-align: center;
 }
 
 .middle-section-content .room-red-dot {
@@ -75,4 +75,12 @@
 
 .middle-section-content .selected-room {
     background-color: var(--carrot-color);
+}
+
+.middle-section-content .btn-room-create {
+    border: 0.1rem solid var(--carrot-dark);
+    border-radius: 1.3rem;
+    padding: 1rem 2rem;
+    color: var(--subtitle);
+    text-align: center;
 }
