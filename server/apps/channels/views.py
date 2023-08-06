@@ -48,7 +48,7 @@ def passer_create_level(request):
 
         return redirect(url)
     
-    return render(request, "#")
+    return render(request, 'staff/passerlevel.html')
 
 
 #  합격자 명단 추가 : 이름, 전화번호 등록
@@ -66,12 +66,13 @@ def passer_create(request):
         )
         return redirect(url)
     
-    return render(request, "#")
+    return render(request, 'staff/passer.html')
 
 
 # 참여 코드 생성
 def code_create(request):
-    channel = request.GET.get("channel")
+    # channel = request.GET.get("channel")
+    channel = Channel.objects.get(channel_name="피로그래밍")
 
     alphabet_list = string.ascii_letters
     digits_list = string.digits
@@ -84,33 +85,34 @@ def code_create(request):
 
     # 참여 코드 생성
     if request.method == "POST":
-        random_list = random.sample(sample_list,6)
+        random_list = random.sample(sample_list,5)
         code = ''.join(random_list)
         channel.channel_code = code
 
         return redirect("/staff/code_create/")
 
     # code를 생성하지 않은 상태이면 "" 전달
-    return render(request, "#", {"code":code if code is not None else ""})
+    return render(request, 'staff/code_create.html', {"code":code if code is not None else ""})
 
 
 # 동아리 기본 설정
 def default_profile(request):
-    channel = request.GET.get("channel")
-    default_image = channel.get_default_image() # 모델 수정 필요
+    # channel = request.GET.get("channel")
+    channel = Channel.objects.get(channel_name="피로그래밍")
+    default_image = channel.default_image() # 모델 수정 필요
 
     if request.method == "POST":
-        image = request.POST["image"]
+        image = request.FILES["image"]
         channel.defalut_image = image # 모델 수정 필요
 
         return redirect("/staff/channel/setting/?channel=%s")
     
-    return render(request, "#", {"default_image":default_image})
+    return render(request, 'staff/default_profile.html', {"default_image":default_image})
 
 
 # 운영진 권한 설정
 @csrf_exempt
-def staff_onoff(request):
+def staff_authority(request):
     joins = Join.objects.all()
     staffs = Staff.objects.all()
 
@@ -120,7 +122,7 @@ def staff_onoff(request):
     #    if 버튼이 off인 회원 객체가 staff 목록에 있으면 삭제
     # -> staff.save() 이건 view에서?
 
-    return render(request, "#", {"joins":joins, "staffs":staffs})
+    return render(request, 'staff/staff_authority.html', {"joins":joins, "staffs":staffs})
 
 
 # 회원 삭제
@@ -134,18 +136,6 @@ def join_delete(request):
         passer = Passer.objects.get(passer_name=user.name)
         passer.delete() # 합격자 명단에서도 삭제
 
-        return redirect("/staff/passer_delete/")
+        return redirect("/staff/join_delete/")
 
-    return render(request, "#", {"joins":joins}) # 회원 실명, 기수 참조 가능
-
-# 프로필 사진 변경
-def profile_setting(request):
-    current_user = request.user
-
-    if request.method == "POST":
-        current_user.profile_img = request.POST["profile_img"]
-        current_user.save()
-
-        return redirect("/user/setting/") # 프로필 설정 페이지에 머무름
-    
-    return render(request, "#", {"user":current_user})
+    return render(request, 'staff/join_delete.html', {"joins":joins}) # 회원 실명, 기수 참조 가능
