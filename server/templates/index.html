@@ -164,7 +164,9 @@
     function setLoginUrl() {
       if("{{ user }}" !== 'AnonymousUser') {
         location.href = '/room/main/';
-        loginModal.style.display = 'none';
+        loginModal.style.visibility = 'hidden';
+        loginModal.style.opacity = '0';
+        loginModal.close();
       }
     }
   </script>
