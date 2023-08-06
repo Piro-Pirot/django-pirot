@@ -30,8 +30,8 @@ def profile_staff(request):
 
     context = {
         'user':current_user,
-        # 'profile_image':profile_image,
         'channel': channel,
+        'level' : Join.objects.get(user=current_user).passer.level
     }
     
     return render(request, 'staff/staff_profile.html', context=context)
@@ -43,6 +43,7 @@ def passer_create_level(request):
     # 일단 get방식으로 받는다고 생각
     # channel = request.GET.get("channel")
     channel = Channel.objects.get(channel_name="피로그래밍")
+    channel = channel.id
 
     if request.method == "POST":
         level = request.POST["level"]
@@ -56,18 +57,29 @@ def passer_create_level(request):
 #  합격자 명단 추가 : 이름, 전화번호 등록
 def passer_create(request):
     level = request.GET.get("level")
-    # channel = request.GET.get("channel")
-    channel = Channel.objects.get(channel_name="피로그래밍")
-    url = '/staff/passer_create/?level=%s&channel=%s' % (level, channel)
-
+    channel_name = request.GET.get("channel")
+    channel = Channel.objects.get(id=channel_name)
+    print(channel)
+    
     if request.method == "POST":
-        Passer.objects.create(
-            passer_name = request.POST["name"],
-            passer_phone = request.POST["phone"],
-            level = level,
-            channel = channel,
-        )
-        return redirect(url)
+        if 'save' in request.POST:
+            Passer.objects.create(
+                passer_name = request.POST["name"],
+                passer_phone = request.POST["phone"],
+                level = level,
+                channel = channel,
+            )
+            return redirect('/staff/passer_create/level/')
+        elif 'keepgoing' in request.POST:
+            Passer.objects.create(
+                passer_name = request.POST["name"],
+                passer_phone = request.POST["phone"],
+                level = level,
+                channel = channel,
+            )
+            channel=channel.id
+            url = '/staff/passer_create/?level=%s&channel=%s' % (level, channel)
+            return redirect(url)
     
     return render(request, 'staff/passer.html')
 
