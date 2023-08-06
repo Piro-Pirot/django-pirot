@@ -30,7 +30,7 @@
                 <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
             </div>
             <div class="middle-section-content">
-                옆에 누르는 아이콘에 따라 content 바뀜(친구, 채팅방)
+                {% include 'rooms/roomList.html' %}
             </div>
         </section>
         <section class="chat-section">
@@ -43,6 +43,7 @@
     {% block extra %}
     {% endblock %}
     <script src="{% static 'js/base.js' %}"></script>
+    <script src="{% static 'js/chat/roomBtn.js' %}"></script>
 </body>
 </body>
 </html>

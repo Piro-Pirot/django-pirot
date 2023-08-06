@@ -49,3 +49,38 @@
     border: 0.1rem solid var(--carrot-dark);
     border-radius: 1.3rem;
 }
+
+
+/* 채팅 방 리스트 */
+.middle-section-content .btn-room-container {
+    padding: 1rem 2rem;
+}
+
+.middle-section-content .btn-room {
+    background-color: var(--carrot-light);
+    border-radius: 1.3rem;
+    padding: 1rem 2rem;
+    position: relative;
+    text-align: center;
+}
+
+.middle-section-content .room-red-dot {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background-color: var(--carrot-dark);
+    border-radius: 1.3rem;
+    padding: 0.5rem;
+}
+
+.middle-section-content .selected-room {
+    background-color: var(--carrot-color);
+}
+
+.middle-section-content .btn-room-create {
+    border: 0.1rem solid var(--carrot-dark);
+    border-radius: 1.3rem;
+    padding: 1rem 2rem;
+    color: var(--subtitle);
+    text-align: center;
+}
