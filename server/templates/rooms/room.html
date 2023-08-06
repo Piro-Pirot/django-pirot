@@ -9,10 +9,12 @@
 
 <div class="chat-name">{{ title }} 채팅 방</div>
 <div class="chat-container">
-    <div class="conversation"></div>
-    <div class="chat-input">
-        <input type="text" class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room_uuid }}');}">
-        <button type="button" onclick="onClickSendMessage('{{ user }}', '{{ room_uuid }}')">SEND</button>
+    <div class="chat-conversation-container">
+        <div class="conversation"></div>
+        <div class="chat-input">
+            <input type="text" class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room_uuid }}');}">
+            <button type="button" onclick="onClickSendMessage('{{ user }}', '{{ room_uuid }}')">SEND</button>
+        </div>
     </div>
     <div class="board"></div>
 </div>
