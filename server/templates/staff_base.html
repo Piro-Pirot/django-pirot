@@ -15,36 +15,31 @@
     <div class="container">
         <section class="icon-bar">
             <div class="top-icons">
-                <a href="/room/main/"><i class="ri-team-line"></i></a>
-                <a href="/room/friends/"><i class="ri-chat-3-line"></i></a>
+                <i class="ri-team-line"></i>
+                <i class="ri-chat-3-line"></i>
             </div>
             <div class="bottom-icons">
                 <i class="ri-settings-3-line"></i>
                 <a href="/user/setting/"><img class="profile-icon" src="{% static 'image/chat_room/임시프로필사진.png' %}" alt="프로필"></a>
             </div>
         </section>
-        <section class="middle-section">
-            <div id="search" class="search-box">
-                <div id="channel-name">피로그래밍</div>
-                <input id="search-input" type="text">
-                <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
-            </div>
-            <div class="middle-section-content">
-                {% include 'rooms/roomList.html' %}
-            </div>
+        <section class="staff-menu">
+            <a href="/staff/setting/"><button type="button">프로필 설정</button></a>
+            <a href="/staff/passer_create/level/"><button type="button">합격자 명단 추가</button></a>
+            <a href="/staff/code_create/"><button type="button">참여 코드 생성</button></a>
+            <a href="/staff/channel/setting/"><button type="button">동아리 기본 설정</button></a>
+            <a href="/staff/staff_authority/"><button type="button">운영진 권한 설정</button></a>
+            <a href="/staff/join_delete/"><button type="button">회원 삭제</button></a>
         </section>
-        <section class="chat-section">
+        <section class="staff-content">
             {% block content %}
-            {% endblock %}
+            {% endblock %}    
         </section>
-    </div>
-
+    </div>      
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     {% block extra %}
     {% endblock %}
     <script src="{% static 'js/base.js' %}"></script>
-    <script src="{% static 'js/chat/roomBtn.js' %}"></script>
-    <script src="{% static 'js/roomList.js' %}"></script>
 </body>
 </body>
 </html>

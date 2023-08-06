@@ -24,8 +24,10 @@ urlpatterns = [
     path('', include("server.apps.channels.urls")),
     path('room/', include('server.apps.chat.urls')),
     path('user/', include('server.apps.local_users.urls')),
+    path('staff/', include('server.apps.channels.urls')),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
