@@ -167,7 +167,6 @@
     /* 로그인 여부에 따라 로그인 버튼 a 태그 src 변경 */
     function setLoginUrl() {
       let atag = document.getElementById('login-atag');
-      let loginModal = document.querySelector('.login-modal');
       if("{{ user }}") {
         atag.href = '/room/main/';
         loginModal.style.display = 'none';
