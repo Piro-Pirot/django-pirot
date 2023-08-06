@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="nav-right">
-        <a href="#">
+        <a href="" id="login-atag">
           <div id="login" class="nav-right-item login-btn">
             로그인
           </div>
@@ -147,5 +147,17 @@
     </div>
   </dialog>
   <script src="{% static 'js/index.js' %}"></script>
+  <script>
+    /* 로그인 여부에 따라 로그인 버튼 a 태그 src 변경 */
+    function setLoginUrl() {
+      let atag = document.getElementById('login-atag');
+      let loginModal = document.querySelector('.login-modal');
+      if("{{ user }}") {
+        atag.href = '/room/main/';
+        loginModal.style.display = 'none';
+      }
+    }
+    setLoginUrl();
+  </script>
 </body>
 </html>
