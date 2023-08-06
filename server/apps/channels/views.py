@@ -118,15 +118,18 @@ def code_create(request):
 def default_profile(request):
     # channel = request.GET.get("channel")
     channel = Channel.objects.get(channel_name="피로그래밍")
-    default_image = channel.default_image() # 모델 수정 필요
+    channel_id = channel.id
 
     if request.method == "POST":
-        image = request.FILES["image"]
-        channel.defalut_image = image # 모델 수정 필요
+        if request.FILES.get("default_image"):
+            channel.default_image = request.FILES["default_image"]
+            channel.save()
+        
+        url = '/staff/channel/setting/?channel=%s' % (channel_id)
 
-        return redirect("/staff/channel/setting/?channel=%s")
+        return redirect(url)
     
-    return render(request, 'staff/default_profile.html', {"default_image":default_image})
+    return render(request, 'staff/default_profile.html', {"channel":channel})
 
 
 # 운영진 권한 설정
