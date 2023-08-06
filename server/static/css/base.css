@@ -138,10 +138,17 @@
   height: calc(100vh - 6rem);
 }
 
+.chat-container .chat-conversation-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .conversation {
   width: calc(100vw - 42rem);
   height: calc(100vh - 6rem);
   background-color: slateblue;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .board {
