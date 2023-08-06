@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import SignupForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
-from server.apps.channels.models import Staff, Channel
+from server.apps.channels.models import Staff, Channel, Join
 
 
 def main(request):
@@ -67,17 +67,17 @@ def profile_setting(request):
             current_user.profile_img = request.FILES['profile_img']
         current_user.save()
 
-        return redirect('/user/setting/') # 프로필 설정 페이지에 머무름
-    
-    # if current_user.profile_img and hasattr(current_user.profile_image):
-    #     profile_image = current_user.profile_img.url
-    # else:
-    #     profile_image = channel.default_image.url
+        return redirect('/user/setting/')
+
+    if request.user.id == '491e61f0-f98b-43cd-b6df-90bedd90541e': # 기수가 없는 admin 예외 처리
+        level = 0
+    else:
+        level = Join.objects.get(user=current_user).passer.level
 
     context = {
         'user':current_user,
-        # 'profile_image':profile_image,
         'channel': channel,
+        'level' : level,
     }
     
     return render(request, 'users/profilesetting.html', context=context)
