@@ -26,16 +26,12 @@
         </div>
       </div>
       <div class="nav-right">
-        <a href="" id="login-atag">
-          <div id="login" class="nav-right-item login-btn">
-            로그인
-          </div>
-        </a>
-        <a href="#">
-          <div id="signup" class="nav-right-item signup-btn">
-            회원가입
-          </div>
-        </a>
+        <div id="login" class="nav-right-item login-btn" onclick="setLoginUrl()">
+          로그인
+        </div>
+        <div id="signup" class="nav-right-item signup-btn">
+          회원가입
+        </div>
       </div>
     </nav>
   
@@ -166,13 +162,11 @@
   <script>
     /* 로그인 여부에 따라 로그인 버튼 a 태그 src 변경 */
     function setLoginUrl() {
-      let atag = document.getElementById('login-atag');
-      if("{{ user }}") {
-        atag.href = '/room/main/';
+      if("{{ user }}" !== 'AnonymousUser') {
+        location.href = '/room/main/';
         loginModal.style.display = 'none';
       }
     }
-    setLoginUrl();
   </script>
 </body>
 </html>
