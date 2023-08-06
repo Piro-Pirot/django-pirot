@@ -1,5 +1,4 @@
 @import 'reset.css';
-@import 'room.css';
 
 :root {
   --carrot-color: #fba405;
@@ -21,11 +20,15 @@
 }
 
 a {
+  color: black;
   text-decoration: none;
+  outline: none
 }
 
-a:visited {
+a:hover, a:active {
+  text-decoration: none;
   color: black;
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar {
