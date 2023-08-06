@@ -9,9 +9,6 @@ from django.views.decorators.csrf import csrf_exempt
 def index(request):
     return render(request, 'index.html', {})
 
-def room(request):
-    return render(request, 'base.html', {})
-
 # 운영진 : 운영진 페이지
 def profile_staff(request):
 
