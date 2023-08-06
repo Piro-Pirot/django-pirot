@@ -58,7 +58,7 @@ def profile_setting(request):
 
     # 운영진 여부
     if Staff.objects.filter(user=current_user).exists():
-        return redirect('/staff/passer_create/level/')
+        return redirect('/staff/setting/')
 
     if request.method == 'POST':
         if 'delete' in request.POST:

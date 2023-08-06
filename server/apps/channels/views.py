@@ -13,7 +13,7 @@ def room(request):
     return render(request, 'base.html', {})
 
 # 운영진 : 운영진 페이지
-def profile_setting(request):
+def profile_staff(request):
 
     channel = Channel.objects.get(channel_name="피로그래밍") # 임시!! 위에 모델 임포트도 지우기 나중에
     current_user = request.user
@@ -25,7 +25,7 @@ def profile_setting(request):
             current_user.profile_img = request.FILES['profile_img']
         current_user.save()
 
-        return redirect('/user/setting/') # 프로필 설정 페이지에 머무름
+        return redirect('/staff/setting/') # 프로필 설정 페이지에 머무름
 
     context = {
         'user':current_user,
@@ -33,7 +33,7 @@ def profile_setting(request):
         'channel': channel,
     }
     
-    return render(request, 'users/profilesetting.html', context=context)
+    return render(request, 'staff/staff_profile.html', context=context)
 
 
 # 합격자 명단 추가 : 기수 작성
