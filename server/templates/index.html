@@ -18,10 +18,10 @@
         <div class="nav-left-item">
           <a href="/"><img src="{% static 'image/pirot_logo_long.png' %}"></a>
         </div>
-        <div class="nav-left-item">
+        <div class="nav-left-item" id="service">
           서비스 소개
         </div>
-        <div class="nav-left-item">
+        <div class="nav-left-item" id="creator">
           만든 사람들
         </div>
       </div>
@@ -31,8 +31,8 @@
             로그인
           </div>
         </a>
-        <a href="/user/signup/">
-          <div class="nav-right-item signup-btn">
+        <a href="#">
+          <div id="signup" class="nav-right-item signup-btn">
             회원가입
           </div>
         </a>
@@ -126,23 +126,39 @@
   
     <footer></footer>
   </div>
-  <dialog class="login-modal" id="modal">
-    <div class="login-modal-content">
+  <dialog class="modal" id="loginModal">
+    <div class="modal-content">
       <i id="close-btn" class="ri-close-fill"></i>
-      <div class="login-logo">
+      <div class="modal-logo">
         <img src="{% static 'image/pirot_logo_long.png' %}" alt="피롯로고">
       </div>
       <div class="login-form">
-        <form action="#" method="post">
+        <form action="/user/login/" method="post">
+          {% csrf_token %}
           <div class="email-label">이메일</div>
           <input type="text" placeholder="이메일을 입력하세요">
           <div class="password-label">비밀번호</div>
           <input type="text" placeholder="비밀번호를 입력하세요">
-          <input type="button" value="로그인">
+          <input type="submit" value="로그인">
         </form>
       </div>
       <div class="signup-sentence">
         <p>피롯이 처음이신가요?<a href="/user/signup/"> &nbsp회원가입</a></p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="modal" id="signupModal">
+    <div class="modal-content">
+      <i id="close-btn" class="ri-close-fill"></i>
+      <div class="modal-logo">
+        <img src="{% static 'image/pirot_logo_long.png' %}" alt="피롯로고">
+      </div>
+      <div class="signup-text">
+        <p>피롯 계정이 없으신가요?</p>
+        <p>빠르게 가입해보세요!</p>
+      </div>
+      <div  class="signup-modal-form">
+        <a href="/user/signup/"><input type="button" value="회원가입하기"></a>
       </div>
     </div>
   </dialog>

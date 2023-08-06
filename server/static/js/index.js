@@ -41,13 +41,60 @@ window.onload = function() {
   }, 0)
 };
 
-let loginButton = document.querySelector("#login");
-let modal = document.querySelector("dialog");
-let closeButton = document.querySelector("#close-btn");
+const loginButton = document.querySelector("#login");
+const loginModal = document.querySelector("#loginModal");
+const signupButton = document.querySelector("#signup");
+const signupModal = document.querySelector("#signupModal");
+const closeButtons = document.querySelectorAll("#close-btn");
+// let backdrop = window.getComputedStyle(loginModal, '::backdrop');
+// let styles = backdrop['background'];
+// styles = 'red';
+// console.log(styles);
 
+loginModal.style.opacity = '0';
+// 로그인버튼 누르면 모달창 팝업
 loginButton.addEventListener("click", () => {
-  modal.showModal();
+  loginModal.showModal();
+  loginModal.style.opacity = '1';
 });
-closeButton.addEventListener("click", () => {
-  modal.close();
+// 회원가입 버튼 누르면 모달창 팝업
+signupButton.addEventListener("click", () => {
+  signupModal.showModal();
+  signupModal.style.opacity = '1';
 });
+
+// X 버튼 누르면 모달창 나가짐
+closeButtons.forEach(closeButton => {
+  closeButton.addEventListener("click", () => {
+    if(loginModal.open) {
+      loginModal.close();
+      loginModal.style.opacity = '0';
+    }
+    else if (signupModal.open) {
+      signupModal.close();
+      signupModal.style.opacity = '0';
+    }
+  });
+});
+
+// Esc 누르면 모달의 opacity를 0으로 초기화 시킴
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    loginModal.style.opacity = '0';
+    signupModal.style.opacity = '0';
+  }
+});
+
+const serviceButton = document.querySelector("#service");
+serviceButton.addEventListener("click", () => {
+  let firstSectionTop = sections[0].offsetTop;
+  window.scrollTo({top: firstSectionTop, behavior: 'smooth'});
+});
+
+const creatorButton = document.querySelector("#creator");
+creatorButton.addEventListener("click", () => {
+  let firstSectionTop = sections[0].offsetTop;
+  window.scrollTo({top: firstSectionTop, behavior: 'smooth'});
+}); //나중에 '만든사람 section' 머지되면 firstSectionTop 대체 필요
+
+
