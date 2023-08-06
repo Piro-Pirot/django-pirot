@@ -17,10 +17,10 @@
         {% csrf_token %}
     	<div>
             {% if user.profile_img %}
-                <input type="submit" name="delete" value="사진 삭제">
+                <input type="submit" name="delete" value="사진 삭제" />
             {% endif %}
-                <input type="file" name="profile_img" accept=".jpg, .png" \>
-                <input type="submit" name="change" value="사진 변경" \>
+                <input type="file" name="profile_img" accept=".jpg, .png" />
+                <input type="submit" name="change" value="사진 변경" />
         </div>
     <p>{{ user }}</p>
 </div>

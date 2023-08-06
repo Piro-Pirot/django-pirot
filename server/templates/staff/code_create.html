@@ -4,5 +4,10 @@
 <!-- 코드 생성 페이지 -->
 
 {% block content %}
-코드 생성
+<h2>코드 생성</h2>
+<div>{{ code }}</div>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+        <input type="submit" name="code" value="코드 생성" />
+
 {% endblock %}

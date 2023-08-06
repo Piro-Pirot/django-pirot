@@ -41,7 +41,8 @@ def profile_staff(request):
 def passer_create_level(request):
     # 채널 정보를 받아와야 함!!!! 랜딩페이지부터 쭉쭉 받아와야할 듯(직전 단계는 어디?)
     # 일단 get방식으로 받는다고 생각
-    channel = request.GET.get("channel")
+    # channel = request.GET.get("channel")
+    channel = Channel.objects.get(channel_name="피로그래밍")
 
     if request.method == "POST":
         level = request.POST["level"]
@@ -55,7 +56,8 @@ def passer_create_level(request):
 #  합격자 명단 추가 : 이름, 전화번호 등록
 def passer_create(request):
     level = request.GET.get("level")
-    channel = request.GET.get("channel")
+    # channel = request.GET.get("channel")
+    channel = Channel.objects.get(channel_name="피로그래밍")
     url = '/staff/passer_create/?level=%s&channel=%s' % (level, channel)
 
     if request.method == "POST":
@@ -82,18 +84,22 @@ def code_create(request):
     # 이미 참여 코드가 있는 경우
     if channel.channel_code:
         code = channel.channel_code
+    else:
+        code = ""
     
-
     # 참여 코드 생성
     if request.method == "POST":
         random_list = random.sample(sample_list,5)
-        code = ''.join(random_list)
-        channel.channel_code = code
+        created_code = ''.join(random_list)
+        channel.channel_code = created_code
+        channel.save()
+        code = channel.channel_code
+        print(code)
 
-        return redirect("/staff/code_create/")
+        return redirect("/staff/code_create/", {"code":code})
 
     # code를 생성하지 않은 상태이면 "" 전달
-    return render(request, 'staff/code_create.html', {"code":code if code is not None else ""})
+    return render(request, 'staff/code_create.html', {"code":code})
 
 
 # 동아리 기본 설정
