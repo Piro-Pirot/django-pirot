@@ -22,7 +22,8 @@ def profile_staff(request):
         if 'delete' in request.POST:
             current_user.profile_img.delete()
         elif 'change' in request.POST:
-            current_user.profile_img = request.FILES['profile_img']
+            if request.FILES.get('profile_img'):
+                current_user.profile_img = request.FILES.get('profile_img')
         current_user.save()
 
         return redirect('/staff/setting/') # 프로필 설정 페이지에 머무름
