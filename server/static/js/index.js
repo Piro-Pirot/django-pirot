@@ -57,6 +57,7 @@ loginButton.addEventListener("click", () => {
   loginModal.showModal();
   loginModal.style.opacity = '1';
 });
+
 // 회원가입 버튼 누르면 모달창 팝업
 signupButton.addEventListener("click", () => {
   signupModal.showModal();
@@ -96,5 +97,3 @@ creatorButton.addEventListener("click", () => {
   let firstSectionTop = sections[0].offsetTop;
   window.scrollTo({top: firstSectionTop, behavior: 'smooth'});
 }); //나중에 '만든사람 section' 머지되면 firstSectionTop 대체 필요
-
-

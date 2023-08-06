@@ -1,0 +1,29 @@
+<ol class="btn-room-list">
+    {% for room in myRooms %}
+    <li class="btn-room-container">
+        <a href="/room/{{ room.room.pk }}/">
+            <div class="btn-room room-{{ room.room.pk }}">
+                <div class="room-red-dot dot-{{ room.room.pk }}">32</div>
+                <label for="">{{ room.room.room_name }}</label>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+
+    {% for room in myBlindRooms %}
+    <li class="btn-room-container">
+        <a href="/room/{{ room.room.pk }}/">
+            <div class="btn-room room-{{ room.room.pk }}">
+                <div class="room-red-dot dot-{{ room.room.pk }}">32</div>
+                <label for="">{{ room.room.room_name }}</label>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ol>
+
+<div class="btn-room-container">
+    <div class="btn-room-create">
+        <label for="">채팅 방 생성하기</label>
+    </div>
+</div>
