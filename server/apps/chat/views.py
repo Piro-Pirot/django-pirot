@@ -2,13 +2,23 @@ import json
 from django.shortcuts import redirect, render
 from .models import *
 from server.apps.bubbles.models import *
+from server.apps.channels.models import *
 
 # Create your views here.
 
-def main_room(request):
-    # 현재 로그인 사용자가 참여하고 있는 채팅 방
-    myBlindRooms = BlindRoomMember.objects.filter(user=request.user)
-    myRooms = RoomMember.objects.filter(user=request.user)
+def main_room(request, type):
+    myBlindRooms = ''
+    myRooms = ''
+
+    myFriends = ''
+    
+    if type == 'main':
+        # 현재 로그인 사용자가 참여하고 있는 채팅 방
+        myBlindRooms = BlindRoomMember.objects.filter(user=request.user)
+        myRooms = RoomMember.objects.filter(user=request.user)
+    else:
+        # 현재 로그인 사용자의 채널 구성원들
+        myFriends = Join.objects.filter(user=request.user)
 
     return render(
         request,
@@ -20,6 +30,7 @@ def main_room(request):
             'jsonBubbles': '',
             'myRooms': myRooms,
             'myBlindRooms': myBlindRooms,
+            'myFriends': myFriends
         }
     )
 
