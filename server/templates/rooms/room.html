@@ -3,12 +3,15 @@
 
 {% block content %}
 
+<input type="hidden" class="username" value="{{ user }}">
+<input type="hidden" class="userid" value="{{ user.id }}">
+<input type="hidden" class="roomtype" value="{{ room_type }}">
+
 <div class="chat-name">{{ title }} 채팅 방</div>
 <div class="chat-container">
-    <div class="conversation">
-    </div>
+    <div class="conversation"></div>
     <div class="chat-input">
-        <input type="text" class="input">
+        <input type="text" class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room_uuid }}');}">
         <button type="button" onclick="onClickSendMessage('{{ user }}', '{{ room_uuid }}')">SEND</button>
     </div>
     <div class="board"></div>
@@ -19,65 +22,24 @@
 
 {% block extra %}
 
-<script src="{% static 'js/chat/socketClient.js' %}"></script>
-
 <script>
-    jsonBubbles = {{jsonBubbles | safe}};
-
+    let jsonBubbles = {{jsonBubbles | safe}};
+    
     let bubbleList = [];
-
+    
     jsonBubbles.forEach(element => {
-        bubbleList.push(element['fields']);
+        bubbleList.push(element);
     });
 
+    let curUsername = document.querySelector('.username').value;
+    let curUserId = document.querySelector('.userid').value;
+    let curRoomType = document.querySelector('.roomtype').value;
 
     // 말풍선을 담을 곳
     let converations = document.querySelector('.conversation');
-
-    // 말풍선을 만드는 코드
-    function createBubble(bubbleData) {
-        let bubbleDiv = document.createElement('div');
-        let bubbleContainer = document.createElement('div');
-
-        if(bubbleData['user'] === '{{ user.id }}') {
-            // 로그인 사용자의 말풍선인 경우
-            bubbleDiv.classList.add('bubble-box-me');
-            bubbleContainer.classList.add('bubble-container-me');
-        }
-        else {
-            bubbleDiv.classList.add('bubble-box');
-            bubbleContainer.classList.add('bubble-container');
-        }
-
-        // 사진, 이름
-        let bubbleHeader = document.createElement('div');
-        bubbleHeader.classList.add('bubble-header');
-
-        let profileImg = document.createElement('img');
-        profileImg.setAttribute('src', bubbleData['profile_img']);
-
-        let nameLabel = document.createElement('label');
-        nameLabel.innerText = bubbleData['nickname'];
-        nameLabel.classList.add('bubble-username');
-
-        bubbleHeader.appendChild(profileImg);
-        bubbleHeader.appendChild(nameLabel);
-
-        // 내용
-        let bubbleContent = document.createElement('div');
-        bubbleContent.classList.add('bubble-content');
-        bubbleContent.innerText = bubbleData['content'];
-
-        bubbleContainer.appendChild(bubbleHeader);
-        bubbleContainer.appendChild(bubbleContent);
-
-        bubbleDiv.appendChild(bubbleContainer);
-
-        // 화면에 추가
-        converations.appendChild(bubbleDiv);
-    }
-
-    bubbleList.forEach(element => createBubble(element));
 </script>
+
+<script src="{% static 'js/chat/bubble.js' %}"></script>
+<script src="{% static 'js/chat/socketClient.js' %}"></script>
 
 {% endblock %}

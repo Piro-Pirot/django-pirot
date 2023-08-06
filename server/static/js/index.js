@@ -16,7 +16,7 @@ sections = sections.slice(1);
 window.onscroll = () => {
   sections.forEach(section => {
     let top = window.scrollY;
-    let sectionTop = section.offsetTop - 400;
+    let sectionTop = section.offsetTop - 600;
     let sectionHeight = section.offsetHeight;
 
     if (top >= sectionTop && top <= sectionTop + sectionHeight + 220) {
@@ -40,3 +40,14 @@ window.onload = function() {
     scrollTo(0, 0);
   }, 0)
 };
+
+let loginButton = document.querySelector("#login");
+let modal = document.querySelector("dialog");
+let closeButton = document.querySelector("#close-btn");
+
+loginButton.addEventListener("click", () => {
+  modal.showModal();
+});
+closeButton.addEventListener("click", () => {
+  modal.close();
+});

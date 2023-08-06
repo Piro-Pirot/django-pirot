@@ -8,37 +8,24 @@
     <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
     <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-
 </head>
 <body>
     <div class="container">
         <section class="icon-bar">
             <div class="top-icons">
-                <i class="ri-team-line"></i>
-                <i class="ri-chat-3-line"></i>
+                <img src="{% static 'image/chat_room/group_clicked.png' %}" alt="친구아이콘">
+                <img src="{% static 'image/chat_room/chat.png' %}" alt="채팅아이콘">
             </div>
             <div class="bottom-icons">
-                <i class="ri-settings-3-line"></i>
+                <img src="{% static 'image/chat_room/setting.png' %}" alt="설정아이콘">
                 <a href="/user/setting/"><img class="profile-icon" src="{% static 'image/chat_room/임시프로필사진.png' %}" alt="프로필"></a>
             </div>
         </section>
-        <section class="middle-section">
-            <div id="search" class="search-box">
-                <div id="channel-name">피로그래밍</div>
-                <input id="search-input" type="text">
-                <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
-            </div>
-            <div class="middle-section-content">
-                옆에 누르는 아이콘에 따라 content 바뀜(친구, 채팅방)
-            </div>
-        </section>
-        <section class="chat-section">
+        <section class="staff-section">
             {% block content %}
-            {% endblock %}
+            {% endblock %}    
         </section>
-    </div>
-
+    </div>      
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     {% block extra %}
     {% endblock %}

@@ -9,6 +9,7 @@
   <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
   <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>
   <div class="boss-container">
@@ -25,8 +26,8 @@
         </div>
       </div>
       <div class="nav-right">
-        <a href="/user/login/">
-          <div class="nav-right-item login-btn">
+        <a href="#">
+          <div id="login" class="nav-right-item login-btn">
             로그인
           </div>
         </a>
@@ -57,7 +58,7 @@
               <div class="main-section-team-text">
                 <span>안녕하세요 팀 피롯입니다</span> <br>
                 동아리용 채팅 서비스가 필요하세요? <br>
-                <a class="orange-link start-btn" href="#">
+                <a class="orange-link start-btn" href="/user/signup/">
                   <span>바로 시작해보세요</span>
                 </a> 🥕
               </div>
@@ -125,6 +126,26 @@
   
     <footer></footer>
   </div>
+  <dialog class="login-modal" id="modal">
+    <div class="login-modal-content">
+      <i id="close-btn" class="ri-close-fill"></i>
+      <div class="login-logo">
+        <img src="{% static 'image/pirot_logo_long.png' %}" alt="피롯로고">
+      </div>
+      <div class="login-form">
+        <form action="#" method="post">
+          <div class="email-label">이메일</div>
+          <input type="text" placeholder="이메일을 입력하세요">
+          <div class="password-label">비밀번호</div>
+          <input type="text" placeholder="비밀번호를 입력하세요">
+          <input type="button" value="로그인">
+        </form>
+      </div>
+      <div class="signup-sentence">
+        <p>피롯이 처음이신가요?<a href="/user/signup/"> &nbsp회원가입</a></p>
+      </div>
+    </div>
+  </dialog>
   <script src="{% static 'js/index.js' %}"></script>
 </body>
 </html>
