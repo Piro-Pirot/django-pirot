@@ -39,6 +39,12 @@ nav > .nav-left {
 
 nav > .nav-left > .nav-left-item {
   margin-right: 3rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+nav > .nav-left > .nav-left-item:hover {
+  color: var(--carrot-color);
 }
 
 nav > .nav-left > .nav-left-item:nth-child(2) {
@@ -470,7 +476,7 @@ section.show-animation .animate {
   opacity: 0.4;
 }
 
-.login-modal {
+.modal {
   width: 30rem;
   height: 36rem;
   border: 0;
@@ -482,13 +488,13 @@ section.show-animation .animate {
   padding: 3rem;
 }
 
-.login-modal-content {
+.modal-content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.login-modal-content > i {
+.modal-content > i {
   position: absolute;
   right: 1rem;
   top: 1rem;
@@ -498,16 +504,16 @@ section.show-animation .animate {
   cursor: pointer;
 }
 
-.login-modal-content > i:hover {
+.modal-content > i:hover {
   color: gray;
 }
 
-.login-modal-content > .login-form {
+.login-form {
   width: 100%;
   margin-top: 3rem;
 }
 
-.login-form input {
+.modal input {
   width: 100%;
   height: 4rem;
   border-radius: 1rem;
@@ -517,7 +523,7 @@ section.show-animation .animate {
   margin-bottom: 0.6rem;
 }
 
-.login-form input {
+.modal input {
   border: 0;
   outline: 0;
 }
@@ -540,15 +546,21 @@ section.show-animation .animate {
   border: 2px solid var(--carrot-light);
 }
 
-.login-form input[type=button] {
+.modal input[type=button],
+.modal input[type=submit] {
   font-size: 1.2rem;
   margin-top: 1rem;
   background-color: var(--carrot-color);
   cursor: pointer;
   transition: 0.3s;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.15), 
+  0 2px 2px rgba(0,0,0,0.15), 
+  0 4px 4px rgba(0,0,0,0.15), 
+  0 6px 6px rgba(0,0,0,0.15);
 }
 
-.login-form input[type=button]:hover {
+.modal input[type=button]:hover,
+.modal input[type=submit]:hover {
   background-color: var(--carrot-dark);
 }
 
@@ -558,4 +570,32 @@ section.show-animation .animate {
 
 .signup-sentence a {
   color: var(--carrot-color);
+}
+
+
+/* signup modal */
+
+#signupModal {
+  height: 25rem;
+}
+
+#signupModal > .modal-content {
+  width: 100%;
+}
+
+#signupModal > .modal-content > div:not(:last-child) {
+  margin-bottom: 3rem;
+}
+
+.signup-modal-form {
+  width: 100%;
+}
+
+.signup-text {
+  text-align: center;
+  line-height: 2rem;
+}
+
+dialog {
+  transition: 0.3s;
 }
