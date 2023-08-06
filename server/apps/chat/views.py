@@ -1,19 +1,37 @@
 import json
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import *
 from server.apps.bubbles.models import *
 
 # Create your views here.
 
-def test(request):
-    print('success')
-    return render(request, 'room.html', {'title': 'home'})
+def main_room(request):
+    # 현재 로그인 사용자가 참여하고 있는 채팅 방
+    myBlindRooms = BlindRoomMember.objects.filter(user=request.user)
+    myRooms = RoomMember.objects.filter(user=request.user)
+
+    return render(
+        request,
+        'rooms/room.html',
+        {
+            'title': 'Hello world!',
+            'room_uuid': '',
+            'room_type': '',
+            'jsonBubbles': '',
+            'myRooms': myRooms,
+            'myBlindRooms': myBlindRooms,
+        }
+    )
 
 
 # 채팅 방에 입장
 def enter_room(request, pk):
     # URL을 통해 방 정보 가져옴
     curRoom = Room.objects.get(pk=pk)
+    # 현재 로그인 사용자가 참여하고 있는 채팅 방
+    myBlindRooms = BlindRoomMember.objects.filter(user=request.user)
+    # 현재 로그인 사용자가 참여하고 있는 채팅 방
+    myRooms = RoomMember.objects.filter(user=request.user)
     
     if curRoom.room_type == 1:
         #익명채팅방
@@ -35,8 +53,10 @@ def enter_room(request, pk):
         )
 
     bubbles = list(bubbles)
+    # myRooms = list(myRooms)
 
     jsonBubbles = json.dumps(bubbles, default=str)
+    # jsonRooms = json.dumps(myRooms, default=str)
 
     # js에서 말풍선을 만들기 위해 쿼리셋을 json으로 변환
     # jsonBubbles = serializers.serialize('json', bubbles)
@@ -53,7 +73,9 @@ def enter_room(request, pk):
                     'title': curRoom.room_name,
                     'room_uuid': pk,
                     'room_type': curRoom.room_type,
-                    'jsonBubbles': jsonBubbles
+                    'jsonBubbles': jsonBubbles,
+                    'myRooms': myRooms,
+                    'myBlindRooms': myBlindRooms,
                 }
             )
         
