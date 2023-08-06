@@ -3,10 +3,6 @@
 
 {% block content %}
 
-<input type="hidden" class="username" value="{{ user }}">
-<input type="hidden" class="userid" value="{{ user.id }}">
-<input type="hidden" class="roomtype" value="{{ room_type }}">
-
 <div class="chat-name">{{ title }}</div>
 <div class="chat-container">
     <div class="chat-conversation-container">
@@ -25,18 +21,18 @@
 {% block extra %}
 
 <script>
-    let jsonBubbles = {{jsonBubbles | safe}};
-    
     let bubbleList = [];
-    
-    jsonBubbles.forEach(element => {
-        bubbleList.push(element);
-    });
+    if(`{{ jsonBubbles | safe}}` !== '') {
+        let jsonBubbles = {{jsonBubbles | safe}};
+        
+        jsonBubbles.forEach(element => {
+            bubbleList.push(element);
+        });
+    }
 
-    let curUsername = document.querySelector('.username').value;
-    let curUserId = document.querySelector('.userid').value;
-    let curRoomType = document.querySelector('.roomtype').value;
-
+    let curUsername = '{{ user }}';
+    let curUserId = '{{ user.id }}';
+    let curRoomType = {{ room_type }};
     // 말풍선을 담을 곳
     let converations = document.querySelector('.conversation');
 </script>
