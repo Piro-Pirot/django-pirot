@@ -1,9 +1,18 @@
 <ol class="btn-friend-list">
+    <li class="btn-friend-container">
+        <a href="">
+            <div class="btn-friend">
+                <img src="{{ myPassInfo.user.profile_img }}" alt="">
+                <label for="">{{ myPassInfo.passer }}</label>
+            </div>
+        </a>
+    </li>
     {% for friend in myFriends %}
     <li class="btn-friend-container">
         <a href="">
             <div class="btn-friend">
-                <label for="">{{ friend }}</label>
+                <img src="{{ friend.user.profile_img }}" alt="">
+                <label for="">{{ friend.passer }}</label>
             </div>
         </a>
     </li>

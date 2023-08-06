@@ -84,3 +84,15 @@
     color: var(--subtitle);
     text-align: center;
 }
+
+/* 친구 리스트 */
+
+.middle-section-content .btn-friend-container {
+    margin: 1rem;
+}
+
+.middle-section-content .btn-friend {
+    padding: 1rem 2rem;
+    background-color: white;
+    border-radius: 1rem;
+}
