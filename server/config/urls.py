@@ -18,10 +18,11 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
+import server.apps.channels.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include("server.apps.channels.urls")),
+    path('', server.apps.channels.views.index),
     path('room/', include('server.apps.chat.urls')),
     path('user/', include('server.apps.local_users.urls')),
     path('staff/', include('server.apps.channels.urls')),
