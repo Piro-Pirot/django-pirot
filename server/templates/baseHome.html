@@ -32,15 +32,15 @@
                 <div id="channel-name">
                     <div class="channel-name-select">
                         <div class="select-btn">
-                          <span></span>
-                          <i class="ri-arrow-down-s-line"></i>
+                            <span></span>
+                            <i class="ri-arrow-down-s-line"></i>
                         </div>
                         <ul class="select-options">
                             {% for channel in myChannels %}
                                 <li class="channel-option" id="{{channel.id}}"><span>{{ channel.channel_name }}</span></li>
                             {% endfor %}
                         </ul>
-                      </div>
+                    </div>
                 </div>
                 <input id="search-input" type="text">
                 <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
@@ -71,8 +71,9 @@
     <script>
         // js에서 필요한 정보
         let curChannelId = {{ channel.id }};
-        let curRoomId = {{ room.id }};
-        let curRoomType = {{ room.type }};
+        // let curRoomId = {{ room.id }};
+        // let curRoomType = {{ room.type }};
+        console.log(curChannelId);
     </script>
 
     <script src="{% static 'js/base.js' %}"></script>

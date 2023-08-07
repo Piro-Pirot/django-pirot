@@ -1,32 +1,39 @@
 <div class="friend-list-me">
     <div class="friend-list-me-container">
         <div class="friend-list-me-profile-img">
-            <img src="{{ myPassInfo.join_set.first.uset.profile_img }}" alt="">
+            <img src="{{ myPassInfo.join_set.first.user.profile_img }}" alt="">
         </div>
         <label for="">{{ myPassInfo }}</label>
+        <div class="more-icon">
+            <i id="more" class="ri-more-fill"></i>
+        </div>
+        <div class="more-form">
+            <form action="/room/create_room/{{ channel.id }}/{{ myPassInfo.join_set.first.user.id }}/" method="post">
+                {% csrf_token %}
+                <input class="me" type="submit" value="1:1 채팅하기"></input>
+            </form>
+        </div>
     </div>
 </div>
 
 <ol class="btn-friend-list">
-    <li class="btn-friend-container">
-        <div class="btn-friend">
-            <img src="{{ myPassInfo.join_set.first.user.profile_img }}" alt="">
-            <label for="">{{ myPassInfo }}</label>
-            <form action="/room/create_room/{{ channel.id }}/{{ myPassInfo.join_set.first.user.id }}/" method="post">
-                {% csrf_token %}
-                <button>1:1 채팅하기</button>
-            </form>
-        </div>
-    </li>
     {% for friend in myFriends %}
-    <li class="btn-friend-container">
+    <li class="btn-friend-container friend-container">
         <div class="btn-friend">
-            <img src="{{ friend.join_set.first.user.profile_img }}" alt="">
+            <div class="btn-friend-profile-img">
+                <img src="{{ friend.join_set.first.user.profile_img }}" alt="">
+            </div>
             <label for="">{{ friend }}</label>
-            <form action="/room/create_room/{{ channel.id }}/{{ friend.join_set.first.user.id }}/" method="post">
-                {% csrf_token %}
-                <button>1:1 채팅하기</button>
-            </form>
+            <div class="more-icon">
+                <i id="more" class="ri-more-fill"></i>
+            </div>
+            <div class="more-form">
+                <form action="/room/create_room/{{ channel.id }}/{{ friend.join_set.first.user.id }}/" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="즐겨찾기"></input>
+                    <input type="submit" value="1:1 채팅하기"></input>
+                </form>
+            </div>
         </div>
     </li>
     {% endfor %}

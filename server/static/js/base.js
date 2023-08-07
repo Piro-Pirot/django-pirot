@@ -1,5 +1,5 @@
 let searchButton = document.getElementById("search-btn");
-let channelName = document.getElementById("select-channel");
+let channelName = document.getElementById("channel-name");
 let searchInput = document.getElementById("search-input");
 
 searchInput.style.visibility = "hidden";
@@ -44,14 +44,17 @@ let selectedChannel = document.querySelector(".select-btn span");
 let selectButton = document.querySelector(".select-btn");
 let channelOptionsList = document.querySelector(".select-options");
 let channelOptions = document.querySelectorAll(".select-options li");
-selectedChannel.innerHTML = channelOptions[0].innerHTML;
+
 
 channelOptions.forEach(option => {
   option.addEventListener("click", () => {
     selectedChannel.innerHTML = option.innerHTML;
     channelOptionsList.classList.toggle("active");
-    // window.open(???);
+    window.open(`/room/${option.id}/main`, '_self');
   });
+  if (option.id == curChannelId) {
+    selectedChannel.innerText = option.innerText;
+  }
 });
 
 selectButton.addEventListener("click", () => {
