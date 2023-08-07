@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import SignupForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
-from server.apps.channels.models import Staff, Channel, Join
+from server.apps.channels.models import Staff, Channel, Passer
 
 
 def main(request):
@@ -51,14 +51,17 @@ def logout(request):
     return redirect('/')
 
 # 일반회원 : 프로필 설정 페이지 / 운영진 : 운영진 페이지
-def profile_setting(request):
+def profile_setting(request, channelID):
 
-    channel = Channel.objects.get(channel_name="피로그래밍") # 임시!! 위에 모델 임포트도 지우기 나중에
+    # 임시
+    channelID = 1
+    channel = Channel.objects.get(id=channelID)
     current_user = request.user
 
     # 운영진 여부
     if Staff.objects.filter(user=current_user).exists():
-        return redirect('/staff/setting/')
+        url = '/staff/setting/%s' % (channelID)
+        return redirect(url)
 
     if request.method == 'POST':
         if 'delete' in request.POST:
@@ -68,12 +71,15 @@ def profile_setting(request):
                 current_user.profile_img = request.FILES['profile_img']
         current_user.save()
 
-        return redirect('/user/setting/')
+        url = '/user/setting/%s' % (channelID)
+
+        return redirect(url)
 
     if request.user.id == '491e61f0-f98b-43cd-b6df-90bedd90541e': # 기수가 없는 admin 예외 처리
         level = 0
     else:
-        level = Join.objects.get(user=current_user).passer.level
+        channelPasser = Passer.objects.filter(channel=channel, passer_name=current_user.name, passer_phone=current_user.phone_number).get()
+        level = channelPasser.level
 
     context = {
         'user':current_user,
