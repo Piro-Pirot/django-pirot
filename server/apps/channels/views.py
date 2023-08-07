@@ -115,7 +115,9 @@ def code_create(request, channelID):
         code = channel.channel_code
         print(code)
 
-        return redirect("/staff/code_create/%s/") % (channelID)
+        url = '/staff/code_create/%s/' % (channelID)
+
+        return redirect(url)
 
     # code를 생성하지 않은 상태이면 "" 전달
     return render(request, 'staff/code_create.html', {"code":code, "channel":channel})
@@ -123,7 +125,6 @@ def code_create(request, channelID):
 
 # 동아리 기본 설정
 def default_profile(request, channelID):
-    # channel = request.GET.get("channel")
     channel = Channel.objects.get(id=channelID)
 
     if request.method == "POST":
