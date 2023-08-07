@@ -21,7 +21,7 @@
   align-items: center;
 }
 
-.room-add-invite > i {
+.modal-content > i {
   position: absolute;
   right: 1rem;
   top: 1rem;
@@ -39,7 +39,7 @@
   overflow-y: scroll;
 }
 
-.room-add-invite > i:hover {
+.modal-content > i:hover {
   color: gray;
 }
 
