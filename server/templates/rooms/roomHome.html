@@ -1,0 +1,19 @@
+{% extends 'baseHome.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="chat-name">{{ title }}</div>
+<div class="chat-container">
+    <div class="chat-conversation-container">
+        <div class="conversation"></div>
+        <div class="chat-input"></div>
+    </div>
+    <div class="board"></div>
+</div>
+
+{% endblock %}
+
+{% block extra %}
+
+{% endblock %}
