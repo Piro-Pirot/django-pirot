@@ -35,8 +35,14 @@
 .invite-list {
   height: 15rem;
   border: 1px solid black;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
-.modal-content > i:hover {
+.room-add-invite > i:hover {
   color: gray;
+}
+
+dialog {
+  transition: 0.3s;
 }

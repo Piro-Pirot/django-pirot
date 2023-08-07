@@ -1,6 +1,6 @@
 @import 'style.css';
 @import 'room.css';
-@import 'roomList.css';
+@import 'roomModal.css';
 
 .container {
   display: flex;
@@ -69,7 +69,7 @@
   position: relative;
 }
 
-.search-box > #channel-name {
+.search-box > .channel-name {
   font-size: 1.7rem;
   letter-spacing: 0.3rem;
   z-index: 0;

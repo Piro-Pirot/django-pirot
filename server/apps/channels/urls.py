@@ -3,7 +3,6 @@ from server.apps.channels import views
 
 urlpatterns = [
     path("", views.index),
-    path("room/", views.room),
     path("setting/", views.profile_staff),
     path("passer_create/level/", views.passer_create_level),
     path("passer_create/", views.passer_create),

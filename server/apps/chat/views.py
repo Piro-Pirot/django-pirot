@@ -6,43 +6,89 @@ from server.apps.channels.models import *
 
 # Create your views here.
 
-def main_room(request, type):
+def main_room(request, channelName, type):
     myBlindRooms = ''
     myRooms = ''
 
     myFriends = ''
+    myPassInfo = ''
+
+    myChannels = []
+
+    if not request.user.is_authenticated:
+        return redirect('/')
     
-    if type == 'main':
+    if type == 'main' or type == 'friends':
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
-        myBlindRooms = BlindRoomMember.objects.filter(user=request.user)
-        myRooms = RoomMember.objects.filter(user=request.user)
-    else:
+        myBlindRooms = BlindRoomMember.objects.filter(user=request.user, room__channel__channel_name=channelName)
+        myRooms = RoomMember.objects.filter(user=request.user, room__channel__channel_name=channelName)
+
+        # 현재 로그인 사용자
+        myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel__channel_name=channelName)[0]
         # 현재 로그인 사용자의 채널 구성원들
-        myFriends = Join.objects.filter(user=request.user)
+        myFriends = Passer.objects.filter(channel__channel_name=channelName).exclude(pk=myPassInfo.pk)
+
+        # 현재 로그인 사용자의 소속 채널
+        myJoinInfo = Join.objects.filter(user__name=request.user.name)
+        for joinInfo in myJoinInfo:
+            myChannels.append(Channel.objects.get(channel_name=joinInfo.passer.channel.channel_name))
+    else:
+        return redirect('/')
 
     return render(
         request,
-        'rooms/room.html',
+        'rooms/roomHome.html',
         {
             'title': 'Hello world!',
             'room_uuid': '',
             'room_type': '',
+            'channel': channelName,
             'jsonBubbles': '',
             'myRooms': myRooms,
             'myBlindRooms': myBlindRooms,
-            'myFriends': myFriends
+            'myFriends': myFriends,
+            'myPassInfo': myPassInfo,
+            'urlType': type,
+            'myChannels': myChannels,
         }
     )
 
 
 # 채팅 방에 입장
-def enter_room(request, pk):
+def enter_room(request, channelName, pk, type):
+    myBlindRooms = ''
+    myRooms = ''
+
+    myFriends = ''
+    myPassInfo = ''
+
+    myChannels = []
+
     # URL을 통해 방 정보 가져옴
     curRoom = Room.objects.get(pk=pk)
-    # 현재 로그인 사용자가 참여하고 있는 채팅 방
-    myBlindRooms = BlindRoomMember.objects.filter(user=request.user)
-    # 현재 로그인 사용자가 참여하고 있는 채팅 방
-    myRooms = RoomMember.objects.filter(user=request.user)
+
+    if not request.user.is_authenticated:
+        return redirect('/')
+    
+    if type == 'main' or type == 'friends':
+        # 현재 로그인 사용자가 참여하고 있는 채팅 방
+        myBlindRooms = BlindRoomMember.objects.filter(user=request.user)
+        # 현재 로그인 사용자가 참여하고 있는 채팅 방
+        myRooms = RoomMember.objects.filter(user=request.user)
+    
+        # 현재 로그인 사용자
+        myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel__channel_name=channelName)[0]
+        # 현재 로그인 사용자의 채널 구성원들
+        myFriends = Passer.objects.filter(channel__channel_name=channelName).exclude(pk=myPassInfo.pk)
+
+        # 현재 로그인 사용자의 소속 채널
+        myJoinInfo = Join.objects.filter(user__name=request.user.name)
+        for joinInfo in myJoinInfo:
+            myChannels.append(Channel.objects.get(channel_name=joinInfo.passer.channel.channel_name))
+        print(myChannels)
+    else:
+        return redirect('/')
+
     
     if curRoom.room_type == 1:
         #익명채팅방
@@ -84,9 +130,14 @@ def enter_room(request, pk):
                     'title': curRoom.room_name,
                     'room_uuid': pk,
                     'room_type': curRoom.room_type,
+                    'channel': curRoom.channel.channel_name,
                     'jsonBubbles': jsonBubbles,
                     'myRooms': myRooms,
                     'myBlindRooms': myBlindRooms,
+                    'myFriends': myFriends,
+                    'myPassInfo': myPassInfo,
+                    'urlType': type,
+                    'myChannels': myChannels,
                 }
             )
         

@@ -15,8 +15,8 @@
     <div class="container">
         <section class="icon-bar">
             <div class="top-icons">
-                <a href="/room/{{ channel }}/{{ room_uuid }}/friends/"><i class="ri-team-line"></i></a>
-                <a href="/room/{{ channel }}/{{ room_uuid }}/main/"><i class="ri-chat-3-line"></i></a>
+                <a href="/room/{{ channel }}/friends/"><i class="ri-team-line"></i></a>
+                <a href="/room/{{ channel }}/main/"><i class="ri-chat-3-line"></i></a>
             </div>
             <div class="bottom-icons">
                 <i id="settings" class="ri-settings-3-line"></i>
@@ -25,11 +25,13 @@
         </section>
         <section class="middle-section">
             <div id="search" class="search-box">
-                <select name="channel-type" id="select-channel" onchange="window.open(value, '_self');">
-                    {% for channel in myChannels %}
-                        <option class="channel-name" value="/room/{{ channel.channel_name }}/friends/">{{ channel.channel_name }}</option>
-                    {% endfor %}
-                </select>
+                <div id="channel-name">
+                    <select name="channel-type" id="select-channel" onchange="window.open(value, '_self');">
+                        {% for channel in myChannels %}
+                            <option class="channel-name" value="/room/{{ channel.channel_name }}/friends/">{{ channel.channel_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <input id="search-input" type="text">
                 <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
             </div>
@@ -46,7 +48,6 @@
             {% endblock %}
         </section>
     </div>
-
     <dialog class="modal settings-modal">
         <div class="modal-content">
             <i id="close-btn" class="ri-close-fill"></i>
@@ -63,7 +64,6 @@
         <script src="{% static 'js/roomModal.js' %}"></script>
     {% elif urlType == 'friends' %}
         <script src="{% static 'js/chat/friendBtn.js' %}"></script>
-        <script src="{% static 'js/roomModal.js' %}"></script>
     {% endif %}
 </body>
 </body>
