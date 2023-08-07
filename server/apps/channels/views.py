@@ -7,13 +7,13 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
-    myChannels = ''
+    myJoinInfo = ''
     
     if request.user.is_authenticated:
-        myChannels = Join.objects.filter(user=request.user)
-        
+        myJoinInfo = Join.objects.filter(user=request.user)
+    
     return render(request, 'index.html', {
-        'channel': myChannels
+        'myJoinInfo': myJoinInfo
     })
 
 # 운영진 : 운영진 페이지

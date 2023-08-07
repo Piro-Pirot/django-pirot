@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="nav-right">
-        <div id="login" class="nav-right-item login-btn" onclick="setLoginUrl()">
+        <div id="login" class="nav-right-item login-btn">
           로그인
         </div>
         <div id="signup" class="nav-right-item signup-btn">
@@ -215,10 +215,10 @@
       <div class="login-form">
         <form action="/user/login/" method="post">
           {% csrf_token %}
-          <div class="email-label">이메일</div>
-          <input type="text" placeholder="이메일을 입력하세요">
+          <div class="email-label">아이디</div>
+          <input type="text" placeholder="아이디를 입력하세요" name="username">
           <div class="password-label">비밀번호</div>
-          <input type="text" placeholder="비밀번호를 입력하세요">
+          <input type="text" placeholder="비밀번호를 입력하세요" name="password">
           <input type="submit" value="로그인">
         </form>
       </div>
@@ -245,14 +245,20 @@
   <script src="{% static 'js/index.js' %}"></script>
   <script>
     /* 로그인 여부에 따라 로그인 버튼 a 태그 src 변경 */
-    function setLoginUrl() {
-      if("{{ user }}" !== 'AnonymousUser') {
-        location.href = '/room/{{ channel.first.passer.channel.channel_name }}/main/';
-        loginModal.style.visibility = 'hidden';
-        loginModal.style.opacity = '0';
-        loginModal.close();
+    loginButton.addEventListener("click", () => {
+      if('{{ myJoinInfo.first }}' === 'None') {
+        // 석류-선우: 속한 채널이 없는 경우 모달 만들기
+        // loginModal.showModal();
+        // loginModal.style.opacity = '1';
+      } else if("{{ user }}" !== 'AnonymousUser') {
+        // 로그인 되어 있는 경우
+        location.href  = '/room/{{ myJoinInfo.first.passer.channel.id }}/main/';
+      } else {
+        loginModal.showModal();
+        loginModal.style.opacity = '1';
       }
-    }
+    });
+    loginModal.style.opacity = '0';
   </script>
 </body>
 </html>

@@ -15,8 +15,8 @@
     <div class="container">
         <section class="icon-bar">
             <div class="top-icons">
-                <a href="/room/{{ channel }}/{{ room_uuid }}/friends/"><i class="ri-team-line"></i></a>
-                <a href="/room/{{ channel }}/{{ room_uuid }}/main/"><i class="ri-chat-3-line"></i></a>
+                <a href="/room/{{ channel.id }}/{{ room.id }}/friends/"><i class="ri-team-line"></i></a>
+                <a href="/room/{{ channel.id }}/{{ room.id }}/main/"><i class="ri-chat-3-line"></i></a>
             </div>
             <div class="bottom-icons">
                 <i id="settings" class="ri-settings-3-line"></i>
@@ -48,7 +48,7 @@
     </div>
 
     <dialog class="modal settings-modal">
-        <div class="modal-content">
+        <div class="modal-content settings-modal-content">
             <i id="close-btn" class="ri-close-fill"></i>
             <a href="/user/logout/">로그아웃!!!!</a>
         </div>
@@ -57,6 +57,7 @@
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     {% block extra %}
     {% endblock %}
+
     <script src="{% static 'js/base.js' %}"></script>
     {% if urlType == 'main' %}
         <script src="{% static 'js/chat/roomBtn.js' %}"></script>
