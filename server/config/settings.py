@@ -63,6 +63,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -195,3 +197,8 @@ LOGOUT_REDIRECT_URL = '/'
 
 # 인증용 유저 모델이라고 장고에게 알려줌
 AUTH_USER_MODEL = 'local_users.User'
+
+# sms 인증에 필요한 key 및 url
+ACCESS_KEY = "3E4qKWxpP3BueLZUKh9V"	
+SERVICE_ID = "ncp:sms:kr:285290282105:pirot_sms_auth"
+URL = "https://sens.apigw.ntruss.com/sms/v2/services/ncp:sms:kr:285290282105:pirot_sms_auth/messages"
