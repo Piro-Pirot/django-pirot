@@ -20,7 +20,11 @@
             </div>
             <div class="bottom-icons">
                 <i class="ri-settings-3-line"></i>
-                <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{% static 'image/chat_room/임시프로필사진.png' %}" alt="프로필"></a>
+                {% if request.user.profile_img %}
+                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+                {% else %}
+                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ channel.default_image.url }}" alt="프로필"></a>
+                {% endif %}
             </div>
         </section>
         <section class="setting-section">
