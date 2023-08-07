@@ -2,7 +2,7 @@
     <li class="btn-friend-container">
         <a href="">
             <div class="btn-friend">
-                <img src="{{ myPassInfo.user__set.profile_img }}" alt="">
+                <img src="{{ myPassInfo.join_set.first.uset.profile_img }}" alt="">
                 <label for="">{{ myPassInfo }}</label>
             </div>
         </a>
@@ -11,7 +11,7 @@
     <li class="btn-friend-container">
         <a href="">
             <div class="btn-friend">
-                <img src="{{ friend.user__set.profile_img }}" alt="">
+                <img src="{{ friend.join_set.first.user.profile_img }}" alt="">
                 <label for="">{{ friend }}</label>
             </div>
         </a>

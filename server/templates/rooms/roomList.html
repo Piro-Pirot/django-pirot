@@ -37,7 +37,16 @@
         <input type="text" placeholder="초대할 이름을 입력하세요">
         <div class="invite-list">
             <ul>
-                <li>여기에 친구 목록 쭉 떠야함</li>
+                {% for friend in myFriends %}
+                <li>
+                    <a href="">
+                        <div class="btn-friend">
+                            <img src="{{ friend.join_set.first.user.profile_img }}" alt="">
+                            <label for="">{{ friend }}</label>
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
             </ul>
         </div>
         <input type="button" value="초대">
