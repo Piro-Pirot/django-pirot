@@ -1,5 +1,5 @@
 let searchButton = document.getElementById("search-btn");
-let channelName = document.getElementById("select-channel");
+let channelName = document.getElementById("channel-name");
 let searchInput = document.getElementById("search-input");
 
 searchInput.style.visibility = "hidden";
@@ -29,7 +29,7 @@ window.addEventListener("click", (event) => {
 /* select option 새로고침 되어도 유지 */
 
 /* select 태그에서 option을 가져와 class가 url의 channel id와 같을 때 selected 옵션을 줌 */
-let selectEl = document.getElementById('select-channel').getElementsByTagName('option');
+let selectEl = document.querySelector('.select-options').getElementsByTagName('li span');
 
 for(let i = 0; i < selectEl.length; i++) {
   if(selectEl[i].id === curChannelId) {
@@ -37,3 +37,27 @@ for(let i = 0; i < selectEl.length; i++) {
     break;
   }
 }
+
+
+//channel이름 selector 구현
+let selectedChannel = document.querySelector(".select-btn span");
+let selectButton = document.querySelector(".select-btn");
+let channelOptionsList = document.querySelector(".select-options");
+let channelOptions = document.querySelectorAll(".select-options li");
+
+
+channelOptions.forEach(option => {
+  option.addEventListener("click", () => {
+    selectedChannel.innerHTML = option.innerHTML;
+    channelOptionsList.classList.toggle("active");
+    window.open(`/room/${option.id}/main`, '_self');
+  });
+  if (option.id == curChannelId) {
+    selectedChannel.innerText = option.innerText;
+  }
+});
+
+selectButton.addEventListener("click", () => {
+  channelOptionsList.classList.toggle("active");
+  selectButton.classList.toggle("color-stay");
+})

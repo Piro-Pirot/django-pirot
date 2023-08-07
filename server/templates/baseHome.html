@@ -30,11 +30,17 @@
         <section class="middle-section">
             <div id="search" class="search-box">
                 <div id="channel-name">
-                    <select name="channel-type" id="select-channel" onchange="window.open(value, '_self');">
-                        {% for channel in myChannels %}
-                            <option class="channel-name" id="{{ channel.id }}" value="/room/{{ channel.id }}/friends/">{{ channel.channel_name }}</option>
-                        {% endfor %}
-                    </select>
+                    <div class="channel-name-select">
+                        <div class="select-btn">
+                            <span></span>
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                        <ul class="select-options">
+                            {% for channel in myChannels %}
+                                <li class="channel-option" id="{{channel.id}}"><span>{{ channel.channel_name }}</span></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
                 <input id="search-input" type="text">
                 <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
@@ -65,11 +71,13 @@
     <script>
         // js에서 필요한 정보
         let curChannelId = {{ channel.id }};
-        let curRoomId = {{ room.id }};
-        let curRoomType = {{ room.type }};
+        // let curRoomId = {{ room.id }};
+        // let curRoomType = {{ room.type }};
+        console.log(curChannelId);
     </script>
 
     <script src="{% static 'js/base.js' %}"></script>
+    <script src="{% static 'js/settingsModal.js' %}"></script>
     {% if urlType == 'main' %}
         <script src="{% static 'js/chat/roomBtn.js' %}"></script>
         <script src="{% static 'js/roomModal.js' %}"></script>
