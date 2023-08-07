@@ -52,7 +52,6 @@
             <i id="close-btn" class="ri-close-fill"></i>
             <a href="/user/logout/">로그아웃!!!!</a>
         </div>
-
     </dialog>
 
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
@@ -61,9 +60,10 @@
     <script src="{% static 'js/base.js' %}"></script>
     {% if urlType == 'main' %}
         <script src="{% static 'js/chat/roomBtn.js' %}"></script>
-        <script src="{% static 'js/roomList.js' %}"></script>
+        <script src="{% static 'js/roomModal.js' %}"></script>
     {% elif urlType == 'friends' %}
         <script src="{% static 'js/chat/friendBtn.js' %}"></script>
+        <script src="{% static 'js/roomModal.js' %}"></script>
     {% endif %}
 </body>
 </body>
