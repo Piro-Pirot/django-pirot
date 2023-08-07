@@ -468,6 +468,149 @@ section.show-animation .animate {
   }
 }
 
+.md-section2 {
+  height: 48rem;
+  display: flex;
+  margin-left: 8rem;
+}
+
+.md-section-text2 {
+  margin-left: 2rem; 
+  font-size: 3rem;
+  width: 100%
+}
+
+.md-section-title2 {
+  margin-bottom: 3rem;
+}
+
+
+.md-section-content {
+  font-size: 2rem;
+  color: var(--subtitle);
+  margin-bottom: 1rem;
+}
+
+/* section */
+
+/* section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 48rem;
+} */
+
+.md-people {
+  height: 48rem;
+}
+
+.md-people-container {
+  
+}
+
+.people-header {
+  display: flex;
+  justify-content: center;
+
+}
+
+#people-header1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--carrot-color);
+}
+
+#people-header2 {
+  font-size: 3rem;
+}
+
+#people-content {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6rem;
+}
+
+#people-left {
+  margin-right: 10rem;
+}
+
+.people-left-content, .people-right-content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:18rem;
+  height: 10rem;
+  background-color: var(--carrot-light);
+  border-radius: 2rem;
+  margin-bottom: 2rem;
+}
+
+.people-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 3rem;
+}
+
+.people-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.people-photo > img {
+  border: 3px groove white;
+  border-radius: 10rem;
+}
+
+/* footer */
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 6rem;
+  padding: 0 0 0 0;
+  border-top: 1px solid rgb(129, 129, 129);
+  color:#777777;
+}
+
+#footer-left {
+  display: flex;
+  flex-direction: column;
+}
+
+#footer-left > div {
+  padding: 0.2rem;
+}
+
+#footer-center > div {
+  padding: 0.2rem;
+}
+
+#footer-center {
+  display: flex;
+  flex-direction: column;
+}
+
+#footer-right {
+  display: flex;
+  flex-direction: column;
+
+}
+
+#footer-right-img {
+  width: 8rem;
+}
+
+#footer-right-img > img {
+  width: 100%;
+  height: auto;
+}
 
 /* login modal */
 
