@@ -9,6 +9,7 @@
   <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
   <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>
   <div class="boss-container">
@@ -17,19 +18,19 @@
         <div class="nav-left-item">
           <a href="/"><img src="{% static 'image/pirot_logo_long.png' %}"></a>
         </div>
-        <div class="nav-left-item">
+        <div class="nav-left-item" id="service">
           서비스 소개
         </div>
-        <div class="nav-left-item">
+        <div class="nav-left-item" id="creator">
           만든 사람들
         </div>
       </div>
       <div class="nav-right">
-        <div class="nav-right-item login-btn">
-          <a href="/user/login/">로그인</a>
+        <div id="login" class="nav-right-item login-btn" onclick="setLoginUrl()">
+          로그인
         </div>
-        <div class="nav-right-item signup-btn">
-          <a href="/user/signup/">회원가입</a>
+        <div id="signup" class="nav-right-item signup-btn">
+          회원가입
         </div>
       </div>
     </nav>
@@ -53,7 +54,7 @@
               <div class="main-section-team-text">
                 <span>안녕하세요 팀 피롯입니다</span> <br>
                 동아리용 채팅 서비스가 필요하세요? <br>
-                <a class="orange-link start-btn" href="#">
+                <a class="orange-link start-btn" href="/user/signup/">
                   <span>바로 시작해보세요</span>
                 </a> 🥕
               </div>
@@ -205,6 +206,51 @@
     </footer>
   </div>
 
+  <dialog class="modal" id="loginModal">
+    <div class="modal-content">
+      <i id="close-btn" class="ri-close-fill"></i>
+      <div class="modal-logo">
+        <img src="{% static 'image/pirot_logo_long.png' %}" alt="피롯로고">
+      </div>
+      <div class="login-form">
+        <form action="/user/login/" method="post">
+          {% csrf_token %}
+          <div class="email-label">이메일</div>
+          <input type="text" placeholder="이메일을 입력하세요">
+          <div class="password-label">비밀번호</div>
+          <input type="text" placeholder="비밀번호를 입력하세요">
+          <input type="submit" value="로그인">
+        </form>
+      </div>
+      <div class="signup-sentence">
+        <p>피롯이 처음이신가요?<a href="/user/signup/"> &nbsp회원가입</a></p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="modal" id="signupModal">
+    <div class="modal-content">
+      <i id="close-btn" class="ri-close-fill"></i>
+      <div class="modal-logo">
+        <img src="{% static 'image/pirot_logo_long.png' %}" alt="피롯로고">
+      </div>
+      <div class="signup-text">
+        <p>피롯 계정이 없으신가요?</p>
+        <p>빠르게 가입해보세요!</p>
+      </div>
+      <div  class="signup-modal-form">
+        <a href="/user/signup/"><input type="button" value="회원가입하기"></a>
+      </div>
+    </div>
+  </dialog>
   <script src="{% static 'js/index.js' %}"></script>
+  <script>
+    /* 로그인 여부에 따라 로그인 버튼 a 태그 src 변경 */
+    function setLoginUrl() {
+      if("{{ user }}" !== 'AnonymousUser') {
+        location.href = '/room/main/';
+        loginModal.style.display = 'none';
+      }
+    }
+  </script>
 </body>
 </html>

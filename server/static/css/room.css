@@ -1,0 +1,86 @@
+.bubble-box,
+.bubble-box-me {
+    display: block;
+    max-width: 50vw;
+}
+
+.bubble-box-me {
+    text-align: right;
+}
+
+.bubble-box .bubble-header {
+    display: flex;
+}
+
+.bubble-container-me,
+.bubble-container {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 1rem 2rem;
+    margin: 1rem 2rem;
+}
+
+.bubble-continer .bubble-user-container {
+    display: inline-flex;
+}
+
+.bubble-container-me .bubble-header,
+.bubble-container .bubble-header {
+    margin-bottom: 1rem;
+}
+
+.bubble-container-me .bubble-username,
+.bubble-container .bubble-username {
+    padding: 0 1rem;
+}
+
+.bubble-container-me .bubble-content,
+.bubble-container .bubble-content {
+    padding: 2rem 3rem;
+}
+
+.bubble-container-me .bubble-content {
+    border-radius: 1.3rem;
+    background-color: var(--carrot-color);
+    text-align: right;
+}
+
+.bubble-container .bubble-content {
+    border: 0.1rem solid var(--carrot-dark);
+    border-radius: 1.3rem;
+}
+
+
+/* 채팅 방 리스트 */
+.middle-section-content .btn-room-container {
+    padding: 1rem 2rem;
+}
+
+.middle-section-content .btn-room {
+    background-color: var(--carrot-light);
+    border-radius: 1.3rem;
+    padding: 1rem 2rem;
+    position: relative;
+    text-align: center;
+}
+
+.middle-section-content .room-red-dot {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background-color: var(--carrot-dark);
+    border-radius: 1.3rem;
+    padding: 0.5rem;
+}
+
+.middle-section-content .selected-room {
+    background-color: var(--carrot-color);
+}
+
+.middle-section-content .btn-room-create {
+    border: 0.1rem solid var(--carrot-dark);
+    border-radius: 1.3rem;
+    padding: 1rem 2rem;
+    color: var(--subtitle);
+    text-align: center;
+}
