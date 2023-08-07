@@ -37,13 +37,13 @@ def login(request):
             context = {
                 'form': form,
             }
-            return render(request, template_name='users/login.html', context=context)
+            return render(request, template_name='index.html', context=context)
     else:
         form = AuthenticationForm()
         context = {
             'form': form,
         }
-        return render(request, template_name='users/login.html', context=context)
+        return render(request, template_name='users/base.html', context=context)
 
 
 def logout(request):
