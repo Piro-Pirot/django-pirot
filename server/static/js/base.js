@@ -26,6 +26,38 @@ window.addEventListener("click", (event) => {
 });
 
 
+/* select option 새로고침 되어도 유지 */
 
+// URL에서 채널 이름 가져오기
+const channelFromPath = decodeURI(location.pathname);
 
+let channel_cnt = 0;
+let channel_index = 0;
+let channel_startPoint = 0;
+let channel_endPoint = 0;
+for(channel_index = 0; channel_index < channelFromPath.length; channel_index++) {
+    if(channel_cnt === 2) {
+      channel_startPoint = channel_index;
+      break;
+    }
+    if(channelFromPath[channel_index] === '/') channel_cnt += 1;
+}
+channel_cnt = 0;
+for(channel_index; channel_index < channelFromPath.length; channel_index++) {
+  if(channel_cnt === 1) {
+    channel_endPoint = channel_index;
+    break;
+  }
+  if(channelFromPath[channel_index] === '/') channel_cnt += 1;
+}
+const channelNamefromUrl = channelFromPath.slice(channel_startPoint, channel_endPoint - 1);
 
+/* select 태그에서 option을 가져와 innerText가 url의 channel name과 같을 때 selected 옵션을 줌 */
+let selectEl = document.getElementById('select-channel').getElementsByTagName('option');
+
+for(let i = 0; i < selectEl.length; i++) {
+  if(selectEl[i].innerText === channelNamefromUrl) {
+    selectEl[i].setAttribute('selected', '')
+    break;
+  }
+}

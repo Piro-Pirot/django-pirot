@@ -25,14 +25,18 @@
         </section>
         <section class="middle-section">
             <div id="search" class="search-box">
-                <div id="channel-name">피로그래밍</div>
+                <select name="channel-type" id="select-channel" onchange="window.open(value, '_self');">
+                    {% for channel in myChannels %}
+                        <option class="channel-name" value="/room/{{ channel.channel_name }}/friends/">{{ channel.channel_name }}</option>
+                    {% endfor %}
+                </select>
                 <input id="search-input" type="text">
                 <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
             </div>
             <div class="middle-section-content">
-                {% if myRooms %}
+                {% if urlType == 'main' %}
                     {% include 'rooms/roomList.html' %}
-                {% elif myFriends %}
+                {% elif urlType == 'friends' %}
                     {% include 'rooms/friendsList.html' %}
                 {% endif %}
             </div>
@@ -47,10 +51,10 @@
     {% block extra %}
     {% endblock %}
     <script src="{% static 'js/base.js' %}"></script>
-    {% if myRooms %}
+    {% if urlType == 'main' %}
         <script src="{% static 'js/chat/roomBtn.js' %}"></script>
         <script src="{% static 'js/roomList.js' %}"></script>
-    {% elif myFriends %}
+    {% elif urlType == 'friends' %}
         <script src="{% static 'js/chat/friendBtn.js' %}"></script>
     {% endif %}
 </body>
