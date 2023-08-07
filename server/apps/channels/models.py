@@ -31,7 +31,7 @@ class Passer(models.Model):
 
 # 소속
 class Join(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='join')
 	passer = models.ForeignKey(Passer, on_delete=models.CASCADE)
 
 
