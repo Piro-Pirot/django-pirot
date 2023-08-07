@@ -1,17 +1,30 @@
+<div class="friend-list-me">
+    <div class="friend-list-me-container">
+        <div class="friend-list-me-profile-img">
+            <img src="{{ myPassInfo.join_set.first.uset.profile_img }}" alt="">
+        </div>
+        <label for="">{{ myPassInfo }}</label>
+    </div>
+</div>
+
 <ol class="btn-friend-list">
-    <li class="btn-friend-container">
+    <!-- <li class="btn-friend-container">
         <a href="">
             <div class="btn-friend">
-                <img src="{{ myPassInfo.join_set.first.uset.profile_img }}" alt="">
+                <div class="btn-friend-profile-img">
+                    <img src="{{ myPassInfo.join_set.first.uset.profile_img }}" alt="">
+                </div>
                 <label for="">{{ myPassInfo }}</label>
             </div>
         </a>
-    </li>
+    </li> -->
     {% for friend in myFriends %}
     <li class="btn-friend-container">
         <a href="">
             <div class="btn-friend">
-                <img src="{{ friend.join_set.first.user.profile_img }}" alt="">
+                <div class="btn-friend-profile-img">
+                    <img src="{{ friend.join_set.first.user.profile_img }}" alt="">
+                </div>
                 <label for="">{{ friend }}</label>
             </div>
         </a>

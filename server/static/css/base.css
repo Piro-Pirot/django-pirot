@@ -57,7 +57,7 @@
 }
 
 .middle-section-content {
-  background-color: green;
+  /* background-color: green; */
   height: calc(100vh - 6rem);
 }
 
