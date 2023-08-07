@@ -12,6 +12,7 @@ roomCreateButton.addEventListener("click", () => {
 });
 
 settingsModal.style.opacity = '0';
+settingsButton.style.cursor = 'pointer';
 settingsButton.addEventListener("click", () => {
   settingsModal.showModal();
   settingsModal.style.opacity = '1';

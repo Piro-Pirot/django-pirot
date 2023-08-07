@@ -253,6 +253,17 @@
         loginModal.close();
       }
     }
+
+    loginModal.style.opacity = '0';
+    loginButton.addEventListener("click", () => {
+      if("{{ user }}" !== 'AnonymousUser') {
+        location.href = '/room/{{ channel.first.passer.channel.channel_name }}/main/';
+      }
+      else {
+        loginModal.showModal();
+        loginModal.style.opacity = '1';
+      }
+    });
   </script>
 </body>
 </html>
