@@ -22,8 +22,11 @@ class User(AbstractUser):
 
 # 회원 즐겨찾기
 class Bookmark(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
-	bookmarked_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmarked_user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    bookmarked_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmarked_user')
+    
+    def __str__(self):
+       return f'[{self.user}] {self.bookmarked_user}'
  
 #  sms 인증
 class SMS_Auth(models.Model):
@@ -68,8 +71,4 @@ class SMS_Auth(models.Model):
     #     }
     #     requests.post(URL, data=json.dumps(body), headers=headers)
         
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
-    bookmarked_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmarked_user')
     
-    def __str__(self):
-       return f'[{self.user}] {self.bookmarked_user}'
