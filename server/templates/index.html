@@ -7,11 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pirot: 당신의 동아리를 위한 완벽한 커뮤니케이션</title>
   <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
   <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div>
+  <div class="boss-container">
     <nav>
       <div class="nav-left">
         <div class="nav-left-item">
@@ -26,10 +26,10 @@
       </div>
       <div class="nav-right">
         <div class="nav-right-item login-btn">
-          <a href="#">로그인</a>
+          <a href="/user/login/">로그인</a>
         </div>
         <div class="nav-right-item signup-btn">
-          <a href="#">회원가입</a>
+          <a href="/user/signup/">회원가입</a>
         </div>
       </div>
     </nav>
@@ -96,6 +96,27 @@
             </div>
         </div>
       </section>
+      <section class="md-section-small">
+        <div class="md-section-small-container animate">
+          <div class="md-section-small-text">
+            <div class="md-section-small-title">
+              <i class="fa-brands fa-markdown"></i>
+              마크다운 문법, &nbsp
+              <i class="fa-solid fa-code"></i>
+              코드스니펫 지원
+            </div>
+            <div class="md-section-small-desc">
+              코드는 보기 편해야하니까.
+            </div>
+          </div>
+          <div class="md-section-small-demo">
+            <img src="{% static 'image/pirot_demo.png' %}" alt="서비스마크다운이미지">
+          </div>
+        </div>
+      </section>
+      <section></section>
+      <section></section>
+      <section></section>
 
       <section class="md-section2">
         <div class="md-section-container animate">

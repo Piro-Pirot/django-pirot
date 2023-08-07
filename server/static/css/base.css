@@ -1,0 +1,122 @@
+@import 'style.css';
+
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* icon bar */
+
+.icon-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 4rem;
+  background-color: var(--light-gray);
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.icon-bar img {
+  width: 2.2rem;
+}
+
+.top-icons,
+.bottom-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top-icons > img {
+  margin-bottom: 3rem;
+}
+
+.bottom-icons > img {
+  margin-top: 3rem;
+}
+
+.profile-icon {
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+
+
+/* middle section */
+
+.middle-section {
+  width: 20rem;
+  /* background-color: blue; */
+  padding-left: 2rem;
+}
+
+.middle-section-content {
+  background-color: green;
+  height: calc(100vh - 8rem);
+}
+
+.middle-section > .search-box {
+  height: 8rem;
+  /* background-color: pink; */
+  display: flex;
+  align-items: center;
+}
+
+.search-box > input {
+  outline: none;
+  width: 11rem;
+  height: 2.5rem;
+  background-color: gray;
+  border-radius: 2rem;
+  border: none;
+  margin-right: 2rem;
+}
+
+.search-box > i {
+  font-size: 1.7rem;
+}
+
+.middle-section > .logged-in-user {
+  height: 5rem;
+  /* background-color: red; */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 1.4rem;
+}
+
+.logged-in-user > img {
+  width: 3.5rem;
+  margin-right: 1.5rem;
+}
+
+.friends {
+  background-color: blue;
+  height: calc(100vh - 13rem);
+}
+
+
+/* chat section */
+
+.chat-section {
+  width: calc(100vw - 24rem);
+  background-color: aquamarine;
+}
+
+.chat-name {
+  height: 8rem;
+  background-color: brown;
+}
+
+.chat-container {
+  height: calc(100vh - 8rem);
+  background-color: goldenrod;
+}
+
+.conversation {
+  height: 100%;
+  width: 55rem;
+  background-color: aquamarine;
+}

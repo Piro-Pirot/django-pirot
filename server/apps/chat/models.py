@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from server.apps.channels.models import Channel
 from server.apps.local_users.models import User
@@ -6,9 +7,10 @@ from server.apps.local_users.models import User
 
 # 채팅 방
 class Room(models.Model):
-	room_name = models.CharField(max_length=64)
-	room_type = models.IntegerField()
-	channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    room_name = models.CharField(max_length=64)
+    room_type = models.IntegerField()
+    channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
 
 
 # 채팅 방 참여자
