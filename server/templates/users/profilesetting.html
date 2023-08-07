@@ -9,9 +9,9 @@
 </div>
 <div>
     {% if user.profile_img %}
-        <img src="{{ user.profile_img.url }}" alt="프로필이미지">
+        <img src="{{ user.profile_img.url }}" alt="프로필이미지" style="width:10rem;">
     {% else %}
-        <img src="{{ channel.default_image.url }}" alt="채널기본프로필이미지">
+        <img src="{{ channel.default_image.url }}" alt="채널기본프로필이미지" style="width:10rem;">
     {% endif %}
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -22,6 +22,6 @@
                 <input type="file" name="profile_img" accept=".jpg, .png" \>
                 <input type="submit" name="change" value="사진 변경" \>
         </div>
-    <p>{{ user }}</p>
+        <p>{{ level }}기 {{ user.name }}</p>
 </div>
 {% endblock %}

@@ -6,5 +6,5 @@ urlpatterns = [
     path('login/', login),
     path('logout/', logout),
     path('signup/', signup),
-    path('setting/', profile_setting),
+    path('setting/<int:channelID>/', profile_setting),
 ]
