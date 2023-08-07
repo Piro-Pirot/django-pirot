@@ -49,16 +49,16 @@ def connect(sid, environ, auth):
 
 @sio.on('send_message')
 def send_message(sid, data):
-    roomUUID = data['roomUUID']
-    room = Room.objects.get(id=roomUUID)
+    roomId = int(data['roomId'])
+    room = Room.objects.get(id=roomId)
     if room.room_type == 1:
         #익명채팅방
         newBubble = bubble.save_blind_msg(room, data)
         data['nickname'] = newBubble.nickname
-        sio.emit('display_secret_message', data, to=roomUUID)
+        sio.emit('display_secret_message', data, to=roomId)
     else:
         newBubble = bubble.save_msg(room, data)
-        sio.emit('display_message', data, to=roomUUID)
+        sio.emit('display_message', data, to=roomId)
     print('massage was saved')
 
 
