@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import SignupForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
-from server.apps.channels.models import Staff, Channel, Join
+from server.apps.channels.models import Staff, Channel, Join, Passer
 
 
 def main(request):
@@ -55,8 +55,6 @@ def logout(request):
 # 일반회원 : 프로필 설정 페이지 / 운영진 : 운영진 페이지
 def profile_setting(request, channelID):
 
-    # 임시
-    channelID = 1
     channel = Channel.objects.get(id=channelID)
     current_user = request.user
 

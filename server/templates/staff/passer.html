@@ -12,4 +12,7 @@
     <input type="submit" name="keepgoing" value="저장 및 계속 추가" />
     <input type="submit" name="save" value="저장 완료" />
 
+{% for passer in passers %}
+<div>{{ passer.passer_name }}</div>
+{% endfor %}
 {% endblock %}

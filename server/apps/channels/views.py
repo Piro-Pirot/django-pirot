@@ -51,6 +51,7 @@ def passer_create_level(request, channelID):
     # 채널 정보를 받아와야 함!!!! 랜딩페이지부터 쭉쭉 받아와야할 듯(직전 단계는 어디?)
     # 일단 get방식으로 받는다고 생각
     channel = Channel.objects.get(id=channelID)
+    passers = Passer.objects.filter(channel=channel)
 
     if request.method == "POST":
         level = request.POST["level"]
@@ -58,13 +59,14 @@ def passer_create_level(request, channelID):
 
         return redirect(url)
     
-    return render(request, 'staff/passerlevel.html', {"channel":channel})
+    return render(request, 'staff/passerlevel.html', {"channel":channel, "passers":passers})
 
 
 #  합격자 명단 추가 : 이름, 전화번호 등록
 def passer_create(request, channelID):
     level = request.GET.get("level")
     channel = Channel.objects.get(id=channelID)
+    passers = Passer.objects.filter(channel=channel)
     
     if request.method == "POST":
         if 'save' in request.POST:
@@ -89,7 +91,7 @@ def passer_create(request, channelID):
 
             return redirect(url)
     
-    return render(request, 'staff/passer.html', {"channel":channel})
+    return render(request, 'staff/passer.html', {"channel":channel, "passers":passers})
 
 
 # 참여 코드 생성
@@ -156,12 +158,14 @@ def staff_authority(request, channelID):
 
 
 # 회원 삭제
+@csrf_exempt
 def join_delete(request, channelID):
     joins = Join.objects.all()
     channel = Channel.objects.get(id=channelID)
 
     if request.method == "POST":
         user = request.POST['user']
+        print(user)
         join = Join.objects.get(user=user)
         join.delete() # 회원 삭제
         passer = Passer.objects.get(passer_name=user.name)
