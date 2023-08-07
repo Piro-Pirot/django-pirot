@@ -1,6 +1,6 @@
 @import 'style.css';
 @import 'room.css';
-@import 'roomList.css';
+@import 'roomModal.css';
 
 .container {
   display: flex;
