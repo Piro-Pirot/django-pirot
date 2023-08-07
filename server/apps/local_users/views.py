@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import SignupForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
-from server.apps.channels.models import Join, Staff, Channel
+from server.apps.channels.models import Staff, Channel, Join, Passer
 
 
 def main(request):
@@ -34,7 +34,7 @@ def login(request):
             auth.login(request, user)
             # 현재 로그인 사용자의 소속 채널
             myJoinInfo = Join.objects.filter(user__name=request.user.name).first()
-            return redirect(f'/room/{myJoinInfo.passer.channel.channel_name}/main/')
+            return redirect(f'/room/{myJoinInfo.passer.channel.id}/main/')
         else:
             context = {
                 'form': form,
@@ -53,33 +53,38 @@ def logout(request):
     return redirect('/')
 
 # 일반회원 : 프로필 설정 페이지 / 운영진 : 운영진 페이지
-def profile_setting(request):
+def profile_setting(request, channelID):
 
-    channel = Channel.objects.get(channel_name="피로그래밍") # 임시!! 위에 모델 임포트도 지우기 나중에
+    channel = Channel.objects.get(id=channelID)
     current_user = request.user
 
     # 운영진 여부
     if Staff.objects.filter(user=current_user).exists():
-        return redirect('/staff/setting/')
+        url = '/staff/setting/%s' % (channelID)
+        return redirect(url)
 
     if request.method == 'POST':
         if 'delete' in request.POST:
             current_user.profile_img.delete()
         elif 'change' in request.POST:
-            current_user.profile_img = request.FILES['profile_img']
+            if request.FILES.get('profile_img'):
+                current_user.profile_img = request.FILES['profile_img']
         current_user.save()
 
-        return redirect('/user/setting/') # 프로필 설정 페이지에 머무름
-    
-    # if current_user.profile_img and hasattr(current_user.profile_image):
-    #     profile_image = current_user.profile_img.url
-    # else:
-    #     profile_image = channel.default_image.url
+        url = '/user/setting/%s' % (channelID)
+
+        return redirect(url)
+
+    if request.user.id == '491e61f0-f98b-43cd-b6df-90bedd90541e': # 기수가 없는 admin 예외 처리
+        level = 0
+    else:
+        channelPasser = Passer.objects.filter(channel=channel, passer_name=current_user.name, passer_phone=current_user.phone_number).get()
+        level = channelPasser.level
 
     context = {
         'user':current_user,
-        # 'profile_image':profile_image,
         'channel': channel,
+        'level' : level,
     }
     
     return render(request, 'users/profilesetting.html', context=context)

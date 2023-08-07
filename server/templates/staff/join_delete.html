@@ -4,5 +4,17 @@
 <!-- 합격자 삭제 -->
 
 {% block content %}
-회원 삭제
+
+<h2>회원 삭제</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        {% for join in joins %}
+        <div>{{ join.passer.passer_name }}</div>
+        <input type="submit" value="삭제" />
+        {% endfor %}
+    </div>
+    
+
 {% endblock %}
