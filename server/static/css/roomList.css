@@ -35,6 +35,8 @@
 .invite-list {
   height: 15rem;
   border: 1px solid black;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .modal-content > i:hover {
