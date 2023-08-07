@@ -1,18 +1,71 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pirot</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
 </head>
 <body>
-    {% block content %}
-    {% endblock %}
+    <div class="container">
+        <section class="icon-bar">
+            <div class="top-icons">
+                <a href="/room/{{ channel.id }}/{{ room.id }}/friends/"><i class="ri-team-line"></i></a>
+                <a href="/room/{{ channel.id }}/{{ room.id }}/main/"><i class="ri-chat-3-line"></i></a>
+            </div>
+            <div class="bottom-icons">
+                <i id="settings" class="ri-settings-3-line"></i>
+                <a href="/user/setting/"><img class="profile-icon" src="{% static 'image/chat_room/임시프로필사진.png' %}" alt="프로필"></a>
+            </div>
+        </section>
+        <section class="middle-section">
+            <div id="search" class="search-box">
+                <select name="channel-type" id="select-channel" onchange="window.open(value, '_self');">
+                    {% for channel in myChannels %}
+                        <option class="channel-name" value="/room/{{ channel.channel_name }}/friends/">{{ channel.channel_name }}</option>
+                    {% endfor %}
+                </select>
+                <input id="search-input" type="text">
+                <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="middle-section-content">
+                {% if urlType == 'main' %}
+                    {% include 'rooms/roomList.html' %}
+                {% elif urlType == 'friends' %}
+                    {% include 'rooms/friendsList.html' %}
+                {% endif %}
+            </div>
+        </section>
+        <section class="chat-section">
+            {% block content %}
+            {% endblock %}
+        </section>
+    </div>
+
+    <dialog class="modal settings-modal">
+        <div class="modal-content settings-modal-content">
+            <i id="close-btn" class="ri-close-fill"></i>
+            <a href="/user/logout/">로그아웃!!!!</a>
+        </div>
+    </dialog>
 
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     {% block extra %}
     {% endblock %}
+
+    <script src="{% static 'js/base.js' %}"></script>
+    {% if urlType == 'main' %}
+        <script src="{% static 'js/chat/roomBtn.js' %}"></script>
+        <script src="{% static 'js/roomModal.js' %}"></script>
+    {% elif urlType == 'friends' %}
+        <script src="{% static 'js/chat/friendBtn.js' %}"></script>
+        <script src="{% static 'js/roomModal.js' %}"></script>
+    {% endif %}
+</body>
 </body>
 </html>

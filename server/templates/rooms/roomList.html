@@ -1,0 +1,54 @@
+<ol class="btn-room-list">
+    {% for room in myRooms %}
+    <li class="btn-room-container">
+        <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
+            <div class="btn-room room-{{ room.room.id }}">
+                <div class="room-red-dot dot-{{ room.room.id }}">32</div>
+                <label for="">{{ room.room.room_name }}</label>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+
+    {% for room in myBlindRooms %}
+    <li class="btn-room-container">
+        <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
+            <div class="btn-room room-{{ room.room.id }}">
+                <div class="room-red-dot dot-{{ room.room.id }}">32</div>
+                <label for="">{{ room.room.room_name }}</label>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ol>
+
+<div class="btn-room-container">
+    <div class="btn-room-create">
+        <label for="">채팅방 추가</label>
+    </div>
+</div>
+
+<dialog class="modal room-add-modal">
+    <div class="modal-content room-add-invite">
+        <i id="close-btn" class="ri-close-fill"></i>
+        <div class="title">
+            대화 상대 초대
+        </div>
+        <input type="text" placeholder="초대할 이름을 입력하세요">
+        <div class="invite-list">
+            <ul>
+                {% for friend in myFriends %}
+                <li>
+                    <a href="">
+                        <div class="btn-friend">
+                            <img src="{{ friend.join_set.first.user.profile_img }}" alt="">
+                            <label for="">{{ friend }}</label>
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <input type="button" value="초대">
+    </div>
+</dialog>

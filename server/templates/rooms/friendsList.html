@@ -1,0 +1,24 @@
+<ol class="btn-friend-list">
+    <li class="btn-friend-container">
+        <div class="btn-friend">
+            <img src="{{ myPassInfo.join_set.first.user.profile_img }}" alt="">
+            <label for="">{{ myPassInfo }}</label>
+            <form action="/room/create_room/{{ myPassInfo.passer_name }}/" method="post">
+                {% csrf_token %}
+                <button>1:1 채팅하기</button>
+            </form>
+        </div>
+    </li>
+    {% for friend in myFriends %}
+    <li class="btn-friend-container">
+        <div class="btn-friend">
+            <img src="{{ friend.join_set.first.user.profile_img }}" alt="">
+            <label for="">{{ friend }}</label>
+            <form action="/room/create_room/{{ friend.passer_name }}/" method="post">
+                {% csrf_token %}
+                <button>1:1 채팅하기</button>
+            </form>
+        </div>
+    </li>
+    {% endfor %}
+</ol>

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="chat-name">{{ title }}</div>
+<div class="chat-container">
+    <div class="chat-conversation-container">
+        <div class="conversation"></div>
+        <div class="chat-input">
+            <input type="text" class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room.id }}');}">
+            <button type="button" onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
+        </div>
+    </div>
+    <div class="board"></div>
+</div>
+
+
+{% endblock %}
+
+{% block extra %}
+
+<script>
+    let bubbleList = [];
+    if(`{{ jsonBubbles | safe}}` !== '') {
+        let jsonBubbles = {{jsonBubbles | safe}};
+        
+        jsonBubbles.forEach(element => {
+            bubbleList.push(element);
+        });
+    }
+    
+    // js에서 필요한 정보
+    let curUsername = '{{ user }}';
+    let curUserId = '{{ user.id }}';
+    let curChannelId = {{ channel.id }};
+    let curRoomId = {{ room.id }};
+    let curRoomType = {{ room.room_type }};
+
+    // 말풍선을 담을 곳
+    let converations = document.querySelector('.conversation');
+</script>
+
+<script src="{% static 'js/chat/bubble.js' %}"></script>
+<script src="{% static 'js/chat/socketClient.js' %}"></script>
+
+{% endblock %}

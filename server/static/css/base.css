@@ -1,0 +1,160 @@
+@import 'style.css';
+@import 'room.css';
+@import 'roomModal.css';
+
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* icon bar */
+
+.icon-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 4rem;
+  background-color: var(--light-gray);
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.icon-bar i {
+  font-size: 2rem;
+}
+
+.top-icons,
+.bottom-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top-icons > i {
+  margin-bottom: 5rem;
+}
+
+.bottom-icons > i {
+  margin-top: 5rem;
+}
+
+.profile-icon {
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 2.2rem;
+  margin-top: 5rem;
+}
+
+
+
+/* middle section */
+
+.middle-section {
+  width: 20rem;
+  /* background-color: blue; */
+  padding-left: 2rem;
+}
+
+.middle-section-content {
+  background-color: green;
+  height: calc(100vh - 6rem);
+}
+
+.middle-section > .search-box {
+  height: 6rem;
+  /* background-color: pink; */
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search-box > .channel-name {
+  font-size: 1.7rem;
+  letter-spacing: 0.3rem;
+  z-index: 0;
+}
+
+.search-box > input {
+  outline: none;
+  width: 11rem;
+  height: 2.5rem;
+  background-color: rgb(235, 235, 235);
+  border-radius: 2rem;
+  border: none;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  z-index: 1;
+}
+
+.search-box > input:focus {
+  border: 2px solid var(--carrot-light);
+}
+
+.search-box > #channel-name,
+.search-box > input {
+  position: absolute;
+  transition: opacity 0.5s;
+}
+
+.search-box > i {
+  font-size: 1.7rem;
+  position: absolute;
+  right: 4rem;
+  cursor: pointer;
+}
+
+.middle-section > .logged-in-user {
+  height: 5rem;
+  /* background-color: red; */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 1.4rem;
+}
+
+.logged-in-user > img {
+  width: 3.5rem;
+  margin-right: 1.5rem;
+}
+
+.friends {
+  background-color: blue;
+  height: calc(100vh - 11rem);
+}
+
+
+/* chat section */
+
+.chat-section {
+  width: calc(100vw - 24rem);
+}
+
+.chat-name {
+  height: 6rem;
+  background-color: yellow;
+}
+
+.chat-container {
+  display: flex;
+  height: calc(100vh - 6rem);
+}
+
+.chat-container .chat-conversation-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.conversation {
+  width: calc(100vw - 42rem);
+  height: calc(100vh - 6rem);
+  background-color: slateblue;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.board {
+  width: 18rem;
+  height: calc(100vh - 6rem);
+  background-color: aqua;
+}

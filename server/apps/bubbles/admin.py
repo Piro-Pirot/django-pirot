@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import BubbleEntry, AttachBubbleEntry
+from .models import *
 
 # Register your models here.
-admin.site.register(BubbleEntry)
-admin.site.register(AttachBubbleEntry)
+admin.site.register(Bubble)
+admin.site.register(BlindBubble)
