@@ -10,7 +10,7 @@ def create_room(request, channelId, target):
     if request.method == 'POST':
         me = request.user
         # 개인 채팅 상대방 알아오기
-        you = User.objects.get(name=target)
+        you = User.objects.get(id=target)
         
         myRooms = RoomMember.objects.filter(user=me)
         yourRooms = RoomMember.objects.filter(user=you)
@@ -28,10 +28,11 @@ def create_room(request, channelId, target):
 
         if not directRoom:
             # 채팅 방 개설
-            newDirectRoom = Room.objects.create(
-                room_name = 'direct',
+            Room.objects.create(
+                room_name = '__direct',
                 channel = Channel.objects.get(id=channelId)
             ).save()
+            newDirectRoom = Room.objects.all().last()
             # 채팅 방 참여자 추가
             RoomMember.objects.create(
                 user = me,
@@ -41,8 +42,9 @@ def create_room(request, channelId, target):
                 user = you,
                 room = newDirectRoom
             ).save()
-    
-        return redirect(f'/room/{channelId}/{directRoom.pk}/main/')
+            directRoom = newDirectRoom
+
+        return redirect(f'/room/{channelId}/{directRoom.id}/main/')
     
     return redirect('/')
 
@@ -64,7 +66,7 @@ def main_room(request, channelId, type):
     
     if type == 'main' or type == 'friends':
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
-        myBlindRooms = BlindRoomMember.objects.filter(user=request.user, room__channel__id=channelId)
+        myBlindRooms = BlindRoomMember.objects.filter(user=request.user, room__channel=curChannel)
         myRooms = RoomMember.objects.filter(user=request.user, room__channel=curChannel)
 
         # 현재 로그인 사용자
@@ -111,13 +113,14 @@ def enter_room(request, channelId, roomId, type):
 
     # URL을 통해 채널, 채팅 방 정보 가져옴
     curRoom = Room.objects.get(id=roomId)
+    title = curRoom.room_name
     curChannel = Channel.objects.get(id=channelId)
 
     if type == 'main' or type == 'friends':
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
-        myBlindRooms = BlindRoomMember.objects.filter(user=request.user)
+        myBlindRooms = BlindRoomMember.objects.filter(user=request.user, room__channel=curChannel)
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
-        myRooms = RoomMember.objects.filter(user=request.user)
+        myRooms = RoomMember.objects.filter(user=request.user, room__channel=curChannel)
     
         # 현재 로그인 사용자
         myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel=curChannel)[0]
@@ -152,6 +155,15 @@ def enter_room(request, channelId, roomId, type):
             'user__username'
         )
 
+    if curRoom.room_name == '__direct':
+        directRoomMember = curRoom.roommember_set.all()
+        for member in directRoomMember:
+            if member.user != request.user:
+                otherUser = member.user
+                break
+        title = otherUser.join.filter(passer__channel=curChannel)[0].passer
+
+
     bubbles = list(bubbles)
     # myRooms = list(myRooms)
 
@@ -170,7 +182,7 @@ def enter_room(request, channelId, roomId, type):
                 request,
                 'rooms/room.html',
                 {
-                    'title': curRoom.room_name,
+                    'title': title,
                     'room': curRoom,
                     'channel': curChannel,
                     'jsonBubbles': jsonBubbles,

@@ -1,13 +1,32 @@
 <ol class="btn-room-list">
     {% for room in myRooms %}
-    <li class="btn-room-container">
-        <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
-            <div class="btn-room room-{{ room.room.id }}">
-                <div class="room-red-dot dot-{{ room.room.id }}">32</div>
-                <label for="">{{ room.room.room_name }}</label>
-            </div>
-        </a>
-    </li>
+        {% if room.room.room_name == '__direct' %}
+        <li class="btn-room-container">
+            <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
+                <div class="btn-room room-{{ room.room.id }}">
+                    <div class="room-red-dot dot-{{ room.room.id }}">32</div>
+                    {% for member in room.room.roommember_set.all %}
+                    {% if member.user != user %}
+                        {% for joinInfo in member.user.join.all %}
+                            {% if joinInfo.passer.channel == channel %}
+                                <label for="">{{ joinInfo.passer }}</label>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </a>
+        </li>
+        {% else %}
+        <li class="btn-room-container">
+            <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
+                <div class="btn-room room-{{ room.room.id }}">
+                    <div class="room-red-dot dot-{{ room.room.id }}">32</div>
+                    <label for="">{{ room.room.room_name }}</label>
+                </div>
+            </a>
+        </li>
+        {% endif %}
     {% endfor %}
 
     {% for room in myBlindRooms %}

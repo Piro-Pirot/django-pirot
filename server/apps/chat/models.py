@@ -7,7 +7,7 @@ from server.apps.local_users.models import User
 # 채팅 방
 class Room(models.Model):
     room_name = models.CharField(max_length=64)
-    room_type = models.IntegerField()
+    room_type = models.IntegerField(default=0)
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
 
     def __str__(self):
