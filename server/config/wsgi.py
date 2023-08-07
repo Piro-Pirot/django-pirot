@@ -8,16 +8,17 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/wsgi/
 """
 
 import os
+import site
 
 from django.core.wsgi import get_wsgi_application
 
-import socketio
+#from server.apps.chat.socketio import sio
 
-from server.apps.chat.socketio import sio
+site.addsitedir(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 application = get_wsgi_application()
 
 # wrap with socketio's middleware
-application = socketio.WSGIApp(sio, application)
+#application = socketio.WSGIApp(sio, application)
