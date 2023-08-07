@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import SignupForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
-from server.apps.channels.models import Staff, Channel
+from server.apps.channels.models import Join, Staff, Channel
 
 
 def main(request):
@@ -32,7 +32,9 @@ def login(request):
         if form.is_valid():
             user = form.get_user()
             auth.login(request, user)
-            return redirect('/')
+            # 현재 로그인 사용자의 소속 채널
+            myJoinInfo = Join.objects.filter(user__name=request.user.name).first()
+            return redirect(f'/room/{myJoinInfo.passer.channel.channel_name}/main/')
         else:
             context = {
                 'form': form,
