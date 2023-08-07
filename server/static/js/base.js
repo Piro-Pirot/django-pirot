@@ -53,11 +53,32 @@ for(channel_index; channel_index < channelFromPath.length; channel_index++) {
 const channelNamefromUrl = channelFromPath.slice(channel_startPoint, channel_endPoint - 1);
 
 /* select 태그에서 option을 가져와 innerText가 url의 channel name과 같을 때 selected 옵션을 줌 */
-let selectEl = document.getElementById('select-channel').getElementsByTagName('option');
+let selectEl = document.querySelector('.select-options').getElementsByTagName('li span');
 
 for(let i = 0; i < selectEl.length; i++) {
-  if(selectEl[i].innerText === channelNamefromUrl) {
+  if(selectEl[i].id === channelNamefromUrl) {
     selectEl[i].setAttribute('selected', '')
     break;
   }
 }
+
+
+//channel이름 selector 구현
+let selectedChannel = document.querySelector(".select-btn span");
+let selectButton = document.querySelector(".select-btn");
+let channelOptionsList = document.querySelector(".select-options");
+let channelOptions = document.querySelectorAll(".select-options li");
+selectedChannel.innerHTML = channelOptions[0].innerHTML;
+
+channelOptions.forEach(option => {
+  option.addEventListener("click", () => {
+    selectedChannel.innerHTML = option.innerHTML;
+    channelOptionsList.classList.toggle("active");
+    // window.open(???);
+  });
+});
+
+selectButton.addEventListener("click", () => {
+  channelOptionsList.classList.toggle("active");
+  selectButton.classList.toggle("color-stay");
+})

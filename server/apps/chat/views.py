@@ -31,7 +31,7 @@ def main_room(request, channelName, type):
         # 현재 로그인 사용자의 소속 채널
         myJoinInfo = Join.objects.filter(user__name=request.user.name)
         for joinInfo in myJoinInfo:
-            myChannels.append(Channel.objects.get(channel_name=joinInfo.passer.channel.channel_name))
+            myChannels.append(Channel.objects.get(id=joinInfo.passer.channel.id))
     else:
         return redirect('/')
 

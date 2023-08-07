@@ -26,11 +26,17 @@
         <section class="middle-section">
             <div id="search" class="search-box">
                 <div id="channel-name">
-                    <select name="channel-type" id="select-channel" onchange="window.open(value, '_self');">
-                        {% for channel in myChannels %}
-                            <option class="channel-name" value="/room/{{ channel.channel_name }}/friends/">{{ channel.channel_name }}</option>
-                        {% endfor %}
-                    </select>
+                    <div class="channel-name-select">
+                        <div class="select-btn">
+                          <span></span>
+                          <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                        <ul class="select-options">
+                            {% for channel in myChannels %}
+                                <li class="channel-option" id="{{channel.id}}"><span>{{ channel.channel_name }}</span></li>
+                            {% endfor %}
+                        </ul>
+                      </div>
                 </div>
                 <input id="search-input" type="text">
                 <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
