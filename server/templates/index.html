@@ -247,8 +247,10 @@
     /* 로그인 여부에 따라 로그인 버튼 a 태그 src 변경 */
     function setLoginUrl() {
       if("{{ user }}" !== 'AnonymousUser') {
-        location.href = '/room/main/';
-        loginModal.style.display = 'none';
+        location.href = '/room/{{ channel.first.passer.channel.channel_name }}/main/';
+        loginModal.style.visibility = 'hidden';
+        loginModal.style.opacity = '0';
+        loginModal.close();
       }
     }
   </script>

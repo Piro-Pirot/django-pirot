@@ -26,12 +26,12 @@ class Passer(models.Model):
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
 
     def __str__(self):
-         return f'[{self.channel}] {self.level}기 {self.passer_name}'
+         return f'{self.level}기 {self.passer_name}'
 
 
 # 소속
 class Join(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='join')
 	passer = models.ForeignKey(Passer, on_delete=models.CASCADE)
 
 

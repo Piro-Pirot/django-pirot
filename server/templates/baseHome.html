@@ -15,21 +15,23 @@
     <div class="container">
         <section class="icon-bar">
             <div class="top-icons">
-                <a href="/room/{{ channel }}/{{ room_uuid }}/friends/"><i class="ri-team-line"></i></a>
-                <a href="/room/{{ channel }}/{{ room_uuid }}/main/"><i class="ri-chat-3-line"></i></a>
+                <a href="/room/{{ channel }}/friends/"><i class="ri-team-line"></i></a>
+                <a href="/room/{{ channel }}/main/"><i class="ri-chat-3-line"></i></a>
             </div>
             <div class="bottom-icons">
-                <i id="settings" class="ri-settings-3-line"></i>
+                <i class="ri-settings-3-line"></i>
                 <a href="/user/setting/"><img class="profile-icon" src="{% static 'image/chat_room/임시프로필사진.png' %}" alt="프로필"></a>
             </div>
         </section>
         <section class="middle-section">
             <div id="search" class="search-box">
-                <select name="channel-type" id="select-channel" onchange="window.open(value, '_self');">
-                    {% for channel in myChannels %}
-                        <option class="channel-name" value="/room/{{ channel.channel_name }}/friends/">{{ channel.channel_name }}</option>
-                    {% endfor %}
-                </select>
+                <div id="channel-name">
+                    <select name="channel-type" id="select-channel" onchange="window.open(value, '_self');">
+                        {% for channel in myChannels %}
+                            <option class="channel-name" value="/room/{{ channel.channel_name }}/friends/">{{ channel.channel_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <input id="search-input" type="text">
                 <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
             </div>
@@ -46,14 +48,6 @@
             {% endblock %}
         </section>
     </div>
-
-    <dialog class="modal settings-modal">
-        <div class="modal-content">
-            <i id="close-btn" class="ri-close-fill"></i>
-            <a href="/user/logout/">로그아웃!!!!</a>
-        </div>
-
-    </dialog>
 
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     {% block extra %}

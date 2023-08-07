@@ -7,10 +7,14 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
-    return render(request, 'index.html', {})
-
-def room(request):
-    return render(request, 'base.html', {})
+    myChannels = ''
+    
+    if request.user.is_authenticated:
+        myChannels = Join.objects.filter(user=request.user)
+        
+    return render(request, 'index.html', {
+        'channel': myChannels
+    })
 
 # 운영진 : 운영진 페이지
 def profile_staff(request):
