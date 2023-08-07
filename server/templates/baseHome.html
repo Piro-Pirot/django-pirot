@@ -15,12 +15,16 @@
     <div class="container">
         <section class="icon-bar">
             <div class="top-icons">
-                <a href="/room/{{ channel }}/friends/"><i class="ri-team-line"></i></a>
-                <a href="/room/{{ channel }}/main/"><i class="ri-chat-3-line"></i></a>
+                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line"></i></a>
+                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line"></i></a>
             </div>
             <div class="bottom-icons">
                 <i id="settings" class="ri-settings-3-line"></i>
-                <a href="/user/setting/"><img class="profile-icon" src="{% static 'image/chat_room/임시프로필사진.png' %}" alt="프로필"></a>
+                {% if request.user.profile_img %}
+                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+                {% else %}
+                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ channel.default_image.url }}" alt="프로필"></a>
+                {% endif %}
             </div>
         </section>
         <section class="middle-section">
@@ -61,9 +65,16 @@
         </div>
     </dialog>
 
-    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     {% block extra %}
     {% endblock %}
+
+    <script>
+        // js에서 필요한 정보
+        let curChannelId = {{ channel.id }};
+        let curRoomId = {{ room.id }};
+        let curRoomType = {{ room.type }};
+    </script>
+
     <script src="{% static 'js/base.js' %}"></script>
     <script src="{% static 'js/settingsModal.js' %}"></script>
     {% if urlType == 'main' %}
@@ -72,6 +83,5 @@
     {% elif urlType == 'friends' %}
         <script src="{% static 'js/chat/friendBtn.js' %}"></script>
     {% endif %}
-</body>
 </body>
 </html>

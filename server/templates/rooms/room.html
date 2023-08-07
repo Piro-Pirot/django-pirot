@@ -8,8 +8,8 @@
     <div class="chat-conversation-container">
         <div class="conversation"></div>
         <div class="chat-input">
-            <input type="text" class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room_uuid }}');}">
-            <button type="button" onclick="onClickSendMessage('{{ user }}', '{{ room_uuid }}')">SEND</button>
+            <input type="text" class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room.id }}');}">
+            <button type="button" onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
         </div>
     </div>
     <div class="board"></div>
@@ -29,10 +29,14 @@
             bubbleList.push(element);
         });
     }
-
+    
+    // js에서 필요한 정보
     let curUsername = '{{ user }}';
     let curUserId = '{{ user.id }}';
-    let curRoomType = {{ room_type }};
+    let curChannelId = {{ channel.id }};
+    let curRoomId = {{ room.id }};
+    let curRoomType = {{ room.room_type }};
+
     // 말풍선을 담을 곳
     let converations = document.querySelector('.conversation');
 </script>

@@ -1,36 +1,11 @@
 // 서버와 Socket 연결 설정
 const socket = io();
 
-// URL에서 room uuid 가져오기
-const path = location.pathname;
-
-let cnt = 0;
-let index = 0;
-let startPoint = 0;
-let endPoint = 0;
-for(index = 0; index < path.length; index++) {
-    if(cnt === 3) {
-        startPoint = index;
-        break;
-    }
-    if(path[index] === '/') cnt += 1;
-}
-cnt = 0;
-for(index; index < path.length; index++) {
-    if(cnt === 1) {
-        endPoint = index;
-        break;
-    }
-    if(path[index] === '/') cnt += 1;
-}
-const roomIDfromUrl = path.slice(startPoint, endPoint - 1);
-console.log(roomIDfromUrl);
-
 // 연결 성공 시 이벤트 리스너
 socket.on('connect', () => {
     console.log('connect to server');
     socket.emit('join', {
-        'room': roomIDfromUrl,
+        'room': curRoomId,
         'userId': curUserId
     });
 });
@@ -46,14 +21,14 @@ socket.on('display_secret_message', (data) => {
     displayMessage(data);
 });
 
-function onClickSendMessage(user, uuid) {
+function onClickSendMessage(user, id) {
     // 서버로 메시지 전송
     const msg = document.querySelector('.input').value;
     // 아무것도 안 썼을 때 예외 처리
     if(msg === '') return;
     console.log(msg);
 
-    socket.emit('send_message', {'msg': msg, 'file': 'delete me js', 'user': user, 'roomUUID': uuid});
+    socket.emit('send_message', {'msg': msg, 'file': 'delete me js', 'user': user, 'roomId': id});
     console.log('send successfully');
 }
 
