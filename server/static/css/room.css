@@ -109,6 +109,7 @@
 .friend-list-me-container,
 .middle-section-content .btn-friend-container {
     transition: 0.2s;
+    padding-left: 0.3rem;
 }
 
 .friend-list-me-container:hover,
