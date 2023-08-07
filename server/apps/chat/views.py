@@ -66,8 +66,8 @@ def main_room(request, channelId, type):
     
     if type == 'main' or type == 'friends':
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
-        myBlindRooms = BlindRoomMember.objects.filter(user=request.user, room__channel__id=channelId)
-        myRooms = RoomMember.objects.filter(user=request.user, room__channel=curChannel).exclude(room__room_name='__direct')
+        myBlindRooms = BlindRoomMember.objects.filter(user=request.user, room__channel=curChannel)
+        myRooms = RoomMember.objects.filter(user=request.user, room__channel=curChannel)
 
         # 현재 로그인 사용자
         myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel=curChannel)[0]
@@ -118,9 +118,9 @@ def enter_room(request, channelId, roomId, type):
 
     if type == 'main' or type == 'friends':
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
-        myBlindRooms = BlindRoomMember.objects.filter(user=request.user)
+        myBlindRooms = BlindRoomMember.objects.filter(user=request.user, room__channel=curChannel)
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
-        myRooms = RoomMember.objects.filter(user=request.user).exclude(room__room_name='__direct')
+        myRooms = RoomMember.objects.filter(user=request.user, room__channel=curChannel)
     
         # 현재 로그인 사용자
         myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel=curChannel)[0]
