@@ -74,7 +74,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': [BASE_DIR / 'server/templates'],
+            'DIRS': [BASE_DIR / 'server' / 'templates'],
             'APP_DIRS': True,
             'OPTIONS': {
                 'context_processors': [
@@ -141,15 +141,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-        BASE_DIR / 'server/static',
-        ]
-
-STATIC_ROOT = BASE_DIR / 'server/staticfiles'
+if DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "server/static")]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'server/static')
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'server/media')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'server/media')
 
 # Default primary key field type
@@ -173,7 +171,7 @@ LOGGING = {
             'file': {
                 'level': 'DEBUG',  # 필요한 로깅 레벨 설정
                 'class': 'logging.FileHandler',
-                'filename': '/home/ubuntu/django.log',  # 로그 파일 경로 설정
+                'filename': '/home/ywonchae1/django.log',  # 로그 파일 경로 설정
                 },
             },
         'loggers': {
