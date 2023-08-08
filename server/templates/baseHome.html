@@ -15,15 +15,20 @@
     <div class="container">
         <section class="icon-bar">
             <div class="top-icons">
-                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line"></i></a>
-                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line"></i></a>
+                {% if urlType == 'friends' %}
+                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-fill friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line room-icon"></i></a>
+                {% elif urlType == 'main' %}
+                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-fill room-icon"></i></a>
+                {% endif %}
             </div>
             <div class="bottom-icons">
-                <i id="settings" class="ri-settings-3-line"></i>
+                <i id="settings" class="ri-settings-3-line icon"></i>
                 {% if request.user.profile_img %}
-                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}"><img src="{{ request.user.profile_img.url }}" alt="프로필"></a>
                 {% else %}
-                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ channel.default_image.url }}" alt="프로필"></a>
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}"><img src="{{ channel.default_image.url }}" alt="프로필"></a>
                 {% endif %}
             </div>
         </section>
