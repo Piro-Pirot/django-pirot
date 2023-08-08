@@ -1,0 +1,21 @@
+{% extends 'startBase.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="start-container">
+  <div class="start-title">
+    <h1>당신의 채널을</h1>
+    <h1>개설하세요</h1>
+  </div>
+  <div class="channel-create-form">
+    <form action="/user/channel/create/" method="post">
+      <label for="">채널 이름</label>
+      <input type="text">
+      <label for="">채널 설명</label>
+      <input type="textarea">
+      <input type="submit" value="개설요청">
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'startBase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="start-container">
+  <div class="start-title">
+    <h1>피롯에 오신 것을</h1>
+    <h1>환영합니다</h1>
+  </div>
+  <div class="start-form">
+    <div class="channel-create">
+      <p>아직 우리 동아리 채널이 없다면 새로 개설하세요</p>
+      <a href="/user/channel/create/">채널 개설</a>
+    </div>
+    <div class="channel-code">
+      <p>이미 동아리 채널이 존재한다면 바로 입장하세요</p>
+      <a href="#">채널 입장</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

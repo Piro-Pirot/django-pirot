@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +12,7 @@
   <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
+
 <body>
   <div class="boss-container">
     <nav>
@@ -26,15 +28,33 @@
         </div>
       </div>
       <div class="nav-right">
+        <!-- 로그인이 된 경우 -->
+        {% if user.is_authenticated %} 
+          <!-- 그 중 가입된 채널이 없는 경우 -->
+          {% if myJoinInfo.first == None %}
+          <div id="start" class="nav-right-item login-btn">
+            <form action="/user/channel/" method="get">
+              <input type="submit" value="시작하기">
+            </form>
+          </div>
+          <!-- 채널이 있는 경우 -->
+          {% else %}
+          <div id="enter" class="nav-right-item login-btn">
+            채팅방 들어가기
+          </div>
+          {% endif %}
+        <!-- 로그인이 안 된 경우 -->
+        {% else %}
         <div id="login" class="nav-right-item login-btn">
           로그인
         </div>
+        {% endif %}
         <div id="signup" class="nav-right-item signup-btn">
           회원가입
         </div>
       </div>
     </nav>
-  
+
     <main>
       <section class="main-section">
         <div class="main-section-container">
@@ -79,22 +99,22 @@
       </section>
       <section class="md-section">
         <div class="md-section-container animate">
-            <div class="md-section-text">
-              <div class="md-section-title">
-                <i class="fa-brands fa-markdown"></i>
-                마크다운 문법,
-              </div>
-              <div class="md-section-title">
-                <i class="fa-solid fa-code"></i>
-                코드스니펫 지원
-              </div>
-              <div class="md-section-desc">
-                코드는 보기 편해야하니까.
-              </div>
+          <div class="md-section-text">
+            <div class="md-section-title">
+              <i class="fa-brands fa-markdown"></i>
+              마크다운 문법,
             </div>
-            <div class="md-section-demo">
-              <img src="{% static 'image/pirot_demo.png' %}" alt="서비스마크다운이미지">
+            <div class="md-section-title">
+              <i class="fa-solid fa-code"></i>
+              코드스니펫 지원
             </div>
+            <div class="md-section-desc">
+              코드는 보기 편해야하니까.
+            </div>
+          </div>
+          <div class="md-section-demo">
+            <img src="{% static 'image/pirot_demo.png' %}" alt="서비스마크다운이미지">
+          </div>
         </div>
       </section>
       <section class="md-section-small">
@@ -121,20 +141,20 @@
 
       <section class="md-section2">
         <div class="md-section-container animate">
-            <div class="md-section-demo">
-              <img src="{% static 'image/pirot_demo.png' %}" alt="서비스마크다운이미지">
+          <div class="md-section-demo">
+            <img src="{% static 'image/pirot_demo.png' %}" alt="서비스마크다운이미지">
+          </div>
+          <div class="md-section-text2">
+            <div class="md-section-title2">
+              채팅 게시판
             </div>
-            <div class="md-section-text2">
-              <div class="md-section-title2">
-                채팅 게시판
-              </div>
-              <div class="md-section-content">
-                더이상 묻히는 공지는 없어
-              </div>
-              <div class="md-section-content">
-                배고파도
-              </div>
+            <div class="md-section-content">
+              더이상 묻히는 공지는 없어
             </div>
+            <div class="md-section-content">
+              배고파도
+            </div>
+          </div>
         </div>
       </section>
 
@@ -186,11 +206,11 @@
             </div>
           </div>
         </div>
-        
-        
+
+
       </section>
     </main>
-  
+
     <footer>
       <div id="footer-left">
         <div>주식회사 피롯 | 대표 양원채</div>
@@ -237,22 +257,21 @@
         <p>피롯 계정이 없으신가요?</p>
         <p>빠르게 가입해보세요!</p>
       </div>
-      <div  class="signup-modal-form">
+      <div class="signup-modal-form">
         <a href="/user/signup/"><input type="button" value="회원가입하기"></a>
       </div>
     </div>
   </dialog>
+
   <script src="{% static 'js/index.js' %}"></script>
   <script>
     /* 로그인 여부에 따라 로그인 버튼 a 태그 src 변경 */
     loginButton.addEventListener("click", () => {
-      if('{{ myJoinInfo.first }}' === 'None') {
-        // 석류-선우: 속한 채널이 없는 경우 모달 만들기
-        // loginModal.showModal();
-        // loginModal.style.opacity = '1';
-      } else if("{{ user }}" !== 'AnonymousUser') {
+      if ('{{ myJoinInfo.first }}' === 'None') {
+        // location.href = '/'
+      } else if ("{{ user }}" !== 'AnonymousUser') {
         // 로그인 되어 있는 경우
-        location.href  = '/room/{{ myJoinInfo.first.passer.channel.id }}/main/';
+        location.href = '/room/{{ myJoinInfo.first.passer.channel.id }}/main/';
       } else {
         loginModal.showModal();
         loginModal.style.opacity = '1';
@@ -261,4 +280,5 @@
     loginModal.style.opacity = '0';
   </script>
 </body>
+
 </html>
