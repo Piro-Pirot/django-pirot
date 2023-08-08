@@ -36,7 +36,7 @@ async def save_blind_msg(room, data):
         user = curUserObj,
         room = room,
         content = data['msg'],
-        read_cnt = room.blindroommember_set.count(),
+        read_cnt = await sync_to_async(room.blindroommember_set.count)(),
         file = data['file'],
         
         nickname = curBlindUser.nickname,
