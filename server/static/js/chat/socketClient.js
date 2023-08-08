@@ -2,21 +2,21 @@
 const socket = io();
 
 // 연결 성공 시 이벤트 리스너
-socket.on('connect', () => {
+socket.on('connect', async () => {
     console.log('connect to server');
-    socket.emit('join', {
+    await socket.emit('join', {
         'room': curRoomId,
         'userId': curUserId
     });
 });
 
-socket.on('display_message', (data) => {
+socket.on('display_message', async (data) => {
     console.log(data);
     displayMessage(data);
 });
 
 // 익명채팅방 이벤트
-socket.on('display_secret_message', (data) => {
+socket.on('display_secret_message', async (data) => {
     console.log(data);
     displayMessage(data);
 });
