@@ -4,7 +4,10 @@ from server.apps.chat.models import *
 import server.apps.bubbles.views as bubble
 
 # Socket.IO 서버 생성
-sio = socketio.Server(async_mode='threading')
+sio = socketio.Server(
+        async_mode="eventlet",
+        cors_allowed_origins='*',
+        )
 app = socketio.WSGIApp(sio)
 
 @sio.on('join')

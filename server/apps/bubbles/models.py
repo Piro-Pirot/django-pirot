@@ -1,5 +1,4 @@
 # from django.db import models
-from djongo import models
 from server.apps.chat.models import *
 
 # Create your models here.
