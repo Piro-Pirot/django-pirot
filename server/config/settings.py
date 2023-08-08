@@ -144,7 +144,7 @@ STATIC_URL = '/static/'
 if DEBUG:
     STATICFILES_DIRS = [os.path.join(BASE_DIR, "server/static")]
 else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'server/static')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
 
 MEDIA_URL = '/media/'
 
@@ -171,7 +171,7 @@ LOGGING = {
             'file': {
                 'level': 'DEBUG',  # 필요한 로깅 레벨 설정
                 'class': 'logging.FileHandler',
-                'filename': '/home/ywonchae1/django.log',  # 로그 파일 경로 설정
+                'filename': '/home/ubuntu/django.log',  # 로그 파일 경로 설정
                 },
             },
         'loggers': {
