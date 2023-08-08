@@ -1,6 +1,6 @@
 bind = ["0.0.0.0:8000"]
-workers = 1 
-threads = 2
+workers = 1
+threads = 1
 max_requests = 10_000
 max_requests_jitter = 1_000
 accesslog = "-"
