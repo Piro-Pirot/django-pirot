@@ -5,7 +5,7 @@ from django.contrib import auth
 from server.apps.channels.models import Join, Staff, Channel
 from django.http import JsonResponse
 from .utils import make_signature
-from .models import SMS_Auth
+from .models import User, SMS_Auth
 import requests, json, time
 from django.views import View
 from random import randint
@@ -91,12 +91,12 @@ def profile_setting(request):
     return render(request, 'users/profilesetting.html', context=context)
 
 class SMS_send(View):
-    def make_num(self, *args, **kwargs):
-        self.auth_num = randint(100000, 999999)
-        super().save(*args, **kwargs)
-        self.send_sms()
+    # def make_num(self, ):
+    #     self.auth_num = randint(100000, 999999)
+    #     super().save(*args, **kwargs)
+    #     self.send_sms()
      
-    def send_sms(self):
+    def send_sms(self, phone_num, auth_num):
         timestamp = str(int(time.time()*1000))
         ACCESS_KEY = "3E4qKWxpP3BueLZUKh9V"	
         URL = "https://sens.apigw.ntruss.com/sms/v2/services/ncp:sms:kr:285290282105:pirot_sms_auth/messages"
@@ -111,29 +111,48 @@ class SMS_send(View):
             "Content-Type": "application/json; charset=utf-8",
             'x-ncp-apigw-timestamp': timestamp,
             'x-ncp-iam-access-key': ACCESS_KEY,
-            'x-ncp-apigw-signature-v2': make_signature(timestamp)
+            'x-ncp-apigw-signature-v2': SIGNATURE
         }
         body = {
             "type" : "SMS",
             "contentType" : "COMM",
             "from" : "01087118471",
-            "content" : "[테스트] 인증번호 [{}]를 입력해주세요.".format(self.auth_num),
+            "content" : f"[테스트] 인증번호 [{auth_num}]를 입력해주세요.",
             "messages" : [{
-                "to" : [self.phone_num]
+                "to" : f"{phone_num}"
             }]
         }
         requests.post(URL, data=json.dumps(body), headers=headers)
+    
+    def make_num(self,request):
+        data = json.loads(request.body)
+        try:
+            check_phone_num = data['phone_num']
+            sms_auth_num = randint(100000, 999999)
+            auth_user = SMS_Auth.objects.get(phone_num=check_phone_num)
+            auth_user.auth_num = sms_auth_num
+            auth_user.save()
+            self.send_sms(phone_num=data['phone_num'], auth_num=sms_auth_num)
+            return JsonResponse({'message' : '인증번호 발송완료'}, status=200)
+        except SMS_Auth.DoesNotExist:
+            SMS_Auth.objects.create(
+                phone_num = check_phone_num,
+                auth_num = sms_auth_num,
+            ).save()
+            self.send_sms(phone_num=check_phone_num, auth_num=sms_auth_num)
+            return JsonResponse({'message' : '인증번호 발송 및 DB 입력완료'}, status=200)
+        
         
 
 class SMS_check_view(View):
     def post(self, request):
         data = json.loads(request.body)
         try:
-            verification = SMS_Auth.objects.get(phone_num=data['phone_num'])
+            verification = User.objects.get(phone_num=data['phone_num'])
             if verification.auth_num == data['auth_num']:
                 return JsonResponse({'message' : "인증 성공"}, status=200)
             else:
                 return JsonResponse({'message' : '인증 실패'}, status=400)
-        except SMS_Auth.DoesNotExist:
+        except User.DoesNotExist:
             return JsonResponse({'message' : '해당 휴대폰 번호가 존재하지 않습니다.'}, status=400)
             
