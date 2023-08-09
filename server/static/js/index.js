@@ -1,13 +1,3 @@
-/* window.addEventListener('scroll', () => {
-  const scrolled = window.scrollY;
-  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-  
-  if (scrolled === scrollable) {
-    console.log("You reached to the very bottom!");
-  }
-}); */
-
-
 // scroll 함에 따라 해당 Section 커지는 애니메이션
 let sections = document.querySelectorAll('section');
 sections = Array.from(sections);
@@ -46,11 +36,6 @@ const loginModal = document.querySelector("#loginModal");
 const signupButton = document.querySelector("#signup");
 const signupModal = document.querySelector("#signupModal");
 const closeButtons = document.querySelectorAll("#close-btn");
-// let backdrop = window.getComputedStyle(loginModal, '::backdrop');
-// let styles = backdrop['background'];
-// styles = 'red';
-// console.log(styles);
-
 
 // 로그인버튼 누르면 모달창 팝업 --> 이 코드는 index.html코드 하단으로 이동하였음
 // loginModal.style.opacity = '0';
