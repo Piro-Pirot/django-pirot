@@ -53,6 +53,9 @@ friendContainer.forEach(container => {
     else {
       bookmarkIcon.classList.toggle("active");
       bookmarkButton.value = '즐겨찾기 해제';
+      let friends = document.querySelector('.btn-friend-list');
+      friends.removeChild(container);
+      friends.insertBefore(container, friends.firstChild);
     }
   });
 
@@ -66,9 +69,6 @@ friendContainer.forEach(container => {
     }
   });
 });
-
-const friends = document.querySelectorAll(".friend-container");
-console.log(friends);
 
 
 
