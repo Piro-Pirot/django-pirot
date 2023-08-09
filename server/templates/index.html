@@ -264,18 +264,24 @@
 
   <script src="{% static 'js/index.js' %}"></script>
   <script>
-    /* 로그인 여부에 따라 로그인 버튼 a 태그 src 변경 */
-    loginButton.addEventListener("click", () => {
-      if ('{{ myJoinInfo.first }}' === 'None') {
-        // location.href = '/'
-      } else if ("{{ user }}" !== 'AnonymousUser') {
-        // 로그인 되어 있는 경우
+    //'채팅방 들어가기' 버튼, '로그인' 버튼 인 경우 경로 다르게 설정하는 코드
+    const multiPurposeButton = document.querySelector(".login-btn");
+    if (multiPurposeButton.id === "enter") {
+      multiPurposeButton.addEventListener("click", () => {
         location.href = '/room/{{ myJoinInfo.first.passer.channel.id }}/main/';
-      } else {
-        loginModal.showModal();
-        loginModal.style.opacity = '1';
-      }
-    });
+      });
+    }
+    else if (multiPurposeButton.id === "login") {
+      multiPurposeButton.addEventListener("click", () => {
+        if ("{{ user }}" !== 'AnonymousUser') {
+          location.href = '/room/{{ myJoinInfo.first.passer.channel.id }}/main/';
+        }
+        else {
+          loginModal.showModal();
+          loginModal.style.opacity = '1';
+        }
+      });
+    };
     loginModal.style.opacity = '0';
   </script>
 </body>

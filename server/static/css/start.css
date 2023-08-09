@@ -165,7 +165,7 @@ main {
 
 .channel-create-form input[type=text]::placeholder,
 .channel-create-form textarea::placeholder {
-  color:rgba(174, 174, 174, 0.668)
+  color:rgba(174, 174, 174, 0.668);
 }
 
 .channel-create-form textarea::placeholder {
