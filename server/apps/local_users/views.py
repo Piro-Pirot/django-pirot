@@ -48,7 +48,7 @@ def login(request):
         context = {
             'form': form,
         }
-        return render(request, template_name='users/base.html', context=context)
+        return render(request, template_name='users/login.html', context=context)
 
 
 def logout(request):
