@@ -1,9 +1,24 @@
 from django.shortcuts import render
-from .models import Post, Happy, Sad
+from asgiref.sync import sync_to_async
+
+from .models import Post, Happy, Sad, User
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.utils import timezone
+
+#DB에 게시글 저장
+async def save_post(room, data):
+    curUserObj = await sync_to_async(User.objects.get)(username=data['user'])
+
+    newPost = await sync_to_async(Post.objects.create)(
+        content = data['postInput'],
+        user = curUserObj,
+        room = room,
+    )
+    await sync_to_async(newPost.save)()
+
+    return newPost
+
 
 # 새 게시글 버튼 누르면 작성 창 등장 -> url : /create
 # 작성 버튼 누르면 게시글 CREATE

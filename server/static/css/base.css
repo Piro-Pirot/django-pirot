@@ -218,7 +218,7 @@ background-color: #f3b95431;
   height: calc(100vh - 6rem);
 }
 
-.chat-container .chat-conversation-container {
+.chat-container .chat-conversation-container .board-container {
   display: flex;
   flex-direction: column;
 }
