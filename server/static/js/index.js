@@ -64,6 +64,7 @@ closeButtons.forEach(closeButton => {
   });
 });
 
+
 // Esc 누르면 모달의 opacity를 0으로 초기화 시킴
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
