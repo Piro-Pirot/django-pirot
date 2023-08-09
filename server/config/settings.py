@@ -37,7 +37,7 @@ MYSQL_PORT=env('MYSQL_PORT')
 SECRET_KEY = 'django-insecure-j@xy26^y4!oqyf@7q=1y7cdd=!8+$v_q1ohhx6+ibayr7a66@y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -143,7 +143,7 @@ STATIC_URL = "/static/"
 
 if DEBUG == True:
     STATICFILES_DIRS = [os.path.join(BASE_DIR, "server/static")]
-    STATIC_ROOT = os.path.join(BASE_DIR, 'server/static')
+    # STATIC_ROOT = os.path.join(BASE_DIR, 'server/static')
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
 
@@ -165,21 +165,21 @@ LOGOUT_REDIRECT_URL = '/'
 # 인증용 유저 모델이라고 장고에게 알려줌
 AUTH_USER_MODEL = 'local_users.User'
 
-LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'file': {
-                'level': 'DEBUG',  # 필요한 로깅 레벨 설정
-                'class': 'logging.FileHandler',
-                'filename': '/home/ubuntu/django.log',  # 로그 파일 경로 설정
-                },
-            },
-        'loggers': {
-            'django': {
-                'handlers': ['file'],
-                'level': 'DEBUG',  # 필요한 로깅 레벨 설정
-                'propagate': True,
-                },
-            },
-        }
+# LOGGING = {
+#         'version': 1,
+#         'disable_existing_loggers': False,
+#         'handlers': {
+#             'file': {
+#                 'level': 'DEBUG',  # 필요한 로깅 레벨 설정
+#                 'class': 'logging.FileHandler',
+#                 'filename': '/home/ubuntu/django.log',  # 로그 파일 경로 설정
+#                 },
+#             },
+#         'loggers': {
+#             'django': {
+#                 'handlers': ['file'],
+#                 'level': 'DEBUG',  # 필요한 로깅 레벨 설정
+#                 'propagate': True,
+#                 },
+#             },
+#         }

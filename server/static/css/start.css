@@ -55,7 +55,7 @@ main {
   width: 40rem;
   height: calc(100vh - 6rem);
   color: black;
-  padding-top: 5.5rem;
+  padding-top: 4.5rem;
   display: flex;
   justify-content: center;
 }
@@ -98,6 +98,7 @@ main {
   0 5px 5px rgba(0,0,0,0.15);
   letter-spacing: 2px;
   font-weight: 700;
+  color: white;
 }
 
 .start-form a:hover {
@@ -171,7 +172,8 @@ main {
   letter-spacing: 0.01rem;
 }
 
-.channel-create-form input[type=submit] {
+.channel-create-form input[type=submit],
+.channel-code-form input[type=submit] {
   font-family: 'GowunBatang-Regular';
   font-size: 1rem;
   letter-spacing: 2px;
@@ -186,14 +188,52 @@ main {
   box-shadow: var(--shadow);
   cursor: pointer;
   transition: 0.2s;
+  color: white;
 }
 
-.channel-create-form input[type=submit]:hover {
+.channel-create-form input[type=submit]:hover,
+.channel-code-form input[type=submit]:hover {
   background-color: var(--carrot-dark);
 }
 
 .channel-create-name {
   margin-bottom: 2rem;
+}
+
+.channel-code-form {
+  margin-top: 3rem;
+}
+
+.channel-code-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.channel-code-input label {
+  font-size: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.channel-code-input input[type=text] {
+  outline: 0;
+  border: 2px solid white;
+  height: 2.3rem;
+  border-radius: 1rem;
+  background-color: var(--input-background);
+  font-size: 1.1rem;
+  padding-left: 0.7rem;
+  padding-right: 0.5rem;
+  transition: 0.2s;
+}
+
+.channel-code-input input[type=text]:focus {
+  border: 2px solid var(--carrot-color);
+}
+
+.channel-code-input input[type=text]::placeholder {
+  color: rgba(174, 174, 174, 0.668);
 }
 
 .channel-sent-title h1 {
@@ -229,6 +269,7 @@ main {
   background-color: var(--carrot-dark);
   color: white;
 }
+
 
 
 /* 개설요청 전송 완료 애니메이션 */

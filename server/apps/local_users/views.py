@@ -106,4 +106,4 @@ def channel_code(request):
     if request.method == 'POST':
         pass
     else:
-        return render(request, template_name='users/channelCreate.html')
+        return render(request, template_name='users/channelCode.html')

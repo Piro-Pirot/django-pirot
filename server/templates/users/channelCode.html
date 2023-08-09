@@ -4,17 +4,16 @@
 {% block content %}
 
 <div class="start-container">
-  <div class="start-title">
-    <h1>당신의 채널을</h1>
-    <h1>개설하세요</h1>
+  <div class="channel-create-title">
+    <h1>채널에 입장하세요</h1>
   </div>
-  <div class="channel-create-form">
-    <form action="/user/channel/create/" method="post">
-      <label for="">채널 이름</label>
-      <input type="text">
-      <label for="">채널 설명</label>
-      <input type="textarea">
-      <input type="submit" value="개설요청">
+  <div class="channel-code-form">
+    <form action="/user/channel/code/" method="post">
+      <div class="channel-code-input">
+        <label for="code">참여코드</label>
+        <input id="code" type="text" placeholder="참여코드를 입력하세요">
+      </div>
+      <input type="submit" value="입장하기">
     </form>
   </div>
 </div>
