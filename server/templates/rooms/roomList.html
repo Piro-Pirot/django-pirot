@@ -4,16 +4,16 @@
         <li class="btn-room-container">
             <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
                 <div class="btn-room room-{{ room.room.id }}">
-                    <div class="room-red-dot dot-{{ room.room.id }}">32</div>
                     {% for member in room.room.roommember_set.all %}
                     {% if member.user != user %}
                         {% for joinInfo in member.user.join.all %}
                             {% if joinInfo.passer.channel == channel %}
-                                <label for="">{{ joinInfo.passer }}</label>
+                                <div class="room-name">{{ joinInfo.passer }}</div>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
                     {% endfor %}
+                    <div class="room-red-dot dot-{{ room.room.id }}">32</div>
                 </div>
             </a>
         </li>
