@@ -135,7 +135,7 @@ def enter_room(request, channelId, roomId, type):
     else:
         return redirect('/')
 
-    
+    # REVIEW : room_type 1 정의 보다는 BLIND_CHAT 같이 변수명으로 써주는 것이 좋음.
     if curRoom.room_type == 1:
         #익명채팅방
         roomMembers = curRoom.blindroommember_set.all()
@@ -167,6 +167,7 @@ def enter_room(request, channelId, roomId, type):
     bubbles = list(bubbles)
     # myRooms = list(myRooms)
 
+    # REVIEW : 변수명 컨벤션 통일 필요. PEP에 따르면 파이썬은 snake_head 권장
     jsonBubbles = json.dumps(bubbles, default=str)
     # jsonRooms = json.dumps(myRooms, default=str)
 

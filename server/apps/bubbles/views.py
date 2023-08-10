@@ -7,6 +7,7 @@ from .models import *
 # Create your views here.
 
 # DB에 일반 말풍선 저장
+# REVIEW : 변수명 컨벤션 통일 필요. PEP에 따르면 파이썬은 snake_head 권장
 async def save_msg(room, data):
     curUserObj = await sync_to_async(User.objects.get)(username=data['user'])
     curUser = await sync_to_async(RoomMember.objects.get)(user=curUserObj, room=room)

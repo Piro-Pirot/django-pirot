@@ -78,6 +78,7 @@ def profile_setting(request, channelID):
 
         return redirect(url)
 
+    # REVIEW : admin_ids라는 변수를 따로 둬서 어드민 아이디 관리. 아니면 어드민 권한으로 관리
     if request.user.id == '491e61f0-f98b-43cd-b6df-90bedd90541e': # 기수가 없는 admin 예외 처리
         level = 0
     else:
