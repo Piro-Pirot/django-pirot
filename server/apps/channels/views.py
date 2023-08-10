@@ -110,7 +110,7 @@ def code_create(request, channelID):
     
     # 참여 코드 생성
     if request.method == "POST":
-        random_list = random.sample(sample_list,5)
+        random_list = random.sample(sample_list,6)
         created_code = ''.join(random_list)
         channel.channel_code = created_code
         channel.save()
