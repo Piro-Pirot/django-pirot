@@ -34,7 +34,10 @@ def login(request):
             auth.login(request, user)
             # 현재 로그인 사용자의 소속 채널
             myJoinInfo = Join.objects.filter(user__name=request.user.name).first()
-            return redirect(f'/room/{myJoinInfo.passer.channel.id}/main/')
+            if not myJoinInfo == None:
+                return redirect(f'/room/{myJoinInfo.passer.channel.id}/main/')
+            else:
+                return redirect('/')
         else:
             context = {
                 'form': form,
@@ -88,3 +91,19 @@ def profile_setting(request, channelID):
     }
     
     return render(request, 'users/profilesetting.html', context=context)
+
+
+def start(request):
+    return render(request, template_name="users/channel.html")
+
+def channel_create(request):
+    if request.method == 'POST':
+        return render(request, template_name='users/channelCreateDone.html')
+    else:
+        return render(request, template_name='users/channelCreate.html')
+    
+def channel_code(request):
+    if request.method == 'POST':
+        pass
+    else:
+        return render(request, template_name='users/channelCode.html')
