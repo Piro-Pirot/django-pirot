@@ -3,7 +3,22 @@
 
 {% block content %}
 
-<div class="chat-name">{{ title }}</div>
+<div class="chat-name">
+    <div class="chat-name-container">
+        <div class="orange-stick">
+        </div>
+        <div class="chat-name-content">
+            <div class="chat-name-name">
+                {{ title }}
+            </div>
+            <div class="chat-name-icons">
+                <input id="chat-name-search" type="text">
+                <i id="chat-search-btn" class="fa-solid fa-magnifying-glass"></i>
+                <i class="ri-settings-3-line"></i>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="chat-container">
     <div class="chat-conversation-container">
         <div class="conversation"></div>
@@ -60,6 +75,7 @@
     let posts = document.querySelector('.board');
 </script>
 
+<script src="{% static 'js/chat/room.js' %}"></script>
 <script src="{% static 'js/chat/bubble.js' %}"></script>
 <script src="{% static 'js/chat/post.js' %}"></script>
 <script src="{% static 'js/chat/socketClient.js' %}"></script>

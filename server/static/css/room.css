@@ -165,6 +165,21 @@
     background-color: rgba(128, 128, 128, 0.162);
 }
 
+#star {
+    position: absolute;
+    right: 7rem;
+    top: 1.1rem;
+    color: var(--carrot-color);
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.2s;
+}
+
+#star.active {
+    visibility: visible;
+    opacity: 1;
+}
+
 .more-icon > i {
     opacity: 0;
     transition: 0.2s;
@@ -178,10 +193,13 @@
     right: 0;
     background-color: var(--carrot-color);
     visibility: hidden;
+    opacity: 0;
+    transition: 0.2s;
 }
 
 .more-form.active {
     visibility: visible;
+    opacity: 1;
 }
 
 .more-form > form {
@@ -205,4 +223,73 @@
 
 .more-form input:hover {
     background-color: #fec767;
+}
+
+
+
+/* chat-name section */
+
+.chat-name-container {
+    display: flex;
+    width: calc(100% - 18rem);
+    height: 100%;
+}
+
+.orange-stick {
+    height: 100%;
+    width: 0.7rem;
+    background-color: var(--carrot-color);
+}
+
+.chat-name-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(100% - 1rem);
+}
+
+.chat-name-content .chat-name-name {
+    margin-left: 3rem;
+    font-size: 1.5rem;
+}
+
+.chat-name-content .chat-name-icons {
+    margin-right: 3rem;
+    display: flex;
+    align-items: center;
+}
+
+.chat-name-icons > input {
+    outline: none;
+    width: 13rem;
+    height: 2.5rem;
+    border: 2px solid white;
+    background-color: var(--input-background);
+    border-radius: 2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    transition: 0.2s;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.chat-name-icons > input:focus {
+    border: 2px solid var(--carrot-light);
+}
+
+.chat-name-icons > input.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.chat-name-icons > #chat-search-btn {
+    font-size: 1.7rem;
+    margin-left: 2rem;
+    cursor: pointer;
+}
+
+.chat-name-icons > i:last-child {
+    font-size: 2rem;
+    margin-left: 3rem;
+    cursor: pointer;
 }
