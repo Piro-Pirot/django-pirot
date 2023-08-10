@@ -87,7 +87,7 @@ TEMPLATES = [
             },
         ]
 
-#WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 ASGI_APPLICATION = 'config.asgi.application'
 
 
@@ -142,8 +142,8 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 if DEBUG == True:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'server/static')
     STATICFILES_DIRS = [os.path.join(BASE_DIR, "server/static")]
-    # STATIC_ROOT = os.path.join(BASE_DIR, 'server/static')
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
 
@@ -165,21 +165,23 @@ LOGOUT_REDIRECT_URL = '/'
 # 인증용 유저 모델이라고 장고에게 알려줌
 AUTH_USER_MODEL = 'local_users.User'
 
-# LOGGING = {
-#         'version': 1,
-#         'disable_existing_loggers': False,
-#         'handlers': {
-#             'file': {
-#                 'level': 'DEBUG',  # 필요한 로깅 레벨 설정
-#                 'class': 'logging.FileHandler',
-#                 'filename': '/home/ubuntu/django.log',  # 로그 파일 경로 설정
-#                 },
-#             },
-#         'loggers': {
-#             'django': {
-#                 'handlers': ['file'],
-#                 'level': 'DEBUG',  # 필요한 로깅 레벨 설정
-#                 'propagate': True,
-#                 },
-#             },
-#         }
+'''
+LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'DEBUG',  # 필요한 로깅 레벨 설정
+                'class': 'logging.FileHandler',
+                'filename': '/home/ubuntu/django.log',  # 로그 파일 경로 설정
+                },
+            },
+        'loggers': {
+            'django': {
+                'handlers': ['file'],
+                'level': 'DEBUG',  # 필요한 로깅 레벨 설정
+                'propagate': True,
+                },
+            },
+        }
+'''
