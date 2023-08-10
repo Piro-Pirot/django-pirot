@@ -6,7 +6,10 @@ urlpatterns = [
     path('login/', login),
     path('logout/', logout),
     path('signup/', signup),
-    path('setting/', profile_setting),
+    path('setting/<int:channelID>/', profile_setting),
+    path('channel/', start),
+    path('channel/create/', channel_create),
+    path('channel/code/', channel_code),
     path('signup/send_sms/', SMS_send.send_sms),
     path('signup/authcheck/', SMS_check.post),
 ]

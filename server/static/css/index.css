@@ -107,6 +107,26 @@ nav > .nav-right .signup-btn{
   color: white;
 }
 
+#start {
+  padding: 0;
+  padding: 0.3rem 0.6rem 0.2rem;
+  cursor: pointer;
+}
+
+
+#start input {
+  background-color: transparent;
+  border: 0;
+  font-size: 1rem;
+  color: #777777;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+#start:hover input {
+  color: var(--carrot-color);
+}
+
 
 /* navbar scroll animation */
 

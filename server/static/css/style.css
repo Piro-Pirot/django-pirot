@@ -6,6 +6,12 @@
   --carrot-dark: #fb9005;
   --light-gray: #f0f0f0;
   --subtitle: #a3a3a3;
+  --shadow: 0 1px 1px rgba(0,0,0,0.15),
+  0 1px 1px rgba(0,0,0,0.15),
+  0 3px 3px rgba(0,0,0,0.15),
+  0 5px 5px rgba(0,0,0,0.15);
+  --input-background: #face8326;
+  --placeholder: rgba(174, 174, 174, 0.668);
 }
 
 @font-face {

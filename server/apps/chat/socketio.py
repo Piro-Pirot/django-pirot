@@ -1,14 +1,15 @@
 import socketio
+from asgiref.sync import sync_to_async
 
 from server.apps.chat.models import *
 import server.apps.bubbles.views as bubble
 
 # Socket.IO 서버 생성
-sio = socketio.Server(async_mode='threading')
-app = socketio.WSGIApp(sio)
+sio = socketio.AsyncServer(async_mode='asgi')
+app = socketio.ASGIApp(sio)
 
 @sio.on('join')
-def handle_join(sid, data):
+async def handle_join(sid, data):
     sio.save_session(sid, data)
     sio.enter_room(sid, room=data['room'])
     
@@ -43,25 +44,25 @@ def handle_join(sid, data):
 
 # Socket.IO 'connect' 이벤트 핸들러
 @sio.event
-def connect(sid, environ, auth):
+async def connect(sid, environ, auth):
     print('connect ', sid)
 
 
 @sio.on('send_message')
-def send_message(sid, data):
+async def send_message(sid, data):
     roomId = int(data['roomId'])
-    room = Room.objects.get(id=roomId)
+    room = await sync_to_async(Room.objects.get)(id=roomId)
     if room.room_type == 1:
         #익명채팅방
-        newBubble = bubble.save_blind_msg(room, data)
+        newBubble = await bubble.save_blind_msg(room, data)
         data['nickname'] = newBubble.nickname
-        sio.emit('display_secret_message', data, to=roomId)
+        await sio.emit('display_secret_message', data, to=roomId)
     else:
-        newBubble = bubble.save_msg(room, data)
-        sio.emit('display_message', data, to=roomId)
+        newBubble = await bubble.save_msg(room, data)
+        await sio.emit('display_message', data, to=roomId)
     print('massage was saved')
 
 
 @sio.event
-def disconnect(sid):
+async def disconnect(sid):
     print('disconnect ', sid)

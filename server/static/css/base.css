@@ -31,19 +31,36 @@
   align-items: center;
 }
 
-.top-icons > i {
+.top-icons > a {
   margin-bottom: 5rem;
 }
 
-.bottom-icons > i {
+.bottom-icons > a {
   margin-top: 5rem;
+}
+
+.top-icons > a,
+.bottom-icons > i {
+  border-radius: 50%;
+  padding: 0.3rem;
+  transition: 0.2s;
+}
+
+.top-icons > a:hover,
+.bottom-icons > i:hover {
+  background-color: rgb(219, 219, 219);
+}
+
+.friend-icon {
+  position: relative;
+  top: -0.1rem;
 }
 
 .profile-icon {
   border: 1px solid black;
   border-radius: 50%;
   width: 2.2rem;
-  margin-top: 5rem;
+  height: 2.2rem;
 }
 
 
@@ -53,11 +70,11 @@
 .middle-section {
   width: 20rem;
   /* background-color: blue; */
-  padding-left: 2rem;
+  padding-left: 1.7rem;
 }
 
 .middle-section-content {
-  background-color: green;
+  /* background-color: green; */
   height: calc(100vh - 6rem);
 }
 
@@ -72,19 +89,81 @@
 .search-box > .channel-name {
   font-size: 1.7rem;
   letter-spacing: 0.3rem;
-  z-index: 0;
+  z-index: 3333;
+}
+
+.channel-name-select {
+  width: 11rem;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.select-btn {
+  height: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 0.2rem;
+}
+
+.select-btn:hover {
+  background-color: rgba(128, 128, 128, 0.081);
+}
+
+.select-btn.color-stay {
+  background-color: rgba(128, 128, 128, 0.081);
+}
+
+/* .select-options {
+  list-style: none;
+  padding-left: 0;
+  background-color: beige;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+} */
+
+.select-options {
+  display: none;
+  background-color: rgba(246, 244, 244, 0.925);
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  top: 3.4rem;
+  padding: 0;
+  border-radius: 0.2rem
+}
+
+.select-options.active {
+  display: block;
+}
+
+.channel-option {
+  transition: 0.2s;
+  padding: 0.6rem 0.5rem 0.5rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.channel-option:hover {
+background-color: #f3b95431;
 }
 
 .search-box > input {
   outline: none;
   width: 11rem;
   height: 2.5rem;
-  background-color: rgb(235, 235, 235);
+  background-color: var(--input-background);
   border-radius: 2rem;
   border: none;
   padding-left: 1rem;
   padding-right: 1rem;
-  z-index: 1;
+  z-index: 999999;
 }
 
 .search-box > input:focus {
@@ -132,7 +211,7 @@
 
 .chat-name {
   height: 6rem;
-  background-color: yellow;
+  /* background-color: yellow; */
 }
 
 .chat-container {

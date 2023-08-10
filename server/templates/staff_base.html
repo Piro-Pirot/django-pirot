@@ -7,9 +7,7 @@
     <title>Pirot</title>
     <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
-    <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-
 </head>
 <body>
     <div class="container">
@@ -20,22 +18,27 @@
             </div>
             <div class="bottom-icons">
                 <i class="ri-settings-3-line"></i>
-                <a href="/user/setting/"><img class="profile-icon" src="{% static 'image/chat_room/임시프로필사진.png' %}" alt="프로필"></a>
+                {% if request.user.profile_img %}
+                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+                {% else %}
+                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ channel.default_image.url }}" alt="프로필"></a>
+                {% endif %}
             </div>
         </section>
         <section class="staff-menu">
-            <a href="/staff/setting/"><button type="button">프로필 설정</button></a>
-            <a href="/staff/passer_create/level/"><button type="button">합격자 명단 추가</button></a>
-            <a href="/staff/code_create/"><button type="button">참여 코드 생성</button></a>
-            <a href="/staff/channel/setting/"><button type="button">동아리 기본 설정</button></a>
-            <a href="/staff/staff_authority/"><button type="button">운영진 권한 설정</button></a>
-            <a href="/staff/join_delete/"><button type="button">회원 삭제</button></a>
+            <a href="/staff/setting/{{ channel.id }}"><button type="button">프로필 설정</button></a>
+            <a href="/staff/passer_create/level/{{ channel.id }}"><button type="button">합격자 명단 추가</button></a>
+            <a href="/staff/code_create/{{ channel.id }}"><button type="button">참여 코드 생성</button></a>
+            <a href="/staff/channel/setting/{{ channel.id }}"><button type="button">동아리 기본 설정</button></a>
+            <a href="/staff/staff_authority/{{ channel.id }}"><button type="button">운영진 권한 설정</button></a>
+            <a href="/staff/join_delete/{{ channel.id }}"><button type="button">회원 삭제</button></a>
         </section>
         <section class="staff-content">
             {% block content %}
             {% endblock %}    
         </section>
     </div>      
+    <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     {% block extra %}
     {% endblock %}

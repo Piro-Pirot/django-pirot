@@ -7,7 +7,6 @@
     <title>Pirot</title>
     <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
-    <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
 </head>
@@ -15,21 +14,38 @@
     <div class="container">
         <section class="icon-bar">
             <div class="top-icons">
-                <a href="/room/{{ channel.id }}/{{ room.id }}/friends/"><i class="ri-team-line"></i></a>
-                <a href="/room/{{ channel.id }}/{{ room.id }}/main/"><i class="ri-chat-3-line"></i></a>
+                {% if urlType == 'friends' %}
+                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-fill friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line room-icon"></i></a>
+                {% elif urlType == 'main' %}
+                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-fill room-icon"></i></a>
+                {% endif %}
             </div>
             <div class="bottom-icons">
                 <i id="settings" class="ri-settings-3-line"></i>
-                <a href="/user/setting/"><img class="profile-icon" src="{% static 'image/chat_room/임시프로필사진.png' %}" alt="프로필"></a>
+                {% if request.user.profile_img %}
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img class="profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+                {% else %}
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img class="profile-icon" src="{{ channel.default_image.url }}" alt="프로필"></a>
+                {% endif %}
             </div>
         </section>
         <section class="middle-section">
             <div id="search" class="search-box">
-                <select name="channel-type" id="select-channel" onchange="window.open(value, '_self');">
-                    {% for channel in myChannels %}
-                        <option class="channel-name" value="/room/{{ channel.channel_name }}/friends/">{{ channel.channel_name }}</option>
-                    {% endfor %}
-                </select>
+                <div id="channel-name">
+                    <div class="channel-name-select">
+                        <div class="select-btn">
+                            <span></span>
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                        <ul class="select-options">
+                            {% for channel in myChannels %}
+                                <li class="channel-option" id="{{channel.id}}"><span>{{ channel.channel_name }}</span></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
                 <input id="search-input" type="text">
                 <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
             </div>
@@ -54,17 +70,18 @@
         </div>
     </dialog>
 
+    <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     {% block extra %}
     {% endblock %}
 
     <script src="{% static 'js/base.js' %}"></script>
+    <script src="{% static 'js/settingsModal.js' %}"></script>
     {% if urlType == 'main' %}
         <script src="{% static 'js/chat/roomBtn.js' %}"></script>
         <script src="{% static 'js/roomModal.js' %}"></script>
     {% elif urlType == 'friends' %}
         <script src="{% static 'js/chat/friendBtn.js' %}"></script>
-        <script src="{% static 'js/roomModal.js' %}"></script>
     {% endif %}
 </body>
 </body>
