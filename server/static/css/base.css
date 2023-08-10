@@ -76,6 +76,10 @@
 .middle-section-content {
   /* background-color: green; */
   height: calc(100vh - 6rem);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .middle-section > .search-box {
@@ -129,13 +133,14 @@
 
 .select-options {
   display: none;
-  background-color: rgba(246, 244, 244, 0.925);
+  background-color: rgb(246, 244, 244);
   box-sizing: border-box;
   position: absolute;
   width: 100%;
   top: 3.4rem;
   padding: 0;
-  border-radius: 0.2rem
+  border-radius: 0.2rem;
+  z-index: 9999999;
 }
 
 .select-options.active {
