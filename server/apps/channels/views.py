@@ -7,7 +7,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
-    myJoinInfo = ''
+    # REVIEW : None이나 빈 리스트 전달이 타입에러가 발생할 것 같지 않습니다.
+    myJoinInfo = []
     
     if request.user.is_authenticated:
         myJoinInfo = Join.objects.filter(user=request.user)
@@ -18,7 +19,7 @@ def index(request):
 
 # 운영진 : 운영진 페이지
 def profile_staff(request, channelID):
-
+    # REVIEW : 변수명 컨벤션 통일 필요. PEP에 따르면 파이썬은 snake_head 권장
     channel = Channel.objects.get(id=channelID) # 임시!! 위에 모델 임포트도 지우기 나중에
     current_user = request.user
 

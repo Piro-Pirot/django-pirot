@@ -39,6 +39,7 @@ from django.utils import timezone
 #     return JsonResponse()
 
 
+# REVIEW : emotion_ajax로 통합하고 감정 파라미터를 전달받아 코드 반복 제거
 # 기뻐요 버튼
 @csrf_exempt
 def happy_ajax(request):
