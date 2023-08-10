@@ -1,28 +1,36 @@
 <ol class="btn-room-list">
     {% for room in myRooms %}
         {% if room.room.room_name == '__direct' %}
+        <!-- 개인채팅방 -->
         <li class="btn-room-container">
             <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
                 <div class="btn-room room-{{ room.room.id }}">
-                    <div class="room-red-dot dot-{{ room.room.id }}">32</div>
+                    <div class="room-profile-img">
+                        <!-- img -->
+                    </div>
                     {% for member in room.room.roommember_set.all %}
                     {% if member.user != user %}
                         {% for joinInfo in member.user.join.all %}
                             {% if joinInfo.passer.channel == channel %}
-                                <label for="">{{ joinInfo.passer }}</label>
+                                <div class="room-name">{{ joinInfo.passer }}</div>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
                     {% endfor %}
+                    <div class="room-red-dot dot-{{ room.room.id }}">4</div>
                 </div>
             </a>
         </li>
         {% else %}
-        <li class="btn-room-container">
+        <!-- 단체채팅방 -->
+        <li class="btn-room-container group">
             <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
                 <div class="btn-room room-{{ room.room.id }}">
-                    <div class="room-red-dot dot-{{ room.room.id }}">32</div>
-                    <label for="">{{ room.room.room_name }}</label>
+                    <div class="room-profile-img">
+                        <!-- img -->
+                    </div>
+                    <div class="room-name">{{ room.room.room_name }}</div>
+                    <div class="room-red-dot dot-{{ room.room.id }}">24</div>
                 </div>
             </a>
         </li>
@@ -30,22 +38,21 @@
     {% endfor %}
 
     {% for room in myBlindRooms %}
-    <li class="btn-room-container">
+    <!-- 익명채팅방 -->
+    <li class="btn-room-container blind">
         <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
             <div class="btn-room room-{{ room.room.id }}">
+                <div class="room-profile-img">
+                    <!-- img -->
+                </div>
+                <div class="room-name">{{ room.room.room_name }}</div>
                 <div class="room-red-dot dot-{{ room.room.id }}">32</div>
-                <label for="">{{ room.room.room_name }}</label>
             </div>
         </a>
     </li>
     {% endfor %}
 </ol>
 
-<div class="btn-room-container">
-    <div class="btn-room-create">
-        <label for="">채팅방 추가</label>
-    </div>
-</div>
 
 <dialog class="modal room-add-modal">
     <i id="close-btn" class="ri-close-fill"></i>
