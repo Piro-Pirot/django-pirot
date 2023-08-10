@@ -1,9 +1,21 @@
 from django.shortcuts import render
-from .models import Post, Happy, Sad
-import json
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.utils import timezone
+from asgiref.sync import sync_to_async
+
+from .models import Post, Happy, Sad, User
+
+#DB에 게시글 저장
+async def save_post(room, data):
+    curUserObj = await sync_to_async(User.objects.get)(username=data['user'])
+
+    newPost = await sync_to_async(Post.objects.create)(
+        content = data['postInput'],
+        user = curUserObj,
+        room = room,
+    )
+    await sync_to_async(newPost.save)()
+
+    return newPost
+
 
 # 새 게시글 버튼 누르면 작성 창 등장 -> url : /create
 # 작성 버튼 누르면 게시글 CREATE
@@ -39,92 +51,92 @@ from django.utils import timezone
 #     return JsonResponse()
 
 
-# 기뻐요 버튼
-@csrf_exempt
-def happy_ajax(request):
-    req = json.loads(request.body)
-    user_id = request.user.id
-    post_id =req['post_id']
-    post = Post.objects.get(id=post_id)
+# # 기뻐요 버튼
+# @csrf_exempt
+# def happy_ajax(request):
+#     req = json.loads(request.body)
+#     user_id = request.user.id
+#     post_id =req['post_id']
+#     post = Post.objects.get(id=post_id)
 
-    try:
-        # happy가 이미 눌러져 있는 경우
-        happy = Happy.objects.get(id=post_id)
-    except Happy.DoesNotExist:
-        # 아직 happy를 누르지 않은 경우
-        happy = None
+#     try:
+#         # happy가 이미 눌러져 있는 경우
+#         happy = Happy.objects.get(id=post_id)
+#     except Happy.DoesNotExist:
+#         # 아직 happy를 누르지 않은 경우
+#         happy = None
 
-    try:
-        # sad가 이미 눌러져 있는 경우
-        sad = Sad.objects.get(id=post_id)
-    except Sad.DoesNotExist:
-        # 아직 sad를 누르지 않은 경우
-        sad = None
+#     try:
+#         # sad가 이미 눌러져 있는 경우
+#         sad = Sad.objects.get(id=post_id)
+#     except Sad.DoesNotExist:
+#         # 아직 sad를 누르지 않은 경우
+#         sad = None
     
-    if sad:
-        sad.delete()
-        happy = Happy.objects.create(
-                post_id = post,
-                user_id = user_id,
-            )
-        happy.save()
-    else:
-        if happy:
-            happy.delete()
-        else:
-            happy = Happy.objects.create(
-                post_id = post,
-                user_id = user_id,
-            )
-            happy.save()
+#     if sad:
+#         sad.delete()
+#         happy = Happy.objects.create(
+#                 post_id = post,
+#                 user_id = user_id,
+#             )
+#         happy.save()
+#     else:
+#         if happy:
+#             happy.delete()
+#         else:
+#             happy = Happy.objects.create(
+#                 post_id = post,
+#                 user_id = user_id,
+#             )
+#             happy.save()
 
-    # 이 경우에는 버튼에 표시될 총 개수만 필요할 것 같아서 일단 이렇게 처리!
-    happy_count = Happy.objects.filter(id=post_id).count()
-    sad_count = Sad.objects.filter(id=post_id).count()
+#     # 이 경우에는 버튼에 표시될 총 개수만 필요할 것 같아서 일단 이렇게 처리!
+#     happy_count = Happy.objects.filter(id=post_id).count()
+#     sad_count = Sad.objects.filter(id=post_id).count()
 
-    return JsonResponse({"happy_count":happy_count, "sad_count":sad_count})
+#     return JsonResponse({"happy_count":happy_count, "sad_count":sad_count})
 
 
-# 슬퍼요 버튼
-@csrf_exempt
-def sad_ajax(request):
-    req = json.loads(request.body)
-    user_id = request.user.id
-    post_id =req['post_id']
-    post = Post.objects.get(id=post_id)
+# # 슬퍼요 버튼
+# @csrf_exempt
+# def sad_ajax(request):
+#     req = json.loads(request.body)
+#     user_id = request.user.id
+#     post_id =req['post_id']
+#     post = Post.objects.get(id=post_id)
 
-    try:
-        # happy가 이미 눌러져 있는 경우
-        happy = Happy.objects.get(id=post_id)
-    except Happy.DoesNotExist:
-        # 아직 happy를 누르지 않은 경우
-        happy = None
+#     try:
+#         # happy가 이미 눌러져 있는 경우
+#         happy = Happy.objects.get(id=post_id)
+#     except Happy.DoesNotExist:
+#         # 아직 happy를 누르지 않은 경우
+#         happy = None
 
-    try:
-        # sad가 이미 눌러져 있는 경우
-        sad = Sad.objects.get(id=post_id)
-    except Sad.DoesNotExist:
-        # 아직 sad를 누르지 않은 경우
-        sad = None
+#     try:
+#         # sad가 이미 눌러져 있는 경우
+#         sad = Sad.objects.get(id=post_id)
+#     except Sad.DoesNotExist:
+#         # 아직 sad를 누르지 않은 경우
+#         sad = None
     
-    if happy:
-        happy.delete()
-        sad = Sad.objects.create(
-                post_id = post,
-                user_id = user_id,
-            )
-        sad.save()
-    else:
-        if sad:
-            sad.delete()
-        else:
-            sad = Sad.objects.create(
-                post_id = post,
-                user_id = user_id,
-            )
-            sad.save()
+#     if happy:
+#         happy.delete()
+#         sad = Sad.objects.create(
+#                 post_id = post,
+#                 user_id = user_id,
+#             )
+#         sad.save()
+#     else:
+#         if sad:
+#             sad.delete()
+#         else:
+#             sad = Sad.objects.create(
+#                 post_id = post,
+#                 user_id = user_id,
+#             )
+#             sad.save()
 
-    happy_count = Happy.objects.filter(id=post_id).count()
-    sad_count = Sad.objects.filter(id=post_id).count()
+#     happy_count = Happy.objects.filter(id=post_id).count()
+#     sad_count = Sad.objects.filter(id=post_id).count()
 
-    return JsonResponse({"happy_count":happy_count, "sad_count":sad_count})
+#     return JsonResponse({"happy_count":happy_count, "sad_count":sad_count})

@@ -1,8 +1,9 @@
-import json
+import json, datetime
 from django.shortcuts import redirect, render
 from .models import *
 from server.apps.bubbles.models import *
 from server.apps.channels.models import *
+from server.apps.posts.models import *
 
 # Create your views here.
 
@@ -94,6 +95,7 @@ def main_room(request, channelId, type):
             'myPassInfo': myPassInfo,
             'urlType': type,
             'myChannels': myChannels,
+            'jsonPosts' : '',
         }
     )
 
@@ -146,6 +148,17 @@ def enter_room(request, channelId, roomId, type):
             'profile_img', 'created_at',
             'user__username'
         )
+        # 게시글 데이터 get
+        posts = Post.objects.filter(room=curRoom).values(
+            'id', 'content', 'room', 'created_at', 'user__username'
+        )
+        # happys = Happy.objects.filter(post__room=curRoom).values(
+        #     'post__id'
+        # )
+        # sads = Sad.objects.filter(post__room=curRoom).values(
+        #     'post__id'
+        # ) 어차피 happy나 sad나 post__id가 같긴 한데..
+        # 각 게시물의 슬퍼요 개수를 여기서 계산해서 JS로 넘겨야 HTML에 삽입할 수 있는데 어케 넘겨?
     else:
         roomMembers = RoomMember.objects.filter(room=curRoom)
         # 말풍선 데이터 get
@@ -153,6 +166,9 @@ def enter_room(request, channelId, roomId, type):
             'room', 'content', 'is_delete',
             'read_cnt', 'file', 'created_at',
             'user__username'
+        )
+        posts = Post.objects.filter(room=curRoom).values(
+            'id', 'content', 'room', 'created_at', 'user__username'
         )
 
     if curRoom.room_name == '__direct':
@@ -175,6 +191,20 @@ def enter_room(request, channelId, roomId, type):
     # print(jsonBubbles)
 
 
+    def json_default(value):
+        if isinstance(value, datetime.datetime):
+            return value.strftime('%Y-%m-%d')
+
+    posts = list(posts)
+    jsonPosts = json.dumps(posts, default=json_default)
+
+    # 여러 개의 구분된 값은 어떻게 보내징 근데 굳이 필요하나
+    # happys = list(happys)
+    # jsonHappys = json.dumps(happys, default=str)
+    # sads = list(sads)
+    # jsonSads = json.dumps(sads, default=str)
+
+
     # 현재 로그인 사용자가 채팅 방 멤버라면
     for member in roomMembers:
         if member.user == request.user:
@@ -192,6 +222,7 @@ def enter_room(request, channelId, roomId, type):
                     'myPassInfo': myPassInfo,
                     'urlType': type,
                     'myChannels': myChannels,
+                    'jsonPosts' : jsonPosts,
                 }
             )
         
