@@ -72,10 +72,10 @@ async def disconnect(sid):
 @sio.on('send_post')
 async def send_post(sid, data):
     roomId = int(data['roomId'])
-    room = Room.objects.get(id=roomId)
+    room = await sync_to_async(Room.objects.get)(id=roomId)
 
-    newpost = post.save_post(room, data)
+    newpost = await post.save_post(room, data)
     data['newpostId'] = newpost.id
-    data['created_at'] = newpost.created_at
-    sio.emit('display_post', data, to=roomId)
+    data['created_at'] = newpost.created_at.strftime('%Y-%m-%d')
+    await sio.emit('display_post', data, to=roomId)
     print('post was saved')

@@ -1,5 +1,5 @@
 // 서버와 Socket 연결 설정
-const socket = io('http://localhost:8000/');
+const socket = io();
 
 // 연결 성공 시 이벤트 리스너
 socket.on('connect', async () => {
@@ -87,7 +87,7 @@ function displayMessage(bubbleData) {
 
 
 // post 게시 이벤트 : 이벤트 명을 받고 콜백 함수를 실행
-socket.on('display_post', (data) => {
+socket.on('display_post', async (data) => {
     console.log(data);
     displayPost(data);
 });
@@ -117,17 +117,22 @@ function displayPost(postData) {
     // 로그인 사용자가 작성한 게시글인 경우
     if(postData['user'] == curUsername) {
         let happyBtn = document.createElement('button');
-        happyBtn.innerText('기뻐요'); // 나중에 i 태그
+        let happySpan = document.createElement('span');
+        happySpan.innerText = '기뻐요'; // 나중에 i 태그
         happyBtn.classList.add('happy');
+        happyBtn.appendChild(happySpan);
         buttonDiv.appendChild(happyBtn); // 기뻐요
 
         let sadBtn = document.createElement('button');
+        let sadSpan = document.createElement('span');
+        sadSpan.innerText = '슬퍼요';
         sadBtn.classList.add('sad');
-        sadBtn.innerText('슬퍼요');
+        sadBtn.appendChild(sadSpan);
         buttonDiv.appendChild(sadBtn); // 슬퍼요
 
         let deleteBtn = document.createElement('button');
         deleteBtn.classList.add('delete');
+        deleteBtn.innerText = 'X';
         deleteBtn.onclick = function() {
             onClickDelete(data['newpostId']);
         };
@@ -137,13 +142,17 @@ function displayPost(postData) {
         postContainer.classList.add('post-container-me');
     } else {
         let happyBtn = document.createElement('button');
-        happyBtn.innerText('기뻐요'); // 나중에 i 태그
+        let happySpan = document.createElement('span');
+        happySpan.innerText = '기뻐요'; // 나중에 i 태그
         happyBtn.classList.add('happy');
+        happyBtn.appendChild(happySpan);
         buttonDiv.appendChild(happyBtn); // 기뻐요
 
         let sadBtn = document.createElement('button');
+        let sadSpan = document.createElement('span');
+        sadSpan.innerText = '슬퍼요';
         sadBtn.classList.add('sad');
-        sadBtn.innerText('슬퍼요');
+        sadBtn.appendChild(sadSpan);
         buttonDiv.appendChild(sadBtn); // 슬퍼요
 
         postDiv.classList.add('post-box');

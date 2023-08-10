@@ -236,4 +236,6 @@ background-color: #f3b95431;
   width: 18rem;
   height: calc(100vh - 6rem);
   background-color: aqua;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
