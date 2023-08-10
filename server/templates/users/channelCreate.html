@@ -1,0 +1,26 @@
+{% extends 'startBase.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="start-container channel-create">
+  <div class="channel-create-title">
+    <h1>당신의 채널을</h1>
+    <h1>개설하세요</h1>
+  </div>
+  <div class="channel-create-form">
+    <form action="/user/channel/create/" method="post">
+      {% csrf_token %}
+      <div class="channel-create-name">
+        <label for="">채널 이름</label>
+        <input type="text" placeholder="채널을 개설할 동아리의 이름을 입력해주세요">
+      </div>
+      <div class="channel-create-desc">
+        <label for="">채널 설명</label>
+        <textarea name="channel-create-desc" id="" cols="30" rows="5" placeholder="어떤 동아리인지 간단한 설명을 적어주세요"></textarea>
+      </div>
+      <input type="submit" value="개설 요청">
+    </form>
+  </div>
+</div>
+{% endblock %}

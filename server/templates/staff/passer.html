@@ -1,0 +1,18 @@
+{% extends 'staff_base.html' %}
+{% load static %}
+
+<!-- 합격자 명단 추가 -->
+
+{% block content %}
+<h2>합격자 정보 입력</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input name="name" placeholder="이름을 입력하세요." required/>
+    <input name="phone" placeholder="전화번호를 입력하세요." required/>
+    <input type="submit" name="keepgoing" value="저장 및 계속 추가" />
+    <input type="submit" name="save" value="저장 완료" />
+
+{% for passer in passers %}
+<div>{{ passer.passer_name }}</div>
+{% endfor %}
+{% endblock %}

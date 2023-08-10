@@ -1,0 +1,16 @@
+{% extends 'staff_base.html' %}
+{% load static %}
+
+<!-- 동아리 기본 프로필 -->
+
+{% block content %}
+<h2>동아리 기본 설정</h2>
+<img src="{{ channel.default_image.url }}" alt="채널기본프로필이미지" style="width:10rem;">
+<!-- 이미지 너무 커져서 임의로 style 설정!! -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        <input type="file" name="default_image" accept=".jpg, .png" />
+        <input type="submit" value="사진 변경" />
+    </div>
+{% endblock %}

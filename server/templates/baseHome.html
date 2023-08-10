@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pirot</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="container">
+        <section class="icon-bar">
+            <div class="top-icons">
+                {% if urlType == 'friends' %}
+                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-fill friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line room-icon"></i></a>
+                {% elif urlType == 'main' %}
+                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-fill room-icon"></i></a>
+                {% endif %}
+            </div>
+            <div class="bottom-icons">
+                <i id="settings" class="ri-settings-3-line icon"></i>
+                {% if request.user.profile_img %}
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}"><img src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+                {% else %}
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}"><img src="{{ channel.default_image.url }}" alt="프로필"></a>
+                {% endif %}
+            </div>
+        </section>
+        <section class="middle-section">
+            <div id="search" class="search-box">
+                <div id="channel-name">
+                    <div class="channel-name-select">
+                        <div class="select-btn">
+                            <span></span>
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                        <ul class="select-options">
+                            {% for channel in myChannels %}
+                                <li class="channel-option" id="{{channel.id}}"><span>{{ channel.channel_name }}</span></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <input id="search-input" type="text">
+                <i id="search-btn" class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="middle-section-content">
+                {% if urlType == 'main' %}
+                    {% include 'rooms/roomList.html' %}
+                {% elif urlType == 'friends' %}
+                    {% include 'rooms/friendsList.html' %}
+                {% endif %}
+            </div>
+        </section>
+        <section class="chat-section">
+            {% block content %}
+            {% endblock %}
+        </section>
+    </div>
+    <dialog class="modal settings-modal">
+        <div class="modal-content">
+            <i id="close-btn" class="ri-close-fill"></i>
+            <a href="/user/logout/">로그아웃!!!!</a>
+        </div>
+    </dialog>
+
+    {% block extra %}
+    {% endblock %}
+
+    <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
+
+    <script>
+        // js에서 필요한 정보
+        let curChannelId = {{ channel.id }};
+        // let curRoomId = {{ room.id }};
+        // let curRoomType = {{ room.type }};
+        console.log(curChannelId);
+    </script>
+
+    <script src="{% static 'js/base.js' %}"></script>
+    <script src="{% static 'js/settingsModal.js' %}"></script>
+    {% if urlType == 'main' %}
+        <script src="{% static 'js/chat/roomBtn.js' %}"></script>
+        <script src="{% static 'js/roomModal.js' %}"></script>
+    {% elif urlType == 'friends' %}
+        <script src="{% static 'js/chat/friendBtn.js' %}"></script>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'staff_base.html' %}
+{% load static %}
+
+<!-- 합격자 명단 추가 기수 입력 페이지 -->
+
+{% block content %}
+<h2>기수 입력</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input name="level" placeholder="기수를 입력하세요." required/>
+    <input type="submit" value="합격자 정보 입력" />
+
+{% for passer in passers %}
+<div>{{ passer.passer_name }}</div>
+{% endfor %}
+{% endblock %}

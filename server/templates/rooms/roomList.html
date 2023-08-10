@@ -1,0 +1,108 @@
+<ol class="btn-room-list">
+    {% for room in myRooms %}
+        {% if room.room.room_name == '__direct' %}
+        <li class="btn-room-container">
+            <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
+                <div class="btn-room room-{{ room.room.id }}">
+                    <div class="room-red-dot dot-{{ room.room.id }}">32</div>
+                    {% for member in room.room.roommember_set.all %}
+                    {% if member.user != user %}
+                        {% for joinInfo in member.user.join.all %}
+                            {% if joinInfo.passer.channel == channel %}
+                                <label for="">{{ joinInfo.passer }}</label>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </a>
+        </li>
+        {% else %}
+        <li class="btn-room-container">
+            <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
+                <div class="btn-room room-{{ room.room.id }}">
+                    <div class="room-red-dot dot-{{ room.room.id }}">32</div>
+                    <label for="">{{ room.room.room_name }}</label>
+                </div>
+            </a>
+        </li>
+        {% endif %}
+    {% endfor %}
+
+    {% for room in myBlindRooms %}
+    <li class="btn-room-container">
+        <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
+            <div class="btn-room room-{{ room.room.id }}">
+                <div class="room-red-dot dot-{{ room.room.id }}">32</div>
+                <label for="">{{ room.room.room_name }}</label>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ol>
+
+<div class="btn-room-container">
+    <div class="btn-room-create">
+        <label for="">채팅방 추가</label>
+    </div>
+</div>
+
+<dialog class="modal room-add-modal">
+    <i id="close-btn" class="ri-close-fill"></i>
+    <div class="modal-content room-add-invite">
+        <!-- <i id="close-btn" class="ri-close-fill"></i> -->
+        <div class="title">
+            대화 상대 초대
+        </div>
+        <input type="text" placeholder="초대할 이름을 입력하세요">
+        <div class="invite-list">
+            <ul>
+                {% for friend in myFriends %}
+                <li>
+                    <a href="">
+                        <div class="btn-friend">
+                            <div class="btn-friend-profile-img">
+                                <img src="{{ friend.join_set.first.user.profile_img }}" alt="">
+                            </div>
+                            <label for="">{{ friend }}</label>
+                            <div class="checkbox-wrapper-30 checkbox">
+                                <span class="checkbox">
+                                    <input type="checkbox" />
+                                    <svg>
+                                        <use xlink:href="#checkbox-30" class="checkbox"></use>
+                                    </svg>
+                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+                                    <symbol id="checkbox-30" viewBox="0 0 22 22">
+                                        <path fill="none" stroke="currentColor" d="M5.5,11.3L9,14.8L20.2,3.3l0,0c-0.5-1-1.5-1.8-2.7-1.8h-13c-1.7,0-3,1.3-3,3v13c0,1.7,1.3,3,3,3h13 c1.7,0,3-1.3,3-3v-13c0-0.4-0.1-0.8-0.3-1.2"/>
+                                    </symbol>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <input type="button" value="초대">
+    </div>
+
+    <div class="modal-content room-add-name">
+        <i id="back-btn" class="ri-arrow-left-s-line"></i>
+        <div class="title">
+            채팅방 이름 설정
+        </div>
+        <input type="text" placeholder="채팅방 이름을 입력하세요">
+        <div class="anonymous-toggle">
+            <p>익명채팅방</p>
+            <div class="checkbox-wrapper-22">
+                <label class="switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="slider round"></div>
+                </label>
+            </div>
+        </div>
+        <input type="button" value="채팅방 개설">
+    </div>
+
+</dialog>

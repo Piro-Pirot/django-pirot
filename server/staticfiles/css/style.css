@@ -1,0 +1,50 @@
+@import 'reset.css';
+
+:root {
+  --carrot-color: #fba405;
+  --carrot-light: #face83;
+  --carrot-dark: #fb9005;
+  --light-gray: #f0f0f0;
+  --subtitle: #a3a3a3;
+}
+
+@font-face {
+  font-family: 'GowunBatang-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+  outline: none
+}
+
+a:hover, a:active {
+  text-decoration: none;
+  color: black;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar {
+  /* 스크롤바 전체 영역 */
+    width: 12px;
+    height: 4px;
+}
+::-webkit-scrollbar-track {
+    /* 스크롤이 움직이는 영역  */
+    background-color: transparent;
+    margin: 1rem;
+    padding: 1rem;
+    margin-top: 6rem;
+}
+::-webkit-scrollbar-thumb {
+    /*  스크롤  */
+    background-color: var(--carrot-dark);
+    border-radius: 30px;
+}

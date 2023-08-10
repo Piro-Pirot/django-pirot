@@ -1,0 +1,289 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pirot: 당신의 동아리를 위한 완벽한 커뮤니케이션</title>
+  <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="boss-container">
+    <nav>
+      <div class="nav-left">
+        <div class="nav-left-item">
+          <a href="/"><img src="{% static 'image/pirot_logo_long.png' %}"></a>
+        </div>
+        <div class="nav-left-item" id="service">
+          서비스 소개
+        </div>
+        <div class="nav-left-item" id="creator">
+          만든 사람들
+        </div>
+      </div>
+      <div class="nav-right">
+        <!-- 로그인이 된 경우 -->
+        {% if user.is_authenticated %} 
+          <!-- 그 중 가입된 채널이 없는 경우 -->
+          {% if myJoinInfo.first == None %}
+          <div id="start" class="nav-right-item login-btn">
+            <form action="/user/channel/" method="get">
+              <input type="submit" value="시작하기">
+            </form>
+          </div>
+          <!-- 채널이 있는 경우 -->
+          {% else %}
+          <div id="enter" class="nav-right-item login-btn">
+            채팅방 들어가기
+          </div>
+          {% endif %}
+        <!-- 로그인이 안 된 경우 -->
+        {% else %}
+        <div id="login" class="nav-right-item login-btn">
+          로그인
+        </div>
+        {% endif %}
+        <div id="signup" class="nav-right-item signup-btn">
+          회원가입
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <section class="main-section">
+        <div class="main-section-container">
+          <div class="main-section-left">
+            <div class="main-section-title">
+              <span>우리 동아리만의 커뮤니케이션</span>
+              <span><a class="orange-link" href="#">피롯</a>으로</span>
+              <span>완벽히</span>
+            </div>
+            <div class="main-section-demo">
+              <img src="{% static 'image/pirot_demo.png' %}" alt="서비스메인이미지">
+            </div>
+          </div>
+          <div class="main-section-right">
+            <div class="main-section-team">
+              <img src="{% static 'image/pirot_team.png' %}" alt="팀피롯 단체 사진">
+              <div class="main-section-team-text">
+                <span>안녕하세요 팀 피롯입니다</span> <br>
+                동아리용 채팅 서비스가 필요하세요? <br>
+                <a class="orange-link start-btn" href="/user/signup/">
+                  <span>바로 시작해보세요</span>
+                </a> 🥕
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="ui-section">
+        <div class="ui-section-container animate">
+          <div class="ui-section-text">
+            <div class="ui-section-title">
+              핵심만 담은 UI
+            </div>
+            <div class="ui-section-desc">
+              온전히 필요한 기능만으로 깔끔하게.
+            </div>
+          </div>
+          <div class="ui-section-demo">
+            <img src="{% static 'image/pirot_demo.png' %}" alt="서비스UI이미지">
+          </div>
+        </div>
+      </section>
+      <section class="md-section">
+        <div class="md-section-container animate">
+          <div class="md-section-text">
+            <div class="md-section-title">
+              <i class="fa-brands fa-markdown"></i>
+              마크다운 문법,
+            </div>
+            <div class="md-section-title">
+              <i class="fa-solid fa-code"></i>
+              코드스니펫 지원
+            </div>
+            <div class="md-section-desc">
+              코드는 보기 편해야하니까.
+            </div>
+          </div>
+          <div class="md-section-demo">
+            <img src="{% static 'image/pirot_demo.png' %}" alt="서비스마크다운이미지">
+          </div>
+        </div>
+      </section>
+      <section class="md-section-small">
+        <div class="md-section-small-container animate">
+          <div class="md-section-small-text">
+            <div class="md-section-small-title">
+              <i class="fa-brands fa-markdown"></i>
+              마크다운 문법, &nbsp
+              <i class="fa-solid fa-code"></i>
+              코드스니펫 지원
+            </div>
+            <div class="md-section-small-desc">
+              코드는 보기 편해야하니까.
+            </div>
+          </div>
+          <div class="md-section-small-demo">
+            <img src="{% static 'image/pirot_demo.png' %}" alt="서비스마크다운이미지">
+          </div>
+        </div>
+      </section>
+      <section></section>
+      <section></section>
+      <section></section>
+
+      <section class="md-section2">
+        <div class="md-section-container animate">
+          <div class="md-section-demo">
+            <img src="{% static 'image/pirot_demo.png' %}" alt="서비스마크다운이미지">
+          </div>
+          <div class="md-section-text2">
+            <div class="md-section-title2">
+              채팅 게시판
+            </div>
+            <div class="md-section-content">
+              더이상 묻히는 공지는 없어
+            </div>
+            <div class="md-section-content">
+              배고파도
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="md-people">
+        <div class="md-people-container animate">
+          <div class="people-header">
+            <div id="people-header1">피롯</div>
+            <div id="people-header2">을 만든 사람들</div>
+          </div>
+          <div id="people-content">
+            <div id="people-left">
+              <div class="people-left-content">
+                <div class="people-photo"><img src="{% static 'image/pirot_logo_carrot.png' %}" alt=""></div>
+                <div class="people-info">
+                  <div class="people-name">박석류</div>
+                  <div class="people-talk">룰루랄라</div>
+                </div>
+              </div>
+              <div class="people-left-content">
+                <div class="people-photo"><img src="{% static 'image/pirot_logo_carrot.png' %}" alt=""></div>
+                <div class="people-info">
+                  <div class="people-name">박석류</div>
+                  <div class="people-talk">룰루랄라</div>
+                </div>
+              </div>
+              <div class="people-left-content">
+                <div class="people-photo"><img src="{% static 'image/pirot_logo_carrot.png' %}" alt=""></div>
+                <div class="people-info">
+                  <div class="people-name">박석류</div>
+                  <div class="people-talk">룰루랄라</div>
+                </div>
+              </div>
+            </div>
+            <div id="people-right">
+              <div class="people-right-content">
+                <div class="people-photo"><img src="{% static 'image/pirot_logo_carrot.png' %}" alt=""></div>
+                <div class="people-info">
+                  <div class="people-name">박석류</div>
+                  <div class="people-talk">룰루랄라</div>
+                </div>
+              </div>
+              <div class="people-right-content">
+                <div class="people-photo"><img src="{% static 'image/pirot_logo_carrot.png' %}" alt=""></div>
+                <div class="people-info">
+                  <div class="people-name">박석류</div>
+                  <div class="people-talk">룰루랄라</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </section>
+    </main>
+
+    <footer>
+      <div id="footer-left">
+        <div>주식회사 피롯 | 대표 양원채</div>
+        <div>사업자등록번호 : 없어요~</div>
+      </div>
+      <div id="footer-center">
+        <div>All Rights Reserved.</div>
+        <div>Since 2023</div>
+      </div>
+      <div id="footer-right">
+	      <div id="footer-right-img"><img src="{% static 'image/vlogo.png' %}" alt=""></div>
+      </div>
+    </footer>
+  </div>
+
+  <dialog class="modal" id="loginModal">
+    <div class="modal-content">
+      <i id="close-btn" class="ri-close-fill"></i>
+      <div class="modal-logo">
+        <img src="{% static 'image/pirot_logo_long.png' %}" alt="피롯로고">
+      </div>
+      <div class="login-form">
+        <form action="/user/login/" method="post">
+          {% csrf_token %}
+          <div class="email-label">아이디</div>
+          <input type="text" placeholder="아이디를 입력하세요" name="username">
+          <div class="password-label">비밀번호</div>
+          <input type="text" placeholder="비밀번호를 입력하세요" name="password">
+          <input type="submit" value="로그인">
+        </form>
+      </div>
+      <div class="signup-sentence">
+        <p>피롯이 처음이신가요?<a href="/user/signup/"> &nbsp회원가입</a></p>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="modal" id="signupModal">
+    <div class="modal-content">
+      <i id="close-btn" class="ri-close-fill"></i>
+      <div class="modal-logo">
+        <img src="{% static 'image/pirot_logo_long.png' %}" alt="피롯로고">
+      </div>
+      <div class="signup-text">
+        <p>피롯 계정이 없으신가요?</p>
+        <p>빠르게 가입해보세요!</p>
+      </div>
+      <div class="signup-modal-form">
+        <a href="/user/signup/"><input type="button" value="회원가입하기"></a>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="{% static 'js/index.js' %}"></script>
+  <script>
+    //'채팅방 들어가기' 버튼, '로그인' 버튼 인 경우 경로 다르게 설정하는 코드
+    const multiPurposeButton = document.querySelector(".login-btn");
+    if (multiPurposeButton.id === "enter") {
+      multiPurposeButton.addEventListener("click", () => {
+        location.href = '/room/{{ myJoinInfo.first.passer.channel.id }}/main/';
+      });
+    }
+    else if (multiPurposeButton.id === "login") {
+      multiPurposeButton.addEventListener("click", () => {
+        if ("{{ user }}" !== 'AnonymousUser') {
+          location.href = '/room/{{ myJoinInfo.first.passer.channel.id }}/main/';
+        }
+        else {
+          loginModal.showModal();
+          loginModal.style.opacity = '1';
+        }
+      });
+    };
+    loginModal.style.opacity = '0';
+  </script>
+</body>
+
+</html>

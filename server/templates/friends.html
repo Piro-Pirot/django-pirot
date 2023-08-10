@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pirot</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <div class="container">
+        <section class="icon-bar">
+            <div class="top-icons">
+                <img src="{% static 'image/chat_room/group_clicked.png' %}" alt="친구아이콘">
+                <img src="{% static 'image/chat_room/chat.png' %}" alt="채팅아이콘">
+            </div>
+            <div class="bottom-icons">
+                <img src="{% static 'image/chat_room/setting.png' %}" alt="설정아이콘">
+                {% if request.user.profile_img %}
+                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+                {% else %}
+                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ channel.default_image.url }}" alt="프로필"></a>
+                {% endif %}
+            </div>
+        </section>
+        <section class="middle-section">
+            <div class="search-box">
+                <input type="text">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="logged-in-user">
+                <img class="profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필">
+                <div class="logged-in-user-name">
+                    19기 양원채
+                </div>
+            </div>
+            <div class="friends">
+                기수 목록
+            </div>
+        </section>
+        <section class="chat-section">
+            <div class="chat-name"></div>
+            <div class="chat-container">
+                <div class="conversation"></div>
+                <div class="board"></div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
+</body>
+</html>
