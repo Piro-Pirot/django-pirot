@@ -1,5 +1,5 @@
 // 서버와 Socket 연결 설정
-const socket = io('http://localhost:8000/');
+const socket = io();
 
 // 연결 성공 시 이벤트 리스너
 socket.on('connect', async () => {

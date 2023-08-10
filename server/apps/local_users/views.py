@@ -36,13 +36,13 @@ def login(request):
             myJoinInfo = Join.objects.filter(user__name=request.user.name).first()
             if not myJoinInfo == None:
                 return redirect(f'/room/{myJoinInfo.passer.channel.id}/main/')
-            else:
-                return redirect('/')
+            return redirect('/')
         else:
-            context = {
-                'form': form,
-            }
-            return render(request, template_name='index.html', context=context)
+            return render(request, template_name='error.html', {'errorMsg': '로그인 오류'})
+#            context = {
+#                'form': form,
+#            }
+#            return render(request, template_name='index.html', context=context)
     else:
         form = AuthenticationForm()
         context = {
@@ -95,6 +95,7 @@ def profile_setting(request, channelID):
 
 def start(request):
     return render(request, template_name="users/channel.html")
+
 
 def channel_create(request):
     if request.method == 'POST':
