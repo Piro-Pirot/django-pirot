@@ -1,4 +1,4 @@
-import json
+import json, datetime
 from django.shortcuts import redirect, render
 from .models import *
 from server.apps.bubbles.models import *
@@ -190,8 +190,14 @@ def enter_room(request, channelId, roomId, type):
     # jsonBubbles = serializers.serialize('json', bubbles)
     # print(jsonBubbles)
 
+
+    def json_default(value):
+        if isinstance(value, datetime.datetime):
+            return value.strftime('%Y-%m-%d')
+
     posts = list(posts)
-    jsonPosts = json.dumps(posts, default=str)
+    jsonPosts = json.dumps(posts, default=json_default)
+
     # 여러 개의 구분된 값은 어떻게 보내징 근데 굳이 필요하나
     # happys = list(happys)
     # jsonHappys = json.dumps(happys, default=str)
