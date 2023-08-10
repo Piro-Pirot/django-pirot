@@ -28,7 +28,7 @@ class Bookmark(models.Model):
 #  sms 인증
 class SMS_Auth(models.Model):
     phone_num = models.CharField(verbose_name='휴대폰 번호', max_length=20) # 첫번째 매개변수 : (사용자 인터페이스에 표시되는) 필드의 이름
-    auth_num = models.CharField(verbose_name='인증번호',  max_length=10)
+    auth_num = models.CharField(verbose_name='인증번호',  max_length=10, null=True)
     
 #     class Meta :
 #         db_table = 'authentications' 

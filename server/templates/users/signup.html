@@ -6,8 +6,8 @@
 <form method="POST" action="">
     {% csrf_token %}
     <div>
-        <label for="{{ form.name.id_for_label }}">Name(닉네임이 아닌 실명):</label>
-        {{ form.name }}
+        <label for="{{ form.username.id_for_label }}">Name(닉네임이 아닌 실명):</label>
+        {{ form.username }}
     </div>
     
     <div>
@@ -19,13 +19,12 @@
         <label for="{{ form.password2.id_for_label }}">Password confirmation:</label>
         {{ form.password2 }}
     </div>
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <div>
         {% comment %} label태그의 for 속성과 input 태그의 name 속성을 일치시키면
         해당 label 태그를 클릭할 때 연결된 input 요소가 자동으로 활성화됨 {% endcomment %}
-        <label for="{{ form.phone_number.id_for_label }}">전화번호:</label>
-        <input type="text" id="phoneInput" name="phone_number" oninput="input_phone_num()">
+        <label for="phone_number">전화번호:</label>
+        <input type="text" id="phone_number" name="phone_number" oninput="input_phone_num()">
 
         <button disabled id='send_sms' onclick="send_authnum()">인증번호 전송</button>
 
@@ -34,8 +33,9 @@
 
     <div>
         <div id="time_limit">03:00</div>
-        <input id="input_authnum" type="text" oninput="check_authnum()">
-        <button disabled id='confirm' onclick="confirm_authnum()">인증확인</button>
+        {% comment %} oninput="check_authnum()" {% endcomment %}
+        <input id="input_authnum" type="text">
+        <button disabled id='confirm' onclick="confirm_authnum()">인증하기</button>
     </div>
 
     {% comment %} {{ form }} {% endcomment %}

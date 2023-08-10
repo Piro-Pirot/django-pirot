@@ -26,11 +26,11 @@ class SignupForm(UserCreationForm):
         user.save()
         
         # SMS_Auth 모델의 phone_number 필드에 저장
-        SMS_Auth.objects.create(phone_number=phone_number, auth_num=None)
+        SMS_Auth.objects.create(phone_num=phone_number, auth_num=None)
         
         return user
     
     class Meta:
         model = User
-        fields = ['name', 'password1', 'password2', 'phone_number']
+        fields = ['username', 'password1', 'password2', 'phone_number']
         # fields = '__all__'
