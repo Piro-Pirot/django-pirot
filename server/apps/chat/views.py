@@ -96,6 +96,7 @@ def main_room(request, channelId, type):
             'urlType': type,
             'myChannels': myChannels,
             'jsonPosts' : '',
+            # 'jsonHappys' : '',
         }
     )
 
@@ -152,9 +153,10 @@ def enter_room(request, channelId, roomId, type):
         posts = Post.objects.filter(room=curRoom).values(
             'id', 'content', 'room', 'created_at', 'user__username'
         )
-        # happys = Happy.objects.filter(post__room=curRoom).values(
-        #     'post__id'
-        # )
+        happys = Happy.objects.filter(post__room=curRoom).values(
+            'post__id'
+        )
+    
         # sads = Sad.objects.filter(post__room=curRoom).values(
         #     'post__id'
         # ) 어차피 happy나 sad나 post__id가 같긴 한데..
@@ -170,6 +172,9 @@ def enter_room(request, channelId, roomId, type):
         posts = Post.objects.filter(room=curRoom).values(
             'id', 'content', 'room', 'created_at', 'user__username'
         )
+        # happys = Happy.objects.filter(post__room=curRoom).values(
+        #     'post__id'
+        # )
 
     if curRoom.room_name == '__direct':
         directRoomMember = curRoom.roommember_set.all()
@@ -200,7 +205,8 @@ def enter_room(request, channelId, roomId, type):
 
     # 여러 개의 구분된 값은 어떻게 보내징 근데 굳이 필요하나
     # happys = list(happys)
-    # jsonHappys = json.dumps(happys, default=str)
+    # jsonHappys = json.dumps(happys, default=int)
+
     # sads = list(sads)
     # jsonSads = json.dumps(sads, default=str)
 
@@ -223,6 +229,7 @@ def enter_room(request, channelId, roomId, type):
                     'urlType': type,
                     'myChannels': myChannels,
                     'jsonPosts' : jsonPosts,
+                    # 'jsonHappys' : jsonHappys,
                 }
             )
         

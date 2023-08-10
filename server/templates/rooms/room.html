@@ -62,14 +62,30 @@
     let converations = document.querySelector('.conversation');
 
 
+    // let happyList = [];
+    // if(`{{ jsonHappys | safe}}` !== '') {
+    //     let jsonHappys = {{jsonHappys | safe}};
+        
+    //     jsonHappys.forEach(element => {
+    //         happyList.push(element);
+    //     });
+
     let postList = [];
     if(`{{ jsonPosts | safe}}` !== '') {
         let jsonPosts = {{jsonPosts | safe}};
         
         jsonPosts.forEach(element => {
+            postid = element['id']
+            // postid = element['id']
+            // if happylist의 post__id가 postid이면 count++
+            // count값을 'happyCount'라는 키값으로 리스트에 저장.
             postList.push(element);
         });
+        // postList의 형태는 [포스트1정보, 포스트2정보, 포스트3정보, ...] 여기서 차례대로 post id 정보만 빼온다.
+        // 그 후 Happy object 역참조할랬는데 되나? 아 그러면 따로 받아와서..
+        
     }
+    
 
     // 게시글을 담을 곳
     let posts = document.querySelector('.board');

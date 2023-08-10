@@ -14,7 +14,24 @@ async def save_post(room, data):
     )
     await sync_to_async(newPost.save)()
 
-    return newPost
+    HappyCount = await sync_to_async(Happy.objects.filter(post__id=newPost.id).count)()
+
+    return newPost, HappyCount
+
+#DB에 기뻐요 객체 저장
+async def save_happy(data):
+    curUserObj = await sync_to_async(User.objects.get)(username=data['user'])
+    curPostObj = await sync_to_async(Post.objects.get)(id=data['postId'])
+
+    newHappy = await sync_to_async(Happy.objects.create)(
+        post = curPostObj,
+        user = curUserObj,
+    )
+    await sync_to_async(newHappy.save)()
+
+    HappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId']).count)()
+
+    return newHappy, HappyCount
 
 
 # 새 게시글 버튼 누르면 작성 창 등장 -> url : /create
