@@ -1,17 +1,12 @@
+{% extends 'startBase.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-</head>
-<body>
+{% block content %}
     <div class="assgin-container">
         <div><a href="/"><img src="{% static 'image/pirot_logo_long.png' %}"></a></div>
+   
         <div class="assgin-box">
+            <div>회원가입</div>
             <form method="POST" action="">
                 {% csrf_token %}
                 <div class="form-group">
@@ -33,8 +28,5 @@
             </form>
         </div>
     </div>
-        
-    
-    
-</body>
-</html>
+
+{% endblock content %}
