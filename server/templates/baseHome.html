@@ -68,9 +68,42 @@
         </section>
     </div>
     <dialog class="modal settings-modal">
+        <i id="close-btn" class="ri-close-fill"></i>
         <div class="modal-content">
-            <i id="close-btn" class="ri-close-fill"></i>
-            <a href="/user/logout/">로그아웃!!!!</a>
+            <div class="title">
+                전체 설정
+            </div>
+            <div class="theme-select">
+                <div class="theme-title">
+                    테마설정
+                </div>
+                <div class="theme-modes">
+                    <div class="checkbox-wrapper-13">
+                        <input id="lightMode" type="checkbox">
+                        <label for="lightMode">라이트모드</label>
+                    </div>
+                    <div class="checkbox-wrapper-13">
+                        <input id="darkMode" type="checkbox">
+                        <label for="darkMode">다크모드</label>
+                    </div>
+                </div>
+            </div>
+            <div class="alarm-select">
+                <div class="alarm-title">
+                    알람 설정
+                </div>
+                <div class="checkbox-wrapper-22 alarm-toggle">
+                    <label class="switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </div>
+            <input id="settings-save" type="button" value="저장하기">
+            <a href="/user/logout/" id="settings-logout">
+                <i class="ri-logout-box-r-line"></i>
+                로그아웃
+            </a>
         </div>
     </dialog>
 
