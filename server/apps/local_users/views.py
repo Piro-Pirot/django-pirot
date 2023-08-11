@@ -94,5 +94,5 @@ def profile_setting(request, channelID):
         'level' : level,
     }
     
-    return render(request, 'users/profilesetting.html', context=context)
+    return render(request, template_name='users/profilesetting.html', context=context)
 

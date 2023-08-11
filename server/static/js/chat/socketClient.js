@@ -41,12 +41,13 @@ socket.on('display_secret_message', async (data) => {
 
 function onClickSendMessage(user, id) {
     // 서버로 메시지 전송
-    const msg = document.querySelector('.input').value;
+    const msgBox = document.querySelector(".input");
+    const msg = msgBox.value;
     // 아무것도 안 썼을 때 예외 처리
     if(msg === '') return;
     console.log(msg);
 
-    bScroll = calcScroll();
+    msgBox.focus();
 
     controlScroll();
 
@@ -89,15 +90,21 @@ function displayMessage(bubbleData) {
     }
     nameLabel.classList.add('bubble-username');
 
-    bubbleHeader.appendChild(profileImg);
-    bubbleHeader.appendChild(nameLabel);
+    if(bubbleData['user'] != curUsername) {
+        bubbleHeader.appendChild(profileImg);
+        bubbleHeader.appendChild(nameLabel);
+    }
+
 
     // 내용
     let bubbleContent = document.createElement('div');
     bubbleContent.classList.add('bubble-content');
     bubbleContent.innerHTML = bubbleData['msg'];
 
-    bubbleContainer.appendChild(bubbleHeader);
+    if(bubbleData['user'] != curUsername) {
+        bubbleContainer.appendChild(bubbleHeader);  
+    };
+
     bubbleContainer.appendChild(bubbleContent);
 
     bubbleDiv.appendChild(bubbleContainer);

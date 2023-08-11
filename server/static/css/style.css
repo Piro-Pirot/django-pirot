@@ -40,15 +40,15 @@ a:hover, a:active {
 
 ::-webkit-scrollbar {
   /* 스크롤바 전체 영역 */
-  width: 12px;
-  height: 4px;
+    width: 5px;
+    height: 4px;
 }
 ::-webkit-scrollbar-track {
     /* 스크롤이 움직이는 영역  */
     background-color: transparent;
     margin: 1rem;
     padding: 1rem;
-    margin-top: 6rem;
+    /* margin-top: 6rem; */
 }
 ::-webkit-scrollbar-thumb {
     /*  스크롤  */

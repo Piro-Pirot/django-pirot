@@ -84,6 +84,7 @@ function createBubble(bubbleData) {
     profileImg.setAttribute('src', bubbleData['profile_img']);
 
     let nameLabel = document.createElement('label');
+
     if(curRoomType == 1) {
         // 익명 질문 방이면
         nameLabel.innerText = bubbleData['nickname'];
@@ -92,15 +93,21 @@ function createBubble(bubbleData) {
     }
     nameLabel.classList.add('bubble-username');
 
-    bubbleHeader.appendChild(profileImg);
-    bubbleHeader.appendChild(nameLabel);
+    if (bubbleData['user__username'] !== curUsername) {
+        bubbleHeader.appendChild(profileImg);
+        bubbleHeader.appendChild(nameLabel);
+    }
+
 
     // 내용
     let bubbleContent = document.createElement('div');
     bubbleContent.classList.add('bubble-content');
     bubbleContent.innerHTML = bubbleData['content'];
 
-    bubbleContainer.appendChild(bubbleHeader);
+    if (bubbleData['user__username'] !== curUsername) {
+        bubbleContainer.appendChild(bubbleHeader);
+    }
+
     bubbleContainer.appendChild(bubbleContent);
 
     bubbleDiv.appendChild(bubbleContainer);

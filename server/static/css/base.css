@@ -1,6 +1,7 @@
 @import 'style.css';
 @import 'room.css';
 @import 'roomModal.css';
+@import 'profile-setting.css';
 @import 'friendly.css';
 
 .container {
@@ -72,6 +73,8 @@
   width: 20rem;
   /* background-color: blue; */
   padding-left: 1.7rem;
+  /* border-right: 1px solid black; */
+
 }
 
 .middle-section-content {
@@ -218,31 +221,127 @@ background-color: #f3b95431;
 .chat-name {
   height: 6rem;
   /* background-color: yellow; */
+  border-bottom: 1px solid black;
 }
 
 .chat-container {
   display: flex;
   height: calc(100vh - 6rem);
+  border-left: 1px solid black;
 }
 
-.chat-container .chat-conversation-container .board-container {
-  display: flex;
+/* .chat-container .chat-conversation-container .board-container {
+  /* display: flex;
   flex-direction: column;
+} */
+
+.chat-conversation-container {
+  width: calc(100vw - 42rem);
 }
 
 .conversation {
-  width: calc(100vw - 42rem);
-  height: calc(100vh - 6rem);
-  background-color: slateblue;
+  width: 100%;
+  height: calc(100vh - 6rem - 6rem);
   overflow-x: hidden;
   overflow-y: scroll;
+}
+
+.chat-input {
+  width: 100%;
+  height: 6rem;
+  padding: 0.5rem 0.5rem 1.4rem 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-input textarea {
+  outline: 0;
+  padding: 0.3rem 0.5rem;
+  height: 100%;
+  width: 80%;
+  border: 1px solid var(--carrot-light);
+  border-radius: 0.5rem;
+  resize: none;
+}
+
+.chat-input textarea:focus {
+  border: 1px solid var(--carrot-light);
+}
+
+.chat-icons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  height: 100%;
+  width: 4rem;
+  border: 1px solid var(--carrot-light);
+  border-radius: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.chat-icons div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-icons div:hover {
+  background-color: #face8331;
+}
+
+.chat-icons i {
+  font-size: 1.3rem;
+}
+
+#attachIcon {
+  /* padding: 0.2rem; */
+  border-top-left-radius: 0.5rem;
+}
+
+#reserveMsg {
+  border-top-right-radius: 0.5rem;
+}
+
+#imageIcon {
+  border-bottom-left-radius: 0.5rem;
+}
+
+#codeIcon {
+  border-bottom-right-radius: 0.5rem;
+}
+
+.chat-input button {
+  height: 100%;
+  width: 15%;
+  margin-left: 0.5rem;
+  background-color: var(--carrot-color);
+  color: white;
+  font-size: 1.2rem;
+  border: 0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+.chat-input button:hover {
+  background-color: var(--carrot-dark);
+}
+
+.board-container {
+  height: calc(100vh - 6rem);
+  width: 18rem;
 }
 
 .board {
   width: 18rem;
-  height: calc(100vh - 6rem);
+  height: calc(100vh - 6rem - 4rem);
   background-color: aqua;
   overflow-x: hidden;
   overflow-y: scroll;
+}
+
+.post-input {
+  height: 4rem;
+  background-color: pink;
 }
 
