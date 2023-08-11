@@ -129,7 +129,7 @@ function displayPost(postData) {
         happyBtn.appendChild(happyImg);
         happyBtn.appendChild(happyCount);
         happyBtn.onclick = function() {
-            onClickHappy(postData['user'], postData['newpostId'], postData['roomId']);
+            onClickHappy(postData['newpostId'], postData['roomId']);
         };
         buttonDiv.appendChild(happyBtn); // 기뻐요
 
@@ -138,12 +138,12 @@ function displayPost(postData) {
         let sadImg = document.createElement('i');
         sadImg.classList.add('ri-emotion-unhappy-line');
         let sadCount = document.createElement('span');
-        sadCount.innerText = '0';
+        sadCount.innerText = postData['sadCount'];
         sadCount.classList.add(`sad-count-${postData['newpostId']}`);
         sadBtn.appendChild(sadImg);
         sadBtn.appendChild(sadCount);
         sadBtn.onclick = function() {
-            onClickSad(postData['user'], postData['newpostId'], postData['roomId']);
+            onClickSad(postData['newpostId'], postData['roomId']); //여기 좋아요를 누르는 유저가 들어가야함
         };
         buttonDiv.appendChild(sadBtn); // 슬퍼요
 
@@ -168,7 +168,7 @@ function displayPost(postData) {
         happyBtn.appendChild(happyImg);
         happyBtn.appendChild(happyCount);
         happyBtn.onclick = function() {
-            onClickHappy(postData['user'], postData['newpostId'], postData['roomId']);
+            onClickHappy(postData['newpostId'], postData['roomId']);
         };
         buttonDiv.appendChild(happyBtn); // 기뻐요
 
@@ -177,12 +177,12 @@ function displayPost(postData) {
         let sadImg = document.createElement('i');
         sadImg.classList.add('ri-emotion-unhappy-line');
         let sadCount = document.createElement('span');
-        sadCount.innerText = '0';
+        sadCount.innerText = postData['sadCount'];
         sadCount.classList.add(`sad-count-${postData['newpostId']}`);
         sadBtn.appendChild(sadImg);
         sadBtn.appendChild(sadCount);
         sadBtn.onclick = function() {
-            onClickSad(postData['user'], postData['newpostId'], postData['roomId']);
+            onClickSad(postData['newpostId'], postData['roomId']);
         };
         buttonDiv.appendChild(sadBtn); // 슬퍼요
     }
@@ -215,11 +215,25 @@ socket.on('display_happy', async (data) => {
     displayHappy(data);
 });
 
+socket.on('display_sad', async (data) => {
+    console.log(data);
+    displaySad(data);
+});
+
 
 // Happy click -> id는 post id
-function onClickHappy(user, post_id, room_id) {
+function onClickHappy(post_id, room_id) {
 
-    socket.emit('send_happy', { 'user': user, 'postId': post_id, 'roomId': room_id});
+    socket.emit('send_happy', {'user': curUsername, 'postId': post_id, 'roomId': room_id});
+    console.log(curUsername)
+    console.log('send successfully');
+
+}
+
+// Sad click -> id는 post id
+function onClickSad(post_id, room_id) {
+
+    socket.emit('send_sad', {'user': curUsername, 'postId': post_id, 'roomId': room_id});
     console.log('send successfully');
 
 }
@@ -234,4 +248,13 @@ async function displayHappy(happyData) {
     let happyCountElement = document.querySelector(classSelector);
 
     happyCountElement.innerText = happyData['happyCount'];
+}
+
+async function displaySad(sadData) {
+    console.log(sadData);
+    let postId = sadData['postId'];
+    let classSelector = `.sad-count-${postId}`
+    let sadCountElement = document.querySelector(classSelector);
+
+    sadCountElement.innerText = sadData['sadCount'];
 }

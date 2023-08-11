@@ -96,7 +96,6 @@ def main_room(request, channelId, type):
             'urlType': type,
             'myChannels': myChannels,
             'jsonPosts' : '',
-            # 'jsonHappys' : '',
         }
     )
 
@@ -156,13 +155,11 @@ def enter_room(request, channelId, roomId, type):
         
         for post in posts:
             happyCount = Happy.objects.filter(post__id=post['id']).count()
+            sadCount = Sad.objects.filter(post__id=post['id']).count()
             post['happyCount'] = happyCount
+            post['sadCount'] = sadCount
 
     
-        # sads = Sad.objects.filter(post__room=curRoom).values(
-        #     'post__id'
-        # ) 어차피 happy나 sad나 post__id가 같긴 한데..
-        # 각 게시물의 슬퍼요 개수를 여기서 계산해서 JS로 넘겨야 HTML에 삽입할 수 있는데 어케 넘겨?
     else:
         roomMembers = RoomMember.objects.filter(room=curRoom)
         # 말풍선 데이터 get
@@ -177,7 +174,9 @@ def enter_room(request, channelId, roomId, type):
 
         for post in posts:
             happyCount = Happy.objects.filter(post__id=post['id']).count()
+            sadCount = Sad.objects.filter(post__id=post['id']).count()
             post['happyCount'] = happyCount
+            post['sadCount'] = sadCount
 
 
     if curRoom.room_name == '__direct':
@@ -200,19 +199,13 @@ def enter_room(request, channelId, roomId, type):
     # print(jsonBubbles)
 
 
+    # datetime 객체를 처리 못하는 에러 핸들링
     def json_default(value):
         if isinstance(value, datetime.datetime):
             return value.strftime('%Y-%m-%d')
 
     posts = list(posts)
     jsonPosts = json.dumps(posts, default=json_default)
-
-    # 여러 개의 구분된 값은 어떻게 보내징 근데 굳이 필요하나
-    # happys = list(happys)
-    # jsonHappys = json.dumps(happys, default=int)
-
-    # sads = list(sads)
-    # jsonSads = json.dumps(sads, default=str)
 
 
     # 현재 로그인 사용자가 채팅 방 멤버라면
@@ -233,7 +226,6 @@ def enter_room(request, channelId, roomId, type):
                     'urlType': type,
                     'myChannels': myChannels,
                     'jsonPosts' : jsonPosts,
-                    # 'jsonHappys' : jsonHappys,
                 }
             )
         

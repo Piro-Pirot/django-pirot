@@ -24,7 +24,7 @@ function createPost(postData) {
         happyBtn.appendChild(happyImg);
         happyBtn.appendChild(happyCount);
         happyBtn.onclick = function() {
-            onClickHappy(postUser, postId, roomId);
+            onClickHappy(postId, roomId);
         };
         buttonDiv.appendChild(happyBtn); // 기뻐요
 
@@ -33,12 +33,12 @@ function createPost(postData) {
         let sadImg = document.createElement('i');
         sadImg.classList.add('ri-emotion-unhappy-line');
         let sadCount = document.createElement('span');
-        sadCount.innerText = '-';
+        sadCount.innerText = postData['sadCount'];
         sadCount.classList.add(`sad-count-${postId}`);
         sadBtn.appendChild(sadImg);
         sadBtn.appendChild(sadCount);
         sadBtn.onclick = function() {
-            onClickSad(postUser, postId, roomId);
+            onClickSad(postId, roomId);
         };
         buttonDiv.appendChild(sadBtn); // 슬퍼요
 
@@ -63,7 +63,7 @@ function createPost(postData) {
         happyBtn.appendChild(happyImg);
         happyBtn.appendChild(happyCount);
         happyBtn.onclick = function() {
-            onClickHappy(postUser, postId, roomId);
+            onClickHappy(postId, roomId);
         };
         buttonDiv.appendChild(happyBtn);
 
@@ -72,12 +72,12 @@ function createPost(postData) {
         let sadImg = document.createElement('i');
         sadImg.classList.add('ri-emotion-unhappy-line');
         let sadCount = document.createElement('span');
-        sadCount.innerText = '-';
+        sadCount.innerText = postData['sadCount'];
         sadCount.classList.add(`sad-count-${postId}`);
         sadBtn.appendChild(sadImg);
         sadBtn.appendChild(sadCount);
         sadBtn.onclick = function() {
-            onClickSad(postUser, postId, roomId);
+            onClickSad(postId, roomId);
         };
         buttonDiv.appendChild(sadBtn);
 
