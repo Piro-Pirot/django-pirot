@@ -258,17 +258,25 @@ function onClickSad(post_id, room_id) {
 async function displayHappy(happyData) {
     console.log(happyData);
     let postId = happyData['postId'];
-    let classSelector = `.happy-count-${postId}`
-    let happyCountElement = document.querySelector(classSelector);
 
+    let happySelector = `.happy-count-${postId}`
+    let happyCountElement = document.querySelector(happySelector);
     happyCountElement.innerText = happyData['happyCount'];
+
+    let sadSelector = `.sad-count-${postId}`
+    let sadCountElement = document.querySelector(sadSelector);
+    sadCountElement.innerText = happyData['sadCount'];
 }
 
 async function displaySad(sadData) {
     console.log(sadData);
     let postId = sadData['postId'];
-    let classSelector = `.sad-count-${postId}`
-    let sadCountElement = document.querySelector(classSelector);
+    
+    let happySelector = `.happy-count-${postId}`
+    let happyCountElement = document.querySelector(happySelector);
+    happyCountElement.innerText = sadData['happyCount'];
 
+    let sadSelector = `.sad-count-${postId}`
+    let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = sadData['sadCount'];
 }

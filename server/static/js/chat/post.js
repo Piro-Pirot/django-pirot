@@ -111,17 +111,31 @@ postList.forEach(element => createPost(element));
 
 // 기뻐요, 슬퍼요 만드는 코드
 
-// function createHappy(happyData) {
-//     console.log(happyData);
-//     let postId = happyData['postId'];
-//     let classSelector = `.happy-count-${postId}`
-//     let happyCountElement = document.querySelector(classSelector);
+function createHappy(happyData) {
+    console.log(happyData);
+    let postId = happyData['postId'];
+    
+    let happySelector = `.happy-count-${postId}`
+    let happyCountElement = document.querySelector(happySelector);
+    happyCountElement.innerText = happyData['happyCount'];
 
-//     happyCountElement.innerText = happyData['happyCount'];
-// }
+    let sadSelector = `.sad-count-${postId}`
+    let sadCountElement = document.querySelector(sadSelector);
+    sadCountElement.innerText = happyData['sadCount'];
+}
 
+function createSad(sadData) {
+    console.log(sadData);
+    let postId = sadData['postId'];
+    
+    let happySelector = `.happy-count-${postId}`
+    let happyCountElement = document.querySelector(happySelector);
+    happyCountElement.innerText = sadData['happyCount']; //여기서 접속한 유저의 happyCount가 보여지는 오류?
 
-
+    let sadSelector = `.sad-count-${postId}`
+    let sadCountElement = document.querySelector(sadSelector);
+    sadCountElement.innerText = sadData['sadCount'];
+}
 
 // function controlScrollPost() {
 //     postSection = document.querySelector('.board');
