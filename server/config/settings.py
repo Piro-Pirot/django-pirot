@@ -148,6 +148,12 @@ if DEBUG == True:
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
 
+# if DEBUG == True:
+#     # STATIC_ROOT = os.path.join(BASE_DIR, 'server/static')
+#     STATICFILES_DIRS = [os.path.join(BASE_DIR, "server/static")]
+# else:
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
+
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'server/media')

@@ -139,7 +139,7 @@ class SMS_send(View):
         requests.post(URL, data=json.dumps(body), headers=headers)
     
     # SMS 인증번호 생성 , 데이터 베이스에 저장한 후 SMS 발송하는 함수
-    def send_sms(self,request):
+    def post(self,request):
         # http POST 요청으로 전달된 JSON 데이터를 파싱(JSON->python). 사용자가 입력한 휴대폰 번호가 포함되어있음.
         data = json.loads(request.body)
         try:
@@ -157,6 +157,10 @@ class SMS_send(View):
             ).save()
             self.request_api(phone_num=check_phone_num, auth_num=sms_auth_num)
             return JsonResponse({'message' : '인증번호 발송 및 DB 입력완료'}, status=200)
+        # if request.method == 'POST':
+            
+        # else:
+        #     return JsonResponse({'message': '잘못된 요청 메서드'}, status=405)
         
         
 
