@@ -39,7 +39,7 @@ a:hover, a:active {
 
 ::-webkit-scrollbar {
   /* 스크롤바 전체 영역 */
-    width: 12px;
+    width: 5px;
     height: 4px;
 }
 ::-webkit-scrollbar-track {

@@ -23,10 +23,13 @@ socket.on('display_secret_message', async (data) => {
 
 function onClickSendMessage(user, id) {
     // 서버로 메시지 전송
-    const msg = document.querySelector('.input').value;
+    const msgBox = document.querySelector(".input");
+    const msg = msgBox.value;
     // 아무것도 안 썼을 때 예외 처리
     if(msg === '') return;
     console.log(msg);
+
+    msgBox.focus();
 
     socket.emit('send_message', {'msg': msg, 'file': 'delete me js', 'user': user, 'roomId': id});
     console.log('send successfully');

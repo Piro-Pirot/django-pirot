@@ -1,11 +1,15 @@
 .bubble-box,
 .bubble-box-me {
     display: block;
-    max-width: 50vw;
+}
+
+.bubble-box {
+    margin-left: 0.4rem;
 }
 
 .bubble-box-me {
     text-align: right;
+    margin-right: 0.4rem;
 }
 
 .bubble-box .bubble-header {
@@ -47,7 +51,7 @@
 
 .bubble-container .bubble-content {
     border: 0.1rem solid var(--carrot-dark);
-    border-radius: 1rem;
+    border-radius: 0 1rem 1rem 1rem;
 }
 
 
@@ -133,7 +137,6 @@
 .btn-room-create {
     width: 100%;
     height: 6rem;
-    /* background-color: red; */
     padding: 1.4rem 0 1.4rem;
 }
 
