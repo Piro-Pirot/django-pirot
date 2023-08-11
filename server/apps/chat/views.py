@@ -189,6 +189,10 @@ def enter_room(request, channelId, roomId, type):
 
     else:
         roomMembers = RoomMember.objects.filter(room=curRoom)
+        # 게시글 데이터 get
+        posts = Post.objects.filter(room=curRoom).values(
+            'id', 'content', 'room', 'created_at', 'user__username'
+        )
 
         for post in posts:
             happyCount = Happy.objects.filter(post__id=post['id']).count()
@@ -229,6 +233,7 @@ def enter_room(request, channelId, roomId, type):
                     'myPassInfo': myPassInfo,
                     'urlType': type,
                     'myChannels': myChannels,
+                    'jsonPosts' : jsonPosts,
                 }
             )
         
