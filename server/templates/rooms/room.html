@@ -28,7 +28,13 @@
             <button type="button" class='btn-send' onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
         </div>
     </div>
-    <div class="board"></div>
+    <div class="board-container">
+        <div class="board"></div>
+        <div class="post-input">
+            <input type="text" class="post">
+            <button type="button" onclick="onClickSendPost('{{ user }}', '{{ room.id }}')">작성</button>
+        </div>
+    </div>
 </div>
 
 
@@ -46,10 +52,14 @@
 
     // 말풍선을 담을 곳
     let conversations = document.querySelector('.conversation');
+
+    // 게시글을 담을 곳
+    let posts = document.querySelector('.board');
 </script>
 
 <script src="{% static 'js/chat/room.js' %}"></script>
 <script src="{% static 'js/chat/bubble.js' %}"></script>
+<script src="{% static 'js/chat/post.js' %}"></script>
 <script src="{% static 'js/chat/socketClient.js' %}"></script>
 
 {% endblock %}

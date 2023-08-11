@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
 from server.apps.channels.models import Staff, Channel, Join, Passer
 from .models import *
+from django.views.decorators.csrf import csrf_exempt
 
 
 def main(request):
@@ -28,7 +29,7 @@ def signup(request):
         }
         return render(request, template_name='users/signup.html', context=context)
 
-
+@csrf_exempt
 def login(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, request.POST)

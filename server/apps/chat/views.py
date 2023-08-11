@@ -1,8 +1,9 @@
-import json
+import json, datetime
 from django.shortcuts import redirect, render
 from .models import *
 from server.apps.bubbles.models import *
 from server.apps.channels.models import *
+from server.apps.posts.models import *
 
 from django.db.models import Q, F
 
@@ -120,6 +121,7 @@ def main_room(request, channelId, type):
             'myPassInfo': myPassInfo,
             'urlType': type,
             'myChannels': myChannels,
+            'jsonPosts' : '',
         }
     )
 

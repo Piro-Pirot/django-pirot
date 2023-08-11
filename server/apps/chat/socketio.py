@@ -7,6 +7,7 @@ from asgiref.sync import sync_to_async
 
 from server.apps.chat.models import *
 import server.apps.bubbles.views as bubble
+import server.apps.posts.views as post
 
 # Socket.IO 서버 생성
 sio = socketio.AsyncServer(async_mode='asgi')
@@ -80,3 +81,15 @@ async def send_message(sid, data):
 @sio.event
 async def disconnect(sid):
     print('disconnect ', sid)
+
+
+@sio.on('send_post')
+async def send_post(sid, data):
+    roomId = int(data['roomId'])
+    room = await sync_to_async(Room.objects.get)(id=roomId)
+
+    newpost = await post.save_post(room, data)
+    data['newpostId'] = newpost.id
+    data['created_at'] = newpost.created_at.strftime('%Y-%m-%d')
+    await sio.emit('display_post', data, to=roomId)
+    print('post was saved')
