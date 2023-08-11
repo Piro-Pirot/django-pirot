@@ -88,8 +88,40 @@ async def send_post(sid, data):
     roomId = int(data['roomId'])
     room = await sync_to_async(Room.objects.get)(id=roomId)
 
-    newpost = await post.save_post(room, data)
+    newpostdata = await post.save_post(room, data)
+    newpost, happyCount, sadCount = newpostdata
+
     data['newpostId'] = newpost.id
     data['created_at'] = newpost.created_at.strftime('%Y-%m-%d')
+    data['happyCount'] = happyCount
+    data['sadCount'] = sadCount
+    
     await sio.emit('display_post', data, to=roomId)
     print('post was saved')
+
+
+@sio.on('send_happy')
+async def send_happy(sid, data):
+    roomId = int(data['roomId'])
+    print(data)
+
+    newhappydata = await post.save_happy(data)
+    newhappy, happyCount = newhappydata
+    data['newhappyId'] = newhappy.id
+    data['happyCount'] = happyCount
+
+    await sio.emit('display_happy', data, to=roomId)
+    print('happy was saved')
+    
+
+@sio.on('send_sad')
+async def send_sad(sid, data):
+    roomId = int(data['roomId'])
+
+    newsaddata = await post.save_sad(data)
+    newsad, sadCount = newsaddata
+    data['newsadId'] = newsad.id
+    data['sadCount'] = sadCount
+
+    await sio.emit('display_sad', data, to=roomId)
+    print('sad was saved')
