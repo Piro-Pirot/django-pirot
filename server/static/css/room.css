@@ -42,7 +42,7 @@
 .bubble-container-me .bubble-content {
     border-radius: 1.3rem;
     background-color: var(--carrot-color);
-    text-align: right;
+    text-align: left;
 }
 
 .bubble-container .bubble-content {
