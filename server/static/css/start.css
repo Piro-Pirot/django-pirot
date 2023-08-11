@@ -105,15 +105,19 @@ main {
   background-color: var(--carrot-dark);
 }
 
-.channel-create {
+.channel-container {
   margin-bottom: 3rem;
+}
+
+.channel-create {
+  /* margin-bottom: 3rem; */
 }
 
 
 /* channel create page */
 
-.start-container.channel-create {
-  width: 80%;
+.start-container .channel-create {
+  /* width: 80%; */
 }
 
 .channel-create-title {
