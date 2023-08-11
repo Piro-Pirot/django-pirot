@@ -9,6 +9,10 @@ from server.apps.chat.models import *
 import server.apps.bubbles.views as bubble
 import server.apps.posts.views as post
 
+ROOM = 0
+BLIND_ROOM = 1
+DIRECT_ROOM = 2
+
 # Socket.IO 서버 생성
 sio = socketio.AsyncServer(async_mode='asgi')
 app = socketio.ASGIApp(sio)
@@ -67,7 +71,7 @@ async def send_message(sid, data):
     # 마크다운
     data['msg'] = markdown.markdown(data['msg'], extensions=['fenced_code', 'codehilite'])
 
-    if room.room_type == 1:
+    if room.room_type == BLIND_ROOM:
         #익명채팅방
         newBubble = await bubble.save_blind_msg(room, data)
         data['nickname'] = newBubble.nickname

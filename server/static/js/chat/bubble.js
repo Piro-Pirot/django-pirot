@@ -10,14 +10,12 @@ function controlScroll() {
 
 function calcScroll() {
     // 전체 스크롤 크기 == 내 현재 위치이면 맨 아래에 위치
-    return conversationSection.scrollHeight - curScroll;
+    return conversationSection.scrollHeight - conversationSection.scrollTop;
 }
 
 // 현재 스크롤 위치
-let curScroll = conversationSection.scrollTop;
 conversationSection.addEventListener('scroll', () => {
-    curScroll = conversationSection.scrollTop;
-    console.log(calcScroll());
+    bScroll = calcScroll();
 })
 
 // 말풍선 데이터를 Ajax 방식으로 받아오기

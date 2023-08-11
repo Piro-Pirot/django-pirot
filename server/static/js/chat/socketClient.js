@@ -10,12 +10,20 @@ socket.on('connect', async () => {
     });
 });
 
+let bScroll = 0;
 
 socket.on('display_message', async (data) => {
     console.log(data);
     const offsetH = displayMessage(data);
+    // console.log('offsetH is ...', offsetH);
+    // console.log('conv height is...', conversationSection.scrollHeight);
+    // console.log('conv top is...', conversationSection.scrollTop);
+    // console.log('conv now is...', curScroll);
+    // console.log('calcScroll is...', calcScroll());
+    // console.log('bScroll is...', bScroll);
     // 스크롤을 너무 많이 올린 게 아니라면 맨 아래로
-    if(calcScroll() <= 650 + offsetH) {
+    if(bScroll - 700 <= offsetH) {
+        console.log('controlling!');
         controlScroll();
     }
 });
@@ -25,7 +33,8 @@ socket.on('display_secret_message', async (data) => {
     console.log(data);
     const offsetH = displayMessage(data);
     
-    if(calcScroll() <= 800) {
+    if(bScroll - 700 <= offsetH) {
+        console.log('controlling!');
         controlScroll();
     }
 });
@@ -36,6 +45,8 @@ function onClickSendMessage(user, id) {
     // 아무것도 안 썼을 때 예외 처리
     if(msg === '') return;
     console.log(msg);
+
+    bScroll = calcScroll();
 
     controlScroll();
 
