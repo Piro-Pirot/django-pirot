@@ -232,17 +232,26 @@ background-color: #f3b95431;
 
 .conversation {
   width: calc(100vw - 42rem);
-  height: calc(100vh - 6rem);
+  height: calc(100vh - 6rem - 4rem);
   background-color: slateblue;
   overflow-x: hidden;
   overflow-y: scroll;
 }
 
+.chat-input {
+  background-color: pink;
+  height: 4rem;
+}
+
 .board {
   width: 18rem;
-  height: calc(100vh - 6rem);
+  height: calc(100vh - 6rem - 4rem);
   background-color: aqua;
   overflow-x: hidden;
   overflow-y: scroll;
+}
+
+.post-input {
+  height: 4rem;
 }
 

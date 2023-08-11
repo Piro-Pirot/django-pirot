@@ -13,10 +13,12 @@
   0 4px 4px rgba(0,0,0,0.15), 
   0 8px 8px rgba(0,0,0,0.15);
   padding: 3rem;
+  opacity: 0;
 }
 
 .settings-modal #close-btn,
-.room-add-modal #close-btn {
+.room-add-modal #close-btn,
+.chat-settings-modal #close-btn {
   position: absolute;
   right: 1rem;
   top: 1rem;
@@ -47,7 +49,8 @@
 
 .modal-content > i#back-btn:hover,
 .settings-modal #close-btn:hover,
-.room-add-modal #close-btn:hover {
+.room-add-modal #close-btn:hover,
+.chat-settings-modal #close-btn:hover {
   color: gray;
 }
 
