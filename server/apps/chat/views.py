@@ -153,9 +153,11 @@ def enter_room(request, channelId, roomId, type):
         posts = Post.objects.filter(room=curRoom).values(
             'id', 'content', 'room', 'created_at', 'user__username'
         )
-        happys = Happy.objects.filter(post__room=curRoom).values(
-            'post__id'
-        )
+        
+        for post in posts:
+            happyCount = Happy.objects.filter(post__id=post['id']).count()
+            post['happyCount'] = happyCount
+
     
         # sads = Sad.objects.filter(post__room=curRoom).values(
         #     'post__id'
@@ -172,9 +174,11 @@ def enter_room(request, channelId, roomId, type):
         posts = Post.objects.filter(room=curRoom).values(
             'id', 'content', 'room', 'created_at', 'user__username'
         )
-        # happys = Happy.objects.filter(post__room=curRoom).values(
-        #     'post__id'
-        # )
+
+        for post in posts:
+            happyCount = Happy.objects.filter(post__id=post['id']).count()
+            post['happyCount'] = happyCount
+
 
     if curRoom.room_name == '__direct':
         directRoomMember = curRoom.roommember_set.all()

@@ -19,7 +19,7 @@ function createPost(postData) {
         let happyImg = document.createElement('i');
         happyImg.classList.add('ri-emotion-happy-line');
         let happyCount = document.createElement('span');
-        happyCount.innerText = '0';
+        happyCount.innerText = postData['happyCount'];
         happyCount.classList.add(`happy-count-${postId}`);
         happyBtn.appendChild(happyImg);
         happyBtn.appendChild(happyCount);
@@ -33,7 +33,7 @@ function createPost(postData) {
         let sadImg = document.createElement('i');
         sadImg.classList.add('ri-emotion-unhappy-line');
         let sadCount = document.createElement('span');
-        sadCount.innerText = '0';
+        sadCount.innerText = '-';
         sadCount.classList.add(`sad-count-${postId}`);
         sadBtn.appendChild(sadImg);
         sadBtn.appendChild(sadCount);
@@ -58,7 +58,7 @@ function createPost(postData) {
         let happyImg = document.createElement('i');
         happyImg.classList.add('ri-emotion-happy-line');
         let happyCount = document.createElement('span');
-        happyCount.innerText = '0';
+        happyCount.innerText = postData['happyCount'];
         happyCount.classList.add(`happy-count-${postId}`);
         happyBtn.appendChild(happyImg);
         happyBtn.appendChild(happyCount);
@@ -72,7 +72,7 @@ function createPost(postData) {
         let sadImg = document.createElement('i');
         sadImg.classList.add('ri-emotion-unhappy-line');
         let sadCount = document.createElement('span');
-        sadCount.innerText = '0';
+        sadCount.innerText = '-';
         sadCount.classList.add(`sad-count-${postId}`);
         sadBtn.appendChild(sadImg);
         sadBtn.appendChild(sadCount);
@@ -109,16 +109,17 @@ function createPost(postData) {
 
 postList.forEach(element => createPost(element));
 
-// 기뻐요, 슬퍼요 만드는 코드. 클릭하면 생겨야 함.
+// 기뻐요, 슬퍼요 만드는 코드
 
-function createHappy(happyData) {
-    console.log(happyData);
-    let postId = happyData['postId'];
-    let classSelector = `.happy-count-${postId}`
-    let happyCountElement = document.querySelector(classSelector);
+// function createHappy(happyData) {
+//     console.log(happyData);
+//     let postId = happyData['postId'];
+//     let classSelector = `.happy-count-${postId}`
+//     let happyCountElement = document.querySelector(classSelector);
 
-    happyCountElement.innerText = happyData['happyCount'];
-}
+//     happyCountElement.innerText = happyData['happyCount'];
+// }
+
 
 
 

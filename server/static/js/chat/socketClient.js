@@ -124,7 +124,7 @@ function displayPost(postData) {
         let happyImg = document.createElement('i');
         happyImg.classList.add('ri-emotion-happy-line');
         let happyCount = document.createElement('span');
-        happyCount.innerText = '0';
+        happyCount.innerText = postData['happyCount'];
         happyCount.classList.add(`happy-count-${postData['newpostId']}`);
         happyBtn.appendChild(happyImg);
         happyBtn.appendChild(happyCount);
