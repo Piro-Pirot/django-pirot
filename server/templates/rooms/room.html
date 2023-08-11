@@ -44,14 +44,25 @@
 
 <script>    
     // js에서 필요한 정보
-    let curUsername = '{{ user }}';
-    let curUserId = '{{ user.id }}';
+    let curUsername = '{{ user }}'; // admin
+    let curUserId = '{{ user.id }}'; // object(1)
     let curChannelId = {{ channel.id }};
     let curRoomId = {{ room.id }};
     let curRoomType = {{ room.room_type }};
 
     // 말풍선을 담을 곳
     let conversations = document.querySelector('.conversation');
+
+
+    let postList = [];
+    if(`{{ jsonPosts | safe}}` !== '') {
+        let jsonPosts = {{jsonPosts | safe}};
+        
+        jsonPosts.forEach(element => {
+            postid = element['id']
+            postList.push(element);
+        });
+    }
 
     // 게시글을 담을 곳
     let posts = document.querySelector('.board');

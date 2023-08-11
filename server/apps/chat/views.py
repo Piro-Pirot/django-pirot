@@ -176,8 +176,26 @@ def enter_room(request, channelId, roomId, type):
     if curRoom.room_type == 1:
         #익명채팅방
         roomMembers = curRoom.blindroommember_set.all()
+        # 게시글 데이터 get
+        posts = Post.objects.filter(room=curRoom).values(
+            'id', 'content', 'room', 'created_at', 'user__username'
+        )
+        
+        for post in posts:
+            happyCount = Happy.objects.filter(post__id=post['id']).count()
+            sadCount = Sad.objects.filter(post__id=post['id']).count()
+            post['happyCount'] = happyCount
+            post['sadCount'] = sadCount
+
     else:
         roomMembers = RoomMember.objects.filter(room=curRoom)
+
+        for post in posts:
+            happyCount = Happy.objects.filter(post__id=post['id']).count()
+            sadCount = Sad.objects.filter(post__id=post['id']).count()
+            post['happyCount'] = happyCount
+            post['sadCount'] = sadCount
+
 
     if curRoom.room_name == '__direct':
         directRoomMember = curRoom.roommember_set.all()
@@ -186,6 +204,14 @@ def enter_room(request, channelId, roomId, type):
                 otherUser = member.user
                 break
         title = otherUser.join.filter(passer__channel=curChannel)[0].passer
+
+    # datetime 객체를 처리 못하는 에러 핸들링
+    def json_default(value):
+        if isinstance(value, datetime.datetime):
+            return value.strftime('%Y-%m-%d')
+
+    posts = list(posts)
+    jsonPosts = json.dumps(posts, default=json_default)
 
     # 현재 로그인 사용자가 채팅 방 멤버라면
     for member in roomMembers:
