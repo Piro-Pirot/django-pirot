@@ -190,6 +190,10 @@ def enter_room(request, channelId, roomId, type):
     else:
         roomMembers = RoomMember.objects.filter(room=curRoom)
 
+        posts = Post.objects.filter(room=curRoom).values(
+            'id', 'content', 'room', 'created_at', 'user__username'
+        )
+
         for post in posts:
             happyCount = Happy.objects.filter(post__id=post['id']).count()
             sadCount = Sad.objects.filter(post__id=post['id']).count()
