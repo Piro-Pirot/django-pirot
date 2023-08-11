@@ -15,11 +15,11 @@
         <section class="icon-bar">
             <div class="top-icons">
                 {% if urlType == 'friends' %}
-                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-fill friend-icon"></i></a>
-                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line room-icon"></i></a>
+                <a href="/room/{{ channel.id }}/{{ room.id }}/friends/"><i class="ri-team-fill friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/{{ room.id }}/main/"><i class="ri-chat-3-line room-icon"></i></a>
                 {% elif urlType == 'main' %}
-                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line friend-icon"></i></a>
-                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-fill room-icon"></i></a>
+                <a href="/room/{{ channel.id }}/{{ room.id }}/friends/"><i class="ri-team-line friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/{{ room.id }}/main/"><i class="ri-chat-3-fill room-icon"></i></a>
                 {% endif %}
             </div>
             <div class="bottom-icons">
@@ -69,9 +69,42 @@
     </div>
 
     <dialog class="modal settings-modal">
-        <div class="modal-content settings-modal-content">
-            <i id="close-btn" class="ri-close-fill"></i>
-            <a href="/user/logout/">로그아웃!!!!</a>
+        <i id="close-btn" class="ri-close-fill"></i>
+        <div class="modal-content">
+            <div class="title">
+                전체 설정
+            </div>
+            <div class="theme-select">
+                <div class="theme-title">
+                    테마설정
+                </div>
+                <div class="theme-modes">
+                    <div class="checkbox-wrapper-13">
+                        <input id="lightMode" type="checkbox">
+                        <label for="lightMode">라이트모드</label>
+                    </div>
+                    <div class="checkbox-wrapper-13">
+                        <input id="darkMode" type="checkbox">
+                        <label for="darkMode">다크모드</label>
+                    </div>
+                </div>
+            </div>
+            <div class="alarm-select">
+                <div class="alarm-title">
+                    알람 설정
+                </div>
+                <div class="checkbox-wrapper-22 alarm-toggle">
+                    <label class="switch" for="checkbox2">
+                        <input type="checkbox" id="checkbox2" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </div>
+            <input id="settings-save" type="button" value="저장하기">
+            <a href="/user/logout/" id="settings-logout">
+                <i class="ri-logout-box-r-line"></i>
+                로그아웃
+            </a>
         </div>
     </dialog>
 

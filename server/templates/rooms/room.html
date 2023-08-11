@@ -23,8 +23,9 @@
     <div class="chat-conversation-container">
         <div class="conversation"></div>
         <div class="chat-input">
-            <input type="text" class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room.id }}');}">
-            <button type="button" onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
+            <textarea name="msg" id="" class="input" cols="30" rows="2"></textarea>
+            <!-- <input type="text" class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room.id }}');}"> -->
+            <button type="button" class='btn-send' onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
         </div>
     </div>
     <div class="board-container">
@@ -41,16 +42,7 @@
 
 {% block extra %}
 
-<script>
-    let bubbleList = [];
-    if(`{{ jsonBubbles | safe}}` !== '') {
-        let jsonBubbles = {{jsonBubbles | safe}};
-        
-        jsonBubbles.forEach(element => {
-            bubbleList.push(element);
-        });
-    }
-    
+<script>    
     // js에서 필요한 정보
     let curUsername = '{{ user }}'; // admin
     let curUserId = '{{ user.id }}'; // object(1)
@@ -59,7 +51,7 @@
     let curRoomType = {{ room.room_type }};
 
     // 말풍선을 담을 곳
-    let converations = document.querySelector('.conversation');
+    let conversations = document.querySelector('.conversation');
 
 
     let postList = [];

@@ -1,8 +1,11 @@
+import json
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import SignupForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
 from server.apps.channels.models import Staff, Channel, Join, Passer
+from .models import *
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -93,18 +96,3 @@ def profile_setting(request, channelID):
     
     return render(request, 'users/profilesetting.html', context=context)
 
-
-def start(request):
-    return render(request, template_name="users/channel.html")
-
-def channel_create(request):
-    if request.method == 'POST':
-        return render(request, template_name='users/channelCreateDone.html')
-    else:
-        return render(request, template_name='users/channelCreate.html')
-    
-def channel_code(request):
-    if request.method == 'POST':
-        pass
-    else:
-        return render(request, template_name='users/channelCode.html')

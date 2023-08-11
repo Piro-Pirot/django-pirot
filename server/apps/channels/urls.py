@@ -10,4 +10,10 @@ urlpatterns = [
     path("channel/setting/<int:channelID>/", views.default_profile),
     path("staff_authority/<int:channelID>/", views.staff_authority),
     path("join_delete/<int:channelID>/", views.join_delete),
+    
+    path('bookmark_ajax/', views.bookmark),
+
+    path('channel/', views.start),
+    path('channel/create/', views.channel_create),
+    path('channel/code/', views.channel_code),
 ]

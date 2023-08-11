@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Passer, Join, Staff, Channel
+from .models import *
 import random
 import string
 import json
@@ -174,3 +174,77 @@ def join_delete(request, channelID):
         return redirect("/staff/join_delete/%s") % (channelID)
 
     return render(request, 'staff/join_delete.html', {"joins":joins, "channel":channel}) # 회원 실명, 기수 참조 가능
+
+
+
+# 즐겨찾기
+def bookmark(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        req = json.loads(request.body)
+        user = request.user
+        curChannel = Channel.objects.get(id=req['channelId'])
+        target = req['target']
+        target_passer = Passer.objects.get(passer_name=target, channel=curChannel)
+
+        is_bookmarked = Bookmark.objects.filter(user=user, bookmarked_user=target_passer)
+
+        # 즐겨찾기 되어 있으면 취소
+        if len(is_bookmarked):
+            is_bookmarked[0].delete()
+            return JsonResponse({'type': 'deleted'})
+
+        # 즐겨찾기 하기
+        Bookmark.objects.create(
+            user = user,
+            bookmarked_user = target_passer
+        ).save()
+
+        return JsonResponse({'type': 'added'})
+    
+
+def start(request):
+    return render(request, template_name="users/channel.html")
+
+def channel_create(request):
+    if request.method == 'POST':
+        new_channel = Channel.objects.create(
+            channel_name = request.POST['channel-create-name'],
+            channel_desc = request.POST['channel-create-desc']
+        )
+        new_channel.save()
+        
+        # Passer와 Join에 신청자 추가
+        new_passer = Passer.objects.create(
+            passer_name = request.user.name,
+            passer_phone = request.user.phone_number,
+            channel = new_channel
+        )
+        new_passer.save()
+        Join.objects.create(
+            user = request.user,
+            passer = new_passer
+        ).save()
+
+        return render(request, template_name='users/channelCreateDone.html')
+    else:
+        return render(request, template_name='users/channelCreate.html')
+    
+def channel_code(request):
+    if request.method == 'POST':
+        req_code = request.POST['channel-code-input']
+        try:
+            channel_info = Channel.objects.get(channel_code=req_code)
+            passer_info = Passer.objects.filter(passer_name=request.user.name, channel=channel_info)[0]
+        except:
+            return render(request, template_name='error.html', context={'errorMsg': '입력하신 정보에 오류가 있습니다.'})
+
+        if channel_info and passer_info:
+            Join.objects.create(
+                user = request.user,
+                passer = passer_info
+            ).save()
+            return redirect(f'/room/{channel_info.id}/friends/')
+        else:
+            return render(request, template_name='error.html', context={'errorMsg': '회원님의 참여 코드와 일치하는 소속된 채널이 없습니다.'})
+    else:
+        return render(request, template_name='users/channelCode.html')

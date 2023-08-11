@@ -1,3 +1,7 @@
+from bs4 import BeautifulSoup
+import markdown
+from pygments.styles import get_style_by_name
+
 import socketio
 from asgiref.sync import sync_to_async
 
@@ -53,6 +57,16 @@ async def connect(sid, environ, auth):
 async def send_message(sid, data):
     roomId = int(data['roomId'])
     room = await sync_to_async(Room.objects.get)(id=roomId)
+
+    data['msg'] = str(BeautifulSoup(data['msg']))
+
+    extension_configs = {
+        'pygments_style': 'solarized-light'
+    }
+
+    # 마크다운
+    data['msg'] = markdown.markdown(data['msg'], extensions=['fenced_code', 'codehilite'])
+
     if room.room_type == 1:
         #익명채팅방
         newBubble = await bubble.save_blind_msg(room, data)
