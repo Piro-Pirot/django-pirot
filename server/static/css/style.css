@@ -47,7 +47,7 @@ a:hover, a:active {
     background-color: transparent;
     margin: 1rem;
     padding: 1rem;
-    margin-top: 6rem;
+    /* margin-top: 6rem; */
 }
 ::-webkit-scrollbar-thumb {
     /*  스크롤  */

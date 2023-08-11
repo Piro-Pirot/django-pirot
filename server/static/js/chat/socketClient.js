@@ -65,15 +65,21 @@ function displayMessage(bubbleData) {
     }
     nameLabel.classList.add('bubble-username');
 
-    bubbleHeader.appendChild(profileImg);
-    bubbleHeader.appendChild(nameLabel);
+    if(bubbleData['user'] != curUsername) {
+        bubbleHeader.appendChild(profileImg);
+        bubbleHeader.appendChild(nameLabel);
+    }
+
 
     // 내용
     let bubbleContent = document.createElement('div');
     bubbleContent.classList.add('bubble-content');
     bubbleContent.innerText = bubbleData['msg'];
 
-    bubbleContainer.appendChild(bubbleHeader);
+    if(bubbleData['user'] != curUsername) {
+        bubbleContainer.appendChild(bubbleHeader);  
+    };
+
     bubbleContainer.appendChild(bubbleContent);
 
     bubbleDiv.appendChild(bubbleContainer);

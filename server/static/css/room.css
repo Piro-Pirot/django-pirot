@@ -16,8 +16,8 @@
 .bubble-container {
     display: inline-flex;
     flex-direction: column;
-    padding: 1rem 2rem;
-    margin: 1rem 2rem;
+    padding: 0.3rem 0.7rem;
+    /* margin: 1rem 2rem; */
 }
 
 .bubble-continer .bubble-user-container {
@@ -36,18 +36,18 @@
 
 .bubble-container-me .bubble-content,
 .bubble-container .bubble-content {
-    padding: 2rem 3rem;
+    padding: 0.7rem 0.7rem;
 }
 
 .bubble-container-me .bubble-content {
-    border-radius: 1.3rem;
+    border-radius: 1rem 0 1rem 1rem;
     background-color: var(--carrot-color);
     text-align: right;
 }
 
 .bubble-container .bubble-content {
     border: 0.1rem solid var(--carrot-dark);
-    border-radius: 1.3rem;
+    border-radius: 1rem;
 }
 
 
