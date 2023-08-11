@@ -23,7 +23,12 @@
     <div class="chat-conversation-container">
         <div class="conversation"></div>
         <div class="chat-input">
-            <input type="text" class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room.id }}');}">
+            <textarea class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room.id }}');}"></textarea>
+            <div class="chat-icons">
+                <i class="ri-attachment-2"></i>
+                <i class="ri-image-2-fill"></i>
+                <i class="ri-code-line"></i>
+            </div>
             <button type="button" onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
         </div>
     </div>
