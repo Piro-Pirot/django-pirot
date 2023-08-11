@@ -1,8 +1,15 @@
-from django.shortcuts import render
+import json
+from bs4 import BeautifulSoup
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
 from asgiref.sync import sync_to_async
 
 from server.apps.chat.models import *
 from .models import *
+
+ROOM = 0
+BLIND_ROOM = 1
+DIRECT_ROOM = 2
 
 # Create your views here.
 
@@ -45,3 +52,35 @@ async def save_blind_msg(room, data):
     await sync_to_async(newBubble.save)()
 
     return newBubble
+
+
+def load_bubbles(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        req = json.loads(request.body)
+        room_id = req['roomId']
+        
+        curRoom = Room.objects.get(id=room_id)
+        
+        if curRoom.room_type == BLIND_ROOM:
+            #익명채팅방
+            # 말풍선 데이터 get
+            bubbles = BlindBubble.objects.filter(room=curRoom).values(
+                'room', 'content', 'is_delete',
+                'read_cnt', 'file', 'nickname',
+                'profile_img', 'created_at',
+                'user__username'
+            ).order_by('created_at')
+        else:
+            bubbles = Bubble.objects.filter(room=curRoom).values(
+                'room', 'content', 'is_delete',
+                'read_cnt', 'file', 'created_at',
+                'user__username'
+            ).order_by('created_at')
+
+        for bubble in bubbles:
+            bubble['content'] = str(bubble['content'])
+
+        bubbles = list(bubbles)
+
+        return JsonResponse({'result': json.dumps(bubbles, default=str)})
+        
