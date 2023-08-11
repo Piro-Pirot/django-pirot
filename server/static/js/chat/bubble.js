@@ -1,5 +1,5 @@
-let cookie = document.cookie
-let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+let cookie = document.cookie;
+let csrfToken = cookie.substring(cookie.indexOf('=') + 1);
 
 /* 전송 시 스크롤 제어 */
 conversationSection = document.querySelector('.conversation');
