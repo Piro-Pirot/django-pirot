@@ -230,20 +230,23 @@ background-color: #f3b95431;
 }
 
 .chat-container .chat-conversation-container .board-container {
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
+}
+
+.chat-conversation-container {
+  width: calc(100vw - 42rem);
 }
 
 .conversation {
-  width: calc(100vw - 42rem);
+  width: 100%;
   height: calc(100vh - 6rem - 6rem);
-  /* background-color: slateblue; */
   overflow-x: hidden;
   overflow-y: scroll;
 }
 
 .chat-input {
-  /* background-color: pink; */
+  width: 100%;
   height: 6rem;
   padding: 0.5rem 0.5rem 1.4rem 0.5rem;
   display: flex;
@@ -293,6 +296,11 @@ background-color: #f3b95431;
   background-color: var(--carrot-dark);
 }
 
+.board-container {
+  height: calc(100vh - 6rem);
+  width: 18rem;
+}
+
 .board {
   width: 18rem;
   height: calc(100vh - 6rem - 4rem);
@@ -303,5 +311,6 @@ background-color: #f3b95431;
 
 .post-input {
   height: 4rem;
+  background-color: pink;
 }
 
