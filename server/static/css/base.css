@@ -2,6 +2,7 @@
 @import 'room.css';
 @import 'roomModal.css';
 @import 'profile-setting.css';
+@import 'friendly.css';
 
 .container {
   display: flex;

@@ -8,10 +8,11 @@
     <h1>채널에 입장하세요</h1>
   </div>
   <div class="channel-code-form">
-    <form action="/user/channel/code/" method="post">
+    <form action="/staff/channel/code/" method="post">
+      {% csrf_token %}
       <div class="channel-code-input">
         <label for="code">참여코드</label>
-        <input id="code" type="text" placeholder="참여코드를 입력하세요">
+        <input name='channel-code-input' id="code" type="text" placeholder="참여코드를 입력하세요">
       </div>
       <input type="submit" value="입장하기">
     </form>

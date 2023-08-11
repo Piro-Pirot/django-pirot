@@ -10,15 +10,24 @@ socket.on('connect', async () => {
     });
 });
 
+
 socket.on('display_message', async (data) => {
     console.log(data);
-    displayMessage(data);
+    const offsetH = displayMessage(data);
+    // 스크롤을 너무 많이 올린 게 아니라면 맨 아래로
+    if(calcScroll() <= 650 + offsetH) {
+        controlScroll();
+    }
 });
 
 // 익명채팅방 이벤트
 socket.on('display_secret_message', async (data) => {
     console.log(data);
-    displayMessage(data);
+    const offsetH = displayMessage(data);
+    
+    if(calcScroll() <= 800) {
+        controlScroll();
+    }
 });
 
 function onClickSendMessage(user, id) {
@@ -31,8 +40,12 @@ function onClickSendMessage(user, id) {
 
     msgBox.focus();
 
+    controlScroll();
+
     socket.emit('send_message', {'msg': msg, 'file': 'delete me js', 'user': user, 'roomId': id});
     console.log('send successfully');
+
+    document.querySelector('.input').value = null;
 }
 
 
@@ -77,7 +90,7 @@ function displayMessage(bubbleData) {
     // 내용
     let bubbleContent = document.createElement('div');
     bubbleContent.classList.add('bubble-content');
-    bubbleContent.innerText = bubbleData['msg'];
+    bubbleContent.innerHTML = bubbleData['msg'];
 
     if(bubbleData['user'] != curUsername) {
         bubbleContainer.appendChild(bubbleHeader);  
@@ -87,11 +100,12 @@ function displayMessage(bubbleData) {
 
     bubbleDiv.appendChild(bubbleContainer);
 
-    // 화면에 추가
-    converations.appendChild(bubbleDiv);
+    curScroll = conversationSection.scrollTop;
 
-    document.querySelector('.input').value = '';
-    controlScroll();
+    // 화면에 추가
+    conversations.appendChild(bubbleDiv);
+
+    return bubbleDiv.offsetHeight;
 }
 
 

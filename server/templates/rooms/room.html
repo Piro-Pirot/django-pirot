@@ -38,7 +38,7 @@
                     <i class="ri-code-line"></i>
                 </div>
             </div>
-            <button type="button" onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
+            <button type="button" class='btn-send' onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
         </div>
     </div>
     <div class="board-container">
@@ -77,16 +77,7 @@
 
 {% block extra %}
 
-<script>
-    let bubbleList = [];
-    if(`{{ jsonBubbles | safe}}` !== '') {
-        let jsonBubbles = {{jsonBubbles | safe}};
-        
-        jsonBubbles.forEach(element => {
-            bubbleList.push(element);
-        });
-    }
-    
+<script>    
     // js에서 필요한 정보
     let curUsername = '{{ user }}';
     let curUserId = '{{ user.id }}';
@@ -95,17 +86,7 @@
     let curRoomType = {{ room.room_type }};
 
     // 말풍선을 담을 곳
-    let converations = document.querySelector('.conversation');
-
-
-    let postList = [];
-    if(`{{ jsonPosts | safe}}` !== '') {
-        let jsonPosts = {{jsonPosts | safe}};
-        
-        jsonPosts.forEach(element => {
-            postList.push(element);
-        });
-    }
+    let conversations = document.querySelector('.conversation');
 
     // 게시글을 담을 곳
     let posts = document.querySelector('.board');

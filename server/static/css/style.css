@@ -37,6 +37,7 @@ a:hover, a:active {
   background-color: transparent;
 }
 
+
 ::-webkit-scrollbar {
   /* 스크롤바 전체 영역 */
     width: 5px;
@@ -53,4 +54,15 @@ a:hover, a:active {
     /*  스크롤  */
     background-color: var(--carrot-dark);
     border-radius: 30px;
+}
+
+
+/* 마크다운.. 부탁해요 ^..^ */
+h1 {
+  font-size: large;
+  font-weight: bold;
+}
+h2 {
+  font-size: medium;
+  font-weight: bold;
 }

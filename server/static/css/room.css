@@ -46,7 +46,7 @@
 .bubble-container-me .bubble-content {
     border-radius: 1rem 0 1rem 1rem;
     background-color: var(--carrot-color);
-    text-align: right;
+    text-align: left;
 }
 
 .bubble-container .bubble-content {
