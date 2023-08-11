@@ -106,19 +106,15 @@
             </a>
         </div>
     </dialog>
-
+    
+    <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
+    
+    <script>
+        let curChannelId = {{ channel.id }};
+    </script>
+    
     {% block extra %}
     {% endblock %}
-
-    <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
-
-    <script>
-        // js에서 필요한 정보
-        let curChannelId = {{ channel.id }};
-        // let curRoomId = {{ room.id }};
-        // let curRoomType = {{ room.type }};
-        console.log(curChannelId);
-    </script>
 
     <script src="{% static 'js/base.js' %}"></script>
     <script src="{% static 'js/settingsModal.js' %}"></script>

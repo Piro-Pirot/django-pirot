@@ -6,8 +6,16 @@ from server.apps.local_users.models import User
 
 # 채팅 방
 class Room(models.Model):
+    ROOM = 0
+    BLIND_ROOM = 1
+    DIRECT_ROOM = 2
+    ROOM_TYPE = [
+        (ROOM, 'ROOM'),
+        (BLIND_ROOM, 'BLIND_ROOM'),
+        (DIRECT_ROOM, 'DIRECT_ROOM'),
+    ]
     room_name = models.CharField(max_length=64)
-    room_type = models.IntegerField(default=0)
+    room_type = models.IntegerField(choices=ROOM_TYPE, default=0)
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
 
     def __str__(self):

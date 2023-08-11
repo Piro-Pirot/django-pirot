@@ -1,6 +1,7 @@
 @import 'style.css';
 @import 'room.css';
 @import 'roomModal.css';
+@import 'friendly.css';
 
 .container {
   display: flex;
@@ -31,19 +32,36 @@
   align-items: center;
 }
 
-.top-icons > i {
+.top-icons > a {
   margin-bottom: 5rem;
 }
 
-.bottom-icons > i {
+.bottom-icons > a {
   margin-top: 5rem;
+}
+
+.top-icons > a,
+.bottom-icons > i {
+  border-radius: 50%;
+  padding: 0.3rem;
+  transition: 0.2s;
+}
+
+.top-icons > a:hover,
+.bottom-icons > i:hover {
+  background-color: rgb(219, 219, 219);
+}
+
+.friend-icon {
+  position: relative;
+  top: -0.1rem;
 }
 
 .profile-icon {
   border: 1px solid black;
   border-radius: 50%;
   width: 2.2rem;
-  margin-top: 5rem;
+  height: 2.2rem;
 }
 
 
@@ -102,13 +120,13 @@
   background-color: rgba(128, 128, 128, 0.081);
 }
 
-.select-options {
+/* .select-options {
   list-style: none;
   padding-left: 0;
   background-color: beige;
   padding: 0.5rem;
   border-radius: 0.2rem;
-}
+} */
 
 .select-options {
   display: none;
@@ -118,6 +136,7 @@
   width: 100%;
   top: 3.4rem;
   padding: 0;
+  border-radius: 0.2rem
 }
 
 .select-options.active {
@@ -140,7 +159,7 @@ background-color: #f3b95431;
   outline: none;
   width: 11rem;
   height: 2.5rem;
-  background-color: rgb(235, 235, 235);
+  background-color: var(--input-background);
   border-radius: 2rem;
   border: none;
   padding-left: 1rem;
@@ -193,7 +212,7 @@ background-color: #f3b95431;
 
 .chat-name {
   height: 6rem;
-  background-color: yellow;
+  /* background-color: yellow; */
 }
 
 .chat-container {
