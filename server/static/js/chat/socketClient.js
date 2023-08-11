@@ -1,5 +1,5 @@
 // 서버와 Socket 연결 설정
-const socket = io('http://localhost:8000/');
+const socket = io();
 
 // 연결 성공 시 이벤트 리스너
 socket.on('connect', async () => {
@@ -83,4 +83,100 @@ function displayMessage(bubbleData) {
 
     document.querySelector('.input').value = '';
     controlScroll();
+}
+
+
+// post 게시 이벤트 : 이벤트 명을 받고 콜백 함수를 실행
+socket.on('display_post', async (data) => {
+    console.log(data);
+    displayPost(data);
+});
+
+// 서버로 게시글 전송 id = room.id
+function onClickSendPost(user, id) {
+    const postInput = document.querySelector('.post').value;
+
+    // 아무것도 안 썼을 때 예외 처리
+    if(postInput === '') return;
+    console.log(postInput);
+
+    socket.emit('send_post', {'postInput': postInput, 'user': user, 'roomId': id});
+    console.log('send successfully');
+
+}
+
+// 게시글 표시
+function displayPost(postData) {
+    console.log(postData);
+    // data로 받아옴!! data['newpostId'], ~ new post의 id, created_at 필요
+    
+    let postContainer = document.createElement('div');
+    let postDiv = document.createElement('div');
+    let buttonDiv = document.createElement('div')
+    
+    // 로그인 사용자가 작성한 게시글인 경우
+    if(postData['user'] == curUsername) {
+        let happyBtn = document.createElement('button');
+        let happySpan = document.createElement('span');
+        happySpan.innerText = '기뻐요'; // 나중에 i 태그
+        happyBtn.classList.add('happy');
+        happyBtn.appendChild(happySpan);
+        buttonDiv.appendChild(happyBtn); // 기뻐요
+
+        let sadBtn = document.createElement('button');
+        let sadSpan = document.createElement('span');
+        sadSpan.innerText = '슬퍼요';
+        sadBtn.classList.add('sad');
+        sadBtn.appendChild(sadSpan);
+        buttonDiv.appendChild(sadBtn); // 슬퍼요
+
+        let deleteBtn = document.createElement('button');
+        deleteBtn.classList.add('delete');
+        deleteBtn.innerText = 'X';
+        deleteBtn.onclick = function() {
+            onClickDelete(data['newpostId']);
+        };
+        buttonDiv.appendChild(deleteBtn); // 삭제 버튼
+
+        postDiv.classList.add('post-box-me');
+        postContainer.classList.add('post-container-me');
+    } else {
+        let happyBtn = document.createElement('button');
+        let happySpan = document.createElement('span');
+        happySpan.innerText = '기뻐요'; // 나중에 i 태그
+        happyBtn.classList.add('happy');
+        happyBtn.appendChild(happySpan);
+        buttonDiv.appendChild(happyBtn); // 기뻐요
+
+        let sadBtn = document.createElement('button');
+        let sadSpan = document.createElement('span');
+        sadSpan.innerText = '슬퍼요';
+        sadBtn.classList.add('sad');
+        sadBtn.appendChild(sadSpan);
+        buttonDiv.appendChild(sadBtn); // 슬퍼요
+
+        postDiv.classList.add('post-box');
+        postContainer.classList.add('post-container');
+    }
+
+    // 작성일
+    let postTime = document.createElement('div');
+    postTime.classList.add('post-time');
+    postTime.innerText = postData['created_at']
+
+    // 내용
+    let postContent = document.createElement('div');
+    postContent.classList.add('post-content');
+    postContent.innerText = postData['postInput'];
+    postDiv.appendChild(postContent);
+
+    postContainer.appendChild(postTime);
+    postContainer.appendChild(postDiv);
+    postContainer.appendChild(buttonDiv);
+
+    // 화면에 추가
+    posts.appendChild(postContainer);
+
+    document.querySelector('.post').value = '';
+    controlScrollPost();
 }
