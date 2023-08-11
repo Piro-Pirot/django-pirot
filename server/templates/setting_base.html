@@ -83,6 +83,13 @@
     {% endblock %}
     <script src="{% static 'js/iconBar.js' %}"></script>
     <script src="{% static 'js/settingsModal.js' %}"></script>
+    <script>
+        const profileEditButton = document.getElementById("profileEdit");
+        const profileEditForm = document.querySelector(".setting-section-container form");
+        profileEditButton.onclick = () => {
+            profileEditForm.classList.toggle("active");
+        };
+    </script>
 </body>
 </body>
 </html>
