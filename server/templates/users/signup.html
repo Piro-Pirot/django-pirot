@@ -26,13 +26,13 @@
         <label for="phone_number">전화번호:</label>
         <input type="text" id="phone_number" name="phone_number" oninput="input_phone_num()">
 
-        <button disabled id='send_sms' onclick="send_authnum()">인증번호 전송</button>
+        <button disabled id='send_sms' type="button" onclick="send_authnum()">인증번호 전송</button>
 
         {% comment %} {{ form.phone_number }} {% endcomment %}
     </div>
 
     <div>
-        <div id="time_limit">03:00</div>
+        <div id="time_limit">05:00</div>
         {% comment %} oninput="check_authnum()" {% endcomment %}
         <input id="input_authnum" type="text">
         <button disabled id='confirm' onclick="confirm_authnum()">인증하기</button>

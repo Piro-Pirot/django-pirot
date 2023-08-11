@@ -57,19 +57,18 @@ function send_authnum(){
 
     //이전에 실행중인 타이머 프로세스가 있으면 종료
     if (processID != -1) clearInterval(processID);
-    //6자리의 무작위 인증번호 생성
-    // const token = String(Math.floor(Math.random() * 1000000)).padStart(6, "0");
+    
     // document.getElementById("certificationNumber").innerText = token;
-    let time = 180;
+    let time = 300;
 
     // 50ms마다 타이머를 갱신하고 체크
     processID = setInterval(function () {
         // 타이머가 음수가 되거나, "인증번호 전송" 버튼이 비활성화되면 종료 및 버튼 초기화
-        // if (time < 0 || document.getElementById("send_sms").disabled) {
-        // clearInterval(processID);
-        // initButton();
-        // return;
-        // }
+        if (time < 0 || document.getElementById("send_sms").disabled) {
+        clearInterval(processID);
+        initButton();
+        return;
+        }
         // 남은 시간을 분으로 계산하고 두 자리로
         let mm = String(Math.floor(time / 60)).padStart(2, "0");
         // 남은 시간의 초 부분은 두 자리로
