@@ -51,38 +51,116 @@
 }
 
 
+
 /* 채팅 방 리스트 */
-.middle-section-content .btn-room-container {
-    padding: 1rem 2rem;
+
+
+.btn-room-container a {
+    display: block;
+    padding: 0.7rem 1.5rem 0.7rem 0.3rem;
+    margin-left: 1rem;
+    transition: 0.2s;
+    /* border-bottom: 1px solid #face8331; */
+    position: relative;
+}
+
+.btn-room-container a:hover {
+    background-color: #face8331;
+}
+
+
+/* 익명채팅방 아이콘 */
+.blind a::after {
+    content: '';
+    display: block;
+    background: url('../image/chat_room/mask.png');
+    background-size: 1.5rem 1rem;
+    width: 1.5rem;
+    height: 1rem;
+    position: absolute;
+    left: -1.9rem;
+    top: 1.4rem;
+}
+
+/* 단체채팅방 아이콘 */
+.group a::after {
+    content: '';
+    display: block;
+    background: url('../image/chat_room/group_room2.png');
+    background-size: 1rem 1rem;
+    width: 1rem;
+    height: 1rem;
+    position: absolute;
+    left: -1.7rem;
+    top: 1.4rem;
 }
 
 .middle-section-content .btn-room {
-    background-color: var(--carrot-light);
-    border-radius: 1.3rem;
-    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
     position: relative;
-    text-align: center;
+}
+
+.btn-room .room-profile-img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid black;
+    border-radius: 50%;
+    margin-right: 0.8rem;
 }
 
 .middle-section-content .room-red-dot {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    background-color: var(--carrot-dark);
-    border-radius: 1.3rem;
-    padding: 0.5rem;
+    right: 0;
+    /* text-align: center; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 83, 83);
+    border-radius: 50%;
+    width: 1.3rem;
+    height: 1.3rem;
+    padding-top: 0.1rem;
+    color: white;
+    margin-right: 2rem;
+    font-size: 0.8rem;
 }
 
 .middle-section-content .selected-room {
-    background-color: var(--carrot-color);
+    background-color: #face8389;
 }
 
-.middle-section-content .btn-room-create {
-    border: 0.1rem solid var(--carrot-dark);
-    border-radius: 1.3rem;
-    padding: 1rem 2rem;
-    color: var(--subtitle);
-    text-align: center;
+.btn-room-create {
+    width: 100%;
+    height: 6rem;
+    /* background-color: red; */
+    padding: 1.4rem 0 1.4rem;
+}
+
+.btn-room-create-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    right: 0.8rem;
+    background-color: #face8331;
+    border-radius: 1rem;
+    transition: 0.2s;
+}
+
+.middle-section-content .btn-room-create-container:hover {
+    background-color: #face8389;
+}
+
+.middle-section-content ol {
+    height: 100%;
+}
+
+.btn-room-create-container > i {
+    font-size: 1.5rem;
 }
 
 /* 친구 리스트 */

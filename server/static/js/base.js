@@ -49,15 +49,6 @@ window.addEventListener("click", (event) => {
 
 /* select option 새로고침 되어도 유지 */
 
-/* select 태그에서 option을 가져와 class가 url의 channel id와 같을 때 selected 옵션을 줌 */
-// let selectEl = document.querySelector('.select-options').getElementsByTagName('li span');
-
-// for(let i = 0; i < selectEl.length; i++) {
-//   if(selectEl[i].id === curChannelId) {
-//     selectEl[i].setAttribute('selected', '')
-//     break;
-//   }
-// }
 
 
 //channel이름 selector 구현

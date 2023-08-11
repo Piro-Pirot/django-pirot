@@ -476,18 +476,6 @@ section.show-animation .animate {
   }
 }
 
-@media all and (max-width: 1400px) {
-  .md-section {
-    display: none;
-  }
-}
-
-@media all and (min-width: 1401px) {
-  .md-section-small {
-    display: none;
-  }
-}
-
 .md-section2 {
   height: 48rem;
   display: flex;
@@ -511,6 +499,53 @@ section.show-animation .animate {
   margin-bottom: 1rem;
 }
 
+/* md section2 small */
+
+.md-section2-small {
+  margin-bottom: 2rem;
+}
+
+.md-section2-small-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 1rem; 
+}
+
+.md-section2-small-title {
+  font-size: 3rem;
+  margin-bottom: 2rem; 
+}
+
+.md-section2-content {
+  font-size: 2rem;
+  color: var(--subtitle);
+  margin-bottom: 2rem; 
+}
+
+.md-section-demo-small{
+  width: 40rem;
+}
+
+.md-section-demo-small > img {
+  width: 100%;
+}
+
+@media all and (max-width: 1400px) {
+  .md-section, .md-section2 {
+    display: none;
+  }
+  
+}
+
+@media all and (min-width: 1401px) {
+  .md-section-small, .md-section2-small {
+    display: none;
+  }
+ 
+}
+
+
 /* section */
 
 /* section {
@@ -523,10 +558,6 @@ section.show-animation .animate {
 
 .md-people {
   height: 48rem;
-}
-
-.md-people-container {
-  
 }
 
 .people-header {
@@ -632,6 +663,64 @@ footer {
   height: auto;
 }
 
+@media (min-width: 769px) {
+  .main-section-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  #service, #creator, .main-section-right, .main-section {
+    display: none;
+  }
+  .main-section-mobile {
+    width: 50rem;
+    margin-bottom: 30rem;
+  }
+  .main-section-mobile-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-left: 3rem;
+    
+  }
+  .main-section-mobile-title {
+    display: flex;
+    flex-direction: column;
+
+  }
+  .main-section-mobile-title > div {
+    font-size: 2.5rem;
+    letter-spacing: 0.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .main-section-mobile-title > div > img {
+    width: 2rem;
+    display: inline-block;
+  }
+  .ui-section-title {
+    font-size: 2rem;
+  }
+  .ui-section-desc {
+    font-size: 1.5rem;
+  }
+  .md-section-small-title {
+    font-size: 2rem;
+  }
+  .md-section-small-desc {
+    font-size: 1.5rem;
+  }
+  .md-section2-small-title {
+    font-size: 2rem;
+  }
+  .md-section2-content {
+    font-size: 1.5rem;
+  }
+  footer {
+    width: 100%;
+  }
+}
 /* login modal */
 
 .login-modal::backdrop {
