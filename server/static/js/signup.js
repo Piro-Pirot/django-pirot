@@ -65,8 +65,7 @@ function send_authnum(){
     //이전에 실행중인 타이머 프로세스가 있으면 종료
     if (processID != -1) clearInterval(processID);
     
-    // document.getElementById("certificationNumber").innerText = token;
-    let time = 300;
+    let time = 180;
 
     // 50ms마다 타이머를 갱신하고 체크
     processID = setInterval(function () {
@@ -84,7 +83,7 @@ function send_authnum(){
         let result = mm + ":" + ss;
         document.getElementById("time_limit").innerText = result;
         time--;
-    }, 50);
+    }, 1000);
 
 }
 
