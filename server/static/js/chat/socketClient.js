@@ -10,12 +10,20 @@ socket.on('connect', async () => {
     });
 });
 
+let bScroll = 0;
 
 socket.on('display_message', async (data) => {
     console.log(data);
     const offsetH = displayMessage(data);
+    // console.log('offsetH is ...', offsetH);
+    // console.log('conv height is...', conversationSection.scrollHeight);
+    // console.log('conv top is...', conversationSection.scrollTop);
+    // console.log('conv now is...', curScroll);
+    // console.log('calcScroll is...', calcScroll());
+    // console.log('bScroll is...', bScroll);
     // 스크롤을 너무 많이 올린 게 아니라면 맨 아래로
-    if(calcScroll() <= 650 + offsetH) {
+    if(bScroll - 700 <= offsetH) {
+        console.log('controlling!');
         controlScroll();
     }
 });
@@ -25,17 +33,21 @@ socket.on('display_secret_message', async (data) => {
     console.log(data);
     const offsetH = displayMessage(data);
     
-    if(calcScroll() <= 800) {
+    if(bScroll - 700 <= offsetH) {
+        console.log('controlling!');
         controlScroll();
     }
 });
 
 function onClickSendMessage(user, id) {
     // 서버로 메시지 전송
-    const msg = document.querySelector('.input').value;
+    const msgBox = document.querySelector(".input");
+    const msg = msgBox.value;
     // 아무것도 안 썼을 때 예외 처리
     if(msg === '') return;
     console.log(msg);
+
+    msgBox.focus();
 
     controlScroll();
 
@@ -78,15 +90,21 @@ function displayMessage(bubbleData) {
     }
     nameLabel.classList.add('bubble-username');
 
-    bubbleHeader.appendChild(profileImg);
-    bubbleHeader.appendChild(nameLabel);
+    if(bubbleData['user'] != curUsername) {
+        bubbleHeader.appendChild(profileImg);
+        bubbleHeader.appendChild(nameLabel);
+    }
+
 
     // 내용
     let bubbleContent = document.createElement('div');
     bubbleContent.classList.add('bubble-content');
     bubbleContent.innerHTML = bubbleData['msg'];
 
-    bubbleContainer.appendChild(bubbleHeader);
+    if(bubbleData['user'] != curUsername) {
+        bubbleContainer.appendChild(bubbleHeader);  
+    };
+
     bubbleContainer.appendChild(bubbleContent);
 
     bubbleDiv.appendChild(bubbleContainer);
@@ -129,6 +147,7 @@ function displayPost(postData) {
 
     let postContainer = document.createElement('div');
     let postDiv = document.createElement('div');
+    let postBox = document.createElement('div'); //석류가 추가한 코드
     let buttonDiv = document.createElement('div')
     
     // 로그인 사용자가 작성한 게시글인 경우
@@ -162,8 +181,10 @@ function displayPost(postData) {
         buttonDiv.appendChild(sadBtn); // 슬퍼요
 
         let deleteBtn = document.createElement('button');
+        let deleteIcon = document.createElement('i');
         deleteBtn.classList.add('delete');
-        deleteBtn.innerText = 'X';
+        deleteIcon.classList.add('ri-close-line');
+        deleteBtn.appendChild(deleteIcon);
         deleteBtn.onclick = function() {
             onClickDelete(postData['newpostId'], postData['roomId']);
         };
@@ -211,10 +232,11 @@ function displayPost(postData) {
     postContent.classList.add('post-content');
     postContent.innerText = postData['postInput'];
     postDiv.appendChild(postContent);
+    postBox.appendChild(postDiv); // 석류가 추가한 코드
+    postBox.appendChild(buttonDiv);
 
     postContainer.appendChild(postTime);
-    postContainer.appendChild(postDiv);
-    postContainer.appendChild(buttonDiv);
+    postContainer.appendChild(postBox);
 
     postContainer.classList.add(`post-container-${postData['newpostId']}`);
     // 화면에 추가

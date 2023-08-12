@@ -14,6 +14,10 @@ from bs4 import BeautifulSoup
 NO = 0
 YES = 1
 
+ROOM = 0
+BLIND_ROOM = 1
+DIRECT_ROOM = 2
+
 def create_room(request, channelId, target):
     if request.method == 'POST':
         me = request.user
@@ -38,6 +42,7 @@ def create_room(request, channelId, target):
             # 채팅 방 개설
             Room.objects.create(
                 room_name = '__direct',
+                room_type = DIRECT_ROOM,
                 channel = Channel.objects.get(id=channelId)
             ).save()
             newDirectRoom = Room.objects.all().last()

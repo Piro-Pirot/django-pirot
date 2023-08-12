@@ -14,28 +14,71 @@
             <div class="chat-name-icons">
                 <input id="chat-name-search" type="text">
                 <i id="chat-search-btn" class="fa-solid fa-magnifying-glass"></i>
-                <i class="ri-settings-3-line"></i>
+                <i id="chat-setting" class="ri-settings-3-line"></i>
             </div>
         </div>
     </div>
 </div>
 <div class="chat-container">
     <div class="chat-conversation-container">
+        <div class="board-header">
+            Chat
+        </div>
         <div class="conversation"></div>
         <div class="chat-input">
-            <textarea name="msg" id="" class="input" cols="30" rows="2"></textarea>
-            <!-- <input type="text" class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room.id }}');}"> -->
+            <textarea class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room.id }}');}"></textarea>
+            <div class="chat-icons">
+                <div id="attachIcon">
+                    <i class="ri-attachment-2"></i>
+                </div>
+                <div id="reserveMsg">
+                    <i class="ri-time-line"></i>
+                </div>
+                <div id="imageIcon">
+                    <i class="ri-image-2-fill"></i>
+                </div>
+                <div id="codeIcon">
+                    <i class="ri-code-line"></i>
+                </div>
+            </div>
             <button type="button" class='btn-send' onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
         </div>
     </div>
     <div class="board-container">
+        <div class="board-header">
+            Board
+        </div>
         <div class="board"></div>
         <div class="post-input">
-            <input type="text" class="post">
-            <button type="button" onclick="onClickSendPost('{{ user }}', '{{ room.id }}')">작성</button>
+            <div class="post-input-container">
+                <textarea class="post" rows="3"></textarea>
+                <button type="button" onclick="onClickSendPost('{{ user }}', '{{ room.id }}')">작성</button>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- 채팅방 설정 모달 -->
+<dialog class="modal chat-settings-modal">
+    <i id="close-btn" class="ri-close-fill"></i>
+    <div class="modal-content">
+        <div class="title">
+            채팅방 설정
+        </div>
+        <div class="alarm-select">
+            <div class="alarm-title">
+                채팅방 잠금
+            </div>
+            <div id="chat-lock-toggle" class="checkbox-wrapper-22 alarm-toggle">
+                <label class="switch" for="checkbox444">
+                    <input type="checkbox" id="checkbox444" />
+                    <div class="slider round"></div>
+                </label>
+            </div>
+        </div>
+        <input id="settings-save" type="button" value="저장하기">
+    </div>
+</dialog>
 
 
 {% endblock %}
@@ -55,6 +98,30 @@
 
     // 게시글을 담을 곳
     let posts = document.querySelector('.board');
+
+    //채팅방 설정 버튼
+    const chatSettingButton = document.getElementById("chat-setting");
+    const chatSettingModal = document.querySelector(".chat-settings-modal");
+    chatSettingButton.onclick = () => {
+        chatSettingModal.showModal();
+        chatSettingModal.style.opacity = '1';
+    };
+
+    const chatSettingCloseButton = document.querySelector(".chat-settings-modal #close-btn");
+    chatSettingCloseButton.onclick = () => {
+        chatSettingModal.close();
+        chatSettingModal.style.opacity = '0';
+    };
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+        chatSettingModal.close();
+        chatSettingModal.style.opacity = '0';
+        };
+    });
+
+    // board의 scrollHeight 증가시켜서 더 밑으로 스크롤 할 수 있게 하기
+
 </script>
 
 <script src="{% static 'js/chat/room.js' %}"></script>

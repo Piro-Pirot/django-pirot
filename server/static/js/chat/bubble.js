@@ -10,14 +10,12 @@ function controlScroll() {
 
 function calcScroll() {
     // 전체 스크롤 크기 == 내 현재 위치이면 맨 아래에 위치
-    return conversationSection.scrollHeight - curScroll;
+    return conversationSection.scrollHeight - conversationSection.scrollTop;
 }
 
 // 현재 스크롤 위치
-let curScroll = conversationSection.scrollTop;
 conversationSection.addEventListener('scroll', () => {
-    curScroll = conversationSection.scrollTop;
-    console.log(calcScroll());
+    bScroll = calcScroll();
 })
 
 // 말풍선 데이터를 Ajax 방식으로 받아오기
@@ -86,6 +84,7 @@ function createBubble(bubbleData) {
     profileImg.setAttribute('src', bubbleData['profile_img']);
 
     let nameLabel = document.createElement('label');
+
     if(curRoomType == 1) {
         // 익명 질문 방이면
         nameLabel.innerText = bubbleData['nickname'];
@@ -94,15 +93,21 @@ function createBubble(bubbleData) {
     }
     nameLabel.classList.add('bubble-username');
 
-    bubbleHeader.appendChild(profileImg);
-    bubbleHeader.appendChild(nameLabel);
+    if (bubbleData['user__username'] !== curUsername) {
+        bubbleHeader.appendChild(profileImg);
+        bubbleHeader.appendChild(nameLabel);
+    }
+
 
     // 내용
     let bubbleContent = document.createElement('div');
     bubbleContent.classList.add('bubble-content');
     bubbleContent.innerHTML = bubbleData['content'];
 
-    bubbleContainer.appendChild(bubbleHeader);
+    if (bubbleData['user__username'] !== curUsername) {
+        bubbleContainer.appendChild(bubbleHeader);
+    }
+
     bubbleContainer.appendChild(bubbleContent);
 
     bubbleDiv.appendChild(bubbleContainer);
