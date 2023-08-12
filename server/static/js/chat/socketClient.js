@@ -67,8 +67,8 @@ function displayMessage(bubbleData) {
 
     if(bubbleData['user'] == curUsername) {
         // 로그인 사용자의 말풍선인 경우
-        bubbleDiv.classList.add('bubble-box');
-        bubbleContainer.classList.add('bubble-container');
+        bubbleDiv.classList.add('bubble-box-me');
+        bubbleContainer.classList.add('bubble-container-me');
     } else {
         bubbleDiv.classList.add('bubble-box');
         bubbleContainer.classList.add('bubble-container');
@@ -169,7 +169,7 @@ function displayPost(postData) {
         let sadBtn = document.createElement('button');
         sadBtn.classList.add('sad');
         let sadImg = document.createElement('i');
-        sadImg.classList.add('ri-emotion-unhappy-line');
+        sadImg.classList.add('ri-emotion-sad-line');
         let sadCount = document.createElement('span');
         sadCount.innerText = postData['sadCount'];
         sadCount.classList.add(`sad-count-${postData['newpostId']}`);
@@ -210,7 +210,7 @@ function displayPost(postData) {
         let sadBtn = document.createElement('button');
         sadBtn.classList.add('sad');
         let sadImg = document.createElement('i');
-        sadImg.classList.add('ri-emotion-unhappy-line');
+        sadImg.classList.add('ri-emotion-sad-line');
         let sadCount = document.createElement('span');
         sadCount.innerText = postData['sadCount'];
         sadCount.classList.add(`sad-count-${postData['newpostId']}`);
@@ -290,12 +290,12 @@ async function displayHappy(happyData) {
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = happyData['sadCount'];
 
-    // 여기서 할 수 있ㅇ르 것 같은데!!
-    if (sadCountElement.classList.contains('checked')) {
-        sadCountElement.classList.toggle('checked'); //있으면 없애고
-        happyCountElement.classList.toggle('checked'); //얘는 없을 거니까 만듦
+    // 자신이 누른 버튼 확인
+    if (sadCountElement.parentElement.classList.contains('checked')) {
+        sadCountElement.parentElement.classList.toggle('checked');
+        happyCountElement.parentElement.classList.toggle('checked');
     } else {
-        happyCountElement.classList.toggle('checked');
+        happyCountElement.parentElement.classList.toggle('checked');
     }
 
 }
@@ -312,11 +312,12 @@ async function displaySad(sadData) {
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = sadData['sadCount'];
 
-    if (happyCountElement.classList.contains('checked')) {
-        happyCountElement.classList.toggle('checked');
-        sadCountElement.classList.toggle('checked');
+    // 자신이 누른 버튼 확인
+    if (happyCountElement.parentElement.classList.contains('checked')) {
+        happyCountElement.parentElement.classList.toggle('checked');
+        sadCountElement.parentElement.classList.toggle('checked');
     } else {
-        sadCountElement.classList.toggle('checked');
+        sadCountElement.parentElement.classList.toggle('checked');
     }
 }
 

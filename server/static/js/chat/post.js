@@ -1,4 +1,4 @@
-const loadPosts = async(roomId) => {
+const loadPosts = async(roomId, curUsername) => {
     const url = '/posts/load_posts_ajax/';
     const res = await fetch(url, {
         method: 'POST',
@@ -6,7 +6,7 @@ const loadPosts = async(roomId) => {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrfToken
         },
-        body: JSON.stringify({roomId: roomId})
+        body: JSON.stringify({roomId: roomId, curUsername: curUsername})
     });
 
     if (res.ok) {
@@ -21,7 +21,7 @@ const loadPostsResponse = (ajaxPosts) => {
     ajaxPosts.forEach(element => createPost(element));
 }
 
-loadPosts(curRoomId);
+loadPosts(curRoomId, curUsername);
 
 
 // 게시글을 만드는 코드
@@ -35,7 +35,7 @@ function createPost(postData) {
     let postBox = document.createElement('div'); //석류가 추가한 코드
     let postDiv = document.createElement('div');
     let buttonDiv = document.createElement('div')
-    
+
     // 로그인 사용자가 작성한 게시글인 경우
     if(postUser == curUsername) {
         let happyBtn = document.createElement('button');
@@ -78,6 +78,14 @@ function createPost(postData) {
 
         postDiv.classList.add('post-box');
         postContainer.classList.add('post-container');
+
+        // 자신이 누른 버튼 확인
+        if (postData['curhappyCount']==1) {
+            happyBtn.classList.toggle('checked');
+        }
+        if (postData['cursadCount']==1) {
+            sadBtn.classList.toggle('checked');
+        }
     } else {
         let happyBtn = document.createElement('button');
         happyBtn.classList.add('happy');
@@ -109,6 +117,14 @@ function createPost(postData) {
 
         postDiv.classList.add('post-box');
         postContainer.classList.add('post-container');
+
+        // 자신이 누른 버튼 확인
+        if (postData['curhappyCount']==1) {
+            happyBtn.classList.toggle('checked');
+        }
+        if (postData['cursadCount']==1) {
+            sadBtn.classList.toggle('checked');
+        }
     }
 
     // 작성일
@@ -148,13 +164,6 @@ function createHappy(happyData) {
     let sadSelector = `.sad-count-${postId}`
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = happyData['sadCount'];
-
-    if (sadCountElement.classList.contains('checked')) {
-        sadCountElement.classList.toggle('checked'); //있으면 없애고
-        happyCountElement.classList.toggle('checked'); //얘는 없을 거니까 만듦
-    } else {
-        happyCountElement.classList.toggle('checked');
-    }
 }
 
 function createSad(sadData) {
@@ -168,13 +177,6 @@ function createSad(sadData) {
     let sadSelector = `.sad-count-${postId}`
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = sadData['sadCount'];
-
-    if (happyCountElement.classList.contains('checked')) {
-        happyCountElement.classList.toggle('checked');
-        sadCountElement.classList.toggle('checked');
-    } else {
-        sadCountElement.classList.toggle('checked');
-    }
 }
 
 // function controlScrollPost() {

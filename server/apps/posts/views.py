@@ -124,6 +124,7 @@ def load_posts(request):
     if request.method == 'POST' and request.user.is_authenticated:
         req = json.loads(request.body)
         room_id = req['roomId']
+        curUsername = req['curUsername']
 
         curRoom = Room.objects.get(id=room_id)
 
@@ -133,9 +134,13 @@ def load_posts(request):
         for post in posts:
             happyCount = Happy.objects.filter(post__id=post['id']).count()
             sadCount = Sad.objects.filter(post__id=post['id']).count()
+            curhappyCount = Happy.objects.filter(post__id=post['id'], user__username = curUsername).count()
+            cursadCount = Sad.objects.filter(post__id=post['id'], user__username = curUsername).count()
             post['happyCount'] = happyCount
             post['sadCount'] = sadCount
             post['content'] = str(post['content'])
+            post['curhappyCount'] = curhappyCount
+            post['cursadCount'] = cursadCount
 
         # datetime 객체를 처리 못하는 에러 핸들링
         def json_default(value):
