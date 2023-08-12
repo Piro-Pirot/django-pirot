@@ -1,7 +1,3 @@
-// let cookie = document.cookie
-// let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
-
-
 const loadPosts = async(roomId) => {
     const url = '/posts/load_posts_ajax/';
     const res = await fetch(url, {
@@ -148,6 +144,13 @@ function createHappy(happyData) {
     let sadSelector = `.sad-count-${postId}`
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = happyData['sadCount'];
+
+    if (sadCountElement.classList.contains('checked')) {
+        sadCountElement.classList.toggle('checked'); //있으면 없애고
+        happyCountElement.classList.toggle('checked'); //얘는 없을 거니까 만듦
+    } else {
+        happyCountElement.classList.toggle('checked');
+    }
 }
 
 function createSad(sadData) {
@@ -161,6 +164,13 @@ function createSad(sadData) {
     let sadSelector = `.sad-count-${postId}`
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = sadData['sadCount'];
+
+    if (happyCountElement.classList.contains('checked')) {
+        happyCountElement.classList.toggle('checked');
+        sadCountElement.classList.toggle('checked');
+    } else {
+        sadCountElement.classList.toggle('checked');
+    }
 }
 
 // function controlScrollPost() {
