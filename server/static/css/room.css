@@ -320,6 +320,7 @@
     height: 100%;
     width: 0.7rem;
     background-color: var(--carrot-color);
+    border-radius: 0.8rem 0 0 0.8rem;
 }
 
 .chat-name-content {
