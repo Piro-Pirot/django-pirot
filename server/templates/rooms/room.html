@@ -21,6 +21,9 @@
 </div>
 <div class="chat-container">
     <div class="chat-conversation-container">
+        <div class="board-header">
+            Chat
+        </div>
         <div class="conversation"></div>
         <div class="chat-input">
             <textarea class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room.id }}');}"></textarea>
@@ -42,6 +45,9 @@
         </div>
     </div>
     <div class="board-container">
+        <div class="board-header">
+            Board
+        </div>
         <div class="board"></div>
         <div class="post-input">
             <div class="post-input-container">
@@ -123,6 +129,9 @@
         chatSettingModal.style.opacity = '0';
         };
     });
+
+    // board의 scrollHeight 증가시켜서 더 밑으로 스크롤 할 수 있게 하기
+
 </script>
 
 <script src="{% static 'js/chat/room.js' %}"></script>

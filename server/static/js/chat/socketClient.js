@@ -147,6 +147,7 @@ function displayPost(postData) {
 
     let postContainer = document.createElement('div');
     let postDiv = document.createElement('div');
+    let postBox = document.createElement('div'); //석류가 추가한 코드
     let buttonDiv = document.createElement('div')
     
     // 로그인 사용자가 작성한 게시글인 경우
@@ -180,8 +181,10 @@ function displayPost(postData) {
         buttonDiv.appendChild(sadBtn); // 슬퍼요
 
         let deleteBtn = document.createElement('button');
+        let deleteIcon = document.createElement('i');
         deleteBtn.classList.add('delete');
-        deleteBtn.innerText = 'X';
+        deleteIcon.classList.add('ri-close-line');
+        deleteBtn.appendChild(deleteIcon);
         deleteBtn.onclick = function() {
             onClickDelete(data['newpostId']);
         };
@@ -229,10 +232,11 @@ function displayPost(postData) {
     postContent.classList.add('post-content');
     postContent.innerText = postData['postInput'];
     postDiv.appendChild(postContent);
+    postBox.appendChild(postDiv); // 석류가 추가한 코드
+    postBox.appendChild(buttonDiv);
 
     postContainer.appendChild(postTime);
-    postContainer.appendChild(postDiv);
-    postContainer.appendChild(buttonDiv);
+    postContainer.appendChild(postBox);
 
     // 화면에 추가
     posts.appendChild(postContainer);

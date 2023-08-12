@@ -3,6 +3,7 @@
 @import 'roomModal.css';
 @import 'profile-setting.css';
 @import 'friendly.css';
+@import 'board.css';
 
 .container {
   display: flex;
@@ -251,11 +252,10 @@ background-color: #f3b95431;
 
 .conversation {
   width: 100%;
-  height: calc(100% - var(--chat-input-height));
+  height: calc(100% - var(--chat-input-height) - var(--section-header-height));
   overflow-x: hidden;
   overflow-y: scroll;
   background-color: white;
-  border-radius: 0.8rem 0.8rem 0 0;
 }
 
 .chat-input {
@@ -348,14 +348,30 @@ background-color: #f3b95431;
   padding: var(--section-padding);
 }
 
+
+
+
+.board-header {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  width: 100%;
+  height: var(--section-header-height);
+  background-color: white;
+  border-top-right-radius: 0.8rem;
+  border-top-left-radius: 0.8rem;
+  /* background-color: pink; */
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+}
+
 .board {
   width: 100%;
-  height: calc(100% - var(--chat-input-height));
+  height: calc(100% - var(--chat-input-height) - var(--section-header-height));
   background-color: white;
   overflow-x: hidden;
   overflow-y: scroll;
-  border-top-right-radius: 0.8rem;
-  border-top-left-radius: 0.8rem;
 }
 
 .post-input {
@@ -400,4 +416,8 @@ background-color: #f3b95431;
 
 .post-input-container > button:hover {
   background-color: var(--carrot-dark);
+}
+
+.board > div:last-child {
+  margin-bottom: 150%;
 }

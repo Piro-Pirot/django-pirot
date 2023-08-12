@@ -15,6 +15,7 @@
   --chat-input-height: 5.65rem;
   --section-padding: 0.6rem;
   --body-bgclr: rgba(227, 227, 227, 0.647);
+  --section-header-height: 2rem;
 }
 
 @font-face {
