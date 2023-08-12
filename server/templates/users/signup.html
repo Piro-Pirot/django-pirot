@@ -2,31 +2,44 @@
 {% load static %}
 
 {% block content %}
-    <div class="assgin-container">
-        <div><a href="/"><img src="{% static 'image/pirot_logo_long.png' %}"></a></div>
-   
-        <div class="assgin-box">
-            <div>회원가입</div>
-            <form method="POST" action="">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="{{ form.username.id_for_label }}">이름</label>
-                    {{ form.username }}
-                    <label for="{{ form.email.id_for_label }}">이메일</label>
-                    {{ form.email }}
-                    <label for="{{ form.name.id_for_label }}">닉네임</label>
-                    {{ form.name }}
-                    <label for="{{ form.password1.id_for_label }}">비밀번호</label>
-                    {{ form.password1 }}
-                    <label for="{{ form.password2.id_for_label }}">비밀번호 확인 </label>
-                    {{ form.password2 }}
-
-                    <button type="submit" name="register-submit">회원가입 완료</button>
-                </div>
-                
-
-            </form>
-        </div>
+<script src="{% static 'js/signup.js'%}"></script>
+<form method="POST" action="">
+    {% csrf_token %}
+    <div>
+        <label for="{{ form.username.id_for_label }}">Name(닉네임이 아닌 실명):</label>
+        {{ form.username }}
     </div>
+    
+    <div>
+        <label for="{{ form.password1.id_for_label }}">Password:</label>
+        {{ form.password1 }} 
+    </div>
+   
+    <div>
+        <label for="{{ form.password2.id_for_label }}">Password confirmation:</label>
+        {{ form.password2 }}
+    </div>
+
+    <div>
+        {% comment %} label태그의 for 속성과 input 태그의 name 속성을 일치시키면
+        해당 label 태그를 클릭할 때 연결된 input 요소가 자동으로 활성화됨 {% endcomment %}
+        <label for="phone_number">전화번호:</label>
+        <input type="text" id="phone_number" name="phone_number" oninput="input_phone_num()">
+
+        <button disabled id='send_sms' type="button" onclick="send_authnum()">인증번호 전송</button>
+
+        {% comment %} {{ form.phone_number }} {% endcomment %}
+    </div>
+
+    <div>
+        <div id="time_limit">03:00</div>
+        {% comment %} oninput="check_authnum()" {% endcomment %}
+        <input id="input_authnum" type="text">
+        <button disabled id='confirm' onclick="confirm_authnum()">인증하기</button>
+    </div>
+
+    {% comment %} {{ form }} {% endcomment %}
+    <button disabled id="signup_button" type="submit" onclick="signup_check()">회원가입</button>
+</form>
 
 {% endblock content %}

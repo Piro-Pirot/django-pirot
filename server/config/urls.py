@@ -27,6 +27,7 @@ urlpatterns = [
     path('', server.apps.channels.views.index),
     path('bubbles/', include('server.apps.bubbles.urls')),
     path('room/', include('server.apps.chat.urls')),
+    path('posts/', include('server.apps.posts.urls')),
     path('user/', include('server.apps.local_users.urls')),
     path('staff/', include('server.apps.channels.urls')),
 

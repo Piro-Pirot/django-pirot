@@ -4,6 +4,13 @@ from django.shortcuts import render, redirect
 from .forms import SignupForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
+from server.apps.channels.models import Join, Staff, Channel
+from django.http import JsonResponse
+from .utils import make_signature
+from .models import User, SMS_Auth
+import requests, json, time
+from django.views import View
+from random import randint
 from server.apps.channels.models import Staff, Channel, Join, Passer
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
@@ -96,3 +103,91 @@ def profile_setting(request, channelID):
     
     return render(request, template_name='users/profilesetting.html', context=context)
 
+class SMS_send(View):
+    def request_api(self, phone_num, auth_num):
+        # 경과 시간을 millisecond로 나타냄
+        # API Gateway 서버와 시간 차가 5분 이상 나는 경우 유효하지 않은 요청으로 간주
+        timestamp = str(int(time.time()*1000))
+        
+        ACCESS_KEY = "3E4qKWxpP3BueLZUKh9V"	
+        URL = "https://sens.apigw.ntruss.com/sms/v2/services/ncp:sms:kr:285290282105:pirot_sms_auth/messages"
+        URI = "/sms/v2/services/ncp:sms:kr:285290282105:pirot_sms_auth/messages"
+        
+        # API 요청에 사용되는 암호화 문자열 생성
+        message = "POST" + " " + URI + "\n" + timestamp + "\n" + ACCESS_KEY
+        message = bytes(message, 'UTF-8')
+        
+        # API 요청의 무결성을 보장하기 위한 서명 값 생성
+        # Body를 Access Key ID와 맵핑되는 Secret Key로 암호화한 서명값
+        SIGNATURE = make_signature(message)
+        
+        # API 요청에 필요한 헤더 정보 설정
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            'x-ncp-apigw-timestamp': timestamp,
+            'x-ncp-iam-access-key': ACCESS_KEY,
+            'x-ncp-apigw-signature-v2': SIGNATURE
+        }
+        # SMS 메시지의 내용 및 수신자의 번호 등 정의한 객체
+        body = {
+            "type" : "SMS",
+            "contentType" : "COMM",
+            "from" : "01087118471",
+            "content" : f"[테스트] 인증번호 [{auth_num}]를 입력해주세요.",
+            "messages" : [{
+                "to" : f"{phone_num}"
+            }]
+        }
+        # NCP(naver cloud platform) API에 POST 요청 -> 그러면 SMS 발송됨
+        requests.post(URL, data=json.dumps(body), headers=headers)
+    
+    # SMS 인증번호 생성 , 데이터 베이스에 저장한 후 SMS 발송하는 함수
+    def post(self,request):
+        # http POST 요청으로 전달된 JSON 데이터를 파싱(JSON->python). 사용자가 입력한 휴대폰 번호가 포함되어있음.
+        data = json.loads(request.body)
+        try:
+            check_phone_num = data['phone_num']
+            sms_auth_num = randint(100000, 999999)
+            auth_user = SMS_Auth.objects.get(phone_num=check_phone_num)
+            auth_user.auth_num = sms_auth_num
+            auth_user.save()
+            self.request_api(phone_num=data['phone_num'], auth_num=sms_auth_num)
+            return JsonResponse({'message' : '인증번호 발송완료'}, status=200)
+        except SMS_Auth.DoesNotExist:
+            SMS_Auth.objects.create(
+                phone_num = check_phone_num,
+                auth_num = sms_auth_num,
+            ).save()
+            self.request_api(phone_num=check_phone_num, auth_num=sms_auth_num)
+            return JsonResponse({'message' : '인증번호 발송 및 DB 입력완료'}, status=200)
+
+        
+        
+
+def sms_check(request):
+    data = json.loads(request.body)
+    try:
+        verification = SMS_Auth.objects.get(phone_num=data['phone_num'])
+        if verification.auth_num == data['auth_num']:
+            return JsonResponse({'message' : "인증 성공"}, status=200)
+        else:
+            return JsonResponse({'message' : '인증 실패'}, status=400)
+    except User.DoesNotExist:
+        return JsonResponse({'message' : '해당 휴대폰 번호가 존재하지 않습니다.'}, status=400)
+            
+
+
+def start(request):
+    return render(request, template_name="users/channel.html")
+
+def channel_create(request):
+    if request.method == 'POST':
+        return render(request, template_name='users/channelCreateDone.html')
+    else:
+        return render(request, template_name='users/channelCreate.html')
+    
+def channel_code(request):
+    if request.method == 'POST':
+        pass
+    else:
+        return render(request, template_name='users/channelCode.html')

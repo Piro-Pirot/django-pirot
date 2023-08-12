@@ -138,3 +138,14 @@ async def send_sad(sid, data):
 
     await sio.emit('display_sad', data, to=roomId)
     print('sad was saved')
+
+
+@sio.on('send_delete')
+async def send_delete(sid, data):
+    roomId = int(data['roomId'])
+    room = await sync_to_async(Room.objects.get)(id=roomId)
+
+    await post.delete_post(room, data)
+
+    await sio.emit('deleted_post', data, to=roomId)
+    print('post was deleted')
