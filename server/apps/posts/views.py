@@ -1,7 +1,9 @@
-from django.shortcuts import render
+import json, datetime
+from bs4 import BeautifulSoup
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
 from asgiref.sync import sync_to_async
-
-from .models import Post, Happy, Sad, User
+from .models import Post, Happy, Sad, User, Room
 
 #DB에 게시글 저장
 async def save_post(room, data):
@@ -113,3 +115,38 @@ async def save_sad(data):
         SadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId']).count)()
 
         return newSad, HappyCount, SadCount
+    
+
+# 게시글 Delete
+async def delete_post(room, data):
+
+    postObj = await sync_to_async(Post.objects.get)(id=data['postId'])
+    await sync_to_async(postObj.delete)()
+
+    return None
+
+
+def load_posts(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        req = json.loads(request.body)
+        room_id = req['roomId']
+
+        curRoom = Room.objects.get(id=room_id)
+
+        posts = Post.objects.filter(room=curRoom).values(
+            'id', 'content', 'room', 'created_at', 'user__username'
+        )
+        for post in posts:
+            happyCount = Happy.objects.filter(post__id=post['id']).count()
+            sadCount = Sad.objects.filter(post__id=post['id']).count()
+            post['happyCount'] = happyCount
+            post['sadCount'] = sadCount
+            post['content'] = str(post['content'])
+
+        # datetime 객체를 처리 못하는 에러 핸들링
+        def json_default(value):
+            if isinstance(value, datetime.datetime):
+                return value.strftime('%Y-%m-%d')
+
+        posts = list(posts)
+        return JsonResponse({'result': json.dumps(posts, default=json_default)}) 

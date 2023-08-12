@@ -1,5 +1,32 @@
+// let cookie = document.cookie
+// let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
 
-// 여기로 happyCount를 어떻게 전달하지?!?!?!?!!!?!?!?!?
+
+const loadPosts = async(roomId) => {
+    const url = '/posts/load_posts_ajax/';
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({roomId: roomId})
+    });
+
+    if (res.ok) {
+        let {result: ajaxPosts} = await res.json();
+        ajaxPosts = JSON.parse(ajaxPosts);
+
+        loadPostsResponse(ajaxPosts);
+    }
+}
+
+const loadPostsResponse = (ajaxPosts) => {
+    ajaxPosts.forEach(element => createPost(element));
+}
+
+loadPosts(curRoomId);
+
 
 // 게시글을 만드는 코드
 function createPost(postData) {
@@ -46,7 +73,7 @@ function createPost(postData) {
         deleteBtn.classList.add('delete');
         deleteBtn.innerText = 'X';
         deleteBtn.onclick = function() {
-            onClickDelete(postId);
+            onClickDelete(postId, roomId);
         };
         buttonDiv.appendChild(deleteBtn); // 삭제 버튼
 
@@ -100,14 +127,13 @@ function createPost(postData) {
     postContainer.appendChild(postDiv);
     postContainer.appendChild(buttonDiv);
 
+    postContainer.classList.add(`post-container-${postId}`);
     // 화면에 추가
     posts.appendChild(postContainer);
 
     document.querySelector('.post').value = '';
     // controlScrollPost();
 }
-
-postList.forEach(element => createPost(element));
 
 // 기뻐요, 슬퍼요 만드는 코드
 

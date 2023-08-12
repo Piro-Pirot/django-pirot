@@ -53,16 +53,6 @@
     // 말풍선을 담을 곳
     let conversations = document.querySelector('.conversation');
 
-
-    let postList = [];
-    if(`{{ jsonPosts | safe}}` !== '') {
-        let jsonPosts = {{jsonPosts | safe}};
-        
-        jsonPosts.forEach(element => {
-            postList.push(element);
-        });
-    }
-
     // 게시글을 담을 곳
     let posts = document.querySelector('.board');
 </script>
