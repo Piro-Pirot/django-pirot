@@ -780,7 +780,8 @@ footer {
   outline: 0;
 }
 
-.login-form input[type=text] {
+.login-form input[type=text],
+.login-form input[type=password] {
   margin-bottom: 1.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -789,12 +790,14 @@ footer {
   border: 2px solid white;
 }
 
-.login-form input[type=text]::placeholder {
+.login-form input[type=text]::placeholder,
+.login-form input[type=password]::placeholder {
   color: rgba(128, 128, 128, 0.344);
 
 }
 
-.login-form input[type=text]:focus {
+.login-form input[type=text]:focus,
+.login-form input[type=password]:focus {
   border: 2px solid var(--carrot-light);
 }
 

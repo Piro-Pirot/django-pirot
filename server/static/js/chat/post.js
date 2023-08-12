@@ -36,6 +36,7 @@ function createPost(postData) {
     let roomId = postData['room']
     
     let postContainer = document.createElement('div');
+    let postBox = document.createElement('div'); //석류가 추가한 코드
     let postDiv = document.createElement('div');
     let buttonDiv = document.createElement('div')
     
@@ -70,8 +71,10 @@ function createPost(postData) {
         buttonDiv.appendChild(sadBtn); // 슬퍼요
 
         let deleteBtn = document.createElement('button');
+        let deleteIcon = document.createElement('i');
         deleteBtn.classList.add('delete');
-        deleteBtn.innerText = 'X';
+        deleteIcon.classList.add('ri-close-line');
+        deleteBtn.appendChild(deleteIcon);
         deleteBtn.onclick = function() {
             onClickDelete(postId, roomId);
         };
@@ -122,10 +125,11 @@ function createPost(postData) {
     postContent.classList.add('post-content');
     postContent.innerText = postData['content'];
     postDiv.appendChild(postContent);
+    postBox.appendChild(postDiv); // 석류가 추가한 코드
+    postBox.appendChild(buttonDiv);
 
     postContainer.appendChild(postTime);
-    postContainer.appendChild(postDiv);
-    postContainer.appendChild(buttonDiv);
+    postContainer.appendChild(postBox);
 
     postContainer.classList.add(`post-container-${postId}`);
     // 화면에 추가
@@ -170,3 +174,5 @@ function createSad(sadData) {
 // controlScrollPost();
 
 // 여기 정보 : {id: 55, content: '됏스', room: 10, created_at: '2023-08-10', user__username: 'minseo'}
+
+

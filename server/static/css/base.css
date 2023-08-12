@@ -1,7 +1,9 @@
 @import 'style.css';
 @import 'room.css';
 @import 'roomModal.css';
+@import 'profile-setting.css';
 @import 'friendly.css';
+@import 'board.css';
 
 .container {
   display: flex;
@@ -72,6 +74,8 @@
   width: 20rem;
   /* background-color: blue; */
   padding-left: 1.7rem;
+  /* border-right: 1px solid black; */
+
 }
 
 .middle-section-content {
@@ -218,6 +222,16 @@ background-color: #f3b95431;
 .chat-name {
   height: 6rem;
   /* background-color: yellow; */
+  /* border-bottom: 1px solid black; */
+  padding: var(--section-padding) var(--section-padding) 0 var(--section-padding);
+  background-color: var(--body-bgclr);
+}
+
+.chat-name-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.8rem;
+  background-color: white;
 }
 
 .chat-container {
@@ -225,24 +239,185 @@ background-color: #f3b95431;
   height: calc(100vh - 6rem);
 }
 
-.chat-container .chat-conversation-container .board-container {
-  display: flex;
+/* .chat-container .chat-conversation-container .board-container {
+  /* display: flex;
   flex-direction: column;
+} */
+
+.chat-conversation-container {
+  width: calc(100vw - 42rem);
+  padding: var(--section-padding) 0 var(--section-padding) var(--section-padding);
+  background-color: var(--body-bgclr);
 }
 
 .conversation {
-  width: calc(100vw - 42rem);
-  height: calc(100vh - 6rem);
-  background-color: slateblue;
+  width: 100%;
+  height: calc(100% - var(--chat-input-height) - var(--section-header-height));
   overflow-x: hidden;
   overflow-y: scroll;
+  background-color: white;
+}
+
+.chat-input {
+  width: 100%;
+  height: var(--chat-input-height);
+  padding: 0.5rem 0.5rem 1.4rem 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 0 0.8rem 0.8rem;
+  background-color: white;
+}
+
+.chat-input textarea {
+  outline: 0;
+  padding: 0.3rem 0.5rem;
+  height: 100%;
+  width: 80%;
+  border: 1px solid var(--carrot-light);
+  border-radius: 0.5rem;
+  resize: none;
+}
+
+.chat-input textarea:focus {
+  border: 1px solid var(--carrot-light);
+}
+
+.chat-icons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  height: 100%;
+  width: 4rem;
+  border: 1px solid var(--carrot-light);
+  border-radius: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.chat-icons div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-icons div:hover {
+  background-color: #face8331;
+}
+
+.chat-icons i {
+  font-size: 1.3rem;
+}
+
+#attachIcon {
+  /* padding: 0.2rem; */
+  border-top-left-radius: 0.5rem;
+}
+
+#reserveMsg {
+  border-top-right-radius: 0.5rem;
+}
+
+#imageIcon {
+  border-bottom-left-radius: 0.5rem;
+}
+
+#codeIcon {
+  border-bottom-right-radius: 0.5rem;
+}
+
+.chat-input button {
+  height: 100%;
+  width: 15%;
+  margin-left: 0.5rem;
+  background-color: var(--carrot-color);
+  color: white;
+  font-size: 1.2rem;
+  border: 0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+.chat-input button:hover {
+  background-color: var(--carrot-dark);
+}
+
+.board-container {
+  height: calc(100vh - 6rem);
+  width: 18rem;
+  background-color: var(--body-bgclr);
+  padding: var(--section-padding);
+}
+
+
+
+
+.board-header {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  width: 100%;
+  height: var(--section-header-height);
+  background-color: white;
+  border-top-right-radius: 0.8rem;
+  border-top-left-radius: 0.8rem;
+  /* background-color: pink; */
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
 }
 
 .board {
-  width: 18rem;
-  height: calc(100vh - 6rem);
-  background-color: aqua;
+  width: 100%;
+  height: calc(100% - var(--chat-input-height) - var(--section-header-height));
+  background-color: white;
   overflow-x: hidden;
   overflow-y: scroll;
 }
 
+.post-input {
+  height: var(--chat-input-height);
+  background-color: white;
+  border-bottom-left-radius: 0.8rem;
+  border-bottom-right-radius: 0.8rem;
+  border-top: 1px solid var(--carrot-light);
+}
+
+.post-input-container {
+  /* background-color: blue; */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0.2rem;
+  position: relative;
+}
+
+.post-input-container > textarea {
+  width: 100%;
+  padding: 0.3rem 0.3rem;
+  resize: none;
+  border: 0;
+  outline: 0;
+}
+
+.post-input-container > button {
+  width: 4rem;
+  height: 1.7rem;
+  position: absolute;
+  bottom: 0.4rem;
+  right: 0.4rem;
+  border: 0;
+  outline: 0;
+  border-radius: 1rem;
+  background-color: var(--carrot-color);
+  color: white;
+  transition: 0.2s;
+}
+
+.post-input-container > button:hover {
+  background-color: var(--carrot-dark);
+}
+
+.board > div:last-child {
+  margin-bottom: 150%;
+}

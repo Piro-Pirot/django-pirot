@@ -101,7 +101,7 @@ def profile_setting(request, channelID):
         'level' : level,
     }
     
-    return render(request, 'users/profilesetting.html', context=context)
+    return render(request, template_name='users/profilesetting.html', context=context)
 
 class SMS_send(View):
     def request_api(self, phone_num, auth_num):
