@@ -55,7 +55,7 @@ function createPost(postData) {
         let sadBtn = document.createElement('button');
         sadBtn.classList.add('sad');
         let sadImg = document.createElement('i');
-        sadImg.classList.add('ri-emotion-unhappy-line');
+        sadImg.classList.add('ri-emotion-sad-line');
         let sadCount = document.createElement('span');
         sadCount.innerText = postData['sadCount'];
         sadCount.classList.add(`sad-count-${postId}`);
@@ -104,7 +104,7 @@ function createPost(postData) {
         let sadBtn = document.createElement('button');
         sadBtn.classList.add('sad');
         let sadImg = document.createElement('i');
-        sadImg.classList.add('ri-emotion-unhappy-line');
+        sadImg.classList.add('ri-emotion-sad-line');
         let sadCount = document.createElement('span');
         sadCount.innerText = postData['sadCount'];
         sadCount.classList.add(`sad-count-${postId}`);
