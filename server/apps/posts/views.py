@@ -66,12 +66,6 @@ async def save_happy(data):
 
         return newHappy, HappyCount, SadCount
 
-    # newHappy = await sync_to_async(Happy.objects.create)(
-    #     post = curPostObj,
-    #     user = curUserObj,
-    #     )
-    # await sync_to_async(newHappy.save)()
-
 
 async def save_sad(data):
     curUserObj = await sync_to_async(User.objects.get)(username=data['user']) # admin, minseo같은
