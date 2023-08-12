@@ -1,3 +1,7 @@
+from bs4 import BeautifulSoup
+import markdown
+from pygments.styles import get_style_by_name
+
 import socketio
 from asgiref.sync import sync_to_async
 
@@ -53,6 +57,16 @@ async def connect(sid, environ, auth):
 async def send_message(sid, data):
     roomId = int(data['roomId'])
     room = await sync_to_async(Room.objects.get)(id=roomId)
+
+    data['msg'] = str(BeautifulSoup(data['msg']))
+
+    extension_configs = {
+        'pygments_style': 'solarized-light'
+    }
+
+    # 마크다운
+    data['msg'] = markdown.markdown(data['msg'], extensions=['fenced_code', 'codehilite'])
+
     if room.room_type == 1:
         #익명채팅방
         newBubble = await bubble.save_blind_msg(room, data)
@@ -74,8 +88,49 @@ async def send_post(sid, data):
     roomId = int(data['roomId'])
     room = await sync_to_async(Room.objects.get)(id=roomId)
 
-    newpost = await post.save_post(room, data)
+    newpostdata = await post.save_post(room, data)
+    newpost, happyCount, sadCount = newpostdata
+
     data['newpostId'] = newpost.id
     data['created_at'] = newpost.created_at.strftime('%Y-%m-%d')
+    data['happyCount'] = happyCount
+    data['sadCount'] = sadCount
+    
     await sio.emit('display_post', data, to=roomId)
     print('post was saved')
+
+
+@sio.on('send_happy')
+async def send_happy(sid, data):
+    roomId = int(data['roomId'])
+
+    newhappydata = await post.save_happy(data)
+    if len(newhappydata) == 3:
+        newhappy, happyCount, sadCount = newhappydata
+    else:
+        happyCount, sadCount = newhappydata
+
+    # data['newhappyId'] = newhappy.id
+    data['happyCount'] = happyCount
+    data['sadCount'] = sadCount
+
+    await sio.emit('display_happy', data, to=roomId)
+    print('happy was saved')
+    
+
+@sio.on('send_sad')
+async def send_sad(sid, data):
+    roomId = int(data['roomId'])
+
+    newsaddata = await post.save_sad(data)
+    if len(newsaddata) == 3:
+        newsad, happyCount, sadCount = newsaddata
+    else:
+       happyCount, sadCount = newsaddata
+
+    # data['newhappyId'] = newhappy.id
+    data['happyCount'] = happyCount
+    data['sadCount'] = sadCount
+
+    await sio.emit('display_sad', data, to=roomId)
+    print('sad was saved')
