@@ -165,7 +165,7 @@ function displayPost(postData) {
         deleteBtn.classList.add('delete');
         deleteBtn.innerText = 'X';
         deleteBtn.onclick = function() {
-            onClickDelete(data['newpostId']);
+            onClickDelete(postData['newpostId'], postData['roomId']);
         };
         buttonDiv.appendChild(deleteBtn); // 삭제 버튼
 
@@ -216,6 +216,7 @@ function displayPost(postData) {
     postContainer.appendChild(postDiv);
     postContainer.appendChild(buttonDiv);
 
+    postContainer.classList.add(`post-container-${postData['newpostId']}`);
     // 화면에 추가
     posts.appendChild(postContainer);
 
@@ -239,7 +240,7 @@ socket.on('display_sad', async (data) => {
 function onClickHappy(post_id, room_id) {
 
     socket.emit('send_happy', {'user': curUsername, 'postId': post_id, 'roomId': room_id});
-    console.log(curUsername)
+    // console.log(curUsername)
     console.log('send successfully');
 
 }
@@ -279,4 +280,24 @@ async function displaySad(sadData) {
     let sadSelector = `.sad-count-${postId}`
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = sadData['sadCount'];
+}
+
+
+// id = newPostId
+function onClickDelete(post_id, room_id) {
+    socket.emit('send_delete', {'postId':post_id, 'roomId':room_id})
+    console.log(post_id, room_id)
+    console.log('send_successfully')
+}
+
+socket.on('deleted_post', async (data) => {
+    deletedPost(data);
+});
+
+async function deletedPost(deletedData) {
+    let postId = deletedData['postId']
+
+    let delSelector = `.post-container-${postId}`;
+    let delPostContainer = document.querySelector(delSelector);
+    delPostContainer.remove()
 }
