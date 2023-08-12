@@ -19,7 +19,7 @@ app = socketio.ASGIApp(sio)
 
 @sio.on('join')
 async def handle_join(sid, data):
-    sio.save_session(sid, data)
+    await sio.save_session(sid, data)
     sio.enter_room(sid, room=data['room'])
     
     '''

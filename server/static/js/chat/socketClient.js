@@ -169,7 +169,7 @@ function displayPost(postData) {
         let sadBtn = document.createElement('button');
         sadBtn.classList.add('sad');
         let sadImg = document.createElement('i');
-        sadImg.classList.add('ri-emotion-unhappy-line');
+        sadImg.classList.add('ri-emotion-sad-line');
         let sadCount = document.createElement('span');
         sadCount.innerText = postData['sadCount'];
         sadCount.classList.add(`sad-count-${postData['newpostId']}`);
@@ -190,8 +190,8 @@ function displayPost(postData) {
         };
         buttonDiv.appendChild(deleteBtn); // 삭제 버튼
 
-        postDiv.classList.add('post-box-me');
-        postContainer.classList.add('post-container-me');
+        postDiv.classList.add('post-box');
+        postContainer.classList.add('post-container');
     } else {
         let happyBtn = document.createElement('button');
         happyBtn.classList.add('happy');
@@ -210,7 +210,7 @@ function displayPost(postData) {
         let sadBtn = document.createElement('button');
         sadBtn.classList.add('sad');
         let sadImg = document.createElement('i');
-        sadImg.classList.add('ri-emotion-unhappy-line');
+        sadImg.classList.add('ri-emotion-sad-line');
         let sadCount = document.createElement('span');
         sadCount.innerText = postData['sadCount'];
         sadCount.classList.add(`sad-count-${postData['newpostId']}`);
@@ -289,6 +289,15 @@ async function displayHappy(happyData) {
     let sadSelector = `.sad-count-${postId}`
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = happyData['sadCount'];
+
+    // 자신이 누른 버튼 확인
+    if (sadCountElement.parentElement.classList.contains('checked')) {
+        sadCountElement.parentElement.classList.toggle('checked');
+        happyCountElement.parentElement.classList.toggle('checked');
+    } else {
+        happyCountElement.parentElement.classList.toggle('checked');
+    }
+
 }
 
 async function displaySad(sadData) {
@@ -302,6 +311,14 @@ async function displaySad(sadData) {
     let sadSelector = `.sad-count-${postId}`
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = sadData['sadCount'];
+
+    // 자신이 누른 버튼 확인
+    if (happyCountElement.parentElement.classList.contains('checked')) {
+        happyCountElement.parentElement.classList.toggle('checked');
+        sadCountElement.parentElement.classList.toggle('checked');
+    } else {
+        sadCountElement.parentElement.classList.toggle('checked');
+    }
 }
 
 
