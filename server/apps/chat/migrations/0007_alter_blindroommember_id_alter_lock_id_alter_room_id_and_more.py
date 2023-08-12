@@ -6,22 +6,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('posts', '0002_auto_20230803_1416'),
+        ('chat', '0006_merge_20230810_2203'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='happy',
+            model_name='blindroommember',
             name='id',
             field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
         ),
         migrations.AlterField(
-            model_name='post',
+            model_name='lock',
             name='id',
             field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
         ),
         migrations.AlterField(
-            model_name='sad',
+            model_name='room',
+            name='id',
+            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+        ),
+        migrations.AlterField(
+            model_name='room',
+            name='room_type',
+            field=models.IntegerField(choices=[(0, 'ROOM'), (1, 'BLIND_ROOM'), (2, 'DIRECT_ROOM')], default=0),
+        ),
+        migrations.AlterField(
+            model_name='roommember',
             name='id',
             field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
         ),

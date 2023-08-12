@@ -10,15 +10,24 @@ socket.on('connect', async () => {
     });
 });
 
+
 socket.on('display_message', async (data) => {
     console.log(data);
-    displayMessage(data);
+    const offsetH = displayMessage(data);
+    // 스크롤을 너무 많이 올린 게 아니라면 맨 아래로
+    if(calcScroll() <= 650 + offsetH) {
+        controlScroll();
+    }
 });
 
 // 익명채팅방 이벤트
 socket.on('display_secret_message', async (data) => {
     console.log(data);
-    displayMessage(data);
+    const offsetH = displayMessage(data);
+    
+    if(calcScroll() <= 800) {
+        controlScroll();
+    }
 });
 
 function onClickSendMessage(user, id) {
@@ -28,8 +37,12 @@ function onClickSendMessage(user, id) {
     if(msg === '') return;
     console.log(msg);
 
+    controlScroll();
+
     socket.emit('send_message', {'msg': msg, 'file': 'delete me js', 'user': user, 'roomId': id});
     console.log('send successfully');
+
+    document.querySelector('.input').value = null;
 }
 
 
@@ -71,19 +84,23 @@ function displayMessage(bubbleData) {
     // 내용
     let bubbleContent = document.createElement('div');
     bubbleContent.classList.add('bubble-content');
-    bubbleContent.innerText = bubbleData['msg'];
+    bubbleContent.innerHTML = bubbleData['msg'];
 
     bubbleContainer.appendChild(bubbleHeader);
     bubbleContainer.appendChild(bubbleContent);
 
     bubbleDiv.appendChild(bubbleContainer);
 
-    // 화면에 추가
-    converations.appendChild(bubbleDiv);
+    curScroll = conversationSection.scrollTop;
 
-    document.querySelector('.input').value = '';
-    controlScroll();
+    // 화면에 추가
+    conversations.appendChild(bubbleDiv);
+
+    return bubbleDiv.offsetHeight;
 }
+
+
+// -------------------- 게시판 -----------------------
 
 
 // post 게시 이벤트 : 이벤트 명을 받고 콜백 함수를 실행
@@ -109,7 +126,7 @@ function onClickSendPost(user, id) {
 function displayPost(postData) {
     console.log(postData);
     // data로 받아옴!! data['newpostId'], ~ new post의 id, created_at 필요
-    
+
     let postContainer = document.createElement('div');
     let postDiv = document.createElement('div');
     let buttonDiv = document.createElement('div')
@@ -117,17 +134,31 @@ function displayPost(postData) {
     // 로그인 사용자가 작성한 게시글인 경우
     if(postData['user'] == curUsername) {
         let happyBtn = document.createElement('button');
-        let happySpan = document.createElement('span');
-        happySpan.innerText = '기뻐요'; // 나중에 i 태그
         happyBtn.classList.add('happy');
-        happyBtn.appendChild(happySpan);
+        let happyImg = document.createElement('i');
+        happyImg.classList.add('ri-emotion-happy-line');
+        let happyCount = document.createElement('span');
+        happyCount.innerText = postData['happyCount'];
+        happyCount.classList.add(`happy-count-${postData['newpostId']}`);
+        happyBtn.appendChild(happyImg);
+        happyBtn.appendChild(happyCount);
+        happyBtn.onclick = function() {
+            onClickHappy(postData['newpostId'], postData['roomId']);
+        };
         buttonDiv.appendChild(happyBtn); // 기뻐요
 
         let sadBtn = document.createElement('button');
-        let sadSpan = document.createElement('span');
-        sadSpan.innerText = '슬퍼요';
         sadBtn.classList.add('sad');
-        sadBtn.appendChild(sadSpan);
+        let sadImg = document.createElement('i');
+        sadImg.classList.add('ri-emotion-unhappy-line');
+        let sadCount = document.createElement('span');
+        sadCount.innerText = postData['sadCount'];
+        sadCount.classList.add(`sad-count-${postData['newpostId']}`);
+        sadBtn.appendChild(sadImg);
+        sadBtn.appendChild(sadCount);
+        sadBtn.onclick = function() {
+            onClickSad(postData['newpostId'], postData['roomId']); //여기 좋아요를 누르는 유저가 들어가야함
+        };
         buttonDiv.appendChild(sadBtn); // 슬퍼요
 
         let deleteBtn = document.createElement('button');
@@ -142,21 +173,32 @@ function displayPost(postData) {
         postContainer.classList.add('post-container-me');
     } else {
         let happyBtn = document.createElement('button');
-        let happySpan = document.createElement('span');
-        happySpan.innerText = '기뻐요'; // 나중에 i 태그
         happyBtn.classList.add('happy');
-        happyBtn.appendChild(happySpan);
+        let happyImg = document.createElement('i');
+        happyImg.classList.add('ri-emotion-happy-line');
+        let happyCount = document.createElement('span');
+        happyCount.innerText = postData['happyCount'];
+        happyCount.classList.add(`happy-count-${postData['newpostId']}`);
+        happyBtn.appendChild(happyImg);
+        happyBtn.appendChild(happyCount);
+        happyBtn.onclick = function() {
+            onClickHappy(postData['newpostId'], postData['roomId']);
+        };
         buttonDiv.appendChild(happyBtn); // 기뻐요
 
         let sadBtn = document.createElement('button');
-        let sadSpan = document.createElement('span');
-        sadSpan.innerText = '슬퍼요';
         sadBtn.classList.add('sad');
-        sadBtn.appendChild(sadSpan);
+        let sadImg = document.createElement('i');
+        sadImg.classList.add('ri-emotion-unhappy-line');
+        let sadCount = document.createElement('span');
+        sadCount.innerText = postData['sadCount'];
+        sadCount.classList.add(`sad-count-${postData['newpostId']}`);
+        sadBtn.appendChild(sadImg);
+        sadBtn.appendChild(sadCount);
+        sadBtn.onclick = function() {
+            onClickSad(postData['newpostId'], postData['roomId']);
+        };
         buttonDiv.appendChild(sadBtn); // 슬퍼요
-
-        postDiv.classList.add('post-box');
-        postContainer.classList.add('post-container');
     }
 
     // 작성일
@@ -178,5 +220,63 @@ function displayPost(postData) {
     posts.appendChild(postContainer);
 
     document.querySelector('.post').value = '';
-    controlScrollPost();
+    // controlScrollPost();
+}
+
+
+socket.on('display_happy', async (data) => {
+    console.log(data);
+    displayHappy(data);
+});
+
+socket.on('display_sad', async (data) => {
+    console.log(data);
+    displaySad(data);
+});
+
+
+// Happy click -> id는 post id
+function onClickHappy(post_id, room_id) {
+
+    socket.emit('send_happy', {'user': curUsername, 'postId': post_id, 'roomId': room_id});
+    console.log(curUsername)
+    console.log('send successfully');
+
+}
+
+// Sad click -> id는 post id
+function onClickSad(post_id, room_id) {
+
+    socket.emit('send_sad', {'user': curUsername, 'postId': post_id, 'roomId': room_id});
+    console.log('send successfully');
+
+}
+
+
+// 여기 post 정보 : created_at "2023-08-10", newpostId, postInput, roomId, user
+
+async function displayHappy(happyData) {
+    console.log(happyData);
+    let postId = happyData['postId'];
+
+    let happySelector = `.happy-count-${postId}`
+    let happyCountElement = document.querySelector(happySelector);
+    happyCountElement.innerText = happyData['happyCount'];
+
+    let sadSelector = `.sad-count-${postId}`
+    let sadCountElement = document.querySelector(sadSelector);
+    sadCountElement.innerText = happyData['sadCount'];
+}
+
+async function displaySad(sadData) {
+    console.log(sadData);
+    let postId = sadData['postId'];
+    
+    let happySelector = `.happy-count-${postId}`
+    let happyCountElement = document.querySelector(happySelector);
+    happyCountElement.innerText = sadData['happyCount'];
+
+    let sadSelector = `.sad-count-${postId}`
+    let sadCountElement = document.querySelector(sadSelector);
+    sadCountElement.innerText = sadData['sadCount'];
 }

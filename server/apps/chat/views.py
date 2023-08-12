@@ -5,7 +5,14 @@ from server.apps.bubbles.models import *
 from server.apps.channels.models import *
 from server.apps.posts.models import *
 
+from django.db.models import Q, F
+
+from bs4 import BeautifulSoup
+
 # Create your views here.
+
+NO = 0
+YES = 1
 
 def create_room(request, channelId, target):
     if request.method == 'POST':
@@ -55,6 +62,12 @@ def main_room(request, channelId, type):
     if not request.user.is_authenticated:
         return redirect('/')
     
+    curChannel = Channel.objects.get(id=channelId)
+
+    # 채널이 승인 되지 않았다면
+    if curChannel.channel_ok == NO:
+        return render(request, 'error.html', {'errorMsg': f'{curChannel.channel_name} 채널이 승인 대기 중입니다'})
+
     myBlindRooms = ''
     myRooms = ''
 
@@ -63,7 +76,6 @@ def main_room(request, channelId, type):
 
     myChannels = []
 
-    curChannel = Channel.objects.get(id=channelId)
     
     if type == 'main' or type == 'friends':
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
@@ -74,6 +86,20 @@ def main_room(request, channelId, type):
         myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel=curChannel)[0]
         # 현재 로그인 사용자의 채널 구성원들
         myFriends = Passer.objects.filter(channel__id=channelId).exclude(pk=myPassInfo.pk)
+
+        # 즐겨찾기 친구 먼저 정렬
+        myFriends = Passer.objects.filter(
+            channel__id=channelId
+        ).annotate(
+            is_bookmarked=F('bookmarked_user__id')
+        ).order_by('-bookmarked_user__id')
+
+        myFriends = myFriends.exclude(pk=myPassInfo.pk)
+        
+        # 대체 왜..?
+        # myFriends = Passer.objects.raw(
+        #     f'SELECT * FROM channels_passer as tableB left join (select * from channels_bookmark where user_id={request.user.id}) as tableA on tableB.id=tableA.bookmarked_user_id where channel_id={channelId} and not passer_name={request.user.name} order by bookmarked_user_id desc'
+        # )
 
         # 현재 로그인 사용자의 소속 채널
         myJoinInfo = Join.objects.filter(user=request.user)
@@ -129,6 +155,15 @@ def enter_room(request, channelId, roomId, type):
         # 현재 로그인 사용자의 채널 구성원들
         myFriends = Passer.objects.filter(channel=curChannel).exclude(id=myPassInfo.id)
 
+        # 즐겨찾기 친구 먼저 정렬
+        myFriends = Passer.objects.filter(
+            channel__id=channelId
+        ).annotate(
+            is_bookmarked=F('bookmarked_user__id')
+        ).order_by('-bookmarked_user__id')
+
+        myFriends = myFriends.exclude(pk=myPassInfo.pk)
+
         # 현재 로그인 사용자의 소속 채널
         myJoinInfo = Join.objects.filter(user=request.user)
         for joinInfo in myJoinInfo:
@@ -141,35 +176,30 @@ def enter_room(request, channelId, roomId, type):
     if curRoom.room_type == 1:
         #익명채팅방
         roomMembers = curRoom.blindroommember_set.all()
-        # 말풍선 데이터 get
-        bubbles = BlindBubble.objects.filter(room=curRoom).values(
-            'room', 'content', 'is_delete',
-            'read_cnt', 'file', 'nickname',
-            'profile_img', 'created_at',
-            'user__username'
-        )
         # 게시글 데이터 get
         posts = Post.objects.filter(room=curRoom).values(
             'id', 'content', 'room', 'created_at', 'user__username'
         )
-        # happys = Happy.objects.filter(post__room=curRoom).values(
-        #     'post__id'
-        # )
-        # sads = Sad.objects.filter(post__room=curRoom).values(
-        #     'post__id'
-        # ) 어차피 happy나 sad나 post__id가 같긴 한데..
-        # 각 게시물의 슬퍼요 개수를 여기서 계산해서 JS로 넘겨야 HTML에 삽입할 수 있는데 어케 넘겨?
+        
+        for post in posts:
+            happyCount = Happy.objects.filter(post__id=post['id']).count()
+            sadCount = Sad.objects.filter(post__id=post['id']).count()
+            post['happyCount'] = happyCount
+            post['sadCount'] = sadCount
+
     else:
         roomMembers = RoomMember.objects.filter(room=curRoom)
-        # 말풍선 데이터 get
-        bubbles = Bubble.objects.filter(room=curRoom).values(
-            'room', 'content', 'is_delete',
-            'read_cnt', 'file', 'created_at',
-            'user__username'
-        )
+        # 게시글 데이터 get
         posts = Post.objects.filter(room=curRoom).values(
             'id', 'content', 'room', 'created_at', 'user__username'
         )
+
+        for post in posts:
+            happyCount = Happy.objects.filter(post__id=post['id']).count()
+            sadCount = Sad.objects.filter(post__id=post['id']).count()
+            post['happyCount'] = happyCount
+            post['sadCount'] = sadCount
+
 
     if curRoom.room_name == '__direct':
         directRoomMember = curRoom.roommember_set.all()
@@ -179,31 +209,13 @@ def enter_room(request, channelId, roomId, type):
                 break
         title = otherUser.join.filter(passer__channel=curChannel)[0].passer
 
-
-    bubbles = list(bubbles)
-    # myRooms = list(myRooms)
-
-    jsonBubbles = json.dumps(bubbles, default=str)
-    # jsonRooms = json.dumps(myRooms, default=str)
-
-    # js에서 말풍선을 만들기 위해 쿼리셋을 json으로 변환
-    # jsonBubbles = serializers.serialize('json', bubbles)
-    # print(jsonBubbles)
-
-
+    # datetime 객체를 처리 못하는 에러 핸들링
     def json_default(value):
         if isinstance(value, datetime.datetime):
             return value.strftime('%Y-%m-%d')
 
     posts = list(posts)
     jsonPosts = json.dumps(posts, default=json_default)
-
-    # 여러 개의 구분된 값은 어떻게 보내징 근데 굳이 필요하나
-    # happys = list(happys)
-    # jsonHappys = json.dumps(happys, default=str)
-    # sads = list(sads)
-    # jsonSads = json.dumps(sads, default=str)
-
 
     # 현재 로그인 사용자가 채팅 방 멤버라면
     for member in roomMembers:
@@ -215,7 +227,6 @@ def enter_room(request, channelId, roomId, type):
                     'title': title,
                     'room': curRoom,
                     'channel': curChannel,
-                    'jsonBubbles': jsonBubbles,
                     'myRooms': myRooms,
                     'myBlindRooms': myBlindRooms,
                     'myFriends': myFriends,

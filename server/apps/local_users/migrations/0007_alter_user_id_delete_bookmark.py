@@ -6,18 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bubbles', '0001_initial'),
+        ('local_users', '0006_merge_20230810_2203'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='blindbubble',
+            model_name='user',
             name='id',
             field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
         ),
-        migrations.AlterField(
-            model_name='bubble',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+        migrations.DeleteModel(
+            name='Bookmark',
         ),
     ]

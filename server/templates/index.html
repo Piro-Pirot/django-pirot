@@ -29,18 +29,25 @@
       <div class="nav-right">
         <!-- 로그인이 된 경우 -->
         {% if user.is_authenticated %} 
-          <!-- 그 중 가입된 채널이 없는 경우 -->
+          <!-- 그 중 가입된 첫 번째 채널이 없는 경우 -->
           {% if myJoinInfo.first == None %}
           <div id="start" class="nav-right-item login-btn">
-            <form action="/user/channel/" method="get">
-              <input type="submit" value="시작하기">
-            </form>
+            <a href="/staff/channel/">
+              <input type="button" value="시작하기">
+            </a>
           </div>
-          <!-- 채널이 있는 경우 -->
+          <!-- 첫 번째 채널이 있는 경우 -->
           {% else %}
-          <div id="enter" class="nav-right-item login-btn">
-            채팅방 들어가기
+          <div id="start" class="nav-right-item login-btn">
+            <a href="/staff/channel/">
+              <input type="button" value="새 채널 참여하기">
+            </a>
           </div>
+          <a href="/room/{{ myJoinInfo.first.passer.channel.id }}/friends/">
+            <div id="enter" class="nav-right-item login-btn">
+              채팅방 들어가기
+            </div>
+          </a>
           {% endif %}
         <!-- 로그인이 안 된 경우 -->
         {% else %}

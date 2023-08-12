@@ -1,3 +1,5 @@
+import json
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import SignupForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -10,6 +12,7 @@ import requests, json, time
 from django.views import View
 from random import randint
 from server.apps.channels.models import Staff, Channel, Join, Passer
+from .models import *
 from django.views.decorators.csrf import csrf_exempt
 
 
