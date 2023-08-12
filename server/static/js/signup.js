@@ -120,9 +120,6 @@ function confirm_authnum(){
     const data = JSON.stringify({ phone_num: inputPhoneNumber, auth_num: inputAuthNumber});
     xhr.send(data);
 
-    // 성공적으로 처리되었을 때 UI 업데이트
-    alert('문자 인증이 완료되었습니다.')
-
     document.getElementById('confirm').innerHTML="인증완료"
     document.getElementById('signup_button').disabled = false;
     document.getElementById('signup_button').setAttribute("style", "background-color:yellow;")

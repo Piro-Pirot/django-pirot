@@ -26,7 +26,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             auth.login(request, user)
-            return redirect('/')
+            return redirect('/user/login/')
         else:
             return redirect('/user/signup/')
     else:

@@ -172,21 +172,21 @@ LOGOUT_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'local_users.User'
 
 
-LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'file': {
-                'level': 'DEBUG',  # 필요한 로깅 레벨 설정
-                'class': 'logging.FileHandler',
-                'filename': '/home/ywonchae1/django.log',  # 로그 파일 경로 설정
-                },
-            },
-        'loggers': {
-            'django': {
-                'handlers': ['file'],
-                'level': 'DEBUG',  # 필요한 로깅 레벨 설정
-                'propagate': True,
-                },
-            },
-        }
+# LOGGING = {
+#         'version': 1,
+#         'disable_existing_loggers': False,
+#         'handlers': {
+#             'file': {
+#                 'level': 'DEBUG',  # 필요한 로깅 레벨 설정
+#                 'class': 'logging.FileHandler',
+#                 'filename': '/home/ywonchae1/django.log',  # 로그 파일 경로 설정
+#                 },
+#             },
+#         'loggers': {
+#             'django': {
+#                 'handlers': ['file'],
+#                 'level': 'DEBUG',  # 필요한 로깅 레벨 설정
+#                 'propagate': True,
+#                 },
+#             },
+#         }
