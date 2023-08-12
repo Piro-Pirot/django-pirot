@@ -23,7 +23,8 @@ function send_authnum(){
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
     //인증번호 보내는 과정 필요 -> views.py의 send_sms 함수를 호출하는 AJAX 요청
-    const inputPhoneNumber = document.getElementById("phone_number");
+    const inputPhoneNumber = document.getElementById("phone_number").value;
+    console.log(inputPhoneNumber);
     // if (inputPhoneNumber !== null) {
     //     const phoneNum = inputPhoneNumber.value;
     //     // 이후 처리
