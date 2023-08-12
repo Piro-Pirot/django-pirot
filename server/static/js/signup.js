@@ -9,7 +9,6 @@ function input_phone_num(){
 function initButton(){
     document.getElementById("send_sms").disabled = true;
     document.getElementById("confirm").disabled = true;
-    document.getElementById("certificationNumber").innerHTML = "000000";
     document.getElementById("timeLimit").innerHTML = "03:00";
     document.getElementById("send_sms").setAttribute("style","background-color:none;")
     document.getElementById("confirm").setAttribute("style","background-color:none;")
@@ -19,7 +18,7 @@ function initButton(){
 let processID = -1;
 
 function send_authnum(){
-    console.log("Button clicked");
+    console.log("인증번호 Button clicked");
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
     //인증번호 보내는 과정 필요 -> views.py의 send_sms 함수를 호출하는 AJAX 요청
@@ -89,13 +88,19 @@ function send_authnum(){
 
 
 function confirm_authnum(){
-    const inputPhoneNumber = document.getElementById("phoneInput").value;
+    console.log("인증하기 button clicked");
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    const inputPhoneNumber = document.getElementById("phone_number").value;
+
     const inputAuthNumber = document.getElementById("input_authnum").value;
+    console.log(inputAuthNumber);
 
     const xhr = new XMLHttpRequest();
     //POST 요청 설정
-    xhr.open("POST", "user/signup/authcheck/", true);
+    xhr.open("POST", "authcheck/", true);
     xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+    xhr.setRequestHeader("X-CSRFToken", csrfToken);
 
     // 응답 처리
     xhr.onreadystatechange = function() {
@@ -103,13 +108,7 @@ function confirm_authnum(){
             if (xhr.status === 200) {
                 const response = JSON.parse(xhr.responseText);
                 console.log(response.message);
-
-                // 성공적으로 처리되었을 때 UI 업데이트
-                alert('문자 인증이 완료되었습니다.')
-                initButton();
-                document.getElementById('confirm').innerHTML="인증완료"
-                document.getElementById('signup_button').disabled = false;
-                document.getElementById('signup_button').setAttribute("style", "background-color:yellow;")
+                
             } else {
                 console.error("Error:", xhr.status);
                 // 에러 처리
@@ -120,6 +119,13 @@ function confirm_authnum(){
     // 요청 보내기
     const data = JSON.stringify({ phone_num: inputPhoneNumber, auth_num: inputAuthNumber});
     xhr.send(data);
+
+    // 성공적으로 처리되었을 때 UI 업데이트
+    alert('문자 인증이 완료되었습니다.')
+
+    document.getElementById('confirm').innerHTML="인증완료"
+    document.getElementById('signup_button').disabled = false;
+    document.getElementById('signup_button').setAttribute("style", "background-color:yellow;")
 }
 
 function signup_check(){

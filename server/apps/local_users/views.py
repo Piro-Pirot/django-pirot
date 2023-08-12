@@ -157,24 +157,20 @@ class SMS_send(View):
             ).save()
             self.request_api(phone_num=check_phone_num, auth_num=sms_auth_num)
             return JsonResponse({'message' : '인증번호 발송 및 DB 입력완료'}, status=200)
-        # if request.method == 'POST':
-            
-        # else:
-        #     return JsonResponse({'message': '잘못된 요청 메서드'}, status=405)
+
         
         
 
-class SMS_check(View):
-    def post(self, request):
-        data = json.loads(request.body)
-        try:
-            verification = SMS_Auth.objects.get(phone_num=data['phone_num'])
-            if verification.auth_num == data['auth_num']:
-                return JsonResponse({'message' : "인증 성공"}, status=200)
-            else:
-                return JsonResponse({'message' : '인증 실패'}, status=400)
-        except User.DoesNotExist:
-            return JsonResponse({'message' : '해당 휴대폰 번호가 존재하지 않습니다.'}, status=400)
+def sms_check(request):
+    data = json.loads(request.body)
+    try:
+        verification = SMS_Auth.objects.get(phone_num=data['phone_num'])
+        if verification.auth_num == data['auth_num']:
+            return JsonResponse({'message' : "인증 성공"}, status=200)
+        else:
+            return JsonResponse({'message' : '인증 실패'}, status=400)
+    except User.DoesNotExist:
+        return JsonResponse({'message' : '해당 휴대폰 번호가 존재하지 않습니다.'}, status=400)
             
 
 

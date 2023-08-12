@@ -11,5 +11,5 @@ urlpatterns = [
     path('channel/create/', channel_create),
     path('channel/code/', channel_code),
     path('signup/send_sms/', SMS_send.as_view(), name='send_sms'),
-    path('signup/authcheck/', SMS_check.as_view(), name='post'),
+    path('signup/authcheck/', sms_check, name='sms_check'),
 ]
