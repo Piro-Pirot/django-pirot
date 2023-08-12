@@ -9,6 +9,10 @@ from server.apps.chat.models import *
 import server.apps.bubbles.views as bubble
 import server.apps.posts.views as post
 
+ROOM = 0
+BLIND_ROOM = 1
+DIRECT_ROOM = 2
+
 # Socket.IO 서버 생성
 sio = socketio.AsyncServer(async_mode='asgi')
 app = socketio.ASGIApp(sio)
@@ -67,7 +71,7 @@ async def send_message(sid, data):
     # 마크다운
     data['msg'] = markdown.markdown(data['msg'], extensions=['fenced_code', 'codehilite'])
 
-    if room.room_type == 1:
+    if room.room_type == BLIND_ROOM:
         #익명채팅방
         newBubble = await bubble.save_blind_msg(room, data)
         data['nickname'] = newBubble.nickname
@@ -103,12 +107,16 @@ async def send_post(sid, data):
 @sio.on('send_happy')
 async def send_happy(sid, data):
     roomId = int(data['roomId'])
-    print(data)
 
     newhappydata = await post.save_happy(data)
-    newhappy, happyCount = newhappydata
-    data['newhappyId'] = newhappy.id
+    if len(newhappydata) == 3:
+        newhappy, happyCount, sadCount = newhappydata
+    else:
+        happyCount, sadCount = newhappydata
+
+    # data['newhappyId'] = newhappy.id
     data['happyCount'] = happyCount
+    data['sadCount'] = sadCount
 
     await sio.emit('display_happy', data, to=roomId)
     print('happy was saved')
@@ -119,8 +127,13 @@ async def send_sad(sid, data):
     roomId = int(data['roomId'])
 
     newsaddata = await post.save_sad(data)
-    newsad, sadCount = newsaddata
-    data['newsadId'] = newsad.id
+    if len(newsaddata) == 3:
+        newsad, happyCount, sadCount = newsaddata
+    else:
+       happyCount, sadCount = newsaddata
+
+    # data['newhappyId'] = newhappy.id
+    data['happyCount'] = happyCount
     data['sadCount'] = sadCount
 
     await sio.emit('display_sad', data, to=roomId)
