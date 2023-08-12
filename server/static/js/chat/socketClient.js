@@ -67,8 +67,8 @@ function displayMessage(bubbleData) {
 
     if(bubbleData['user'] == curUsername) {
         // 로그인 사용자의 말풍선인 경우
-        bubbleDiv.classList.add('bubble-box-me');
-        bubbleContainer.classList.add('bubble-container-me');
+        bubbleDiv.classList.add('bubble-box');
+        bubbleContainer.classList.add('bubble-container');
     } else {
         bubbleDiv.classList.add('bubble-box');
         bubbleContainer.classList.add('bubble-container');
@@ -190,8 +190,8 @@ function displayPost(postData) {
         };
         buttonDiv.appendChild(deleteBtn); // 삭제 버튼
 
-        postDiv.classList.add('post-box-me');
-        postContainer.classList.add('post-container-me');
+        postDiv.classList.add('post-box');
+        postContainer.classList.add('post-container');
     } else {
         let happyBtn = document.createElement('button');
         happyBtn.classList.add('happy');

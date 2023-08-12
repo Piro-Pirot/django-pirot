@@ -76,8 +76,8 @@ function createPost(postData) {
         };
         buttonDiv.appendChild(deleteBtn); // 삭제 버튼
 
-        postDiv.classList.add('post-box-me');
-        postContainer.classList.add('post-container-me');
+        postDiv.classList.add('post-box');
+        postContainer.classList.add('post-container');
     } else {
         let happyBtn = document.createElement('button');
         happyBtn.classList.add('happy');

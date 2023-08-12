@@ -1,4 +1,4 @@
-.post-container-me {
+.post-container {
   padding: 0.5rem 2rem;
   background-color: white;
 }
@@ -13,44 +13,44 @@
   margin-bottom: 0.5rem;
 }
 
-.post-container-me > div:last-child {
+.post-container > div:last-child {
   background-color: var(--carrot-light);
   border-radius: 0.5rem;
   padding: 0.6rem 1rem;
 }
 
-.post-container-me > div:last-child > div:last-child {
+.post-container > div:last-child > div:last-child {
   margin-top: 5px;
   position: relative;
 }
 
-.post-container-me button {
+.post-container button {
   outline: 0;
   border: 0;
 
 }
 
-.post-container-me button span {
+.post-container button span {
   margin-left: 2px;
 }
 
-.post-container-me button.happy,
-.post-container-me button.sad {
+.post-container button.happy,
+.post-container button.sad {
   border-radius: 1rem;
   margin-right: 10px;
   background-color: white;
   transition: 0.2s;
 }
 
-.post-container-me button.happy:hover {
+.post-container button.happy:hover {
   background-color: rgb(205, 253, 204);
 }
 
-.post-container-me button.sad:hover {
+.post-container button.sad:hover {
   background-color: rgb(255, 212, 212);
 }
 
-.post-container-me button.delete {
+.post-container button.delete {
   background-color: transparent;
   border-radius: 50%;
   width:18px;
@@ -63,6 +63,6 @@
   align-items: center;
 }
 
-.post-container-me button.delete:hover {
+.post-container button.delete:hover {
   background-color: #fba50576;
 }
