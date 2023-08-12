@@ -21,10 +21,10 @@
     display: inline-flex;
     flex-direction: column;
     padding: 0.3rem 0.7rem;
-    /* margin: 1rem 2rem; */
+    max-width: 70%;
 }
 
-.bubble-continer .bubble-user-container {
+.bubble-container .bubble-user-container {
     display: inline-flex;
 }
 
