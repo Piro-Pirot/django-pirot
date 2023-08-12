@@ -44,8 +44,10 @@
     <div class="board-container">
         <div class="board"></div>
         <div class="post-input">
-            <input type="text" class="post">
-            <button type="button" onclick="onClickSendPost('{{ user }}', '{{ room.id }}')">작성</button>
+            <div class="post-input-container">
+                <textarea class="post" rows="3"></textarea>
+                <button type="button" onclick="onClickSendPost('{{ user }}', '{{ room.id }}')">작성</button>
+            </div>
         </div>
     </div>
 </div>

@@ -12,6 +12,7 @@
   0 5px 5px rgba(0,0,0,0.15);
   --input-background: #face8326;
   --placeholder: rgba(174, 174, 174, 0.668);
+  --chat-input-height: 5.65rem;
 }
 
 @font-face {
