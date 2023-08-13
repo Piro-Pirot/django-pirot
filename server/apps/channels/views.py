@@ -147,9 +147,10 @@ def default_profile(request, channelID):
 
 # 운영진 권한 설정
 def staff_authority(request, channelID):
-    joins = Join.objects.all()
+    # joins = Join.objects.all() 얘를 쓴 이유가 처음에 뭐였을까?
     staffs = Staff.objects.all()
     channel = Channel.objects.get(id=channelID)
+    thislevelPassers = Passer.objects.filter(channel=channel, level=channel.this_level)
 
     # toggle() 사용 on/off ajax
     # js : 버튼 on/off 조작 ... 완료 ! -> 저장 POST
@@ -157,7 +158,7 @@ def staff_authority(request, channelID):
     #    if 버튼이 off인 회원 객체가 staff 목록에 있으면 삭제
     # -> staff.save() 이건 view에서?
 
-    return render(request, 'staff/staff_authority.html', {"joins":joins, "staffs":staffs, "channel":channel})
+    return render(request, 'staff/staff_authority.html', {"staffs":staffs, "channel":channel, "thislevelPassers":thislevelPassers})
 
 
 # 회원 삭제
