@@ -174,6 +174,10 @@ LOGOUT_REDIRECT_URL = '/'
 # 인증용 유저 모델이라고 장고에게 알려줌
 AUTH_USER_MODEL = 'local_users.User'
 
+ACCESS_KEY=env('ACCESS_KEY')
+URL=env('URL')
+URI=env('URI')
+SMS_SENDER=env('SMS_SENDER')
 
 # LOGGING = {
 #         'version': 1,

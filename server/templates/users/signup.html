@@ -6,25 +6,28 @@
 <form method="POST" action="">
     {% csrf_token %}
     <div>
-        <label for="{{ form.username.id_for_label }}">Name(닉네임이 아닌 실명):</label>
+        <label for="{{ form.username.id_for_label }}">아이디:</label>
         {{ form.username }}
     </div>
-    
     <div>
         <label for="{{ form.password1.id_for_label }}">Password:</label>
         {{ form.password1 }} 
     </div>
-   
+    
     <div>
         <label for="{{ form.password2.id_for_label }}">Password confirmation:</label>
         {{ form.password2 }}
+    </div>
+    <div>
+        <label for="{{ form.name.id_for_label }}">Name(실명):</label>
+        {{ form.name }}
     </div>
 
     <div>
         {% comment %} label태그의 for 속성과 input 태그의 name 속성을 일치시키면
         해당 label 태그를 클릭할 때 연결된 input 요소가 자동으로 활성화됨 {% endcomment %}
         <label for="phone_number">전화번호:</label>
-        <input type="text" id="phone_number" name="phone_number" oninput="input_phone_num()">
+        <input type="text" id="phone_number" name="phone_number" oninput="autoHyphen(this)" maxlength="13">
 
         <button disabled id='send_sms' type="button" onclick="send_authnum()">인증번호 전송</button>
 
@@ -35,7 +38,7 @@
         <div id="time_limit">03:00</div>
         {% comment %} oninput="check_authnum()" {% endcomment %}
         <input id="input_authnum" type="text">
-        <button disabled id='confirm' onclick="confirm_authnum()">인증하기</button>
+        <button type='button' disabled id='confirm' onclick="confirm_authnum()">인증하기</button>
     </div>
 
     {% comment %} {{ form }} {% endcomment %}

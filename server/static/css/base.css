@@ -72,27 +72,23 @@
 
 .middle-section {
   width: 20rem;
-  /* background-color: blue; */
-  padding-left: 1.7rem;
-  /* border-right: 1px solid black; */
-
 }
 
 .middle-section-content {
-  /* background-color: green; */
-  height: calc(100vh - 6rem);
+  height: calc(100vh - 12rem);
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow-y: scroll;
 }
 
 .middle-section > .search-box {
   height: 6rem;
-  /* background-color: pink; */
   display: flex;
   align-items: center;
   position: relative;
+  margin-left: 2.6rem;
 }
 
 .search-box > .channel-name {

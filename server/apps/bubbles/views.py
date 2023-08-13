@@ -132,6 +132,8 @@ def load_bubbles(request):
             bubble['content'] = str(bubble['content'])
 
         bubbles = list(bubbles)
-
+        if len(bubbles) == 0:
+            return JsonResponse({'result': None})
+        
         return JsonResponse({'result': json.dumps(bubbles, default=str)})
         
