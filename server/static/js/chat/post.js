@@ -148,7 +148,8 @@ function createPost(postData) {
     posts.appendChild(postContainer);
 
     document.querySelector('.post').value = '';
-    // controlScrollPost();
+
+    controlScrollboard()
 }
 
 // 기뻐요, 슬퍼요 만드는 코드
@@ -172,18 +173,19 @@ function createSad(sadData) {
     
     let happySelector = `.happy-count-${postId}`
     let happyCountElement = document.querySelector(happySelector);
-    happyCountElement.innerText = sadData['happyCount']; //여기서 접속한 유저의 happyCount가 보여지는 오류?
+    happyCountElement.innerText = sadData['happyCount'];
 
     let sadSelector = `.sad-count-${postId}`
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = sadData['sadCount'];
 }
 
-// function controlScrollPost() {
-//     postSection = document.querySelector('.board');
-//     postSection.scrollTop = postSection.scrollHeight;
-// }
-// controlScrollPost();
+/* 전송 시 스크롤 제어 */
+boardSection = document.querySelector('.board');
+
+function controlScrollboard() {
+    boardSection.scrollTop = boardSection.scrollHeight;
+}
 
 // 여기 정보 : {id: 55, content: '됏스', room: 10, created_at: '2023-08-10', user__username: 'minseo'}
 
