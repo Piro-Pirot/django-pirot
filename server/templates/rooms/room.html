@@ -48,10 +48,12 @@
         <div class="board-header">
             Board
         </div>
+        <i id="boardOpen" class="ri-arrow-left-double-line"></i>
         <div class="board"></div>
         <div class="post-input">
             <div class="post-input-container">
                 <textarea class="post" rows="3"></textarea>
+                <i id="widthControl" class="ri-arrow-right-double-line"></i>
                 <button type="button" onclick="onClickSendPost('{{ user }}', '{{ room.id }}')">작성</button>
             </div>
         </div>
