@@ -146,7 +146,7 @@ STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "server/static")]
 if DEBUG == True:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'server/static')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
 
