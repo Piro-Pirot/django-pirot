@@ -25,7 +25,7 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # auth.login(request, user)
+            auth.login(request, user)
             return redirect('/')
         else:
             return redirect('/user/signup/')
@@ -132,8 +132,8 @@ def request_api(phone_num, auth_num):
     body = {
         "type" : "SMS",
         "contentType" : "COMM",
-        "from" : "01087118471",
-        "content" : f"[테스트] 인증번호 [{auth_num}]를 입력해주세요.",
+        "from" : getattr(settings, 'SMS_SENDER'),
+        "content" : f"[Pirot] 인증번호 [{auth_num}]를 입력해주세요.",
         "messages" : [{
             "to" : f"{phone_num}"
         }]
@@ -161,42 +161,19 @@ def sms_sender(request):
         request_api(phone_num=check_phone_num, auth_num=sms_auth_num)
         return JsonResponse({'message' : '인증번호 발송 및 DB 입력완료'}, status=200)
 
-# SMS 인증번호 생성 , 데이터 베이스에 저장한 후 SMS 발송하는 함수
-def sms_sender(request):
-    # http POST 요청으로 전달된 JSON 데이터를 파싱(JSON->python). 사용자가 입력한 휴대폰 번호가 포함되어있음.
-    data = json.loads(request.body)
-    try:
-        check_phone_num = data['phone_num']
-        sms_auth_num = randint(100000, 999999)
-        auth_user = SMS_Auth.objects.get(phone_num=check_phone_num)
-        auth_user.auth_num = sms_auth_num
-        auth_user.save()
-        request_api(phone_num=data['phone_num'], auth_num=sms_auth_num)
-        return JsonResponse({'message' : '인증번호 발송완료'}, status=200)
-    except SMS_Auth.DoesNotExist:
-        SMS_Auth.objects.create(
-            phone_num = check_phone_num,
-            auth_num = sms_auth_num,
-        ).save()
-        request_api(phone_num=check_phone_num, auth_num=sms_auth_num)
-        return JsonResponse({'message' : '인증번호 발송 및 DB 입력완료'}, status=200)
-
-        
-        
 
 def sms_check(request):
-    data = json.loads(request.body)
-    try:
-        user = User.objects.filter(phone_number=data['phone_num'])
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        user = User.objects.get(phone_number=data['phone_num_hypen'])
+        if user:
+            return JsonResponse({'is_auth' : False})
+        
         verification = SMS_Auth.objects.get(phone_num=data['phone_num'])
         if verification.auth_num == data['auth_num']:
             return JsonResponse({'is_auth': True})
         else:
             return JsonResponse({'is_auth' : False})
-    except User.DoesNotExist:
-        return JsonResponse({'is_auth': False})
-    except User.MultipleObjectsReturned:
-        return JsonResponse({'is_auth': False})
             
 
 

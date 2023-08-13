@@ -146,7 +146,7 @@ STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "server/static")]
 if DEBUG == True:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'server/static')
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
 
@@ -177,6 +177,7 @@ AUTH_USER_MODEL = 'local_users.User'
 ACCESS_KEY=env('ACCESS_KEY')
 URL=env('URL')
 URI=env('URI')
+SMS_SENDER=env('SMS_SENDER')
 
 # LOGGING = {
 #         'version': 1,
