@@ -26,10 +26,10 @@ document.addEventListener('keydown', (event) => {
 });
 
 //대화상대초대버튼, 채팅방 개설 버튼
-const inviteButton = document.querySelector(".room-add-invite input[type=button]");
+const inviteButton = document.querySelector(".room-add-invite .btn-invite-member");
 const inviteContent = document.querySelector(".room-add-invite");
 const roomNameContent = document.querySelector(".room-add-name");
-const addRoomButton = document.querySelector(".room-add-name input[type=button]");
+const addRoomButton = document.querySelector(".room-add-name .btn-create-group");
 
 inviteButton.onclick = () => {
   inviteContent.style.visibility = "hidden";
