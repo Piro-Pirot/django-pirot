@@ -26,7 +26,7 @@
         </div>
         <div class="conversation"></div>
         <div class="chat-input">
-            <textarea class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room.id }}');}"></textarea>
+            <textarea class="input"></textarea>
             <div class="chat-icons">
                 <div id="attachIcon">
                     <i class="ri-attachment-2"></i>
@@ -48,10 +48,12 @@
         <div class="board-header">
             Board
         </div>
+        <i id="boardOpen" class="ri-arrow-left-double-line"></i>
         <div class="board"></div>
         <div class="post-input">
             <div class="post-input-container">
                 <textarea class="post" rows="3"></textarea>
+                <i id="widthControl" class="ri-arrow-right-double-line"></i>
                 <button type="button" onclick="onClickSendPost('{{ user }}', '{{ room.id }}')">작성</button>
             </div>
         </div>
@@ -88,6 +90,7 @@
 <script>    
     // js에서 필요한 정보
     let curUsername = '{{ user }}'; // admin
+    let curUserRealName = '{{ user.name }}'; // admin
     let curUserId = '{{ user.id }}'; // object(1)
     let curChannelId = {{ channel.id }};
     let curRoomId = {{ room.id }};

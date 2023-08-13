@@ -16,12 +16,31 @@
     display: flex;
 }
 
+.bubble-box .bubble-content-container,
+.bubble-box-me .bubble-content-container {
+    display: flex;
+    align-items: flex-end;
+}
+
+.bubble-box .bubble-content-container {
+    justify-content: flex-start;
+}
+
+.bubble-box-me .bubble-content-container {
+    justify-content: flex-end;
+}
+
+.bubble-content-container .bubble-time {
+    padding: 0 0.5rem;
+    font-size: 0.7rem;
+}
+
 .bubble-container-me,
 .bubble-container {
     display: inline-flex;
     flex-direction: column;
     padding: 0.3rem 0.7rem;
-    max-width: 70%;
+    min-width: 70%;
 }
 
 .bubble-container .bubble-user-container {
@@ -30,7 +49,7 @@
 
 .bubble-container-me .bubble-header,
 .bubble-container .bubble-header {
-    margin-bottom: 1rem;
+    margin: 1rem 0.6rem;
 }
 
 .bubble-container-me .bubble-username,
@@ -41,6 +60,8 @@
 .bubble-container-me .bubble-content,
 .bubble-container .bubble-content {
     padding: 0.7rem 0.7rem;
+    max-width: 70%;
+    white-space: pre-wrap;
 }
 
 .bubble-container-me .bubble-content {

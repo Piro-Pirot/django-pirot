@@ -102,6 +102,9 @@ DATABASES = {
             'PASSWORD': MYSQL_PASSWD,
             'HOST': MYSQL_HOST,
             'PORT': MYSQL_PORT,
+            'OPTIONS': {
+                    'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1;",
+                }
             }
         }
 
@@ -171,6 +174,9 @@ LOGOUT_REDIRECT_URL = '/'
 # 인증용 유저 모델이라고 장고에게 알려줌
 AUTH_USER_MODEL = 'local_users.User'
 
+ACCESS_KEY=env('ACCESS_KEY')
+URL=env('URL')
+URI=env('URI')
 
 # LOGGING = {
 #         'version': 1,

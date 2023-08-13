@@ -186,20 +186,18 @@ def bookmark(request):
         target = req['target']
         target_passer = Passer.objects.get(passer_name=target, channel=curChannel)
 
-        is_bookmarked = Bookmark.objects.filter(user=user, bookmarked_user=target_passer)
-
-        # 즐겨찾기 되어 있으면 취소
-        if len(is_bookmarked):
-            is_bookmarked[0].delete()
+        try:
+            # 즐겨찾기 되어 있으면 취소
+            Bookmark.objects.get(user=user, bookmarked_user=target_passer).delete()
             return JsonResponse({'type': 'deleted'})
+        except:
+            # 즐겨찾기 하기
+            Bookmark.objects.create(
+                user = user,
+                bookmarked_user = target_passer
+            ).save()
 
-        # 즐겨찾기 하기
-        Bookmark.objects.create(
-            user = user,
-            bookmarked_user = target_passer
-        ).save()
-
-        return JsonResponse({'type': 'added'})
+            return JsonResponse({'type': 'added'})
     
 
 def start(request):

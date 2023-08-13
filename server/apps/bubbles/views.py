@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from asgiref.sync import sync_to_async
+from django.db.models import F, Func, Value, CharField
 
 from server.apps.chat.models import *
 from .models import *
@@ -27,7 +28,7 @@ async def save_msg(room, data):
         file = data['file']
     )
     await sync_to_async(newBubble.save)()
-
+    print(newBubble)
     return newBubble
 
 
@@ -50,7 +51,7 @@ async def save_blind_msg(room, data):
         profile_img = curBlindUser.profile_img
     )
     await sync_to_async(newBubble.save)()
-
+    
     return newBubble
 
 
@@ -68,19 +69,71 @@ def load_bubbles(request):
                 'room', 'content', 'is_delete',
                 'read_cnt', 'file', 'nickname',
                 'profile_img', 'created_at',
-                'user__username'
+                'user__name'
+            ).annotate(
+                hour=Func(
+                    F('created_at'),
+                    Value('%H'),
+                    function='DATE_FORMAT',
+                    output_field=CharField()
+                ),
+                min=Func(
+                    F('created_at'),
+                    Value('%i'),
+                    function='DATE_FORMAT',
+                    output_field=CharField()
+                ),
+                month=Func(
+                    F('created_at'),
+                    Value('%m'),
+                    function='DATE_FORMAT',
+                    output_field=CharField()
+                ),
+                day=Func(
+                    F('created_at'),
+                    Value('%d'),
+                    function='DATE_FORMAT',
+                    output_field=CharField()
+                ),
             ).order_by('created_at')
         else:
             bubbles = Bubble.objects.filter(room=curRoom).values(
                 'room', 'content', 'is_delete',
                 'read_cnt', 'file', 'created_at',
-                'user__username'
+                'user__name'
+            ).annotate(
+                hour=Func(
+                    F('created_at'),
+                    Value('%H'),
+                    function='DATE_FORMAT',
+                    output_field=CharField()
+                ),
+                min=Func(
+                    F('created_at'),
+                    Value('%i'),
+                    function='DATE_FORMAT',
+                    output_field=CharField()
+                ),
+                month=Func(
+                    F('created_at'),
+                    Value('%m'),
+                    function='DATE_FORMAT',
+                    output_field=CharField()
+                ),
+                day=Func(
+                    F('created_at'),
+                    Value('%d'),
+                    function='DATE_FORMAT',
+                    output_field=CharField()
+                ),
             ).order_by('created_at')
 
         for bubble in bubbles:
             bubble['content'] = str(bubble['content'])
 
         bubbles = list(bubbles)
-
+        if len(bubbles) == 0:
+            return JsonResponse({'result': None})
+        
         return JsonResponse({'result': json.dumps(bubbles, default=str)})
         

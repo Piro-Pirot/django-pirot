@@ -33,17 +33,47 @@ const loadBubbles = async(roomId) => {
 
     if (res.ok) {
         let {result: ajaxBubbles} = await res.json();
-        ajaxBubbles = JSON.parse(ajaxBubbles);
 
-        loadBubblesResponse(ajaxBubbles);
+        if(ajaxBubbles !== null) {
+            ajaxBubbles = JSON.parse(ajaxBubbles);
+            loadBubblesResponse(ajaxBubbles);
+        }
 
         // 처음에는 스크롤 맨 아래로
         controlScroll();
     }
 }
 
+
+// 마지막 말풍선의 시간, 분 보낸 사람 정보를 저장
+let lastHour = 0;
+let lastMin = 0;
+let lastSender = '';
+
 const loadBubblesResponse = (ajaxBubbles) => {
-    ajaxBubbles.forEach(element => createBubble(element));
+    let timeFlag = true;
+    for(let i = 0; i < ajaxBubbles.length - 1; i++) {
+        // 시간을 표시할 건지
+        timeFlag = true;
+
+        const thisBubble = ajaxBubbles[i];
+        const nextBubble = ajaxBubbles[i+1];
+
+        if(thisBubble['hour'] == nextBubble['hour']
+        && thisBubble['min'] == nextBubble['min']
+        && thisBubble['user__name'] == nextBubble['user__name']) {
+            // 1분이 지나기 전에 보낸 말풍선은 시간 표시하지 않음
+            timeFlag = false;
+        }
+        createBubble(ajaxBubbles[i], timeFlag);
+    }
+    // 마지막 말풍선은 항상 표시
+    const lastBubble = ajaxBubbles[ajaxBubbles.length - 1];
+    createBubble(lastBubble, true);
+    
+    lastHour = lastBubble['hour'];
+    lastMin = lastBubble['min'];
+    lastSender = lastBubble['user__name'];
 }
 
 loadBubbles(curRoomId);
@@ -52,21 +82,28 @@ loadBubbles(curRoomId);
 // 엔터 전송
 let inputBox = document.querySelector('.input');
 inputBox.addEventListener('keydown', (event) => {
-    if(event.keyCode==13 && (!event.shiftKey)) {
+    if (event.key == 'Enter' && event.shiftKey) {
+        event.preventDefault();
+        console.log("insertLineBreak");
+        const txtArea = document.querySelector('.input');
+        txtArea.value += '\r\n';
+    }
+    if (event.key == 'Enter' && !event.shiftKey) {
         event.preventDefault();
         document.querySelector('.btn-send').click();
     }
 })
 
+
 // 말풍선을 만드는 코드
-function createBubble(bubbleData) {
+function createBubble(bubbleData, timeFlag) {
     console.log(bubbleData);
 
     console.log(bubbleData['content']);
     let bubbleDiv = document.createElement('div');
     let bubbleContainer = document.createElement('div');
 
-    if(bubbleData['user__username'] === curUsername) {
+    if(bubbleData['user__name'] === curUserRealName) {
         // 로그인 사용자의 말풍선인 경우
         bubbleDiv.classList.add('bubble-box-me');
         bubbleContainer.classList.add('bubble-container-me');
@@ -89,26 +126,46 @@ function createBubble(bubbleData) {
         // 익명 질문 방이면
         nameLabel.innerText = bubbleData['nickname'];
     } else {
-        nameLabel.innerText = bubbleData['user__username'];
+        nameLabel.innerText = bubbleData['user__name'];
     }
     nameLabel.classList.add('bubble-username');
 
-    if (bubbleData['user__username'] !== curUsername) {
+    // 현재 시간을 표기해야 하고, 로그인 사용자가 아니라면 사진과 이름 표시
+    if (timeFlag && bubbleData['user__name'] !== curUserRealName) {
         bubbleHeader.appendChild(profileImg);
         bubbleHeader.appendChild(nameLabel);
+        bubbleContainer.appendChild(bubbleHeader);
     }
 
+    // 내용과 시간을 담는 div
+    let bubbleContentContainer = document.createElement('div');
+    bubbleContentContainer.classList.add('bubble-content-container');
 
     // 내용
     let bubbleContent = document.createElement('div');
     bubbleContent.classList.add('bubble-content');
     bubbleContent.innerHTML = bubbleData['content'];
 
-    if (bubbleData['user__username'] !== curUsername) {
-        bubbleContainer.appendChild(bubbleHeader);
+    // 작성 시간
+    if(timeFlag) {
+        bubbleDiv.style.marginTop = '1rem';
+        let bubbleTime = document.createElement('label');
+        bubbleTime.classList.add('bubble-time');
+        bubbleTime.innerText = `${bubbleData['hour']}:${bubbleData['min']}`;
+
+        if(bubbleData['user__name'] === curUserRealName) {
+            //나의 말풍선일 때
+            bubbleContentContainer.appendChild(bubbleTime);
+            bubbleContentContainer.appendChild(bubbleContent);
+        } else {
+            bubbleContentContainer.appendChild(bubbleContent);
+            bubbleContentContainer.appendChild(bubbleTime);
+        }
+    } else {
+        bubbleContentContainer.appendChild(bubbleContent);
     }
 
-    bubbleContainer.appendChild(bubbleContent);
+    bubbleContainer.appendChild(bubbleContentContainer);
 
     bubbleDiv.appendChild(bubbleContainer);
 

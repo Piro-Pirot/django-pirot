@@ -50,8 +50,8 @@ class Staff(models.Model):
 
 # 회원 즐겨찾기
 class Bookmark(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
-    bookmarked_user = models.ForeignKey(Passer, on_delete=models.CASCADE, related_name='bookmarked_user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmark_user', null=True)
+    bookmarked_user = models.ForeignKey(Passer, on_delete=models.CASCADE, related_name='bookmarked_user', null=True)
     
     def __str__(self):
        return f'[{self.user}] {self.bookmarked_user}'

@@ -141,7 +141,8 @@ dialog {
   position: relative;
 }
 
-.modal-content input[type=button] {
+.modal-content .btn-invite-member,
+.modal-content .btn-create-group {
   margin-top: 1rem;
   background-color: var(--carrot-color);
   border: 0;
@@ -158,7 +159,8 @@ dialog {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.modal-content input[type=button]:hover {
+.modal-content .btn-invite-member:hover,
+.modal-content .btn-create-group:hover {
   background-color: var(--carrot-dark);
 }
 
@@ -183,7 +185,7 @@ dialog {
   text-align: center;
 }
 
-.room-add-name input[type=button] {
+.room-add-name .btn-create-group {
   width: 7rem;
 }
 
@@ -361,7 +363,26 @@ dialog {
 
 #settings-save {
   margin-top: 2rem;
+  background-color: var(--carrot-color);
+  border: none;
+  outline: 0;
+  border-radius: 1.5rem;
+  /* font-weight: 700; */
+  transition: 0.2s;
+  color: white;
+  height: 2.5rem;
+  width: 8rem;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 1rem;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+
+#settings-save:hover {
+  background-color: var(--carrot-dark);
+}
+
 #settings-logout {
   display: block;
   font-size: 1.2rem;
