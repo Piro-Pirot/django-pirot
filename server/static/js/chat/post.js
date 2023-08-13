@@ -188,3 +188,44 @@ function createSad(sadData) {
 // 여기 정보 : {id: 55, content: '됏스', room: 10, created_at: '2023-08-10', user__username: 'minseo'}
 
 
+// 게시판 창 열고 닫기
+const boardCloseButton = document.getElementById("widthControl");
+const chatContainer = document.querySelector(".chat-conversation-container");
+const boardContainer = document.querySelector(".board-container");
+
+const boardHeader = boardContainer.querySelector(".board-header");
+const boardContents = boardContainer.querySelector(".board").childNodes;
+const boardInput = boardContainer.querySelector(".post-input")
+const boardInputContainer = boardContainer.querySelector(".post-input-container");
+const boardOpenButton = document.getElementById("boardOpen");
+
+chatContainer.style.transition = '0.3s';
+boardContainer.style.transition = '0.3s';
+
+boardCloseButton.onclick = () => {
+    boardContainer.style.width = '3rem';
+    chatContainer.style.width = 'calc(100% - 3rem)';
+    boardHeader.innerText = '';
+    for(let i = 0; i < boardContents.length; i++) {
+        if (boardContents[i].nodeName.toLowerCase() == 'div') {
+            boardContents[i].style.display = 'none';
+        };
+    };
+    boardInputContainer.style.display = 'none';
+    boardOpenButton.style.visibility = "visible";
+};
+
+boardOpenButton.onclick = () => {
+    boardContainer.style.width = '18rem';
+    chatContainer.style.width = 'calc(100% - 18rem)';
+    boardHeader.innerText = 'Board';
+    for(let i = 0; i < boardContents.length; i++) {
+        if (boardContents[i].nodeName.toLowerCase() == 'div') {
+            boardContents[i].style.display = 'block';
+        };
+    };
+    boardInputContainer.style.display = 'block';
+    boardOpenButton.style.visibility = "hidden";
+};
+
+
