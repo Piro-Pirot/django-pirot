@@ -5,6 +5,8 @@ from server.apps.bubbles.models import *
 from server.apps.channels.models import *
 from server.apps.posts.models import *
 
+from .fakeKorean import *
+
 from django.db.models import Q, F
 
 from bs4 import BeautifulSoup
@@ -61,6 +63,61 @@ def create_room(request, channelId, target):
     
     return redirect('/')
 
+def create_group_room(request, channelId):
+    if request.method == 'POST':
+        curChannel = Channel.objects.get(id=channelId)
+        targets = []
+        group_type = ROOM
+        for key, value in request.POST.items():
+            if value == 'on' and key == 'group_type':
+                group_type = BLIND_ROOM
+            elif value == 'on':
+                targets.append(key)
+            elif key == 'group_name':
+                group_name = value
+
+        new_room = Room.objects.create(
+            room_name = group_name,
+            room_type = group_type,
+            channel = curChannel
+        )
+        new_room.save()
+
+        # 채팅 방 참여자 추가
+        for target in targets:
+            target_passer_info = Passer.objects.get(id=target)
+            target_user_info = Join.objects.get(passer=target_passer_info).user
+            if group_type == BLIND_ROOM:
+                BlindRoomMember.objects.create(
+                    user = target_user_info,
+                    room = new_room,
+                    nickname = f'{fake_korean_first()} {fake_korean_second()}',
+                    profile_img = 'test.png'
+                ).save()
+            else:
+                RoomMember.objects.create(
+                    user = target_user_info,
+                    room = new_room
+                ).save()
+
+        # 자기 자신도 추가
+        if group_type == BLIND_ROOM:
+            BlindRoomMember.objects.create(
+                user = request.user,
+                room = new_room,
+                nickname = f'{fake_korean_first()} {fake_korean_second()}',
+                profile_img = 'test.png'
+            ).save()
+        else:
+            RoomMember.objects.create(
+                user = request.user,
+                room = new_room
+            ).save()
+
+
+        return redirect(f'/room/{channelId}/{new_room.id}/friends/')
+    
+    return redirect(f'/room/{channelId}/main/')
 
 def main_room(request, channelId, type):
     # 로그인 되어 있을 때만 접근
@@ -118,7 +175,7 @@ def main_room(request, channelId, type):
             'jsonBubbles': '',
             'myRooms': myRooms,
             'myBlindRooms': myBlindRooms,
-            'myFavorite': my_favorites,
+            'myFavorites': my_favorites,
             'myFriends': myFriends,
             'myPassInfo': myPassInfo,
             'urlType': type,
@@ -152,7 +209,7 @@ def enter_room(request, channelId, roomId, type):
         myRooms = RoomMember.objects.filter(user=request.user, room__channel=curChannel)
     
         # 현재 로그인 사용자
-        myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel=curChannel)[0]
+        myPassInfo = Passer.objects.get(passer_name=request.user.name, channel=curChannel)
         # 현재 로그인 사용자의 채널 구성원들
         myFriends = Passer.objects.filter(channel=curChannel).exclude(id=myPassInfo.id)
 
@@ -170,26 +227,25 @@ def enter_room(request, channelId, roomId, type):
         myJoinInfo = Join.objects.filter(user=request.user)
         for joinInfo in myJoinInfo:
             myChannels.append(Channel.objects.get(id=joinInfo.passer.channel.id))
-        print(myChannels)
     else:
         return redirect('/')
 
     
-    if curRoom.room_type == 1:
+    if curRoom.room_type == BLIND_ROOM:
         #익명채팅방
-        roomMembers = curRoom.blindroommember_set.all()
-
+        roomMembers = BlindRoomMember.objects.filter(room=curRoom)
     else:
         roomMembers = RoomMember.objects.filter(room=curRoom)
 
-    if curRoom.room_name == '__direct':
+    if curRoom.room_type == DIRECT_ROOM:
         directRoomMember = curRoom.roommember_set.all()
         for member in directRoomMember:
             if member.user != request.user:
                 otherUser = member.user
                 break
-        title = otherUser.join.filter(passer__channel=curChannel)[0].passer
+        title = otherUser.join.get(passer__channel=curChannel).passer
 
+    print(roomMembers)
     # 현재 로그인 사용자가 채팅 방 멤버라면
     for member in roomMembers:
         if member.user == request.user:
@@ -202,7 +258,7 @@ def enter_room(request, channelId, roomId, type):
                     'channel': curChannel,
                     'myRooms': myRooms,
                     'myBlindRooms': myBlindRooms,
-                    'myFavorite': my_favorites,
+                    'myFavorites': my_favorites,
                     'myFriends': myFriends,
                     'myPassInfo': myPassInfo,
                     'urlType': type,
