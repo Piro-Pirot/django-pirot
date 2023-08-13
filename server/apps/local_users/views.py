@@ -14,7 +14,7 @@ from random import randint
 from server.apps.channels.models import Staff, Channel, Join, Passer
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
-
+from django.conf import settings
 
 def main(request):
     return render(request, "index.html")
@@ -103,14 +103,15 @@ def profile_setting(request, channelID):
     
     return render(request, template_name='users/profilesetting.html', context=context)
 
+
 def request_api(phone_num, auth_num):
     # 경과 시간을 millisecond로 나타냄
     # API Gateway 서버와 시간 차가 5분 이상 나는 경우 유효하지 않은 요청으로 간주
     timestamp = str(int(time.time()*1000))
     
-    ACCESS_KEY = "3E4qKWxpP3BueLZUKh9V"	
-    URL = "https://sens.apigw.ntruss.com/sms/v2/services/ncp:sms:kr:285290282105:pirot_sms_auth/messages"
-    URI = "/sms/v2/services/ncp:sms:kr:285290282105:pirot_sms_auth/messages"
+    ACCESS_KEY = getattr(settings, 'ACCESS_KEY') 
+    URL = getattr(settings, 'URL')
+    URI = getattr(settings, 'URI')
     
     # API 요청에 사용되는 암호화 문자열 생성
     message = "POST" + " " + URI + "\n" + timestamp + "\n" + ACCESS_KEY
@@ -139,6 +140,26 @@ def request_api(phone_num, auth_num):
     }
     # NCP(naver cloud platform) API에 POST 요청 -> 그러면 SMS 발송됨
     requests.post(URL, data=json.dumps(body), headers=headers)
+    
+# SMS 인증번호 생성 , 데이터 베이스에 저장한 후 SMS 발송하는 함수
+def sms_sender(request):
+    # http POST 요청으로 전달된 JSON 데이터를 파싱(JSON->python). 사용자가 입력한 휴대폰 번호가 포함되어있음.
+    data = json.loads(request.body)
+    try:
+        check_phone_num = data['phone_num']
+        sms_auth_num = randint(100000, 999999)
+        auth_user = SMS_Auth.objects.get(phone_num=check_phone_num)
+        auth_user.auth_num = sms_auth_num
+        auth_user.save()
+        request_api(phone_num=data['phone_num'], auth_num=sms_auth_num)
+        return JsonResponse({'message' : '인증번호 발송완료'}, status=200)
+    except SMS_Auth.DoesNotExist:
+        SMS_Auth.objects.create(
+            phone_num = check_phone_num,
+            auth_num = sms_auth_num,
+        ).save()
+        request_api(phone_num=check_phone_num, auth_num=sms_auth_num)
+        return JsonResponse({'message' : '인증번호 발송 및 DB 입력완료'}, status=200)
 
 # SMS 인증번호 생성 , 데이터 베이스에 저장한 후 SMS 발송하는 함수
 def sms_sender(request):

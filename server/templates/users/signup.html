@@ -24,6 +24,11 @@
     </div>
     
     <div>
+        <label for="{{ form.name.id_for_label }}">Name(실명):</label>
+        {{ form.name }}
+    </div>
+
+    <div>
         {% comment %} label태그의 for 속성과 input 태그의 name 속성을 일치시키면
         해당 label 태그를 클릭할 때 연결된 input 요소가 자동으로 활성화됨 {% endcomment %}
         <label for="phone_number">전화번호:</label>

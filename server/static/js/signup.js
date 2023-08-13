@@ -11,7 +11,6 @@ const delete_hypen = (target) => {
     return target.replace(/-/g, '');
 }
 
-
 // 문자인증+타이머 부분
 function initButton(){
     document.getElementById("send_sms").disabled = true;
@@ -31,6 +30,9 @@ function send_authnum(){
     //인증번호 보내는 과정 필요 -> views.py의 send_sms 함수를 호출하는 AJAX 요청
     let inputPhoneNumber = document.getElementById("phone_number").value;
     console.log(inputPhoneNumber);
+    
+    const phonenum_without_hypen = delete_hypen(inputPhoneNumber);
+    console.log(phonenum_without_hypen);
 
     // inputPhoneNumber = inputPhoneNumber.replace((/[^0-9]/g, ''));
     // delete_hypen(inputPhoneNumber)
@@ -121,7 +123,7 @@ function confirm_authnum(){
 
         authHandleResponse(isAuth);
     }
-    // 응답 처리
+    //응답처리
     const authHandleResponse = (isAuth) => {
         // // 성공적으로 처리되었을 때 UI 업데이트
         if(isAuth) {
