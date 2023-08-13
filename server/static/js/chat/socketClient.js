@@ -13,9 +13,18 @@ socket.on('connect', async () => {
 let bScroll = 0;
 
 socket.on('display_message', async (data) => {
+    data = JSON.parse(data);
     console.log(data);
-    const offsetH = displayMessage(data);
-    // console.log('offsetH is ...', offsetH);
+    let offsetH = 0;
+    if(data['hour'] == lastHour && data['min'] == lastMin && data['user'] == lastSender) {
+        offsetH = displayMessage(data, false);
+    } else {
+        offsetH = displayMessage(data, true);
+        lastHour = data['hour'];
+        lastMin = data['min'];
+        lastSender = data['user'];
+    }
+    console.log('offsetH is ...', offsetH);
     // console.log('conv height is...', conversationSection.scrollHeight);
     // console.log('conv top is...', conversationSection.scrollTop);
     // console.log('conv now is...', curScroll);
@@ -28,23 +37,15 @@ socket.on('display_message', async (data) => {
     }
 });
 
-// 익명채팅방 이벤트
-socket.on('display_secret_message', async (data) => {
-    console.log(data);
-    const offsetH = displayMessage(data);
-    
-    if(bScroll - 700 <= offsetH) {
-        console.log('controlling!');
-        controlScroll();
-    }
-});
-
 function onClickSendMessage(user, id) {
     // 서버로 메시지 전송
     const msgBox = document.querySelector(".input");
-    const msg = msgBox.value;
+    let msg = msgBox.value;
+    console.log(msg);
     // 아무것도 안 썼을 때 예외 처리
-    if(msg === '') return;
+    // 개행문자 모두 제거
+    if(msg.replace(/\n|\r|\s*/g, '') === '') return;
+    msg = msg.replace(/\n/, '<br>');
     console.log(msg);
 
     msgBox.focus();
@@ -57,15 +58,21 @@ function onClickSendMessage(user, id) {
     document.querySelector('.input').value = null;
 }
 
-
 // 말풍선 표시
-function displayMessage(bubbleData) {
+function displayMessage(bubbleData, newTimeFlag) {
     console.log(bubbleData);
     // 내가 방금 보낸 말풍선 표시
+    
+    // 1분이 지나지 않았다면 직전 말풍선의 시간을 제거
+    if(!newTimeFlag) {
+        let lastTimeTag = document.querySelector('.conversation');
+        lastTimeTag.lastElementChild.querySelector('.bubble-time').remove();
+    }
+
     let bubbleDiv = document.createElement('div');
     let bubbleContainer = document.createElement('div');
 
-    if(bubbleData['user'] == curUsername) {
+    if(bubbleData['user'] === curUserRealName) {
         // 로그인 사용자의 말풍선인 경우
         bubbleDiv.classList.add('bubble-box-me');
         bubbleContainer.classList.add('bubble-container-me');
@@ -79,10 +86,11 @@ function displayMessage(bubbleData) {
     bubbleHeader.classList.add('bubble-header');
 
     let profileImg = document.createElement('img');
-    profileImg.setAttribute('src', bubbleData['img']);
+    profileImg.setAttribute('src', bubbleData['file']);
 
     let nameLabel = document.createElement('label');
-    if(curRoomType == 1) {
+    const BLIND_ROOM = 1;
+    if(curRoomType == BLIND_ROOM) {
         // 익명 질문 방이면
         nameLabel.innerText = bubbleData['nickname'];
     } else {
@@ -90,22 +98,35 @@ function displayMessage(bubbleData) {
     }
     nameLabel.classList.add('bubble-username');
 
-    if(bubbleData['user'] != curUsername) {
+    if(bubbleData['user'] !== curUserRealName) {
         bubbleHeader.appendChild(profileImg);
         bubbleHeader.appendChild(nameLabel);
+        bubbleContainer.appendChild(bubbleHeader);
     }
 
+    // 내용과 시간을 담는 div
+    let bubbleContentContainer = document.createElement('div');
+    bubbleContentContainer.classList.add('bubble-content-container');
 
     // 내용
     let bubbleContent = document.createElement('div');
     bubbleContent.classList.add('bubble-content');
-    bubbleContent.innerHTML = bubbleData['msg'];
+    bubbleContent.innerHTML = bubbleData['content'];
 
-    if(bubbleData['user'] != curUsername) {
-        bubbleContainer.appendChild(bubbleHeader);  
-    };
+    let bubbleTime = document.createElement('label');
+    bubbleTime.classList.add('bubble-time');
+    bubbleTime.innerText = `${bubbleData['hour']}:${bubbleData['min']}`;
 
-    bubbleContainer.appendChild(bubbleContent);
+    if(bubbleData['user'] === curUserRealName) {
+        //나의 말풍선일 때
+        bubbleContentContainer.appendChild(bubbleTime);
+        bubbleContentContainer.appendChild(bubbleContent);
+    } else {
+        bubbleContentContainer.appendChild(bubbleContent);
+        bubbleContentContainer.appendChild(bubbleTime);
+    }
+
+    bubbleContainer.appendChild(bubbleContentContainer);
 
     bubbleDiv.appendChild(bubbleContainer);
 

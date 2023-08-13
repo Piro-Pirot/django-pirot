@@ -16,6 +16,16 @@
     display: flex;
 }
 
+.bubble-content-container {
+    display: flex;
+    align-items: flex-end;
+}
+
+.bubble-content-container .bubble-time {
+    padding: 0 0.5rem;
+    font-size: 0.7rem;
+}
+
 .bubble-container-me,
 .bubble-container {
     display: inline-flex;
@@ -30,7 +40,7 @@
 
 .bubble-container-me .bubble-header,
 .bubble-container .bubble-header {
-    margin-bottom: 1rem;
+    margin: 1rem 0.6rem;
 }
 
 .bubble-container-me .bubble-username,
@@ -41,6 +51,8 @@
 .bubble-container-me .bubble-content,
 .bubble-container .bubble-content {
     padding: 0.7rem 0.7rem;
+    max-width: 30vw;
+    white-space: pre-wrap;
 }
 
 .bubble-container-me .bubble-content {
