@@ -133,6 +133,10 @@ def default_profile(request, channelID):
         if request.FILES.get("default_image"):
             channel.default_image = request.FILES["default_image"]
             channel.save()
+
+        if request.POST.get("this_level"):
+            channel.this_level = request.POST["this_level"]
+            channel.save()
         
         url = '/staff/channel/setting/%s' % (channelID)
 
@@ -142,7 +146,6 @@ def default_profile(request, channelID):
 
 
 # 운영진 권한 설정
-@csrf_exempt
 def staff_authority(request, channelID):
     joins = Join.objects.all()
     staffs = Staff.objects.all()
