@@ -149,7 +149,7 @@ async def send_happy(sid, data):
 async def send_sad(sid, data):
     roomId = int(data['roomId'])
 
-    newsaddata = await post.save_happy(data)
+    newsaddata = await post.save_sad(data)
     happyCount, sadCount, curHappyCount, curSadCount = newsaddata
     
     data['happyCount'] = happyCount

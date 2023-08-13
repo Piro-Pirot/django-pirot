@@ -51,6 +51,7 @@ async def save_happy(data):
 
         HappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId']).count)()
         SadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId']).count)()
+        curHappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId'], user = curUserObj).count)()
 
         return HappyCount, SadCount, curHappyCount, curSadCount
     
@@ -63,6 +64,7 @@ async def save_happy(data):
 
         HappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId']).count)()
         SadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId']).count)()
+        curHappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId'], user = curUserObj).count)()
 
         return HappyCount, SadCount, curHappyCount, curSadCount
 
@@ -95,6 +97,7 @@ async def save_sad(data):
 
         HappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId']).count)()
         SadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId']).count)()
+        curSadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId'], user = curUserObj).count)()
 
         return HappyCount, SadCount, curHappyCount, curSadCount
     
@@ -107,6 +110,7 @@ async def save_sad(data):
 
         HappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId']).count)()
         SadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId']).count)()
+        curSadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId'], user = curUserObj).count)()
 
         return HappyCount, SadCount, curHappyCount, curSadCount
     

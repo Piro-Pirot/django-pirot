@@ -314,10 +314,10 @@ async function displayHappy(happyData) {
     sadCountElement.innerText = happyData['sadCount'];
 
     // 자신이 누른 버튼 확인
-    if (happyData['curhappyCount']==1) {
+    if (happyData['curHappyCount']==1) {
         happyCountElement.parentElement.classList.toggle('checked');
     }
-    if (happyData['cursadCount']==1) {
+    if (happyData['curSadCount']==1) {
         sadCountElement.parentElement.classList.toggle('checked');
     }
 
@@ -336,10 +336,10 @@ async function displaySad(sadData) {
     sadCountElement.innerText = sadData['sadCount'];
 
     // 자신이 누른 버튼 확인
-    if (sadData['curhappyCount']==1) {
+    if (sadData['curHappyCount']==1) {
         happyCountElement.parentElement.classList.toggle('checked');
     }
-    if (sadData['cursadCount']==1) {
+    if (sadData['curSadCount']==1) {
         sadCountElement.parentElement.classList.toggle('checked');
     }
 }
