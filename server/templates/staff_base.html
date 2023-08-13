@@ -13,36 +13,101 @@
     <div class="container">
         <section class="icon-bar">
             <div class="top-icons">
-                <i class="ri-team-line"></i>
-                <i class="ri-chat-3-line"></i>
+                {% if urlType == 'friends' %}
+                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-fill friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line room-icon"></i></a>
+                {% elif urlType == 'main' %}
+                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-fill room-icon"></i></a>
+                {% else %}
+                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line room-icon"></i></a>
+                {% endif %}
             </div>
             <div class="bottom-icons">
-                <i class="ri-settings-3-line"></i>
+                <i id="settings" class="ri-settings-3-line icon"></i>
                 {% if request.user.profile_img %}
-                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img src="{{ request.user.profile_img.url }}" alt="프로필"></a>
                 {% else %}
-                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ channel.default_image.url }}" alt="프로필"></a>
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img src="{{ channel.default_image.url }}" alt="프로필"></a>
                 {% endif %}
             </div>
         </section>
-        <section class="staff-menu">
-            <a href="/staff/setting/{{ channel.id }}"><button type="button">프로필 설정</button></a>
-            <a href="/staff/passer_create/level/{{ channel.id }}"><button type="button">합격자 명단 추가</button></a>
-            <a href="/staff/code_create/{{ channel.id }}"><button type="button">참여 코드 생성</button></a>
-            <a href="/staff/channel/setting/{{ channel.id }}"><button type="button">동아리 기본 설정</button></a>
-            <a href="/staff/staff_authority/{{ channel.id }}"><button type="button">운영진 권한 설정</button></a>
-            <a href="/staff/join_delete/{{ channel.id }}"><button type="button">회원 삭제</button></a>
+        <section class="staff-setting">
+            <div class="staff-header">
+                운영진 설정
+            </div>
+            <div class="staff-container">
+                <div class="staff-container-left">
+                    <div class="staff-menu">
+                        <a href="/staff/setting/{{ channel.id }}"><button class="bottom-line" type="button">프로필 설정</button></a>
+                        <a href="/staff/passer_create/level/{{ channel.id }}"><button class="bottom-line" type="button">합격자 명단 추가</button></a>
+                        <a href="/staff/code_create/{{ channel.id }}"><button class="bottom-line" type="button">참여 코드 생성</button></a>
+                        <a href="/staff/channel/setting/{{ channel.id }}"><button class="bottom-line" type="button">동아리 기본 설정</button></a>
+                        <a href="/staff/staff_authority/{{ channel.id }}"><button class="bottom-line" type="button">운영진 권한 설정</button></a>
+                        <a href="/staff/join_delete/{{ channel.id }}"><button type="button">회원 삭제</button></a>
+                    </div>
+                </div>
+                <div class="staff-container-right">
+                    {% block content %}
+                    {% endblock %}    
+                </div>
+            </div>
         </section>
-        <section class="staff-content">
-            {% block content %}
-            {% endblock %}    
-        </section>
-    </div>      
+    </div>
+
+    <dialog class="modal settings-modal">
+        <i id="close-btn" class="ri-close-fill"></i>
+        <div class="modal-content">
+            <div class="title">
+                전체 설정
+            </div>
+            <div class="theme-select">
+                <div class="theme-title">
+                    테마설정
+                </div>
+                <div class="theme-modes">
+                    <div class="checkbox-wrapper-13">
+                        <input id="lightMode" type="checkbox">
+                        <label for="lightMode">라이트모드</label>
+                    </div>
+                    <div class="checkbox-wrapper-13">
+                        <input id="darkMode" type="checkbox">
+                        <label for="darkMode">다크모드</label>
+                    </div>
+                </div>
+            </div>
+            <div class="alarm-select">
+                <div class="alarm-title">
+                    알람 설정
+                </div>
+                <div class="checkbox-wrapper-22 alarm-toggle">
+                    <label class="switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </div>
+            <input id="settings-save" type="button" value="저장하기">
+            <a href="/user/logout/" id="settings-logout">
+                <i class="ri-logout-box-r-line"></i>
+                로그아웃
+            </a>
+        </div>
+    </dialog>     
     <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     {% block extra %}
     {% endblock %}
-    <script src="{% static 'js/base.js' %}"></script>
+    <script src="{% static 'js/iconBar.js' %}"></script>
+    <script src="{% static 'js/settingsModal.js' %}"></script>
+    <script>
+        const profileEditButton = document.querySelector(".profileEdit");
+        const profileEditForm = document.querySelector(".profile-setting-form");
+        profileEditButton.onclick = () => {
+            profileEditForm.classList.toggle("active");
+        };
+    </script>
 </body>
 </body>
 </html>
