@@ -54,15 +54,17 @@
             <div class="middle-section-content">
                 {% if urlType == 'main' %}
                     {% include 'rooms/roomList.html' %}
-                    <div class="btn-room-create">
-                        <div class="btn-room-create-container">
-                            <i class="ri-chat-new-line"></i>
-                        </div>
-                    </div>
                 {% elif urlType == 'friends' %}
                     {% include 'rooms/friendsList.html' %}
                 {% endif %}
             </div>
+            {% if urlType == 'main' %}
+            <div class="btn-room-create">
+                <div class="btn-room-create-container">
+                    <i class="ri-chat-new-line"></i>
+                </div>
+            </div>
+            {% endif %}
         </section>
         <section class="chat-section">
             {% block content %}
