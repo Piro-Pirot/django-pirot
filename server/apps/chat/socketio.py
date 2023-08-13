@@ -1,3 +1,4 @@
+import json
 from bs4 import BeautifulSoup
 import markdown
 from pygments.styles import get_style_by_name
@@ -8,6 +9,8 @@ from asgiref.sync import sync_to_async
 from server.apps.chat.models import *
 import server.apps.bubbles.views as bubble
 import server.apps.posts.views as post
+from django.db.models import F, Func, Value, CharField
+
 
 ROOM = 0
 BLIND_ROOM = 1
@@ -16,6 +19,26 @@ DIRECT_ROOM = 2
 # Socket.IO 서버 생성
 sio = socketio.AsyncServer(async_mode='asgi')
 app = socketio.ASGIApp(sio)
+
+# 말풍선 하나 json 변환
+def bubble_serializer(bubble_obj, is_blind):
+    dic = {}
+    dic['user'] = bubble_obj.user.name
+    dic['room'] = bubble_obj.room.id
+    dic['content'] = bubble_obj.content
+    dic['is_delete'] = bubble_obj.is_delete
+    dic['read_cnt'] = bubble_obj.read_cnt
+    dic['file'] = bubble_obj.file.url
+    dic['created_at'] = str(bubble_obj.created_at)
+    if is_blind:
+        dic['nickname'] = bubble_obj.nickname
+    dic['month'] = dic['created_at'][5:7]
+    dic['day'] = dic['created_at'][8:10]
+    dic['hour'] = dic['created_at'][11:13]
+    dic['min'] = dic['created_at'][14:16]
+    json_dic = json.dumps(dic)
+    
+    return json_dic
 
 @sio.on('join')
 async def handle_join(sid, data):
@@ -75,10 +98,11 @@ async def send_message(sid, data):
         #익명채팅방
         newBubble = await bubble.save_blind_msg(room, data)
         data['nickname'] = newBubble.nickname
-        await sio.emit('display_secret_message', data, to=roomId)
+        await sio.emit('display_message', data, to=roomId)
     else:
         newBubble = await bubble.save_msg(room, data)
-        await sio.emit('display_message', data, to=roomId)
+        newBubble = bubble_serializer(newBubble, False)
+        await sio.emit('display_message', newBubble, to=roomId)
     print('massage was saved')
 
 
