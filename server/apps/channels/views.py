@@ -166,18 +166,19 @@ def staff_authority(request, channelID):
 def join_delete(request, channelID):
     joins = Join.objects.all()
     channel = Channel.objects.get(id=channelID)
+    channelPassers = Passer.objects.filter(channel=channel)
 
     if request.method == "POST":
         user = request.POST['user']
-        print(user)
-        join = Join.objects.get(user=user)
+        # 현재 동아리의 user(실명과 전화번호가 고유성 부여)
+        passer = Passer.objects.get(passer_name=user.name, passer_phone=user.phone_number, channel=channel)
+        join = Join.objects.get(passer=passer) # passer 지우기 전에 불러와야 함
         join.delete() # 회원 삭제
-        passer = Passer.objects.get(passer_name=user.name)
         passer.delete() # 합격자 명단에서도 삭제
 
         return redirect("/staff/join_delete/%s") % (channelID)
 
-    return render(request, 'staff/join_delete.html', {"joins":joins, "channel":channel}) # 회원 실명, 기수 참조 가능
+    return render(request, 'staff/join_delete.html', {"channel":channel, "channelPassers":channelPassers}) # 회원 실명, 기수 참조 가능
 
 
 
