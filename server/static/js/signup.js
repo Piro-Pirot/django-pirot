@@ -34,6 +34,11 @@ function send_authnum(){
     const phonenum_without_hypen = delete_hypen(inputPhoneNumber);
     console.log(phonenum_without_hypen);
 
+    // inputPhoneNumber = inputPhoneNumber.replace((/[^0-9]/g, ''));
+    // delete_hypen(inputPhoneNumber)
+    const phonenum_without_hypen = delete_hypen(inputPhoneNumber);
+    console.log(phonenum_without_hypen);
+
     const xhr = new XMLHttpRequest();
     //POST 요청 설정
     xhr.open("POST", "send_sms/", true);
@@ -132,8 +137,9 @@ function confirm_authnum(){
             console.log('error');
         }
     }
+    
+    // 요청 보내기
     onAuthReq(phonenum_without_hypen, inputAuthNumber);
-
 }
 
 function signup_check(){
