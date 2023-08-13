@@ -62,15 +62,17 @@ function onClickSendMessage(user, id) {
 function displayMessage(bubbleData, newTimeFlag) {
     console.log(bubbleData);
     // 내가 방금 보낸 말풍선 표시
+
+    let bubbleDiv = document.createElement('div');
+    let bubbleContainer = document.createElement('div');
     
     // 1분이 지나지 않았다면 직전 말풍선의 시간을 제거
     if(!newTimeFlag) {
         let lastTimeTag = document.querySelector('.conversation');
         lastTimeTag.lastElementChild.querySelector('.bubble-time').remove();
+    } else {
+        bubbleDiv.style.marginTop = '1rem';
     }
-
-    let bubbleDiv = document.createElement('div');
-    let bubbleContainer = document.createElement('div');
 
     if(bubbleData['user'] === curUserRealName) {
         // 로그인 사용자의 말풍선인 경우

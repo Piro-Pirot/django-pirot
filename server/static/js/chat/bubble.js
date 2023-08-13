@@ -33,9 +33,11 @@ const loadBubbles = async(roomId) => {
 
     if (res.ok) {
         let {result: ajaxBubbles} = await res.json();
-        ajaxBubbles = JSON.parse(ajaxBubbles);
 
-        loadBubblesResponse(ajaxBubbles);
+        if(ajaxBubbles !== null) {
+            ajaxBubbles = JSON.parse(ajaxBubbles);
+            loadBubblesResponse(ajaxBubbles);
+        }
 
         // 처음에는 스크롤 맨 아래로
         controlScroll();
@@ -146,6 +148,7 @@ function createBubble(bubbleData, timeFlag) {
 
     // 작성 시간
     if(timeFlag) {
+        bubbleDiv.style.marginTop = '1rem';
         let bubbleTime = document.createElement('label');
         bubbleTime.classList.add('bubble-time');
         bubbleTime.innerText = `${bubbleData['hour']}:${bubbleData['min']}`;
