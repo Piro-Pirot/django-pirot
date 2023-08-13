@@ -16,9 +16,18 @@
     display: flex;
 }
 
-.bubble-content-container {
+.bubble-box .bubble-content-container,
+.bubble-box-me .bubble-content-container {
     display: flex;
     align-items: flex-end;
+}
+
+.bubble-box .bubble-content-container {
+    justify-content: flex-start;
+}
+
+.bubble-box-me .bubble-content-container {
+    justify-content: flex-end;
 }
 
 .bubble-content-container .bubble-time {
@@ -31,7 +40,7 @@
     display: inline-flex;
     flex-direction: column;
     padding: 0.3rem 0.7rem;
-    max-width: 70%;
+    min-width: 70%;
 }
 
 .bubble-container .bubble-user-container {
@@ -51,7 +60,7 @@
 .bubble-container-me .bubble-content,
 .bubble-container .bubble-content {
     padding: 0.7rem 0.7rem;
-    max-width: 30vw;
+    max-width: 70%;
     white-space: pre-wrap;
 }
 
