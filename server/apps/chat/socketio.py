@@ -32,6 +32,7 @@ def bubble_serializer(bubble_obj, is_blind):
     dic['created_at'] = str(bubble_obj.created_at)
     if is_blind:
         dic['nickname'] = bubble_obj.nickname
+        dic['profile_img'] = bubble_obj.profile_img
     dic['month'] = dic['created_at'][5:7]
     dic['day'] = dic['created_at'][8:10]
     dic['hour'] = dic['created_at'][11:13]
@@ -97,8 +98,8 @@ async def send_message(sid, data):
     if room.room_type == BLIND_ROOM:
         #익명채팅방
         newBubble = await bubble.save_blind_msg(room, data)
-        data['nickname'] = newBubble.nickname
-        await sio.emit('display_message', data, to=roomId)
+        newBubble = bubble_serializer(newBubble, False)
+        await sio.emit('display_message', newBubble, to=roomId)
     else:
         newBubble = await bubble.save_msg(room, data)
         newBubble = bubble_serializer(newBubble, False)
