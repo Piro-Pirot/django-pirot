@@ -72,7 +72,6 @@
 
 .middle-section {
   width: 20rem;
-  padding-left: 1.7rem;
 }
 
 .middle-section-content {
@@ -81,16 +80,15 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  overflow-x: hidden;
   overflow-y: scroll;
 }
 
 .middle-section > .search-box {
   height: 6rem;
-  /* background-color: pink; */
   display: flex;
   align-items: center;
   position: relative;
+  margin-left: 2.6rem;
 }
 
 .search-box > .channel-name {
