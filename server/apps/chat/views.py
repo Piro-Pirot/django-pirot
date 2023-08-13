@@ -88,23 +88,19 @@ def main_room(request, channelId, type):
         myRooms = RoomMember.objects.filter(user=request.user, room__channel=curChannel)
 
         # 현재 로그인 사용자
-        myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel=curChannel)[0]
+        myPassInfo = Passer.objects.get(passer_name=request.user.name, channel=curChannel)
         # 현재 로그인 사용자의 채널 구성원들
-        myFriends = Passer.objects.filter(channel__id=channelId).exclude(pk=myPassInfo.pk)
+        myFriends = Passer.objects.filter(channel__id=channelId).exclude(id=myPassInfo.id)
 
-        # 즐겨찾기 친구 먼저 정렬
-        myFriends = Passer.objects.filter(
-            channel__id=channelId
-        ).annotate(
-            is_bookmarked=F('bookmarked_user__id')
-        ).order_by('-bookmarked_user__id')
-
-        myFriends = myFriends.exclude(pk=myPassInfo.pk)
-        
-        # 대체 왜..?
-        # myFriends = Passer.objects.raw(
-        #     f'SELECT * FROM channels_passer as tableB left join (select * from channels_bookmark where user_id={request.user.id}) as tableA on tableB.id=tableA.bookmarked_user_id where channel_id={channelId} and not passer_name={request.user.name} order by bookmarked_user_id desc'
-        # )
+        # 내가 즐겨찾기 한 사람
+        my_favorites = []
+        for friend in myFriends:
+            friend_bookmark_info = friend.bookmarked_user.all()
+            for bookmark_info in friend_bookmark_info:
+                if bookmark_info.bookmarked_user.channel.id == 1 and bookmark_info.user.id == 5:
+                    my_favorites.append(bookmark_info.bookmarked_user)
+                    # 즐겨찾기 대상은 친구 리스트에서 제거
+                    myFriends = myFriends.exclude(id=bookmark_info.bookmarked_user.id)
 
         # 현재 로그인 사용자의 소속 채널
         myJoinInfo = Join.objects.filter(user=request.user)
@@ -122,6 +118,7 @@ def main_room(request, channelId, type):
             'jsonBubbles': '',
             'myRooms': myRooms,
             'myBlindRooms': myBlindRooms,
+            'myFavorite': my_favorites,
             'myFriends': myFriends,
             'myPassInfo': myPassInfo,
             'urlType': type,
@@ -159,14 +156,15 @@ def enter_room(request, channelId, roomId, type):
         # 현재 로그인 사용자의 채널 구성원들
         myFriends = Passer.objects.filter(channel=curChannel).exclude(id=myPassInfo.id)
 
-        # 즐겨찾기 친구 먼저 정렬
-        myFriends = Passer.objects.filter(
-            channel__id=channelId
-        ).annotate(
-            is_bookmarked=F('bookmarked_user__id')
-        ).order_by('-bookmarked_user__id')
-
-        myFriends = myFriends.exclude(pk=myPassInfo.pk)
+        # 내가 즐겨찾기 한 사람
+        my_favorites = []
+        for friend in myFriends:
+            friend_bookmark_info = friend.bookmarked_user.all()
+            for bookmark_info in friend_bookmark_info:
+                if bookmark_info.bookmarked_user.channel.id == 1 and bookmark_info.user.id == 5:
+                    my_favorites.append(bookmark_info.bookmarked_user)
+                    # 즐겨찾기 대상은 친구 리스트에서 제거
+                    myFriends = myFriends.exclude(id=bookmark_info.bookmarked_user.id)
 
         # 현재 로그인 사용자의 소속 채널
         myJoinInfo = Join.objects.filter(user=request.user)
@@ -204,6 +202,7 @@ def enter_room(request, channelId, roomId, type):
                     'channel': curChannel,
                     'myRooms': myRooms,
                     'myBlindRooms': myBlindRooms,
+                    'myFavorite': my_favorites,
                     'myFriends': myFriends,
                     'myPassInfo': myPassInfo,
                     'urlType': type,
