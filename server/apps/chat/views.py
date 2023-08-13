@@ -154,7 +154,7 @@ def main_room(request, channelId, type):
         for friend in myFriends:
             friend_bookmark_info = friend.bookmarked_user.all()
             for bookmark_info in friend_bookmark_info:
-                if bookmark_info.bookmarked_user.channel.id == 1 and bookmark_info.user.id == 5:
+                if bookmark_info.bookmarked_user.channel == curChannel and bookmark_info.user == request.user:
                     my_favorites.append(bookmark_info.bookmarked_user)
                     # 즐겨찾기 대상은 친구 리스트에서 제거
                     myFriends = myFriends.exclude(id=bookmark_info.bookmarked_user.id)
@@ -218,7 +218,7 @@ def enter_room(request, channelId, roomId, type):
         for friend in myFriends:
             friend_bookmark_info = friend.bookmarked_user.all()
             for bookmark_info in friend_bookmark_info:
-                if bookmark_info.bookmarked_user.channel.id == 1 and bookmark_info.user.id == 5:
+                if bookmark_info.bookmarked_user.channel == curChannel and bookmark_info.user == request.user:
                     my_favorites.append(bookmark_info.bookmarked_user)
                     # 즐겨찾기 대상은 친구 리스트에서 제거
                     myFriends = myFriends.exclude(id=bookmark_info.bookmarked_user.id)

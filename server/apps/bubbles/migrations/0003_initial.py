@@ -10,39 +10,24 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        ('bubbles', '0002_initial'),
         ('chat', '0001_initial'),
-        ('channels', '0002_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='roommember',
+            model_name='bubble',
             name='user',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
-            model_name='room',
-            name='channel',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='channels.channel'),
-        ),
-        migrations.AddField(
-            model_name='lock',
-            name='room_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='chat.room'),
-        ),
-        migrations.AddField(
-            model_name='lock',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.AddField(
-            model_name='blindroommember',
+            model_name='blindbubble',
             name='room',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='chat.room'),
         ),
         migrations.AddField(
-            model_name='blindroommember',
+            model_name='blindbubble',
             name='user',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),

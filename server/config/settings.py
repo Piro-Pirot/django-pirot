@@ -177,6 +177,7 @@ AUTH_USER_MODEL = 'local_users.User'
 ACCESS_KEY=env('ACCESS_KEY')
 URL=env('URL')
 URI=env('URI')
+SMS_SENDER=env('SMS_SENDER')
 
 # LOGGING = {
 #         'version': 1,

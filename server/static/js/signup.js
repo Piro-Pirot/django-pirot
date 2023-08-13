@@ -34,11 +34,6 @@ function send_authnum(){
     const phonenum_without_hypen = delete_hypen(inputPhoneNumber);
     console.log(phonenum_without_hypen);
 
-    // inputPhoneNumber = inputPhoneNumber.replace((/[^0-9]/g, ''));
-    // delete_hypen(inputPhoneNumber)
-    const phonenum_without_hypen = delete_hypen(inputPhoneNumber);
-    console.log(phonenum_without_hypen);
-
     const xhr = new XMLHttpRequest();
     //POST 요청 설정
     xhr.open("POST", "send_sms/", true);
@@ -52,8 +47,6 @@ function send_authnum(){
                 const response = JSON.parse(xhr.responseText);
                 console.log(response.message);
                 // 서버 응답 처리
-
-                
             } else {
                 console.error("Error:", xhr.status);
                 // 에러 처리
@@ -117,7 +110,7 @@ function confirm_authnum(){
                 "charset" : "utf-8",
                 "X-CSRFToken": csrfToken,
             },
-            body: JSON.stringify({ phone_num: phonenum_without_hypen, auth_num: inputAuthNumber}),
+            body: JSON.stringify({ phone_num_hypen: inputPhoneNumber, phone_num: phonenum_without_hypen, auth_num: inputAuthNumber}),
         });
         const {is_auth: isAuth} = await res.json();
 
