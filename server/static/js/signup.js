@@ -1,24 +1,17 @@
-const autoHyphen = (target) => {
-    target.value = target.value
-      .replace(/[^0-9]/g, '')
-      .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
-    let btnSendSMS = document.getElementById("send_sms");
-    btnSendSMS.classList.add('auth-btn-active');
-    btnSendSMS.disabled = false;
+function input_phone_num(){
+    console.log("phone number inputed");
+    document.getElementById("send_sms").focus();
+    document.getElementById("send_sms").setAttribute("style", "background-color:yellow;")
+    document.getElementById("send_sms").disabled = false;
 }
-
-const delete_hypen = (target) => {
-    return target.replace(/-/g, '');
-}
-
 
 // 문자인증+타이머 부분
 function initButton(){
     document.getElementById("send_sms").disabled = true;
     document.getElementById("confirm").disabled = true;
-    document.getElementById("time_limit").innerText = "03:00";
-    document.getElementById("send_sms").classList.remove('auth-btn-active');
-    document.getElementById("confirm").classList.remove('auth-btn-active');
+    document.getElementById("timeLimit").innerHTML = "03:00";
+    document.getElementById("send_sms").setAttribute("style","background-color:none;")
+    document.getElementById("confirm").setAttribute("style","background-color:none;")
 }
 
 // 프로세스가 아직 시간되징 않은 상태
@@ -29,13 +22,14 @@ function send_authnum(){
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
     //인증번호 보내는 과정 필요 -> views.py의 send_sms 함수를 호출하는 AJAX 요청
-    let inputPhoneNumber = document.getElementById("phone_number").value;
+    const inputPhoneNumber = document.getElementById("phone_number").value;
     console.log(inputPhoneNumber);
-
-    // inputPhoneNumber = inputPhoneNumber.replace((/[^0-9]/g, ''));
-    // delete_hypen(inputPhoneNumber)
-    const phonenum_without_hypen = delete_hypen(inputPhoneNumber);
-    console.log(phonenum_without_hypen);
+    // if (inputPhoneNumber !== null) {
+    //     const phoneNum = inputPhoneNumber.value;
+    //     // 이후 처리
+    // } else {
+    //     console.error("Input element is null.");
+    // }
 
     const xhr = new XMLHttpRequest();
     //POST 요청 설정
@@ -60,14 +54,12 @@ function send_authnum(){
     };
     
     // 요청 보내기
-    const data = JSON.stringify({ phone_num: phonenum_without_hypen });
+    const data = JSON.stringify({ phone_num: inputPhoneNumber });
     xhr.send(data);
 
     // 인증하기 버튼 활성화
-    document.getElementById("input_authnum").focus();
-    btnAuthConfirm = document.getElementById("confirm")
-    btnAuthConfirm.classList.add('auth-btn-active')
-    btnAuthConfirm.disabled = false;
+    document.getElementById("confirm").setAttribute("style","background-color:yellow;")
+    document.getElementById("confirm").disabled = false;
 
     //이전에 실행중인 타이머 프로세스가 있으면 종료
     if (processID != -1) clearInterval(processID);
@@ -99,45 +91,41 @@ function confirm_authnum(){
     console.log("인증하기 button clicked");
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    let inputPhoneNumber = document.getElementById("phone_number").value;
-    const phonenum_without_hypen = delete_hypen(inputPhoneNumber);
-    console.log(phonenum_without_hypen);
+    const inputPhoneNumber = document.getElementById("phone_number").value;
 
     const inputAuthNumber = document.getElementById("input_authnum").value;
     console.log(inputAuthNumber);
 
-    const onAuthReq = async(phonenum_without_hypen, inputAuthNumber) => {
-        const url = '/user/signup/authcheck/';
-        const res = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                "charset" : "utf-8",
-                "X-CSRFToken": csrfToken,
-            },
-            body: JSON.stringify({ phone_num: phonenum_without_hypen, auth_num: inputAuthNumber}),
-        });
-        const {is_auth: isAuth} = await res.json();
+    const xhr = new XMLHttpRequest();
+    //POST 요청 설정
+    xhr.open("POST", "authcheck/", true);
+    xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+    xhr.setRequestHeader("X-CSRFToken", csrfToken);
 
-        authHandleResponse(isAuth);
-    }
     // 응답 처리
-    const authHandleResponse = (isAuth) => {
-        // // 성공적으로 처리되었을 때 UI 업데이트
-        if(isAuth) {
-            document.getElementById('confirm').innerText="인증완료";
-            alert('문자 인증이 완료되었습니다.');
-            initButton();
-            let btnSignup = document.getElementById('signup_button');
-            btnSignup.classList.add('auth-btn-active');
-            btnSignup.disabled = false;
-        } else {
-            console.log('error');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                console.log(response.message);
+                
+            } else {
+                console.error("Error:", xhr.status);
+                // 에러 처리
+            }
         }
-    }
+    };
     
     // 요청 보내기
-    onAuthReq(phonenum_without_hypen, inputAuthNumber);
+    const data = JSON.stringify({ phone_num: inputPhoneNumber, auth_num: inputAuthNumber});
+    xhr.send(data);
+
+    // 성공적으로 처리되었을 때 UI 업데이트
+    alert('문자 인증이 완료되었습니다.')
+
+    document.getElementById('confirm').innerHTML="인증완료"
+    document.getElementById('signup_button').disabled = false;
+    document.getElementById('signup_button').setAttribute("style", "background-color:yellow;")
 }
 
 function signup_check(){

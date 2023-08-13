@@ -32,7 +32,7 @@ class SignupForm(UserCreationForm):
     
     class Meta:
         model = User
-        fields = ['username', 'password1', 'password2', 'phone_number', 'name']
+        fields = ['username', 'password1', 'password2', 'phone_number']
         # fields = '__all__'
 
 # def register(request):

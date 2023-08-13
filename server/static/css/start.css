@@ -487,7 +487,3 @@ main {
   border: none;
   border-bottom: 1px solid black;
 }
-
-.auth-btn-active {
-  background-color: var(--carrot-color);
-}

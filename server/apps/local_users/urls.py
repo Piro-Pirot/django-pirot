@@ -7,6 +7,6 @@ urlpatterns = [
     path('logout/', logout),
     path('signup/', signup),
     path('setting/<int:channelID>/', profile_setting),
-    path('signup/send_sms/', sms_sender, name='send_sms'),
+    path('signup/send_sms/', SMS_send.as_view(), name='send_sms'),
     path('signup/authcheck/', sms_check, name='sms_check'),
 ]
