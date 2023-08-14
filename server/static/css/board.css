@@ -39,6 +39,7 @@
   margin-right: 10px;
   background-color: white;
   transition: 0.2s;
+  cursor: pointer;
 }
 
 .post-container button.happy:hover {
@@ -60,6 +61,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .post-container button.delete:hover {
