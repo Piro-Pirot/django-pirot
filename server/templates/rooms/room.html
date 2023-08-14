@@ -14,7 +14,9 @@
             <div class="chat-name-icons">
                 <input id="chat-name-search" type="text">
                 <i id="chat-search-btn" class="fa-solid fa-magnifying-glass"></i>
+                {% if room.room_type != 2 %}
                 <i id="chat-member-add" class="ri-add-line"></i>
+                {% endif %}
                 <i id="chat-setting" class="ri-settings-3-line"></i>
             </div>
         </div>
