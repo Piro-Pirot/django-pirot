@@ -84,4 +84,3 @@ creatorButton.addEventListener("click", () => {
   let firstSectionTop = sections[0].offsetTop;
   window.scrollTo({top: firstSectionTop, behavior: 'smooth'});
 }); //나중에 '만든사람 section' 머지되면 firstSectionTop 대체 필요
-

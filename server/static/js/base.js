@@ -73,3 +73,22 @@ selectButton.addEventListener("click", () => {
   channelOptionsList.classList.toggle("active");
   selectButton.classList.toggle("color-stay");
 })
+
+
+/* 정말로 확인 모달 띄우는 함수 */
+function showConfirmModal(content) {
+  const confirmModal = document.querySelector('.confirm-modal');
+  let modalContent = document.querySelector('.confirm-modal-content');
+  modalContent.innerText = content;
+  confirmModal.className = 'confirm-modal on';
+  confirmModal.style.display = 'block';
+  confirmModal.style.opacity = '1';
+}
+
+/* 정말로 확인 모달 닫는 함수 */
+function closeConfirmModal() {
+  const confirmModal = document.querySelector('.confirm-modal');
+  confirmModal.className = 'confirm-modal';
+  confirmModal.style.display = 'none';
+  confirmModal.style.opacity = '0';
+}
