@@ -6,7 +6,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
 from server.apps.channels.models import Join, Staff, Channel
 from django.http import JsonResponse
-from .utils import make_signature
 from .models import User, SMS_Auth
 import requests, json, time
 from django.views import View
@@ -15,6 +14,9 @@ from server.apps.channels.models import Staff, Channel, Join, Passer
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+import hashlib
+import hmac
+import base64
 
 def main(request):
     return render(request, "index.html")
@@ -116,10 +118,13 @@ def request_api(phone_num, auth_num):
     # API 요청에 사용되는 암호화 문자열 생성
     message = "POST" + " " + URI + "\n" + timestamp + "\n" + ACCESS_KEY
     message = bytes(message, 'UTF-8')
+
+    secret_key = getattr(settings, 'SECRET_KEY')
+    secret_key = bytes(secret_key, 'UTF-8')
     
     # API 요청의 무결성을 보장하기 위한 서명 값 생성
     # Body를 Access Key ID와 맵핑되는 Secret Key로 암호화한 서명값
-    SIGNATURE = make_signature(message)
+    SIGNATURE = base64.b64encode(hmac.new(secret_key, message, digestmod=hashlib.sha256).digest())
     
     # API 요청에 필요한 헤더 정보 설정
     headers = {
@@ -165,8 +170,8 @@ def sms_sender(request):
 def sms_check(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        user = User.objects.get(phone_number=data['phone_num_hypen'])
-        if user:
+        user = User.objects.filter(phone_number=data['phone_num_hypen'])
+        if len(user) == 1:
             return JsonResponse({'is_auth' : False})
         
         verification = SMS_Auth.objects.get(phone_num=data['phone_num'])
