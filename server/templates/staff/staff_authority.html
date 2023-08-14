@@ -5,8 +5,96 @@
 
 {% block content %}
 <h2>운영진 권한</h2>
-    <div>{{ channel.this_level}}기 회원 목록</div>
-    {% for passer in thislevelPassers %}
-        <div>{{ passer.passer_name }}</div>
-    {% endfor %}
+    <div>현재 기수 회원 목록</div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="authority-container">
+            {% for thisjoin in thisjoins %}
+            <div class="authority-passer-div">
+                <div>{{ thisjoin.passer }}</div>
+                <div>{{ thisjoin.passer.passer_phone }}</div>
+                {{ thisjoin.user }} {{ staffs }}
+                <label class="switch">
+                    <input class="onoff" value="{{ thisjoin.passer.passer_name }} {{ thisjoin.passer.passer_phone }}" name="checked" type="checkbox" {% if thisjoin.user in staffs %}checked{% endif %}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+        <input id="settings-save" type="submit" value="저장하기">
+    </form>
+{% endblock %}
+{% block extra %}
+<script>
+var check = $("input[type='checkbox']");
+check.click(function(){
+	$(".onoff").toggle();
+});
+</script>
+<style>
+.authority-passer-div {
+    display: flex;
+}
+
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  vertical-align:middle;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
 {% endblock %}
