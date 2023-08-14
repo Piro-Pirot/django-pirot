@@ -171,8 +171,9 @@ def sms_check(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         user = User.objects.filter(phone_number=data['phone_num_hypen'])
-        if len(user) == 1:
-            return JsonResponse({'is_auth' : False})
+        # 나중에 살리기!!!!!
+        # if len(user) == 1:
+        #     return JsonResponse({'is_auth' : False})
         
         verification = SMS_Auth.objects.get(phone_num=data['phone_num'])
         if verification.auth_num == data['auth_num']:
