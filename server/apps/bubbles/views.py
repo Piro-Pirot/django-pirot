@@ -20,13 +20,24 @@ async def save_msg(room, data):
     curUser = await sync_to_async(RoomMember.objects.get)(user=curUserObj, room=room)
 
     # 새 말풍선 저장
-    newBubble = await sync_to_async(Bubble.objects.create)(
-        user = curUserObj,
-        room = room,
-        content = data['msg'],
-        read_cnt = await sync_to_async(room.roommember_set.count)(),
-        file = data['file']
-    )
+    try:
+        is_notice = data['bubbleType']
+        newBubble = await sync_to_async(Bubble.objects.create)(
+            user = curUserObj,
+            room = room,
+            content = data['msg'],
+            read_cnt = await sync_to_async(room.roommember_set.count)(),
+            file = data['file'],
+            is_notice = is_notice
+        )
+    except:
+        newBubble = await sync_to_async(Bubble.objects.create)(
+            user = curUserObj,
+            room = room,
+            content = data['msg'],
+            read_cnt = await sync_to_async(room.roommember_set.count)(),
+            file = data['file']
+        )
     await sync_to_async(newBubble.save)()
     print(newBubble)
     return newBubble
@@ -40,16 +51,30 @@ async def save_blind_msg(room, data):
     curBlindUser = await sync_to_async(BlindRoomMember.objects.get)(user=curUserObj, room=room)
 
     # 새 말풍선 저장
-    newBubble = await sync_to_async(BlindBubble.objects.create)(
-        user = curUserObj,
-        room = room,
-        content = data['msg'],
-        read_cnt = await sync_to_async(room.blindroommember_set.count)(),
-        file = data['file'],
-        
-        nickname = curBlindUser.nickname,
-        profile_img = curBlindUser.profile_img
-    )
+    try:
+        is_notice = data['bubbleType']
+        newBubble = await sync_to_async(BlindBubble.objects.create)(
+            user = curUserObj,
+            room = room,
+            content = data['msg'],
+            read_cnt = await sync_to_async(room.blindroommember_set.count)(),
+            file = data['file'],
+            is_notice = is_notice,
+            
+            nickname = curBlindUser.nickname,
+            profile_img = curBlindUser.profile_img
+        )
+    except:
+        newBubble = await sync_to_async(BlindBubble.objects.create)(
+            user = curUserObj,
+            room = room,
+            content = data['msg'],
+            read_cnt = await sync_to_async(room.blindroommember_set.count)(),
+            file = data['file'],
+            
+            nickname = curBlindUser.nickname,
+            profile_img = curBlindUser.profile_img
+        )
     await sync_to_async(newBubble.save)()
     
     return newBubble
@@ -66,9 +91,9 @@ def load_bubbles(request):
             #익명채팅방
             # 말풍선 데이터 get
             bubbles = BlindBubble.objects.filter(room=curRoom).values(
-                'room', 'content', 'is_delete',
+                'user__username', 'room', 'content', 'is_delete',
                 'read_cnt', 'file', 'nickname',
-                'profile_img', 'created_at',
+                'profile_img', 'is_notice', 'created_at',
                 'user__name'
             ).annotate(
                 hour=Func(
@@ -98,8 +123,8 @@ def load_bubbles(request):
             ).order_by('created_at')
         else:
             bubbles = Bubble.objects.filter(room=curRoom).values(
-                'room', 'content', 'is_delete',
-                'read_cnt', 'file', 'created_at',
+                'user__username', 'room', 'content', 'is_delete',
+                'read_cnt', 'file', 'is_notice', 'created_at',
                 'user__name'
             ).annotate(
                 hour=Func(
