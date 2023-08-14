@@ -72,6 +72,7 @@ def create_group_room(request, channelId):
         curChannel = Channel.objects.get(id=channelId)
         targets = []
         group_type = ROOM
+        group_name = ''
         for key, value in request.POST.items():
             if value == 'on' and key == 'group_type':
                 group_type = BLIND_ROOM
@@ -79,6 +80,10 @@ def create_group_room(request, channelId):
                 targets.append(key)
             elif key == 'group_name':
                 group_name = value
+
+        # 방 이름 필수 지정
+        if group_name == '':
+            return redirect(f'/room/{channelId}/main/')
 
         new_room = Room.objects.create(
             room_name = group_name,
