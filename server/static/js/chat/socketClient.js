@@ -175,7 +175,6 @@ function onClickSendPost(user, id) {
 
     socket.emit('send_post', {'postInput': postInput, 'user': user, 'roomId': id});
     console.log('send successfully');
-
 }
 
 // 게시글 표시
@@ -189,7 +188,7 @@ function displayPost(postData) {
     let buttonDiv = document.createElement('div')
     
     // 로그인 사용자가 작성한 게시글인 경우
-    if(postData['user__username'] == curUsername) {
+    if(postData['user'] == curUsername) {
         let happyBtn = document.createElement('button');
         happyBtn.classList.add('happy');
         let happyImg = document.createElement('i');
@@ -281,7 +280,8 @@ function displayPost(postData) {
     posts.appendChild(postContainer);
 
     document.querySelector('.post').value = '';
-    // controlScrollPost();
+
+    controlScrollboard()
 }
 
 
@@ -329,11 +329,11 @@ async function displayHappy(happyData) {
     sadCountElement.innerText = happyData['sadCount'];
 
     // 자신이 누른 버튼 확인
-    if (sadCountElement.parentElement.classList.contains('checked')) {
+    if (happyData['curHappyCount']==1) {
+        happyCountElement.parentElement.classList.toggle('checked');
+    }
+    if (happyData['curSadCount']==1) {
         sadCountElement.parentElement.classList.toggle('checked');
-        happyCountElement.parentElement.classList.toggle('checked');
-    } else {
-        happyCountElement.parentElement.classList.toggle('checked');
     }
 
 }
@@ -351,10 +351,10 @@ async function displaySad(sadData) {
     sadCountElement.innerText = sadData['sadCount'];
 
     // 자신이 누른 버튼 확인
-    if (happyCountElement.parentElement.classList.contains('checked')) {
+    if (sadData['curHappyCount']==1) {
         happyCountElement.parentElement.classList.toggle('checked');
-        sadCountElement.parentElement.classList.toggle('checked');
-    } else {
+    }
+    if (sadData['curSadCount']==1) {
         sadCountElement.parentElement.classList.toggle('checked');
     }
 }

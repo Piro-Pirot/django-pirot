@@ -5,7 +5,8 @@
 
 {% block content %}
 <h2>운영진 권한</h2>
-    {% for join in joins %}
-        <div>{{ join.passer.passer_name }}</div>
+    <div>{{ channel.this_level}}기 회원 목록</div>
+    {% for passer in thislevelPassers %}
+        <div>{{ passer.passer_name }}</div>
     {% endfor %}
 {% endblock %}

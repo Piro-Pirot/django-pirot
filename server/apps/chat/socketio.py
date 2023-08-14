@@ -137,14 +137,12 @@ async def send_happy(sid, data):
     roomId = int(data['roomId'])
 
     newhappydata = await post.save_happy(data)
-    if len(newhappydata) == 3:
-        newhappy, happyCount, sadCount = newhappydata
-    else:
-        happyCount, sadCount = newhappydata
+    happyCount, sadCount, curHappyCount, curSadCount = newhappydata
 
-    # data['newhappyId'] = newhappy.id
     data['happyCount'] = happyCount
     data['sadCount'] = sadCount
+    data['curHappyCount'] = curHappyCount
+    data['curSadCount'] = curSadCount
 
     await sio.emit('display_happy', data, to=roomId)
     print('happy was saved')
@@ -155,14 +153,12 @@ async def send_sad(sid, data):
     roomId = int(data['roomId'])
 
     newsaddata = await post.save_sad(data)
-    if len(newsaddata) == 3:
-        newsad, happyCount, sadCount = newsaddata
-    else:
-       happyCount, sadCount = newsaddata
-
-    # data['newhappyId'] = newhappy.id
+    happyCount, sadCount, curHappyCount, curSadCount = newsaddata
+    
     data['happyCount'] = happyCount
     data['sadCount'] = sadCount
+    data['curHappyCount'] = curHappyCount
+    data['curSadCount'] = curSadCount
 
     await sio.emit('display_sad', data, to=roomId)
     print('sad was saved')

@@ -1,7 +1,7 @@
 {% extends 'staff_base.html' %}
 {% load static %}
 
-<!-- 동아리 기본 프로필 -->
+<!-- 동아리 기본 설정 (채널 기본프로필 이미지 + 현재 기수 설정)-->
 
 {% block content %}
 <h2>동아리 기본 설정</h2>
@@ -12,6 +12,14 @@
     <div>
         <input type="file" name="default_image" accept=".jpg, .png" />
         <input type="submit" value="사진 변경" />
+    </div>
+    <div>
+        {% if channel.this_level %}
+            <input type="text" name="this_level" value="{{ channel.this_level }}" placeholder="현재 기수를 입력해주세요." />
+        {% else %}
+            <input type="text" name="this_level" placeholder="현재 기수를 입력해주세요." />
+        {% endif %}
+        <input type="submit" value="기수 입력" />
     </div>
 </form>
 {% endblock %}
