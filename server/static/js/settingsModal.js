@@ -38,4 +38,3 @@ darkModeCheckbox.addEventListener("change", () => {
     lightModeCheckbox.checked = false;
   };
 });
-

@@ -1,4 +1,5 @@
 import json, datetime
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from .models import *
 from server.apps.bubbles.models import *
@@ -19,6 +20,9 @@ YES = 1
 ROOM = 0
 BLIND_ROOM = 1
 DIRECT_ROOM = 2
+
+CHAT = 0
+NOTICE = 1
 
 def create_room(request, channelId, target):
     if request.method == 'POST':
@@ -84,40 +88,136 @@ def create_group_room(request, channelId):
         new_room.save()
 
         # 채팅 방 참여자 추가
+        room_member_list = []
         for target in targets:
             target_passer_info = Passer.objects.get(id=target)
             target_user_info = Join.objects.get(passer=target_passer_info).user
             if group_type == BLIND_ROOM:
-                BlindRoomMember.objects.create(
+                new_member = BlindRoomMember.objects.create(
                     user = target_user_info,
                     room = new_room,
                     nickname = f'{fake_korean_first()} {fake_korean_second()}',
                     profile_img = 'test.png'
-                ).save()
+                )
+                new_member.save()
+                room_member_list.append(new_member)
             else:
-                RoomMember.objects.create(
+                new_member = RoomMember.objects.create(
                     user = target_user_info,
                     room = new_room
-                ).save()
+                )
+                new_member.save()
+                room_member_list.append(new_member)
 
         # 자기 자신도 추가
+        # 공지 글 생성
+        notice_content = f'{request.user.name}님이 '
         if group_type == BLIND_ROOM:
-            BlindRoomMember.objects.create(
+            notice_content = '익명 채팅방이 시작되었습니다.'
+        else:
+            for i in range(len(room_member_list) - 1):
+                notice_content += f'{room_member_list[i].user.name}님, '
+            notice_content += f'{room_member_list[len(room_member_list) - 1].user.name}님을 초대했습니다.'
+
+        if group_type == BLIND_ROOM:
+            new_member_user = BlindRoomMember.objects.create(
                 user = request.user,
                 room = new_room,
                 nickname = f'{fake_korean_first()} {fake_korean_second()}',
                 profile_img = 'test.png'
+            )
+            new_member_user.save()
+            BlindBubble.objects.create(
+                user = request.user,
+                room = new_room,
+                content = notice_content,
+                read_cnt = len(room_member_list) + 1,
+                is_notice = NOTICE,
+                nickname = new_member_user.nickname,
+                profile_img = new_member_user.profile_img
             ).save()
         else:
             RoomMember.objects.create(
                 user = request.user,
                 room = new_room
             ).save()
+            Bubble.objects.create(
+                user = request.user,
+                room = new_room,
+                content = notice_content,
+                read_cnt = len(room_member_list) + 1,
+                is_notice = NOTICE
+            ).save()
 
 
-        return redirect(f'/room/{channelId}/{new_room.id}/friends/')
+        return redirect(f'/room/{channelId}/{new_room.id}/main/')
     
     return redirect(f'/room/{channelId}/main/')
+
+
+def exit_room(request):
+    if request.method == 'POST':
+        channel_id = request.POST['channelId']
+        room_id = request.POST['roomId']
+        cur_room = Room.objects.get(id=room_id)
+        if cur_room.room_type == BLIND_ROOM:
+            BlindRoomMember.objects.get(user=request.user, room=cur_room).delete()
+            # 채팅 방에 아무도 없으면 채팅 방 삭제
+            try:
+                BlindRoomMember.objects.filter(room=cur_room).first()
+            except BlindRoomMember.DoesNotExist:
+                cur_room.delete()
+        else:
+            RoomMember.objects.get(user=request.user, room=cur_room).delete()
+            try:
+                RoomMember.objects.filter(room=cur_room).first()
+            except RoomMember.DoesNotExist:
+                cur_room.delete()
+
+
+        return redirect(f'/room/{channel_id}/main/')
+    
+    return render(request, 'error.html', {'errorMsg': '잘못된 접근입니다.'})
+
+
+def invite_member_ajax(request):
+    if request.method == 'POST':
+        req = json.loads(request.body)
+        targets = req['inviteList']
+        channel_id = req['channelId']
+        cur_channel = Channel.objects.get(id=channel_id)
+        room_id = req['roomId']
+        cur_room = Room.objects.get(id=room_id)
+
+        new_member_dic = {}
+        for i in range(len(targets)):
+            target_passer_info = Passer.objects.get(id=targets[i])
+            target_user_info = Join.objects.get(passer=target_passer_info).user
+            if cur_room.room_type == BLIND_ROOM:
+                new_member = BlindRoomMember.objects.create(
+                    user = target_user_info,
+                    room = cur_room,
+                    nickname = f'{fake_korean_first()} {fake_korean_second()}',
+                    profile_img = 'test.png'
+                )
+                new_member.save()
+                new_member_dic[i] = new_member.nickname
+            else:
+                new_member = RoomMember.objects.create(
+                    user = target_user_info,
+                    room = cur_room
+                )
+                new_member.save()
+                new_member_dic[i] = new_member.user.name
+
+        if cur_room.room_type == BLIND_ROOM:
+            member_info = BlindRoomMember.objects.get(user=request.user, room=cur_room)
+            return JsonResponse({'new_name_dic': json.dumps(new_member_dic), 'inviter_name': member_info.nickname})
+        else:
+            return JsonResponse({'new_name_dic': json.dumps(new_member_dic), 'inviter_name': request.user.name})
+
+    return JsonResponse({'new_name_list': None})
+
 
 def main_room(request, channelId, type):
     # 로그인 되어 있을 때만 접근
@@ -213,6 +313,25 @@ def enter_room(request, channelId, roomId, type):
         # 현재 로그인 사용자의 채널 구성원들
         myFriends = Passer.objects.filter(channel=curChannel).exclude(id=myPassInfo.id)
 
+        # 채팅 방 참여자가 아닌 채널 구성원들
+        not_members = []
+        for friend in myFriends:
+            # join 정보는 여러 개일 수 있지만 모두 같은 User 정보이므로 하나만 가져와도 된다.
+            friend_user_info = friend.join_set.first().user
+            if curRoom.room_type == BLIND_ROOM:
+                try:
+                    # 유저가 현재 채팅 방 멤버라는 정보가 없으면 not_members 리스트에 추가
+                    BlindRoomMember.objects.get(user=friend_user_info, room=curRoom)
+                except BlindRoomMember.DoesNotExist:
+                    not_members.append(friend)
+            else:
+                try:
+                    RoomMember.objects.get(user=friend_user_info, room=curRoom)
+                except RoomMember.DoesNotExist:
+                    not_members.append(friend)
+
+
+
         # 내가 즐겨찾기 한 사람
         my_favorites = []
         for friend in myFriends:
@@ -246,6 +365,7 @@ def enter_room(request, channelId, roomId, type):
         title = otherUser.join.get(passer__channel=curChannel).passer
 
     print(roomMembers)
+
     # 현재 로그인 사용자가 채팅 방 멤버라면
     for member in roomMembers:
         if member.user == request.user:
@@ -260,6 +380,7 @@ def enter_room(request, channelId, roomId, type):
                     'myBlindRooms': myBlindRooms,
                     'myFavorites': my_favorites,
                     'myFriends': myFriends,
+                    'notMembers': not_members,
                     'myPassInfo': myPassInfo,
                     'urlType': type,
                     'myChannels': myChannels,
