@@ -14,15 +14,89 @@
   --placeholder: rgba(174, 174, 174, 0.668);
   --chat-input-height: 5.65rem;
   --section-padding: 0.6rem;
-  --body-bgclr: rgba(227, 227, 227, 0.647);
   --section-header-height: 2rem;
+
+  /* 기본 컬러 테마 */
+  --font-color: black;
+  --alt-fontclr: black;
+  --carrot-color: #fba405;
+  --carrot-dark: #fb9005;
+  --carrot-light: #face83;
+  --carrot-light-dark: #fec767;
+  --carrot-super-light: #face8331;
+  --carrot-super-light-dark: #face8389;
+  --light-gray: #f0f0f0;
+  --subtitle: #a3a3a3;
+  --section-bgclr: white;
+  --body-bgclr: rgba(227, 227, 227, 0.647);
+  --opp-bubble-bgclr: white;
+  --opp-bubble-bdclr: var(--carrot-dark);
+  --chat-input: white;
+  --icon-hover: rgba(128, 128, 128, 0.189);
+  --modal-bgclr: white; 
+  --iconBar-bgclr: #f0f0f0; 
+  --orange-stick: var(--carrot-color);
+
 }
+
+
+/* 다크모드테마 */
+.dark-mode {
+  --font-color: white;
+  --alt-fontclr: white;
+  --carrot-color: #fba405;
+  --carrot-dark: #fb9005;
+  --carrot-light: #face83;
+  --carrot-light-dark: #fec767;
+  --carrot-super-light: #face8375;
+  --carrot-super-light-dark: #face83cf;
+  --light-gray: #f0f0f0;
+  --subtitle: #a3a3a3;
+  --section-bgclr: #1d1f20;
+  --body-bgclr: rgb(10, 10, 10);
+  --opp-bubble-bgclr: rgb(74, 74, 74);
+  --opp-bubble-bdclr: rgb(74, 74, 74);
+  --chat-input: #2f3032;
+  --icon-hover: rgb(109, 109, 109);
+  --modal-bgclr: rgb(35, 35, 35);
+  --iconBar-bgclr: var(--body-bgclr);
+  --orange-stick: var(--carrot-color);
+}
+
+
+/* 블랙앤화이트모드테마 */
+.bw-mode {
+  --font-color: black;
+  --alt-fontclr: white;
+  --carrot-color: #222222;
+  --carrot-dark: rgb(60, 60, 60);
+  --carrot-light: rgb(72, 72, 72);
+  --carrot-light-dark: rgb(56, 56, 56);
+  --carrot-super-light: rgba(173, 173, 173, 0.546);
+  --carrot-super-light-dark: rgba(173, 173, 173, 0.885);
+  --light-gray: #f0f0f0;
+  --subtitle: #a3a3a3;
+  --section-bgclr: #FFFFFF;
+  --body-bgclr: #222222;
+  --opp-bubble-bgclr: white;
+  --opp-bubble-bdclr: var(--carrot-dark);
+  --chat-input: #ffffff;
+  --icon-hover: rgb(109, 109, 109);
+  --modal-bgclr: rgb(52, 52, 52);
+  --iconBar-bgclr: var(--body-bgclr);
+  --orange-stick: #808080;
+}
+
 
 @font-face {
   font-family: 'GowunBatang-Regular';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
+}
+
+body {
+  color: var(--font-color);
 }
 
 * {
