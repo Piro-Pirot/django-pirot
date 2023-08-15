@@ -217,11 +217,32 @@ background-color: #f3b95431;
   height: calc(100vh - 11rem);
 }
 
+/* 첫화면 가리개 */
+
+.grayblock {
+  position: absolute;
+  width: calc(100vw - 24rem);
+  height: 100vh;
+  padding: var(—section-padding) var(—section-padding) 0 var(—section-padding);
+  background-color: #e3e3e3;
+}
+
+.whiteblock {
+  position: absolute;
+  background-color: white;
+  width: calc(100% - 1rem);
+  height: calc(100% - 2*var(--section-padding));
+  border-radius: 0.8rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 /* chat section */
 
 .chat-section {
   width: calc(100vw - 24rem);
+  position: relative;
 }
 
 .chat-name {
