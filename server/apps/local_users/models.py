@@ -7,9 +7,9 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     name = models.CharField(max_length=20)
-    profile_img = models.ImageField(null=True, blank=True, upload_to="posts/%Y%m%d")
+    profile_img = models.ImageField(null=True, blank=True, upload_to="posts/%Y%m%d", default='default_profile/default_profile.png')
     notice = models.IntegerField(default=0)
-    theme = models.CharField(max_length=16, default='#ffffff')
+    theme = models.CharField(max_length=16, default='lightMode')
     
     def __str__(self):
           return self.username
