@@ -122,17 +122,9 @@ def request_api(phone_num, auth_num):
     secret_key = getattr(settings, 'SECRET_KEY')
     secret_key = bytes(secret_key, 'UTF-8')
     
-    #디버깅
-    print("URL:", URL)
-    print("URI:", URI)
-    print("Message: ", message)
-    
     # API 요청의 무결성을 보장하기 위한 서명 값 생성
     # Body를 Access Key ID와 맵핑되는 Secret Key로 암호화한 서명값
     SIGNATURE = base64.b64encode(hmac.new(secret_key, message, digestmod=hashlib.sha256).digest())
-    
-    #디버깅
-    print("Signature: ", SIGNATURE)
     
     # API 요청에 필요한 헤더 정보 설정
     headers = {
