@@ -338,12 +338,12 @@ background-color: #f3b95431;
   font-size: 1.3rem;
 }
 
-#attachIcon {
+#imageIcon {
   /* padding: 0.2rem; */
   border-top-left-radius: 0.5rem;
 }
 
-#attachIcon .attach-label{
+#imageIcon .attach-label{
   cursor: pointer;
 }
 
@@ -361,7 +361,7 @@ background-color: #f3b95431;
   cursor: pointer;
 }
 
-#imageIcon {
+#attachIcon {
   border-bottom-left-radius: 0.5rem;
   cursor: pointer;
 }

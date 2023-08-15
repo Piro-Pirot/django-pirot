@@ -92,7 +92,3 @@ function closeConfirmModal() {
   confirmModal.style.display = 'none';
   confirmModal.style.opacity = '0';
 }
-
-/* 선택된 채팅방 색칠 */
-const selectedRoom = document.querySelector(`.room-${curRoomId}`)
-selectedRoom.parentElement.classList.add('selected-room');
