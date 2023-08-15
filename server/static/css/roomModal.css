@@ -122,7 +122,6 @@ dialog {
 .invite-list {
   margin-top: 1rem;
   height: 15rem;
-  border-bottom: 1px solid var(--carrot-color);
   overflow-x: hidden;
   overflow-y: scroll;
   width: 70%;

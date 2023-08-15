@@ -394,12 +394,16 @@
 .chat-name-content .chat-name-name {
     margin-left: 3rem;
     font-size: 1.5rem;
+    width: 50%;
+    text-overflow: elipsis;
 }
 
 .chat-name-content .chat-name-icons {
     margin-right: 3rem;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    width: 50%;
 }
 
 .chat-name-icons > input {
