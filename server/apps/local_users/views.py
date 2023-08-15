@@ -111,9 +111,9 @@ def request_api(phone_num, auth_num):
     # API Gateway 서버와 시간 차가 5분 이상 나는 경우 유효하지 않은 요청으로 간주
     timestamp = str(int(time.time()*1000))
     
-    ACCESS_KEY = getattr(settings, 'ACCESS_KEY') 
-    URL = getattr(settings, 'URL')
-    URI = getattr(settings, 'URI')
+    ACCESS_KEY = getattr(settings,'ACCESS_KEY') 
+    URL = getattr(settings,'URL')
+    URI = getattr(settings,'URI')
     
     # API 요청에 사용되는 암호화 문자열 생성
     message = "POST" + " " + URI + "\n" + timestamp + "\n" + ACCESS_KEY
@@ -122,9 +122,17 @@ def request_api(phone_num, auth_num):
     secret_key = getattr(settings, 'SECRET_KEY')
     secret_key = bytes(secret_key, 'UTF-8')
     
+    #디버깅
+    print("URL:", URL)
+    print("URI:", URI)
+    print("Message: ", message)
+    
     # API 요청의 무결성을 보장하기 위한 서명 값 생성
     # Body를 Access Key ID와 맵핑되는 Secret Key로 암호화한 서명값
     SIGNATURE = base64.b64encode(hmac.new(secret_key, message, digestmod=hashlib.sha256).digest())
+    
+    #디버깅
+    print("Signature: ", SIGNATURE)
     
     # API 요청에 필요한 헤더 정보 설정
     headers = {
@@ -146,8 +154,12 @@ def request_api(phone_num, auth_num):
     # NCP(naver cloud platform) API에 POST 요청 -> 그러면 SMS 발송됨
     requests.post(URL, data=json.dumps(body), headers=headers)
     
+    #디버깅
+    print("request headers: ", headers)
+    print("Request body: ", json.dumps(body))
+
 # SMS 인증번호 생성 , 데이터 베이스에 저장한 후 SMS 발송하는 함수
-def sms_sender(request):
+def post(request):
     # http POST 요청으로 전달된 JSON 데이터를 파싱(JSON->python). 사용자가 입력한 휴대폰 번호가 포함되어있음.
     data = json.loads(request.body)
     try:
@@ -166,20 +178,19 @@ def sms_sender(request):
         request_api(phone_num=check_phone_num, auth_num=sms_auth_num)
         return JsonResponse({'message' : '인증번호 발송 및 DB 입력완료'}, status=200)
 
-
 def sms_check(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        user = User.objects.filter(phone_number=data['phone_num_hypen'])
-        # 나중에 살리기!!!!!
-        # if len(user) == 1:
-        #     return JsonResponse({'is_auth' : False})
+    data = json.loads(request.body)
+    user = User.objects.filter(phone_number=data['hypen_phone_num'])
+    # 아이디 중복검사하기!
+    # if len(user) == 1:
+    #     return JsonResponse({'is_auth': False})
+    # else:
+    verification = SMS_Auth.objects.get(phone_num=data['phone_num'])
+    if verification.auth_num == data['auth_num']:
+        return JsonResponse({'is_auth': True})
+    else:
+        return JsonResponse({'is_auth' : False})
         
-        verification = SMS_Auth.objects.get(phone_num=data['phone_num'])
-        if verification.auth_num == data['auth_num']:
-            return JsonResponse({'is_auth': True})
-        else:
-            return JsonResponse({'is_auth' : False})
             
 
 

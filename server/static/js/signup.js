@@ -57,11 +57,12 @@ function send_authnum(){
     // 요청 보내기
     const data = JSON.stringify({ phone_num: phonenum_without_hypen });
     xhr.send(data);
+    console.log(data);
 
     // 인증하기 버튼 활성화
     document.getElementById("input_authnum").focus();
-    btnAuthConfirm = document.getElementById("confirm")
-    btnAuthConfirm.classList.add('auth-btn-active')
+    btnAuthConfirm = document.getElementById("confirm");
+    btnAuthConfirm.classList.add('auth-btn-active');
     btnAuthConfirm.disabled = false;
 
     //이전에 실행중인 타이머 프로세스가 있으면 종료
@@ -101,7 +102,7 @@ function confirm_authnum(){
     const inputAuthNumber = document.getElementById("input_authnum").value;
     console.log(inputAuthNumber);
 
-    const onAuthReq = async(phonenum_without_hypen, inputAuthNumber) => {
+    const onAuthReq = async(phonenum_without_hypen, inputAuthNumber, inputPhoneNumber) => {
         const url = '/user/signup/authcheck/';
         const res = await fetch(url, {
             method: 'POST',
@@ -110,7 +111,7 @@ function confirm_authnum(){
                 "charset" : "utf-8",
                 "X-CSRFToken": csrfToken,
             },
-            body: JSON.stringify({ phone_num_hypen: inputPhoneNumber, phone_num: phonenum_without_hypen, auth_num: inputAuthNumber}),
+            body: JSON.stringify({ phone_num: phonenum_without_hypen, auth_num: inputAuthNumber, hypen_phone_num: inputPhoneNumber}),
         });
         const {is_auth: isAuth} = await res.json();
 
@@ -132,7 +133,7 @@ function confirm_authnum(){
     }
     
     // 요청 보내기
-    onAuthReq(phonenum_without_hypen, inputAuthNumber);
+    onAuthReq(phonenum_without_hypen, inputAuthNumber, inputPhoneNumber);
 }
 
 function signup_check(){
