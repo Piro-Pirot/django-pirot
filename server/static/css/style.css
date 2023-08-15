@@ -19,6 +19,7 @@
   /* 기본 컬러 테마 */
   --font-color: black;
   --alt-fontclr: black;
+  --send-fontclr: white;
   --carrot-color: #fba405;
   --carrot-dark: #fb9005;
   --carrot-light: #face83;
@@ -44,6 +45,7 @@
 .dark-mode {
   --font-color: white;
   --alt-fontclr: white;
+  --send-fontclr: black;
   --carrot-color: #fba405;
   --carrot-dark: #fb9005;
   --carrot-light: #face83;
@@ -68,6 +70,7 @@
 .bw-mode {
   --font-color: black;
   --alt-fontclr: white;
+  --send-fontclr: white;
   --carrot-color: #222222;
   --carrot-dark: rgb(60, 60, 60);
   --carrot-light: rgb(72, 72, 72);

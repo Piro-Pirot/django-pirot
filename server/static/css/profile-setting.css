@@ -121,7 +121,7 @@
 
 
 
-/* -----운영진 프로필----- */
+/* -----운영진 설정----- */
 
 .staff-setting {
   width: 100%;
@@ -201,12 +201,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--body-bgclr);
+  padding: 0.6rem;
 }
+
+
+
+/* 운영진프로필 */
 
 .staff-profile-setting {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
+  width: 100%;
+  height: 100%;
 }
 
 .code-create {
@@ -218,6 +229,20 @@
 
 .staff-setting-title {
   font-size: 2rem;
+}
+
+
+
+/* 코드생성 */
+.code-create {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
+  width: 100%;
+  height: 100%;
 }
 
 .code-create #code {
@@ -259,17 +284,51 @@
 .default-profile {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
+  width: 100%;
+  height: 100%;
 }
 
 .gen-form {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   margin-bottom: 2rem;
 }
 
 .gen-form > div {
   display: flex;
   align-items: center;
+  position: relative;
+}
+
+.gen-form > div i {
+  font-size: 1.2rem;
+  position: absolute;
+  right: -2.5rem;
+  color: var(--font-color);
+
+}
+
+.gen-form .gen-form-info {
+  position: absolute;
+  right: -15rem;
+  font-size: 0.8rem;
+  color: var(--font-color);
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.2s;
+  text-align: center;
+  background-color: var(--carrot-super-light);
+  border-radius: 0.8rem;
+  padding: 0.2rem;
+  line-height: 1rem;
+}
+
+.gen-form .gen-form-info.active {
+  visibility: visible;
+  opacity: 1;
 }
 
 .gen-form input[type=text] {
@@ -299,6 +358,113 @@
 }
 .gen-form input[type=submit]:hover {
   background-color: var(--carrot-dark);
+}
+
+
+/* 합격자 명단 추가 */
+
+.passer-gen,
+.passer-list-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--section-bgclr);
+  width: calc(50% - 0.3rem);
+  height: 100%;
+  border-radius: 0.8rem;
+}
+
+.passer-gen {
+  margin-right: 0.3rem;
+}
+
+.passer-list-container {
+  margin-left: 0.3rem;
+}
+
+.passer-gen .passer-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.passer-form > input[type=text] {
+  border: 2px solid var(--section-bgclr);
+  padding: 0.4rem 0.6rem;
+  background-color: var(--carrot-super-light);
+  border-radius: 1rem;
+  font-size: 1.2rem;
+  transition: 0.2s;
+  outline: 0;
+  margin-bottom: 1.5rem;
+}
+
+.passer-form > input[type=text]:focus {
+  border: 2px solid var(--carrot-color);
+}
+
+.passer-form > div {
+  margin-top: 1rem;
+  text-align: center;
+}
+.passer-form > div > input {
+  border: 0;
+  border-radius: 0.8rem;
+  font-size: 1rem;
+  padding: 0.3rem 0.5rem;
+  color: var(--send-fontclr);
+}
+
+.passer-form > div > input:first-child {
+  background-color: var(--carrot-light);
+  transition: 0.2s;
+  margin-right: 0.8rem;
+}
+
+.passer-form > div > input:first-child:hover {
+  background-color: var(--carrot-light-dark);
+}
+
+.passer-form > div > input:last-child {
+  background-color: var(--carrot-color);
+  transition: 0.2s;
+}
+
+.passer-form > div > input:last-child:hover {
+  background-color: var(--carrot-dark);
+}
+
+.passer-list {
+  background-color: pink;
+  height: 25rem;
+  width: 18rem;
+  border: 1px solid var(--carrot-light);
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
+  margin-top: 2rem;
+  overflow-y: scroll;
+  padding: 0.6rem 0;
+}
+
+.passer-block {
+  display: flex;
+  padding: 0.5rem 0.3rem;
+  width: 100%;
+}
+
+.passer-block .passer-name,
+.passer-block .passer-phone {
+  text-align: center;
+}
+
+.passer-block .passer-name {
+  width: 40%
+}
+
+.passer-block .passer-phone {
+  width: 60%
 }
 
 

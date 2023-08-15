@@ -20,6 +20,11 @@
                 <input type="text" name="this_level" placeholder="현재 기수를 입력" />
             {% endif %}
             <input type="submit" value="기수 입력" />
+            <i id="genInfo" class="ri-information-line"></i>
+            <div class="gen-form-info">
+                <span>설정하신 현재 기수의 합격자와</span> <br>
+                <span>운영진 권한을 관리할 수 있습니다.</span>
+            </div>
         </div>
     </form>
     <form class="profile-setting-form" method="post" enctype="multipart/form-data">
@@ -30,4 +35,21 @@
         </div>
     </form>
 </div>
+
+<script>
+    const genInfo = document.getElementById("genInfo");
+    const genInfoDiv = document.querySelector(".gen-form-info");
+    genInfo.addEventListener("mouseover", () => {
+        genInfoDiv.classList.add("active");
+    });
+    genInfo.addEventListener("mouseout", () => {
+        genInfoDiv.classList.remove("active");
+    });
+
+    const profileEditButton = document.querySelector(".profileEdit");
+    const profileEditForm = document.querySelector(".profile-setting-form");
+    profileEditButton.onclick = () => {
+        profileEditForm.classList.toggle("active");
+    };
+</script>
 {% endblock %}
