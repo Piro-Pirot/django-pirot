@@ -176,7 +176,7 @@ def post(request):
             auth_num = sms_auth_num,
         ).save()
         request_api(phone_num=check_phone_num, auth_num=sms_auth_num)
-        return JsonResponse({'message' : '인증번호 발송 및 DB 입력완료'}, status=200)
+        return JsonResponse({'message' : '인증번호 발송 및 DB 입력완료'}, status=200)   
 
 def sms_check(request):
     data = json.loads(request.body)
