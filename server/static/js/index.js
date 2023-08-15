@@ -81,9 +81,9 @@ serviceButton.addEventListener("click", () => {
 
 const creatorButton = document.querySelector("#creator");
 creatorButton.addEventListener("click", () => {
-  let firstSectionTop = sections[0].offsetTop;
-  window.scrollTo({top: firstSectionTop, behavior: 'smooth'});
-}); //나중에 '만든사람 section' 머지되면 firstSectionTop 대체 필요
+  let lastSectionTop = sections[7].offsetTop;
+  window.scrollTo({top: lastSectionTop, behavior: 'smooth'});
+});
 
 
 const NavBtn = document.querySelector('.nav-right-mobile');

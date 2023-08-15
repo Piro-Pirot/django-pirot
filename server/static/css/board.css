@@ -41,7 +41,7 @@
   background-color: white;
   transition: 0.2s;
   cursor: pointer;
-  border: 0.1rem solid var(--carrot-light)
+  border: 2px solid var(--carrot-light)
 }
 
 .post-container button.happy:hover {
@@ -72,4 +72,5 @@
 
 .post-container button.checked {
   border-color: var(--carrot-color);
+  background-color: var(--carrot-super-light);
 }
