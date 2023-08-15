@@ -4,15 +4,22 @@
   width: 100%;
 }
 
-.setting-section-title,
-.staff-header {
+.setting-header-container {
   width: 100%;
   height: 6rem;
+  padding: var(--section-padding) var(--section-padding) 0 var(--section-padding);
+  background-color: var(--body-bgclr);
+}
+
+.setting-header {
+  width: 100%;
+  height: 100%;
+  background-color: var(--section-bgclr);
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 2.4rem;
-  border-bottom: 1px solid var(--font-color);
+  border-radius:  0.8rem;
 }
 
 
@@ -135,15 +142,16 @@
 }
 
 .staff-container-left {
+  background-color: var(--body-bgclr);
+  padding: var(--section-padding) 0 var(--section-padding) var(--section-padding);
   width: 20rem;
-  /* background-color: pink; */
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+  /* position: relative; */
 }
 
-.staff-container-left::after {
+/* .staff-container-left::after {
   content: '';
   display: block;
   width: 3px;
@@ -152,19 +160,21 @@
   background-color: var(--carrot-light);
   position: absolute;
   right: 0;
-}
+} */
 
 .staff-container-left .staff-menu {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 90%;
-  width: 15rem;
   justify-content: space-evenly;
+  border-radius: 0.8rem;
+  background-color: var(--section-bgclr);
 }
 
 .staff-menu a {
-  width: 100%;  
+  width: 80%;  
 }
 
 .staff-menu button {
@@ -468,3 +478,50 @@
 }
 
 
+
+/* 운영진 권한 설정 */
+
+.staff-authority {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color:  var(--section-bgclr);
+  border-radius: 0.8rem;
+}
+
+.authority-container {
+  background-color: var(--section-bgclr);
+  width: 25rem;
+  height: 25rem;
+  border: 1px solid var(--carrot-color);
+  border-radius: 0.8rem;
+  padding: 0.6rem 0;
+  margin-top: 2rem;
+  overflow-y: scroll;
+}
+
+.authority-passer-div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0.7rem;
+}
+
+.authority-passer-div > div:first-child {
+  width: 30%;
+  text-align: center;
+}
+.authority-passer-div > div:nth-child(2) {
+  width: 50%;
+  text-align: center;
+}
+.authority-passer-div > div:last-child {
+  width: 20%
+}
+
+.staff-authority form {
+  text-align: center;
+}
