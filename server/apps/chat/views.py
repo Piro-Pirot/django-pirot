@@ -394,3 +394,14 @@ def enter_room(request, channelId, roomId, type):
     # 채팅 방의 멤버가 아니라면 튕기기
     errorMsg = '잘못된 접근입니다.'
     return render(request, 'error.html', {'errorMsg': errorMsg})
+
+
+def setting_blindroom(request):
+    # 익명채팅방 이름 수정
+    Member = BlindRoomMember.objects.get(user=request.user)
+    # member_nickname = Member.nickname
+    
+    # 닉네임 수정
+    
+    return render(request, 'room.html', {'user': Member})
+    

@@ -81,6 +81,11 @@
         <div class="title">
             채팅방 설정
         </div>
+        {% comment %} 채팅방 프로필 사진 & 닉네임 수정(익명채팅방) {% endcomment %}
+        <div>
+            <input type='text' name="nickname" placeholder="{{ user.nickname }}">
+        </div>
+
         <div class="alarm-select">
             <div class="alarm-title">
                 채팅방 잠금
