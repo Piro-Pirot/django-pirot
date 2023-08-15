@@ -59,14 +59,14 @@ def passer_create_level(request, channelID):
 
         return redirect(url)
     
-    return render(request, 'staff/passerlevel.html', {"channel":channel, "passers":passers})
+    return render(request, 'staff/passerlevel.html', {"channel":channel})
 
 
 #  합격자 명단 추가 : 이름, 전화번호 등록
 def passer_create(request, channelID):
     level = request.GET.get("level")
     channel = Channel.objects.get(id=channelID)
-    passers = Passer.objects.filter(channel=channel)
+    passers = Passer.objects.filter(channel=channel, level=level)
     
     if request.method == "POST":
         if 'save' in request.POST:
@@ -91,7 +91,7 @@ def passer_create(request, channelID):
 
             return redirect(url)
     
-    return render(request, 'staff/passer.html', {"channel":channel, "passers":passers})
+    return render(request, 'staff/passer.html', {"channel":channel, "passers":passers, "level":level})
 
 
 # 참여 코드 생성

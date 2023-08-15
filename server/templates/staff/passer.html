@@ -12,7 +12,8 @@
     <input type="submit" name="keepgoing" value="저장 및 계속 추가" />
     <input type="submit" name="save" value="저장 완료" />
 </form>
+{{ level }}기 합격자 목록
 {% for passer in passers %}
-<div>{{ passer.passer_name }}</div>
+<div>{{ passer.passer_name }} {{ passer.passer_phone }}</div>
 {% endfor %}
 {% endblock %}
