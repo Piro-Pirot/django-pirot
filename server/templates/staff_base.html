@@ -104,10 +104,14 @@
     <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+    <script>
+        let curUserTheme = '{{ request.user.theme }}'
+    </script>
     {% block extra %}
     {% endblock %}
     <script src="{% static 'js/iconBar.js' %}"></script>
     <script src="{% static 'js/settingsModal.js' %}"></script>
+    <script src="{% static 'js/theme.js' %}"></script>
 </body>
 </body>
 </html>

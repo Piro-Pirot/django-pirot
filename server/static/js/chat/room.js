@@ -7,15 +7,12 @@ chatSearchButton.addEventListener("click", () => {
   chatSearchInput.focus();
 });
 
-const selectedRoom = document.querySelector(`.room-${curRoomId}`)
-selectedRoom.parentElement.classList.add('selected-room');
-
 NOTICE = 1
-function confirmExit(user, name, room_id) {
+async function confirmExit(user, name, room_id) {
   const is_confirmed = confirm('정말로 채팅방을 나가시겠습니까?');
   if(is_confirmed) {
     const msg = `${name}님이 채팅방을 떠났습니다.`;
-    socket.emit('send_message', {'msg': msg, 'file': '', 'user': user, 'roomId': room_id, 'bubbleType': NOTICE});
+    await socket.emit('send_message', {'msg': msg, 'file': '', 'user': user, 'roomId': room_id, 'bubbleType': NOTICE});
     document.getElementById('form-exit').submit();
     return true;
   } else {
@@ -64,8 +61,6 @@ const inviteRequest = async(inviteList, roomId, channelId) => {
   }
 }
 
-CHAT = 0
-NOTICE = 1
 const inviteResponse = (newNameDic, inviterName) => {
   let inviteMsg = `${inviterName}님이 `;
   for(let i = 0; i < Object.keys(newNameDic).length - 1; i++) {

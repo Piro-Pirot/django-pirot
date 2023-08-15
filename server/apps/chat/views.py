@@ -72,6 +72,7 @@ def create_group_room(request, channelId):
         curChannel = Channel.objects.get(id=channelId)
         targets = []
         group_type = ROOM
+        group_name = ''
         for key, value in request.POST.items():
             if value == 'on' and key == 'group_type':
                 group_type = BLIND_ROOM
@@ -79,6 +80,10 @@ def create_group_room(request, channelId):
                 targets.append(key)
             elif key == 'group_name':
                 group_name = value
+
+        # 방 이름 필수 지정
+        if group_name == '':
+            return redirect(f'/room/{channelId}/main/')
 
         new_room = Room.objects.create(
             room_name = group_name,
@@ -313,23 +318,28 @@ def enter_room(request, channelId, roomId, type):
         # 현재 로그인 사용자의 채널 구성원들
         myFriends = Passer.objects.filter(channel=curChannel).exclude(id=myPassInfo.id)
 
+        if curRoom.room_type == BLIND_ROOM:
+            #익명채팅방
+            roomMembers = BlindRoomMember.objects.filter(room=curRoom)
+        else:
+            roomMembers = RoomMember.objects.filter(room=curRoom)
+
         # 채팅 방 참여자가 아닌 채널 구성원들
         not_members = []
-        for friend in myFriends:
-            # join 정보는 여러 개일 수 있지만 모두 같은 User 정보이므로 하나만 가져와도 된다.
-            friend_user_info = friend.join_set.first().user
-            if curRoom.room_type == BLIND_ROOM:
-                try:
-                    # 유저가 현재 채팅 방 멤버라는 정보가 없으면 not_members 리스트에 추가
-                    BlindRoomMember.objects.get(user=friend_user_info, room=curRoom)
-                except BlindRoomMember.DoesNotExist:
-                    not_members.append(friend)
-            else:
-                try:
-                    RoomMember.objects.get(user=friend_user_info, room=curRoom)
-                except RoomMember.DoesNotExist:
-                    not_members.append(friend)
 
+        member_passer_list = []
+        for member in roomMembers:
+            # RoomMember -> User -> Join SET 이 채널에서 -> Passer 정보
+            member_join_info_list = list(member.user.join.all())
+            for join_info in member_join_info_list:
+                if join_info.passer.channel == curChannel:
+                    member_passer_list.append(join_info.passer)
+
+        for friend in myFriends:
+            if friend not in member_passer_list:
+                friend_join_set = friend.join_set.all()
+                if len(friend_join_set):
+                    not_members.append(friend)
 
 
         # 내가 즐겨찾기 한 사람
@@ -350,12 +360,6 @@ def enter_room(request, channelId, roomId, type):
         return redirect('/')
 
     
-    if curRoom.room_type == BLIND_ROOM:
-        #익명채팅방
-        roomMembers = BlindRoomMember.objects.filter(room=curRoom)
-    else:
-        roomMembers = RoomMember.objects.filter(room=curRoom)
-
     if curRoom.room_type == DIRECT_ROOM:
         directRoomMember = curRoom.roommember_set.all()
         for member in directRoomMember:
