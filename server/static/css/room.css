@@ -35,6 +35,14 @@
 
 .bubble-box .bubble-header {
     display: flex;
+    align-items: center;
+}
+
+.bubble-header .bubble-profile-img {
+    border: 1px solid var(--font-color);
+    width: 1.7rem;
+    height: 1.7rem;
+    border-radius: 50%;
 }
 
 .bubble-box .bubble-content-container,
@@ -70,12 +78,12 @@
 
 .bubble-container-me .bubble-header,
 .bubble-container .bubble-header {
-    margin: 1rem 0.6rem;
+    margin: 1rem 0 0.5rem;
 }
 
 .bubble-container-me .bubble-username,
 .bubble-container .bubble-username {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
 }
 
 .bubble-container-me .bubble-content,

@@ -100,6 +100,9 @@ function displayMessage(bubbleData, newTimeFlag) {
         let bubbleHeader = document.createElement('div');
         bubbleHeader.classList.add('bubble-header');
 
+        let profileImgContainer = document.createElement('div');
+        profileImgContainer.classList.add('bubble-profile-img');
+
         let profileImg = document.createElement('img');
         profileImg.setAttribute('src', bubbleData['file']);
 
@@ -115,7 +118,8 @@ function displayMessage(bubbleData, newTimeFlag) {
 
         // 1분이 지났고 내 채팅이 아닐 때 사진 이름 표시
         if(newTimeFlag && bubbleData['user'] !== curUsername) {
-            bubbleHeader.appendChild(profileImg);
+            profileImgContainer.appendChild(profileImg);
+            bubbleHeader.appendChild(profileImgContainer);
             bubbleHeader.appendChild(nameLabel);
             bubbleContainer.appendChild(bubbleHeader);
         }
