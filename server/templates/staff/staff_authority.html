@@ -13,9 +13,8 @@
             <div class="authority-passer-div">
                 <div>{{ thisjoin.passer }}</div>
                 <div>{{ thisjoin.passer.passer_phone }}</div>
-                {{ thisjoin.user }} {{ staffs }}
                 <label class="switch">
-                    <input class="onoff" value="{{ thisjoin.passer.passer_name }} {{ thisjoin.passer.passer_phone }}" name="checked" type="checkbox" {% if thisjoin.user in staffs %}checked{% endif %}>
+                    <input class="onoff" value="{{ thisjoin.passer.passer_name }} {{ thisjoin.passer.passer_phone }}" name="checked" type="checkbox" {% if thisjoin.user.username in staffs %}checked{% endif %}>
                     <span class="slider round"></span>
                 </label>
             </div>

@@ -150,7 +150,9 @@ def staff_authority(request, channelID):
     channel = Channel.objects.get(id=channelID)
     thisjoins = Join.objects.filter(passer__channel=channel) # 얘를 쓴 이유가 처음에 뭐였을까? 아.. User 모델이 여기에만 연결되어 있음(고유성)
     staffs = Staff.objects.filter(channel=channel)
-    staffPassers = staffs.only('user__username')
+    staffPassers = staffs.only('user')
+    staffPassers = list(staffPassers.values_list('user__username', flat=True))
+
     
     thislevelPassers = Passer.objects.filter(channel=channel, level=channel.this_level)
 
