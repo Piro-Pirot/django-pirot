@@ -1,3 +1,4 @@
+import base64
 import json
 from bs4 import BeautifulSoup
 import markdown
@@ -101,14 +102,32 @@ async def send_message(sid, data):
         #익명채팅방
         newBubble = await bubble.save_blind_msg(room, data)
         newBubble = bubble_serializer(newBubble, True)
-        print(newBubble)
-        await sio.emit('display_message', newBubble, to=roomId)
     else:
         newBubble = await bubble.save_msg(room, data)
         newBubble = bubble_serializer(newBubble, False)
-        await sio.emit('display_message', newBubble, to=roomId)
+    
+    await sio.emit('display_message', newBubble, to=roomId)
     print('massage was saved')
 
+@sio.on('send_file')
+async def send_file(sid, data):
+    room_id = data['roomId']
+    room = Room.objects.get(id=room_id)
+    print('saving file...')
+    buffer = base64.b64decode(data['file'])
+    print(buffer)
+    with open('result.png', 'wb') as output_file:
+        output_file.write(buffer)
+
+    if room.room_type == BLIND_ROOM:
+        #익명채팅방
+        newBubble = await bubble.save_blind_msg(room, data)
+        newBubble = bubble_serializer(newBubble, True)
+    else:
+        newBubble = await bubble.save_msg(room, data)
+        newBubble = bubble_serializer(newBubble, False)
+    
+    await sio.emit('diaplay_message', newBubble, to=room_id)
 
 @sio.event
 async def disconnect(sid):

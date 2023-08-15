@@ -8,6 +8,11 @@
     <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css"
+    type="text/css"
+    />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600&display=swap');
     </style>
@@ -147,6 +152,6 @@
     {% elif urlType == 'friends' %}
         <script src="{% static 'js/chat/friendBtn.js' %}"></script>
     {% endif %}
-</body>
+
 </body>
 </html>
