@@ -119,7 +119,7 @@ def request_api(phone_num, auth_num):
     message = "POST" + " " + URI + "\n" + timestamp + "\n" + ACCESS_KEY
     message = bytes(message, 'UTF-8')
 
-    secret_key = getattr(settings, 'SECRET_KEY')
+    secret_key = getattr(settings,'SECRET_KEY')
     secret_key = bytes(secret_key, 'UTF-8')
     
     # API 요청의 무결성을 보장하기 위한 서명 값 생성
@@ -145,10 +145,6 @@ def request_api(phone_num, auth_num):
     }
     # NCP(naver cloud platform) API에 POST 요청 -> 그러면 SMS 발송됨
     requests.post(URL, data=json.dumps(body), headers=headers)
-    
-    #디버깅
-    print("request headers: ", headers)
-    print("Request body: ", json.dumps(body))
 
 # SMS 인증번호 생성 , 데이터 베이스에 저장한 후 SMS 발송하는 함수
 def post(request):
@@ -172,7 +168,7 @@ def post(request):
 
 def sms_check(request):
     data = json.loads(request.body)
-    user = User.objects.filter(phone_number=data['hypen_phone_num'])
+    # user = User.objects.filter(phone_number=data['hypen_phone_num'])
     # 아이디 중복검사하기!
     # if len(user) == 1:
     #     return JsonResponse({'is_auth': False})
