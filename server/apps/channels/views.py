@@ -147,18 +147,36 @@ def default_profile(request, channelID):
 
 # 운영진 권한 설정
 def staff_authority(request, channelID):
-    # joins = Join.objects.all() 얘를 쓴 이유가 처음에 뭐였을까?
-    staffs = Staff.objects.all()
     channel = Channel.objects.get(id=channelID)
+    thisjoins = Join.objects.filter(passer__channel=channel) # 얘를 쓴 이유가 처음에 뭐였을까? 아.. User 모델이 여기에만 연결되어 있음(고유성)
+    staffs = Staff.objects.filter(channel=channel)
+    staffPassers = staffs.only('user__username')
+    
     thislevelPassers = Passer.objects.filter(channel=channel, level=channel.this_level)
 
-    # toggle() 사용 on/off ajax
-    # js : 버튼 on/off 조작 ... 완료 ! -> 저장 POST
-    # -> if 버튼이 on인 회원 객체가 staff 목록에 없으면 추가
-    #    if 버튼이 off인 회원 객체가 staff 목록에 있으면 삭제
-    # -> staff.save() 이건 view에서?
+    # 원래 저장 상태 불러오기
 
-    return render(request, 'staff/staff_authority.html', {"staffs":staffs, "channel":channel, "thislevelPassers":thislevelPassers})
+    if request.method == 'POST':
+        if request.POST.get('checked'):
+            staffs.delete() # 아무것도 선택하지 않는 경우는 안 됨
+            for checked in request.POST.getlist('checked'):
+                name, phone = checked.split(' ')
+                passerObj = thislevelPassers.get(passer_name=name, passer_phone=phone)
+                print(passerObj)
+                userObj = thisjoins.get(passer=passerObj).user
+                print(userObj)
+                if staffs.filter(user=userObj).count() == 0:
+                    newStaff = Staff.objects.create(
+                        user = userObj,
+                        channel = channel
+                    )
+                    newStaff.save()
+        url = '/staff/staff_authority/%s' % (channelID)
+
+        return redirect(url)
+
+
+    return render(request, 'staff/staff_authority.html', {"channel":channel, "staffs":staffPassers, "thisjoins":thisjoins, "thislevelPassers":thislevelPassers})
 
 
 # 회원 삭제
