@@ -34,8 +34,10 @@
             </div>
         </section>
         <section class="staff-setting">
-            <div class="staff-header">
-                운영진 설정
+            <div class="setting-header-container">
+                <div class="setting-header">
+                    운영진 설정
+                </div>
             </div>
             <div class="staff-container">
                 <div class="staff-container-left">
@@ -110,13 +112,6 @@
     <script src="{% static 'js/iconBar.js' %}"></script>
     <script src="{% static 'js/settingsModal.js' %}"></script>
     <script src="{% static 'js/theme.js' %}"></script>
-    <script>
-        const profileEditButton = document.querySelector(".profileEdit");
-        const profileEditForm = document.querySelector(".profile-setting-form");
-        profileEditButton.onclick = () => {
-            profileEditForm.classList.toggle("active");
-        };
-    </script>
 </body>
 </body>
 </html>

@@ -4,24 +4,27 @@
 <!-- 운영진 권한 설정 페이지 -->
 
 {% block content %}
-<h2>운영진 권한</h2>
-    <div>현재 기수 회원 목록</div>
-    <form method="post">
-        {% csrf_token %}
-        <div class="authority-container">
-            {% for thisjoin in thisjoins %}
-            <div class="authority-passer-div">
-                <div>{{ thisjoin.passer }}</div>
-                <div>{{ thisjoin.passer.passer_phone }}</div>
+<div class="staff-authority">
+  <h2 class="staff-setting-title">19기 운영진 권한</h2>
+  <form method="post">
+      {% csrf_token %}
+      <div class="authority-container">
+          {% for thisjoin in thisjoins %}
+          <div class="authority-passer-div">
+              <div>{{ thisjoin.passer }}</div>
+              <div>{{ thisjoin.passer.passer_phone }}</div>
+              <div>              
                 <label class="switch">
-                    <input class="onoff" value="{{ thisjoin.passer.passer_name }} {{ thisjoin.passer.passer_phone }}" name="checked" type="checkbox" {% if thisjoin.user.username in staffs %}checked{% endif %}>
-                    <span class="slider round"></span>
+                  <input class="onoff" value="{{ thisjoin.passer.passer_name }} {{ thisjoin.passer.passer_phone }}" name="checked" type="checkbox" {% if thisjoin.user.username in staffs %}checked{% endif %}>
+                  <span class="slider round"></span>
                 </label>
-            </div>
-            {% endfor %}
-        </div>
-        <input id="settings-save" type="submit" value="저장하기">
-    </form>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+      <input id="settings-save" type="submit" value="저장하기">
+  </form>
+</div>
 {% endblock %}
 {% block extra %}
 <script>
@@ -31,11 +34,6 @@ check.click(function(){
 });
 </script>
 <style>
-.authority-passer-div {
-    display: flex;
-}
-
-
 /* The switch - the box around the slider */
 .switch {
   position: relative;
@@ -74,11 +72,11 @@ check.click(function(){
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: rgb(78, 209, 78);
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px rgb(78, 209, 78);
 }
 
 input:checked + .slider:before {

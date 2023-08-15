@@ -4,17 +4,20 @@
 <!-- 합격자 삭제 -->
 
 {% block content %}
-
-<h2>회원 삭제</h2>
-
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div>
-        {% for passer in channelPassers %}
-        <div>{{ passer.level }}기 {{ passer.passer_name }}</div>
-        <input type="submit" value="삭제" />
-        {% endfor %}
+<div class="member-delete">
+    <h2 class="staff-setting-title">회원 삭제</h2>
+    <div class="member-delete-list">
+        <form class="delete-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for passer in channelPassers %}
+            <div class="delete-block">
+                <div>{{ passer.level }}기 {{ passer.passer_name }}</div>
+                <div>
+                    <input type="submit" value="삭제" />
+                </div>
+            </div>
+            {% endfor %}
+        </form>
     </div>
-</form>
-
+</div>
 {% endblock %}
