@@ -164,9 +164,7 @@ def staff_authority(request, channelID):
             for checked in request.POST.getlist('checked'):
                 name, phone = checked.split(' ')
                 passerObj = thislevelPassers.get(passer_name=name, passer_phone=phone)
-                print(passerObj)
                 userObj = thisjoins.get(passer=passerObj).user
-                print(userObj)
                 if staffs.filter(user=userObj).count() == 0:
                     newStaff = Staff.objects.create(
                         user = userObj,
@@ -182,7 +180,6 @@ def staff_authority(request, channelID):
 
 
 # 회원 삭제
-@csrf_exempt
 def join_delete(request, channelID):
     joins = Join.objects.all()
     channel = Channel.objects.get(id=channelID)

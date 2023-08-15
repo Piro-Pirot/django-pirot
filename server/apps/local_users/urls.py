@@ -9,4 +9,5 @@ urlpatterns = [
     path('setting/<int:channelID>/', profile_setting),
     path('signup/send_sms/', sms_sender, name='send_sms'),
     path('signup/authcheck/', sms_check, name='sms_check'),
+    path('preferences/', preferences)
 ]
