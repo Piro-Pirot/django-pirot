@@ -57,7 +57,6 @@ function send_authnum(){
     // 요청 보내기
     const data = JSON.stringify({ phone_num: phonenum_without_hypen });
     xhr.send(data);
-    console.log(data);
 
     // 인증하기 버튼 활성화
     document.getElementById("input_authnum").focus();
