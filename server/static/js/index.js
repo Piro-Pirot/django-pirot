@@ -84,3 +84,12 @@ creatorButton.addEventListener("click", () => {
   let firstSectionTop = sections[0].offsetTop;
   window.scrollTo({top: firstSectionTop, behavior: 'smooth'});
 }); //나중에 '만든사람 section' 머지되면 firstSectionTop 대체 필요
+
+
+const NavBtn = document.querySelector('.nav-right-mobile');
+const MobileMenu = document.querySelector('.nav-right-mobile-menu');
+
+NavBtn.addEventListener('click', () => {
+  MobileMenu.classList.toggle("active"); 
+  NavBtn.classList.toggle("active");
+});

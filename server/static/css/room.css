@@ -1,14 +1,21 @@
 .bubble-notice {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bubble-notice .bubble-notice-container {
+    width: 20rem;
     border-radius: 5rem;
-    background-color: var(--input-background);
-    padding: 1rem;
-    margin: 0 2rem 2rem 2rem;
+    background-color: var(--body-bgclr);
+    padding: 0.5rem;
+    font-size: 0.5rem;
     text-align: center;
 }
 
 .bubble-notice .bubble-notice-content {
-    width: 80%;
+    line-height: 1rem;
+    padding: 0 1rem;
 }
 
 .bubble-box,
