@@ -283,8 +283,8 @@ background-color: #f3b95431;
   border-radius: 0.5rem;
   resize: none;
   background-color: var(--chat-input);
-  color: var(--alt-fontclr);
-  caret-color: var(--alt-fontclr);
+  color: var(--font-color);
+  caret-color: var(--font-color);
 }
 
 .chat-input textarea:focus {
@@ -366,7 +366,7 @@ background-color: #f3b95431;
   visibility: hidden;
   transition: 0.1s;
   cursor: pointer;
-  color: var(--alt-fontclr);
+  color: var(--font-color);
 }
 
 .board-header {
@@ -421,8 +421,8 @@ background-color: #f3b95431;
   resize: none;
   border: 0;
   outline: 0;
-  color: var(--alt-fontclr);
-  caret-color: var(--alt-fontclr);
+  color: var(--font-color);
+  caret-color: var(--font-color);
 }
 
 .post-input-container > i {
@@ -433,7 +433,7 @@ background-color: #f3b95431;
   left: 3px;
   transition: 0.1s;
   cursor: pointer;
-  color: var(--alt-fontclr);
+  color: var(--font-color);
 }
 
 .post-input-container > i:hover,

@@ -44,12 +44,12 @@
 .dark-mode {
   --font-color: white;
   --alt-fontclr: white;
-  --carrot-color: rgb(253, 112, 20);
-  --carrot-dark: rgb(233, 93, 0);
-  --carrot-light: rgb(250, 152, 86);
-  --carrot-light-dark: rgb(255, 147, 75);
-  --carrot-super-light: rgba(255, 126, 39, 0.546);
-  --carrot-super-light-dark: rgba(255, 125, 38, 0.771);
+  --carrot-color: #fba405;
+  --carrot-dark: #fb9005;
+  --carrot-light: #face83;
+  --carrot-light-dark: #fec767;
+  --carrot-super-light: #face8375;
+  --carrot-super-light-dark: #face83cf;
   --light-gray: #f0f0f0;
   --subtitle: #a3a3a3;
   --section-bgclr: #1d1f20;
@@ -80,11 +80,11 @@
   --body-bgclr: #222222;
   --opp-bubble-bgclr: white;
   --opp-bubble-bdclr: var(--carrot-dark);
-  --chat-input: #363636;
+  --chat-input: #ffffff;
   --icon-hover: rgb(109, 109, 109);
   --modal-bgclr: rgb(52, 52, 52);
   --iconBar-bgclr: var(--body-bgclr);
-  --orange-stick: #585858;
+  --orange-stick: #808080;
 }
 
 

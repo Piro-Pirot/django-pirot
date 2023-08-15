@@ -23,19 +23,48 @@ document.addEventListener('keydown', (event) => {
 });
 
 //체크박스 하나 눌려있는 상태에서 다른 체크박스 누르면 기존에 눌려있던 것은 해제
+const body = document.querySelector("body");
 const lightModeCheckbox = document.getElementById("lightMode");
 const darkModeCheckbox = document.getElementById("darkMode");
+const bwModeCheckbox = document.getElementById("bwMode");
 const lightModeDiv = document.querySelector(".checkbox-wrapper-13:first-child");
 const darkModeDiv = document.querySelector(".checkbox-wrapper-13:last-child");
 
 lightModeCheckbox.addEventListener("change", () => {
+  if (lightModeCheckbox.checked) {
+    body.classList.remove("dark-mode");
+    body.classList.remove("bw-mode")
+  }
   if (darkModeCheckbox.checked) {
     darkModeCheckbox.checked = false;
   };
+  if (bwModeCheckbox.checked) {
+    bwModeCheckbox.checked = false;
+  };
 });
 darkModeCheckbox.addEventListener("change", () => {
+  if (darkModeCheckbox.checked) {
+    body.classList.remove("bw-mode");
+    body.classList.add("dark-mode");
+  }
+
   if (lightModeCheckbox.checked) {
     lightModeCheckbox.checked = false;
+  };
+  if (bwModeCheckbox.checked) {
+    bwModeCheckbox.checked = false;
+  };
+});
+bwModeCheckbox.addEventListener("change", () => {
+  if (bwModeCheckbox.checked) {
+    body.classList.remove("dark-mode");
+    body.classList.add("bw-mode");
+  }
+  if (lightModeCheckbox.checked) {
+    lightModeCheckbox.checked = false;
+  };
+  if (darkModeCheckbox.checked) {
+    darkModeCheckbox.checked = false;
   };
 });
 
