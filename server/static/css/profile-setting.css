@@ -12,7 +12,7 @@
   justify-content: center;
   align-items: center;
   font-size: 2.4rem;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--font-color);
 }
 
 
@@ -24,7 +24,7 @@
 }
 
 .setting-profile-image {
-  border: 2px solid black;
+  border: 2px solid var(--font-color);
   width: 16rem;
   height: 16rem;
   border-radius: 50%;
@@ -44,7 +44,7 @@
 }
 
 .setting-profile-image i:hover {
-  background-color: rgba(128, 128, 128, 0.189);
+  background-color: var(--icon-hover);
 }
 
 .setting-profile-name {
@@ -59,7 +59,7 @@
   display: block;
   width: 17rem;
   height: 1px;
-  background-color: black;
+  background-color: var(--font-color);
   position: absolute;
   bottom: -1rem;
   left: -4rem;
@@ -114,7 +114,8 @@
 /* -----운영진 프로필----- */
 
 .staff-setting {
-  width: 100%
+  width: 100%;
+  background-color: var(--section-bgclr);
 }
 
 .staff-container {
@@ -162,7 +163,8 @@
   font-size: 1.4rem;
   width: 100%;
   padding: 1rem 0;
-  background-color: white;
+  background-color: var(--section-bgclr);
+  color: var(--font-color);
   cursor: pointer;
   transition: 0.2s;
   border-radius: 0.8rem;
@@ -170,7 +172,7 @@
 }
 
 .staff-menu button:hover {
-  background-color: #face8365;
+  background-color: var(--carrot-super-light);
 }
 
 .staff-menu button.bottom-line::after {
@@ -178,7 +180,7 @@
   display: block;
   width: 10rem;
   height: 1px;
-  background-color: #face8365;
+  background-color: var(--carrot-super-light);
   position: absolute;
   bottom: -1.2rem;
   left: 2.5rem;
@@ -216,7 +218,7 @@
   height: 7rem;
   margin: 4rem 0;
   padding: 1rem 2rem;
-  background-color: rgba(252, 240, 223, 0.663);
+  background-color: var(--carrot-super-light);
   border-radius: 1rem;
   font-size: 4rem;
   letter-spacing: 0.7rem;

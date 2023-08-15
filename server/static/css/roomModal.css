@@ -3,6 +3,11 @@
   opacity: 0.4;
 }
 
+dialog {
+  background-color: var(--modal-bgclr);
+  color: var(--alt-fontclr);
+}
+
 .modal {
   width: 30rem;
   height: 36rem;
@@ -93,14 +98,15 @@ dialog {
 .modal-content input[type=text] {
   margin-top: 1rem;
   outline: 0;
-  border: 2px solid white;
+  border: 2px solid var(--modal-bgclr);
   height: 3rem;
-  background-color: var(--input-background);
+  background-color: var(--carrot-super-light);
   width: 70%;
   padding: 0 1.2rem;
   border-radius: 1.5rem;
   font-size: 1rem;
   transition: 0.2s;
+  caret-color: var(--font-size);
 }
 
 .modal-content input[type=text]::placeholder {
@@ -127,11 +133,11 @@ dialog {
 }
 
 .invite-list li:hover {
-  background-color: var(--input-background);
+  background-color: var(--carrot-super-light);
 }
 
 .invite-list .btn-friend-profile-img {
-  border: 1px solid black;
+  border: 1px solid var(--font-color);
   border-radius: 50%;
   width: 2rem;
   height: 2rem;
@@ -331,7 +337,7 @@ dialog {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color: #face8331;
+  background-color: var(--carrot-super-light);
   padding: 1rem 0;
   border-radius: 1rem;
 }
@@ -390,11 +396,11 @@ dialog {
   transition: 0.2s;
   padding: 0.4rem 0.6rem;
   border-radius: 1rem;
-
+  color: var(--alt-fontclr);
 }
 
 #settings-logout:hover {
-  background-color: rgba(219, 219, 219, 0.414);
+  background-color: var(--icon-hover);
 }
 
 
@@ -403,12 +409,12 @@ dialog {
 
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
   .checkbox-wrapper-13 input[type=checkbox] {
-    --active: #275EFE;
+    --active: var(--carrot-color);
     --active-inner: #fff;
-    --focus: 2px rgba(39, 94, 254, .3);
+    /* --focus: 2px var(--carrot-dark); */
     --border: #BBC1E1;
-    --border-hover: #275EFE;
-    --background: #fff;
+    --border-hover: var(--carrot-light);
+    --background: #fff; 
     --disabled: #F6F8FF;
     --disabled-inner: #E1E6F9;
     -webkit-appearance: none;
