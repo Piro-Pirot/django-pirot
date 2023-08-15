@@ -91,7 +91,7 @@ def profile_setting(request, channelID):
 
         return redirect(url)
 
-    if request.user.id == '491e61f0-f98b-43cd-b6df-90bedd90541e': # 기수가 없는 admin 예외 처리
+    if request.user.username == 'admin': # 기수가 없는 admin 예외 처리
         level = 0
     else:
         channelPasser = Passer.objects.filter(channel=channel, passer_name=current_user.name, passer_phone=current_user.phone_number).get()
@@ -197,3 +197,18 @@ def channel_code(request):
         pass
     else:
         return render(request, template_name='users/channelCode.html')
+
+
+# 전체 설정 모달
+
+def preferences(request):
+    if request.method == 'POST':
+        channel_id = request.POST.get('channelId')
+        curUserObj = request.user
+        if request.POST.get('theme'):
+             # 아무것도 선택하지 않는 경우는 안 됨
+            checkedTheme = request.POST.get('theme')
+            curUserObj.theme = str(checkedTheme)
+            curUserObj.save()
+
+        return redirect(f'/room/{channel_id}/main/')
