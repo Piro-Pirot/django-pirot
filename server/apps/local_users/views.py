@@ -17,7 +17,6 @@ from django.conf import settings
 import hashlib
 import hmac
 import base64
-from .utils import *
 
 def main(request):
     return render(request, "index.html")
@@ -121,6 +120,7 @@ def request_api(phone_num, auth_num):
     message = bytes(message, 'UTF-8')
 
     secret_key = getattr(settings,'SECRET_KEY')
+    secret_key = secret_key[1:len(secret_key)-2]
     secret_key = bytes(secret_key, 'UTF-8')
     
     SMS_SENDER = getattr(settings, 'SMS_SENDER')
