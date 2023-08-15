@@ -5,44 +5,59 @@
 <script src="{% static 'js/signup.js'%}"></script>
 <form method="POST" action="">
     {% csrf_token %}
-    <div>
-        <label for="{{ form.username.id_for_label }}">아이디:</label>
-        {{ form.username }}
-    </div>
-    <div>
-        <label for="{{ form.password1.id_for_label }}">Password:</label>
-        {{ form.password1 }} 
-    </div>
-    
-    <div>
-        <label for="{{ form.password2.id_for_label }}">Password confirmation:</label>
-        {{ form.password2 }}
-    </div>
-    <div>
-        <label for="{{ form.name.id_for_label }}">Name(실명):</label>
-        {{ form.name }}
-    </div>
+    <div class="assgin-container">
+        <div class="assgin-header">회원가입</div>
+        <table>
+            <tr>
+                <td>
+                    <div><label for="username">이름 (실명)</label></div>
+                </td>
+                <td>
+                    <div><input type="text" id="username" name="username"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div><label for="password1">비밀번호</label></div>
+                </td>
+                <td>
+                    <div><input type="text" id="password1" name="password1"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div><label for="password2">비밀번호 확인</label></div>
+                </td>
+                <td>
+                    <div><input type="password" id="password2" name="password2"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div><label type="text" for="phone_number">전화번호</label></div>
+                </td>
+                <td>
+                    <div><input type="text" id="phone_number" name="phone_number" oninput="autoHyphen(this)"></div>
+                    <div><button disabled id='send_sms' type="button" onclick="send_authnum()">인증번호 전송</button></div>
+                </td>
+            </tr>
+            <tr class="">
+                <td>
+                    인증번호 입력
+                </td>
+                <td>
+                    <input id="input_authnum" type="text">
+                    <div class="time-limit-bottom">
+                        <div id="time_limit">03:00</div>
+                        <button disabled id='confirm' onclick="confirm_authnum()">인증하기</button>
+                    </div> 
+                </td>
+            </tr>
+        </table>
+        <button disabled id="signup_button" type="submit" onclick="signup_check()">회원가입 완료하기</button>
 
-    <div>
-        {% comment %} label태그의 for 속성과 input 태그의 name 속성을 일치시키면
-        해당 label 태그를 클릭할 때 연결된 input 요소가 자동으로 활성화됨 {% endcomment %}
-        <label for="phone_number">전화번호:</label>
-        <input type="text" id="phone_number" name="phone_number" oninput="autoHyphen(this)" maxlength="13">
-
-        <button disabled id='send_sms' type="button" onclick="send_authnum()">인증번호 전송</button>
-
-        {% comment %} {{ form.phone_number }} {% endcomment %}
-    </div>
-
-    <div>
-        <div id="time_limit">03:00</div>
-        {% comment %} oninput="check_authnum()" {% endcomment %}
-        <input id="input_authnum" type="text">
-        <button type='button' disabled id='confirm' onclick="confirm_authnum()">인증하기</button>
-    </div>
-
-    {% comment %} {{ form }} {% endcomment %}
-    <button disabled id="signup_button" type="submit" onclick="signup_check()">회원가입</button>
+                {% comment %} oninput="check_authnum()" {% endcomment %}
+    </div> 
 </form>
 
 {% endblock content %}
