@@ -8,9 +8,10 @@
     width: 20rem;
     border-radius: 5rem;
     background-color: var(--body-bgclr);
-    padding: 0.5rem;
+    padding: 0.3rem;
     font-size: 0.5rem;
     text-align: center;
+    color: var(--alt-fontclr);
 }
 
 .bubble-notice .bubble-notice-content {
@@ -34,6 +35,14 @@
 
 .bubble-box .bubble-header {
     display: flex;
+    align-items: center;
+}
+
+.bubble-header .bubble-profile-img {
+    border: 1px solid var(--font-color);
+    width: 1.7rem;
+    height: 1.7rem;
+    border-radius: 50%;
 }
 
 .bubble-box .bubble-content-container,
@@ -69,12 +78,12 @@
 
 .bubble-container-me .bubble-header,
 .bubble-container .bubble-header {
-    margin: 1rem 0.6rem;
+    margin: 1rem 0 0.5rem;
 }
 
 .bubble-container-me .bubble-username,
 .bubble-container .bubble-username {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
 }
 
 .bubble-container-me .bubble-content,
@@ -385,12 +394,16 @@
 .chat-name-content .chat-name-name {
     margin-left: 3rem;
     font-size: 1.5rem;
+    width: 50%;
+    text-overflow: elipsis;
 }
 
 .chat-name-content .chat-name-icons {
     margin-right: 3rem;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    width: 50%;
 }
 
 .chat-name-icons > input {

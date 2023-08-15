@@ -120,6 +120,7 @@
   font-size: 1rem;
   cursor: pointer;
   transition: 0.2s;
+  color: var(--alt-fontclr);
 }
 
 .profile-setting-form input[type=submit]:hover {
@@ -367,6 +368,8 @@
   border-radius: 0 0.8rem 0.8rem 0;
   font-size: 1rem;
   transition: 0.2s;
+  color: var(--alt-fontclr);
+  cursor: pointer;
 }
 .gen-form input[type=submit]:hover {
   background-color: var(--carrot-dark);
@@ -427,6 +430,7 @@
   font-size: 1rem;
   padding: 0.3rem 0.5rem;
   color: var(--send-fontclr);
+  cursor: pointer;
 }
 
 .passer-form > div > input:first-child {
