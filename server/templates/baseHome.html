@@ -72,54 +72,59 @@
             {% endblock %}
         </section>
     </div>
-    <dialog class="modal settings-modal">
-        <i id="close-btn" class="ri-close-fill"></i>
-        <div class="modal-content">
-            <div class="title">
-                전체 설정
-            </div>
-            <div class="theme-select">
-                <div class="theme-title">
-                    테마설정
+    <form action="/user/preferences/" method="post">
+        {% csrf_token %}
+        <dialog class="modal settings-modal">
+            <i id="close-btn" class="ri-close-fill"></i>
+            <div class="modal-content">
+                <div class="title">
+                    전체 설정
                 </div>
-                <div class="theme-modes">
-                    <div class="checkbox-wrapper-13">
-                        <input id="lightMode" type="checkbox">
-                        <label for="lightMode">라이트</label>
+                <div class="theme-select">
+                    <div class="theme-title">
+                        테마설정
                     </div>
-                    <div class="checkbox-wrapper-13">
-                        <input id="darkMode" type="checkbox">
-                        <label for="darkMode">다크</label>
+                    <div class="theme-modes">
+                        <div class="checkbox-wrapper-13">
+                            <input name="theme" value="lightMode" id="lightMode" type="checkbox" {% if request.user.theme == 'lightMode' %}checked{% endif %}>
+                            <label for="lightMode">라이트</label>
+                        </div>
+                        <div class="checkbox-wrapper-13">
+                            <input name="theme" value="darkMode" id="darkMode" type="checkbox" {% if request.user.theme == 'darkMode' %}checked{% endif %}>
+                            <label for="darkMode">다크</label>
+                        </div>
+                        <div class="checkbox-wrapper-13">
+                            <input name="theme" value="bwMode" id="bwMode" type="checkbox" {% if request.user.theme == 'bwMode' %}checked{% endif %}>
+                            <label for="bwMode">B&W</label>
+                        </div>
                     </div>
-                    <div class="checkbox-wrapper-13">
-                        <input id="bwMode" type="checkbox">
-                        <label for="bwMode">B&W</label>
+                </div>
+                <div class="alarm-select">
+                    <div class="alarm-title">
+                        알람 설정
+                    </div>
+                    <div class="checkbox-wrapper-22 alarm-toggle">
+                        <label class="switch" for="checkbox2">
+                            <input type="checkbox" id="checkbox2" />
+                            <div class="slider round"></div>
+                        </label>
                     </div>
                 </div>
+                <input type="hidden" name="channelId" id="" value="{{ channel.id }}">
+                <input type="hidden" name="userObj" id="" value="{{ request.user }}">
+                <input id="settings-save" type="submit" value="저장하기">
+                <a href="/user/logout/" id="settings-logout">
+                    <i class="ri-logout-box-r-line"></i>
+                    로그아웃
+                </a>
             </div>
-            <div class="alarm-select">
-                <div class="alarm-title">
-                    알람 설정
-                </div>
-                <div class="checkbox-wrapper-22 alarm-toggle">
-                    <label class="switch" for="checkbox">
-                        <input type="checkbox" id="checkbox" />
-                        <div class="slider round"></div>
-                    </label>
-                </div>
-            </div>
-            <input id="settings-save" type="button" value="저장하기">
-            <a href="/user/logout/" id="settings-logout">
-                <i class="ri-logout-box-r-line"></i>
-                로그아웃
-            </a>
-        </div>
-    </dialog>
-    
+        </dialog>
+    </form>
     <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
     
     <script>
         let curChannelId = {{ channel.id }};
+        let curUserTheme = '{{ request.user.theme }}'
     </script>
     
     {% block extra %}
@@ -127,6 +132,7 @@
 
     <script src="{% static 'js/base.js' %}"></script>
     <script src="{% static 'js/settingsModal.js' %}"></script>
+    <script src="{% static 'js/theme.js' %}"></script>
     {% if urlType == 'main' %}
         <script src="{% static 'js/roomModal.js' %}"></script>
     {% elif urlType == 'friends' %}
