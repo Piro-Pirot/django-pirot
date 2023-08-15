@@ -11,15 +11,15 @@
     <div class="setting-profile-image">
         {% if user.profile_img %}
             <img src="{{ user.profile_img.url }}" alt="프로필이미지" style="width:10rem;">
-            <i id="profileEdit" class="ri-image-edit-fill"></i>
+            <i class="ri-image-edit-fill profileEdit"></i>
         {% else %}
             <img src="{{ channel.default_image.url }}" alt="채널기본프로필이미지" style="width:10rem;">
-            <i id="profileEdit" class="ri-image-edit-fill"></i>
+            <i class="ri-image-edit-fill profileEdit"></i>
         {% endif %}
     </div>
     <p class="setting-profile-name">{{ level }}기 {{ user.name }}</p>
-    <p id="nameCannotChange">이름은 변경할 수 없습니다</p>
-    <form method="post" enctype="multipart/form-data">
+    <p class="nameCannotChange">이름은 변경할 수 없습니다</p>
+    <form class="profile-setting-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div>
             {% if user.profile_img %}

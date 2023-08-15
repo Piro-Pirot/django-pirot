@@ -6,7 +6,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
 from server.apps.channels.models import Join, Staff, Channel
 from django.http import JsonResponse
-from .utils import make_signature
 from .models import User, SMS_Auth
 import requests, json, time
 from django.views import View
@@ -15,6 +14,9 @@ from server.apps.channels.models import Staff, Channel, Join, Passer
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+import hashlib
+import hmac
+import base64
 
 def main(request):
     return render(request, "index.html")
@@ -25,7 +27,7 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # auth.login(request, user)
+            auth.login(request, user)
             return redirect('/')
         else:
             return redirect('/user/signup/')
@@ -116,6 +118,9 @@ def request_api(phone_num, auth_num):
     # API 요청에 사용되는 암호화 문자열 생성
     message = "POST" + " " + URI + "\n" + timestamp + "\n" + ACCESS_KEY
     message = bytes(message, 'UTF-8')
+
+    secret_key = getattr(settings, 'SECRET_KEY')
+    secret_key = bytes(secret_key, 'UTF-8')
     
     #디버깅
     print("URL:", URL)
@@ -124,7 +129,7 @@ def request_api(phone_num, auth_num):
     
     # API 요청의 무결성을 보장하기 위한 서명 값 생성
     # Body를 Access Key ID와 맵핑되는 Secret Key로 암호화한 서명값
-    SIGNATURE = make_signature(message)
+    SIGNATURE = base64.b64encode(hmac.new(secret_key, message, digestmod=hashlib.sha256).digest())
     
     #디버깅
     print("Signature: ", SIGNATURE)
@@ -140,7 +145,7 @@ def request_api(phone_num, auth_num):
     body = {
         "type" : "SMS",
         "contentType" : "COMM",
-        "from" : "01087118471",
+        "from" : getattr(settings, 'SMS_SENDER'),
         "content" : f"[Pirot] 인증번호 [{auth_num}]를 입력해주세요.",
         "messages" : [{
             "to" : f"{phone_num}"
@@ -171,10 +176,7 @@ def post(request):
             auth_num = sms_auth_num,
         ).save()
         request_api(phone_num=check_phone_num, auth_num=sms_auth_num)
-        return JsonResponse({'message' : '인증번호 발송 및 DB 입력완료'}, status=200)
-
-        
-        
+        return JsonResponse({'message' : '인증번호 발송 및 DB 입력완료'}, status=200)   
 
 def sms_check(request):
     data = json.loads(request.body)

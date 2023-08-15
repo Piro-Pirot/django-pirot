@@ -23,15 +23,18 @@ app = socketio.ASGIApp(sio)
 # 말풍선 하나 json 변환
 def bubble_serializer(bubble_obj, is_blind):
     dic = {}
-    dic['user'] = bubble_obj.user.name
+    dic['user'] = bubble_obj.user.username
+    dic['user__name'] = bubble_obj.user.name
     dic['room'] = bubble_obj.room.id
     dic['content'] = bubble_obj.content
     dic['is_delete'] = bubble_obj.is_delete
     dic['read_cnt'] = bubble_obj.read_cnt
     dic['file'] = bubble_obj.file.url
+    dic['is_notice'] = bubble_obj.is_notice
     dic['created_at'] = str(bubble_obj.created_at)
     if is_blind:
         dic['nickname'] = bubble_obj.nickname
+        dic['profile_img'] = bubble_obj.profile_img.url
     dic['month'] = dic['created_at'][5:7]
     dic['day'] = dic['created_at'][8:10]
     dic['hour'] = dic['created_at'][11:13]
@@ -97,8 +100,9 @@ async def send_message(sid, data):
     if room.room_type == BLIND_ROOM:
         #익명채팅방
         newBubble = await bubble.save_blind_msg(room, data)
-        data['nickname'] = newBubble.nickname
-        await sio.emit('display_message', data, to=roomId)
+        newBubble = bubble_serializer(newBubble, True)
+        print(newBubble)
+        await sio.emit('display_message', newBubble, to=roomId)
     else:
         newBubble = await bubble.save_msg(room, data)
         newBubble = bubble_serializer(newBubble, False)
@@ -133,14 +137,12 @@ async def send_happy(sid, data):
     roomId = int(data['roomId'])
 
     newhappydata = await post.save_happy(data)
-    if len(newhappydata) == 3:
-        newhappy, happyCount, sadCount = newhappydata
-    else:
-        happyCount, sadCount = newhappydata
+    happyCount, sadCount, curHappyCount, curSadCount = newhappydata
 
-    # data['newhappyId'] = newhappy.id
     data['happyCount'] = happyCount
     data['sadCount'] = sadCount
+    data['curHappyCount'] = curHappyCount
+    data['curSadCount'] = curSadCount
 
     await sio.emit('display_happy', data, to=roomId)
     print('happy was saved')
@@ -151,14 +153,12 @@ async def send_sad(sid, data):
     roomId = int(data['roomId'])
 
     newsaddata = await post.save_sad(data)
-    if len(newsaddata) == 3:
-        newsad, happyCount, sadCount = newsaddata
-    else:
-       happyCount, sadCount = newsaddata
-
-    # data['newhappyId'] = newhappy.id
+    happyCount, sadCount, curHappyCount, curSadCount = newsaddata
+    
     data['happyCount'] = happyCount
     data['sadCount'] = sadCount
+    data['curHappyCount'] = curHappyCount
+    data['curSadCount'] = curSadCount
 
     await sio.emit('display_sad', data, to=roomId)
     print('sad was saved')

@@ -3,6 +3,11 @@
   opacity: 0.4;
 }
 
+dialog {
+  background-color: var(--modal-bgclr);
+  color: var(--alt-fontclr);
+}
+
 .modal {
   width: 30rem;
   height: 36rem;
@@ -18,6 +23,7 @@
 
 .settings-modal #close-btn,
 .room-add-modal #close-btn,
+.invite-member-modal #close-btn,
 .chat-settings-modal #close-btn {
   position: absolute;
   right: 1rem;
@@ -50,6 +56,7 @@
 .modal-content > i#back-btn:hover,
 .settings-modal #close-btn:hover,
 .room-add-modal #close-btn:hover,
+.invite-member-modal #close-btn:hover,
 .chat-settings-modal #close-btn:hover {
   color: gray;
 }
@@ -93,14 +100,15 @@ dialog {
 .modal-content input[type=text] {
   margin-top: 1rem;
   outline: 0;
-  border: 2px solid white;
+  border: 2px solid var(--modal-bgclr);
   height: 3rem;
-  background-color: var(--input-background);
+  background-color: var(--carrot-super-light);
   width: 70%;
   padding: 0 1.2rem;
   border-radius: 1.5rem;
   font-size: 1rem;
   transition: 0.2s;
+  caret-color: var(--font-size);
 }
 
 .modal-content input[type=text]::placeholder {
@@ -127,11 +135,11 @@ dialog {
 }
 
 .invite-list li:hover {
-  background-color: var(--input-background);
+  background-color: var(--carrot-super-light);
 }
 
 .invite-list .btn-friend-profile-img {
-  border: 1px solid black;
+  border: 1px solid var(--font-color);
   border-radius: 50%;
   width: 2rem;
   height: 2rem;
@@ -141,7 +149,8 @@ dialog {
   position: relative;
 }
 
-.modal-content input[type=button] {
+.modal-content .btn-invite-member,
+.modal-content .btn-create-group {
   margin-top: 1rem;
   background-color: var(--carrot-color);
   border: 0;
@@ -158,7 +167,8 @@ dialog {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.modal-content input[type=button]:hover {
+.modal-content .btn-invite-member:hover,
+.modal-content .btn-create-group:hover {
   background-color: var(--carrot-dark);
 }
 
@@ -183,7 +193,7 @@ dialog {
   text-align: center;
 }
 
-.room-add-name input[type=button] {
+.room-add-name .btn-create-group {
   width: 7rem;
 }
 
@@ -329,7 +339,7 @@ dialog {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color: #face8331;
+  background-color: var(--carrot-super-light);
   padding: 1rem 0;
   border-radius: 1rem;
 }
@@ -361,7 +371,26 @@ dialog {
 
 #settings-save {
   margin-top: 2rem;
+  background-color: var(--carrot-color);
+  border: none;
+  outline: 0;
+  border-radius: 1.5rem;
+  /* font-weight: 700; */
+  transition: 0.2s;
+  color: white;
+  height: 2.5rem;
+  width: 8rem;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 1rem;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+
+#settings-save:hover {
+  background-color: var(--carrot-dark);
+}
+
 #settings-logout {
   display: block;
   font-size: 1.2rem;
@@ -369,25 +398,47 @@ dialog {
   transition: 0.2s;
   padding: 0.4rem 0.6rem;
   border-radius: 1rem;
-
+  color: var(--alt-fontclr);
 }
 
 #settings-logout:hover {
-  background-color: rgba(219, 219, 219, 0.414);
+  background-color: var(--icon-hover);
 }
 
+/* 채팅 방 나가기 */
 
+.chat-settings-modal .btn-exit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  background-color: var(--carrot-color);
+  border: none;
+  outline: 0;
+  border-radius: 1.5rem;
+  transition: 0.2s;
+  color: white;
+  height: 2.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.chat-settings-modal .btn-exit:hover {
+  background-color: var(--carrot-dark);
+}
 
 /* 테마선택 체크박스 */
 
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
   .checkbox-wrapper-13 input[type=checkbox] {
-    --active: #275EFE;
+    --active: var(--carrot-color);
     --active-inner: #fff;
-    --focus: 2px rgba(39, 94, 254, .3);
+    /* --focus: 2px var(--carrot-dark); */
     --border: #BBC1E1;
-    --border-hover: #275EFE;
-    --background: #fff;
+    --border-hover: var(--carrot-light);
+    --background: #fff; 
     --disabled: #F6F8FF;
     --disabled-inner: #E1E6F9;
     -webkit-appearance: none;

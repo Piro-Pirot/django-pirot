@@ -31,11 +31,13 @@ const loadBubbles = async(roomId) => {
         body: JSON.stringify({roomId: roomId})
     });
 
-    if (res.ok) {
+    if(res.ok) {
         let {result: ajaxBubbles} = await res.json();
-        ajaxBubbles = JSON.parse(ajaxBubbles);
 
-        loadBubblesResponse(ajaxBubbles);
+        if(ajaxBubbles !== null) {
+            ajaxBubbles = JSON.parse(ajaxBubbles);
+            loadBubblesResponse(ajaxBubbles);
+        }
 
         // 처음에는 스크롤 맨 아래로
         controlScroll();
@@ -47,31 +49,64 @@ const loadBubbles = async(roomId) => {
 let lastHour = 0;
 let lastMin = 0;
 let lastSender = '';
+let lastBubbleType = CHAT;
+
+function isSameWithNext(thisBubble, nextBubble) {
+    if((thisBubble['hour'] == nextBubble['hour']
+    && thisBubble['min'] == nextBubble['min']
+    && thisBubble['user__username'] == nextBubble['user__username'])) {
+        // 다음 말풍선과 시간이 같고 보낸 사람이 같으면 시간과 프로필을 표시하지 않음
+        return false;
+    }
+    return true;
+}
+
+function isSameWithPrev(prevBubble, thisBubble) {
+    if(prevBubble['hour'] == thisBubble['hour']
+    && prevBubble['min'] == thisBubble['min']
+    && prevBubble['user__username'] == thisBubble['user__username']
+    && prevBubble['is_notice'] == CHAT) {
+        // 직전 말풍선과 시간이 같고 보낸 사람이 같고 직전 말풍선이 CHAT이라면 시간과 프로필을 표시하지 않음
+        return false;
+    }
+    return true;
+}
 
 const loadBubblesResponse = (ajaxBubbles) => {
     let timeFlag = true;
-    for(let i = 0; i < ajaxBubbles.length - 1; i++) {
-        // 시간을 표시할 건지
-        timeFlag = true;
-
+    // 첫 번째 말풍선은 프로필을 항상 표시
+    const firstBubble = ajaxBubbles[0];
+    try {
+        const secondBubble = ajaxBubbles[1];
+        createBubble(firstBubble, isSameWithNext(firstBubble, secondBubble), true);
+    } catch {
+        createBubble(firstBubble, true, true);
+        console.log('hello');
+    }
+    lastHour = firstBubble['hour'];
+    lastMin = firstBubble['min'];
+    lastSender = firstBubble['user__username'];
+    lastBubbleType = firstBubble['is_notice'];
+    
+    for(let i = 1; i < ajaxBubbles.length - 1; i++) {
+        const prevBubble = ajaxBubbles[i-1];
         const thisBubble = ajaxBubbles[i];
         const nextBubble = ajaxBubbles[i+1];
 
-        if(thisBubble['hour'] == nextBubble['hour']
-        && thisBubble['min'] == nextBubble['min']
-        && thisBubble['user__name'] == nextBubble['user__name']) {
-            // 1분이 지나기 전에 보낸 말풍선은 시간 표시하지 않음
-            timeFlag = false;
-        }
-        createBubble(ajaxBubbles[i], timeFlag);
+        createBubble(ajaxBubbles[i], isSameWithNext(thisBubble, nextBubble), isSameWithPrev(prevBubble, thisBubble));
     }
-    // 마지막 말풍선은 항상 표시
-    const lastBubble = ajaxBubbles[ajaxBubbles.length - 1];
-    createBubble(lastBubble, true);
-    
-    lastHour = lastBubble['hour'];
-    lastMin = lastBubble['min'];
-    lastSender = lastBubble['user__name'];
+    // 마지막 말풍선은 시간을 항상 표시
+    try {
+        const secondLastBubble = ajaxBubbles[ajaxBubbles.length - 2];
+        const lastBubble = ajaxBubbles[ajaxBubbles.length - 1];
+        lastHour = lastBubble['hour'];
+        lastMin = lastBubble['min'];
+        lastSender = lastBubble['user__username'];
+        lastBubbleType = lastBubble['is_notice'];
+        createBubble(lastBubble, true, isSameWithPrev(secondLastBubble, lastBubble));
+    } catch {
+        console.log('theres no next bubble');
+    }
 }
 
 loadBubbles(curRoomId);
@@ -92,78 +127,88 @@ inputBox.addEventListener('keydown', (event) => {
     }
 })
 
-
 // 말풍선을 만드는 코드
-function createBubble(bubbleData, timeFlag) {
+function createBubble(bubbleData, timeFlag, profileFlag) {
     console.log(bubbleData);
 
     console.log(bubbleData['content']);
     let bubbleDiv = document.createElement('div');
     let bubbleContainer = document.createElement('div');
 
-    if(bubbleData['user__name'] === curUserRealName) {
-        // 로그인 사용자의 말풍선인 경우
-        bubbleDiv.classList.add('bubble-box-me');
-        bubbleContainer.classList.add('bubble-container-me');
-    }
-    else {
-        bubbleDiv.classList.add('bubble-box');
-        bubbleContainer.classList.add('bubble-container');
-    }
-
-    // 사진, 이름
-    let bubbleHeader = document.createElement('div');
-    bubbleHeader.classList.add('bubble-header');
-
-    let profileImg = document.createElement('img');
-    profileImg.setAttribute('src', bubbleData['profile_img']);
-
-    let nameLabel = document.createElement('label');
-
-    if(curRoomType == 1) {
-        // 익명 질문 방이면
-        nameLabel.innerText = bubbleData['nickname'];
+    NOTICE = 1
+    if(bubbleData['is_notice'] === NOTICE) {
+        bubbleDiv.classList.add('bubble-notice');
+        bubbleContainer.classList.add('bubble-notice-container');
+        bubbleContainer.innerHTML = bubbleData['content'];
     } else {
-        nameLabel.innerText = bubbleData['user__name'];
-    }
-    nameLabel.classList.add('bubble-username');
+        if(bubbleData['user__username'] === curUsername) {
+            // 로그인 사용자의 말풍선인 경우
+            bubbleDiv.classList.add('bubble-box-me');
+            bubbleContainer.classList.add('bubble-container-me');
+        }
+        else {
+            bubbleDiv.classList.add('bubble-box');
+            bubbleContainer.classList.add('bubble-container');
+        }
 
-    // 현재 시간을 표기해야 하고, 로그인 사용자가 아니라면 사진과 이름 표시
-    if (timeFlag && bubbleData['user__name'] !== curUserRealName) {
-        bubbleHeader.appendChild(profileImg);
-        bubbleHeader.appendChild(nameLabel);
-        bubbleContainer.appendChild(bubbleHeader);
-    }
+        // 사진, 이름
+        let bubbleHeader = document.createElement('div');
+        bubbleHeader.classList.add('bubble-header');
 
-    // 내용과 시간을 담는 div
-    let bubbleContentContainer = document.createElement('div');
-    bubbleContentContainer.classList.add('bubble-content-container');
+        let profileImg = document.createElement('img');
+        profileImg.setAttribute('src', bubbleData['profile_img']);
 
-    // 내용
-    let bubbleContent = document.createElement('div');
-    bubbleContent.classList.add('bubble-content');
-    bubbleContent.innerHTML = bubbleData['content'];
+        let nameLabel = document.createElement('label');
 
-    // 작성 시간
-    if(timeFlag) {
-        let bubbleTime = document.createElement('label');
-        bubbleTime.classList.add('bubble-time');
-        bubbleTime.innerText = `${bubbleData['hour']}:${bubbleData['min']}`;
+        if(curRoomType == 1) {
+            // 익명 질문 방이면
+            nameLabel.innerText = bubbleData['nickname'];
+        } else {
+            nameLabel.innerText = bubbleData['user__name'];
+        }
+        nameLabel.classList.add('bubble-username');
 
-        if(bubbleData['user__name'] === curUserRealName) {
-            //나의 말풍선일 때
-            bubbleContentContainer.appendChild(bubbleTime);
-            bubbleContentContainer.appendChild(bubbleContent);
+        // 사진을 표시해야 하면 모든 말풍선에 marginTop을 주기
+        if(profileFlag) {
+            bubbleDiv.style.marginTop = '1rem';
+        }
+        // 사진을 표시해야하고, 로그인 사용자가 아니라면 사진과 이름 표시
+        if(profileFlag && bubbleData['user__username'] !== curUsername) {
+            bubbleHeader.appendChild(profileImg);
+            bubbleHeader.appendChild(nameLabel);
+            bubbleContainer.appendChild(bubbleHeader);
+        }
+
+        // 내용과 시간을 담는 div
+        let bubbleContentContainer = document.createElement('div');
+        bubbleContentContainer.classList.add('bubble-content-container');
+
+        // 내용
+        let bubbleContent = document.createElement('div');
+        bubbleContent.classList.add('bubble-content');
+        bubbleContent.innerHTML = bubbleData['content'];
+
+        // 작성 시간
+        if(timeFlag) {
+            let bubbleTime = document.createElement('label');
+            bubbleTime.classList.add('bubble-time');
+            bubbleTime.innerText = `${bubbleData['hour']}:${bubbleData['min']}`;
+
+            if(bubbleData['user__username'] === curUsername) {
+                //나의 말풍선일 때
+                bubbleContentContainer.appendChild(bubbleTime);
+                bubbleContentContainer.appendChild(bubbleContent);
+            } else {
+                bubbleContentContainer.appendChild(bubbleContent);
+                bubbleContentContainer.appendChild(bubbleTime);
+            }
         } else {
             bubbleContentContainer.appendChild(bubbleContent);
-            bubbleContentContainer.appendChild(bubbleTime);
         }
-    } else {
-        bubbleContentContainer.appendChild(bubbleContent);
+
+        bubbleContainer.appendChild(bubbleContentContainer);
+
     }
-
-    bubbleContainer.appendChild(bubbleContentContainer);
-
     bubbleDiv.appendChild(bubbleContainer);
 
     // 화면에 추가

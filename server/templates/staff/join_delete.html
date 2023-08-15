@@ -10,8 +10,8 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div>
-        {% for join in joins %}
-        <div>{{ join.passer.passer_name }}</div>
+        {% for passer in channelPassers %}
+        <div>{{ passer.level }}기 {{ passer.passer_name }}</div>
         <input type="submit" value="삭제" />
         {% endfor %}
     </div>

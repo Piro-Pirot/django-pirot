@@ -51,11 +51,15 @@
                 <div class="theme-modes">
                     <div class="checkbox-wrapper-13">
                         <input id="lightMode" type="checkbox">
-                        <label for="lightMode">라이트모드</label>
+                        <label for="lightMode">라이트</label>
                     </div>
                     <div class="checkbox-wrapper-13">
                         <input id="darkMode" type="checkbox">
-                        <label for="darkMode">다크모드</label>
+                        <label for="darkMode">다크</label>
+                    </div>
+                    <div class="checkbox-wrapper-13">
+                        <input id="bwMode" type="checkbox">
+                        <label for="bwMode">B&W</label>
                     </div>
                 </div>
             </div>
@@ -84,8 +88,8 @@
     <script src="{% static 'js/iconBar.js' %}"></script>
     <script src="{% static 'js/settingsModal.js' %}"></script>
     <script>
-        const profileEditButton = document.getElementById("profileEdit");
-        const profileEditForm = document.querySelector(".setting-section-container form");
+        const profileEditButton = document.querySelector(".profileEdit");
+        const profileEditForm = document.querySelector(".profile-setting-form");
         profileEditButton.onclick = () => {
             profileEditForm.classList.toggle("active");
         };

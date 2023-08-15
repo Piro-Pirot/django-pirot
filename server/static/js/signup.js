@@ -47,8 +47,6 @@ function send_authnum(){
                 const response = JSON.parse(xhr.responseText);
                 console.log(response.message);
                 // 서버 응답 처리
-
-                
             } else {
                 console.error("Error:", xhr.status);
                 // 에러 처리
