@@ -291,7 +291,9 @@
 
 /* 동아리 기본 설정 */
 
-.default-profile {
+.default-profile,
+.staff-authority,
+.member-delete {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -481,17 +483,6 @@
 
 /* 운영진 권한 설정 */
 
-.staff-authority {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color:  var(--section-bgclr);
-  border-radius: 0.8rem;
-}
-
 .authority-container {
   background-color: var(--section-bgclr);
   width: 25rem;
@@ -525,3 +516,55 @@
 .staff-authority form {
   text-align: center;
 }
+
+
+
+/* 회원삭제 */
+
+.member-delete-list {
+  background-color: var(--section-bgclr);
+  width: 20rem;
+  height: 25rem;
+  border: 1px solid var(--carrot-color);
+  border-radius: 0.8rem;
+  padding: 0.6rem 1rem;
+  margin-top: 2rem;
+  overflow-y: scroll;
+}
+
+.delete-block {
+  display: flex;
+  background-color: var(--section-bgclr);
+  align-items: center;
+  padding: 0.8rem 0;
+  width: 100%;
+  transition: 0.1s;
+  border-radius: 0.8rem;
+}
+
+.delete-block:hover {
+  background-color: var(--carrot-super-light);
+}
+
+.delete-block div:first-child {
+  width: 60%;
+  text-align: center;
+}
+
+.delete-block div:last-child {
+  width: 40%;
+  text-align: center;
+}
+.delete-block div:last-child > input {
+  outline: 0;
+  border: 0;
+  background-color: rgb(255, 101, 101);
+  color: white;
+  border-radius: 0.8rem;
+  padding: 0.2rem 0.4rem;
+}
+
+.delete-block div:last-child > input:hover {
+  background-color: rgb(255, 62, 62);
+}
+
