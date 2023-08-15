@@ -63,6 +63,17 @@
     </div>
 </div>
 
+<!--파일 업로드 모달-->
+<dialog class="modal upload-file-modal">
+    <i id="close-btn" class="ri-close-fill"></i>
+    <div class="modal-content">
+        <form action="/bubbles/upload_files/" method="post" class="dropzone" id="myDropzone">
+            {% csrf_token %}
+        </form>
+        <button class="btn-send-files">SEND</button>
+    </div>
+</dialog>
+
 <!-- 채팅방 설정 모달 -->
 <dialog class="modal chat-settings-modal">
     <i id="close-btn" class="ri-close-fill"></i>
@@ -186,5 +197,8 @@
 <script src="{% static 'js/chat/room.js' %}"></script>
 <script src="{% static 'js/chat/bubble.js' %}"></script>
 <script src="{% static 'js/chat/post.js' %}"></script>
+
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<script src="{% static 'js/chat/fileSocketClient.js' %}"></script>
 
 {% endblock %}
