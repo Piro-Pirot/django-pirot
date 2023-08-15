@@ -193,6 +193,21 @@ function createBubble(bubbleData, timeFlag, profileFlag) {
         bubbleContent.classList.add('bubble-content');
         bubbleContent.innerHTML = bubbleData['content'];
 
+        // 파일을 첨부했다면
+        console.log(bubbleData['file']);
+        let bubbleFileContainer = '';
+        let bubbleFileContent = '';
+        if(!!bubbleData['file']) {
+            bubbleFileContent = document.createElement('img');
+            bubbleFileContent.setAttribute('src', `/media/${bubbleData['file']}`);
+            bubbleFileContent.classList.add('bubble-content');
+            
+            bubbleFileContent.style.cursor = 'pointer';
+            bubbleFileContent.addEventListener('click', () => {
+                open(`/media/${bubbleData['file']}`, '_blank');
+            });
+        }
+
         // 작성 시간
         if(timeFlag) {
             let bubbleTime = document.createElement('label');
@@ -202,9 +217,17 @@ function createBubble(bubbleData, timeFlag, profileFlag) {
             if(bubbleData['user__username'] === curUsername) {
                 //나의 말풍선일 때
                 bubbleContentContainer.appendChild(bubbleTime);
-                bubbleContentContainer.appendChild(bubbleContent);
+                if(!!bubbleData['file']) {
+                    bubbleContentContainer.appendChild(bubbleFileContent);
+                } else {
+                    bubbleContentContainer.appendChild(bubbleContent);
+                }
             } else {
-                bubbleContentContainer.appendChild(bubbleContent);
+                if(!!bubbleData['file']) {
+                    bubbleContentContainer.appendChild(bubbleFileContent);
+                } else {
+                    bubbleContentContainer.appendChild(bubbleContent);
+                }
                 bubbleContentContainer.appendChild(bubbleTime);
             }
         } else {

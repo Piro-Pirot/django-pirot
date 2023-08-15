@@ -341,7 +341,19 @@ background-color: #f3b95431;
 #attachIcon {
   /* padding: 0.2rem; */
   border-top-left-radius: 0.5rem;
+}
+
+#attachIcon .attach-label{
   cursor: pointer;
+}
+
+.chat-icons #upload-file {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
 }
 
 #reserveMsg {

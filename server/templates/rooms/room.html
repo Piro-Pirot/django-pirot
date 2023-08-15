@@ -32,7 +32,8 @@
             <textarea class="input"></textarea>
             <div class="chat-icons">
                 <div id="attachIcon">
-                    <i class="ri-attachment-2"></i>
+                    <label for="upload-file" class="attach-label"><i class="ri-attachment-2"></i></label>
+                    <input type="file" name="upload-file" id="upload-file" accept="image/*">
                 </div>
                 <div id="reserveMsg">
                     <i class="ri-time-line"></i>
@@ -64,7 +65,7 @@
 </div>
 
 <!--파일 업로드 모달-->
-<dialog class="modal upload-file-modal">
+<!-- <dialog class="modal upload-file-modal">
     <i id="close-btn" class="ri-close-fill"></i>
     <div class="modal-content">
         <form action="/bubbles/upload_files/" method="post" class="dropzone" id="myDropzone">
@@ -72,7 +73,7 @@
         </form>
         <button class="btn-send-files">SEND</button>
     </div>
-</dialog>
+</dialog> -->
 
 <!-- 채팅방 설정 모달 -->
 <dialog class="modal chat-settings-modal">
