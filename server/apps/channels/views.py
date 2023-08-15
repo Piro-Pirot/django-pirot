@@ -133,6 +133,10 @@ def default_profile(request, channelID):
         if request.FILES.get("default_image"):
             channel.default_image = request.FILES["default_image"]
             channel.save()
+
+        if request.POST.get("this_level"):
+            channel.this_level = request.POST["this_level"]
+            channel.save()
         
         url = '/staff/channel/setting/%s' % (channelID)
 
@@ -142,19 +146,39 @@ def default_profile(request, channelID):
 
 
 # 운영진 권한 설정
-@csrf_exempt
 def staff_authority(request, channelID):
-    joins = Join.objects.all()
-    staffs = Staff.objects.all()
     channel = Channel.objects.get(id=channelID)
+    thisjoins = Join.objects.filter(passer__channel=channel) # 얘를 쓴 이유가 처음에 뭐였을까? 아.. User 모델이 여기에만 연결되어 있음(고유성)
+    staffs = Staff.objects.filter(channel=channel)
+    staffPassers = staffs.only('user')
+    staffPassers = list(staffPassers.values_list('user__username', flat=True))
 
-    # toggle() 사용 on/off ajax
-    # js : 버튼 on/off 조작 ... 완료 ! -> 저장 POST
-    # -> if 버튼이 on인 회원 객체가 staff 목록에 없으면 추가
-    #    if 버튼이 off인 회원 객체가 staff 목록에 있으면 삭제
-    # -> staff.save() 이건 view에서?
+    
+    thislevelPassers = Passer.objects.filter(channel=channel, level=channel.this_level)
 
-    return render(request, 'staff/staff_authority.html', {"joins":joins, "staffs":staffs, "channel":channel})
+    # 원래 저장 상태 불러오기
+
+    if request.method == 'POST':
+        if request.POST.get('checked'):
+            staffs.delete() # 아무것도 선택하지 않는 경우는 안 됨
+            for checked in request.POST.getlist('checked'):
+                name, phone = checked.split(' ')
+                passerObj = thislevelPassers.get(passer_name=name, passer_phone=phone)
+                print(passerObj)
+                userObj = thisjoins.get(passer=passerObj).user
+                print(userObj)
+                if staffs.filter(user=userObj).count() == 0:
+                    newStaff = Staff.objects.create(
+                        user = userObj,
+                        channel = channel
+                    )
+                    newStaff.save()
+        url = '/staff/staff_authority/%s' % (channelID)
+
+        return redirect(url)
+
+
+    return render(request, 'staff/staff_authority.html', {"channel":channel, "staffs":staffPassers, "thisjoins":thisjoins, "thislevelPassers":thislevelPassers})
 
 
 # 회원 삭제
@@ -162,18 +186,19 @@ def staff_authority(request, channelID):
 def join_delete(request, channelID):
     joins = Join.objects.all()
     channel = Channel.objects.get(id=channelID)
+    channelPassers = Passer.objects.filter(channel=channel)
 
     if request.method == "POST":
         user = request.POST['user']
-        print(user)
-        join = Join.objects.get(user=user)
+        # 현재 동아리의 user(실명과 전화번호가 고유성 부여)
+        passer = Passer.objects.get(passer_name=user.name, passer_phone=user.phone_number, channel=channel)
+        join = Join.objects.get(passer=passer) # passer 지우기 전에 불러와야 함
         join.delete() # 회원 삭제
-        passer = Passer.objects.get(passer_name=user.name)
         passer.delete() # 합격자 명단에서도 삭제
 
         return redirect("/staff/join_delete/%s") % (channelID)
 
-    return render(request, 'staff/join_delete.html', {"joins":joins, "channel":channel}) # 회원 실명, 기수 참조 가능
+    return render(request, 'staff/join_delete.html', {"channel":channel, "channelPassers":channelPassers}) # 회원 실명, 기수 참조 가능
 
 
 

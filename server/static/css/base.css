@@ -1,6 +1,7 @@
 @import 'style.css';
 @import 'room.css';
 @import 'roomModal.css';
+@import 'confirmModal.css';
 @import 'profile-setting.css';
 @import 'friendly.css';
 @import 'board.css';
@@ -318,18 +319,22 @@ background-color: #f3b95431;
 #attachIcon {
   /* padding: 0.2rem; */
   border-top-left-radius: 0.5rem;
+  cursor: pointer;
 }
 
 #reserveMsg {
   border-top-right-radius: 0.5rem;
+  cursor: pointer;
 }
 
 #imageIcon {
   border-bottom-left-radius: 0.5rem;
+  cursor: pointer;
 }
 
 #codeIcon {
   border-bottom-right-radius: 0.5rem;
+  cursor: pointer;
 }
 
 .chat-input button {
@@ -453,12 +458,13 @@ background-color: #f3b95431;
   background-color: var(--carrot-color);
   color: var(--alt-fontclr);
   transition: 0.2s;
+  cursor: pointer;
 }
 
 .post-input-container > button:hover {
   background-color: var(--carrot-dark);
 }
 
-.board > div:last-child {
+/* .board > div:last-child {
   margin-bottom: 150%;
-}
+} */

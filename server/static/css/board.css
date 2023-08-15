@@ -40,6 +40,8 @@
   margin-right: 10px;
   background-color: white;
   transition: 0.2s;
+  cursor: pointer;
+  border: 0.1rem solid var(--carrot-light)
 }
 
 .post-container button.happy:hover {
@@ -61,13 +63,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .post-container button.delete:hover {
   background-color: #fba50576;
 }
 
-/* inner border로 만들고 싶은데.. box-sizing: border-box여도 그렇게 안 되나용? ㅜㅜ*/
 .post-container button.checked {
-  border: solid 0.1rem var(--carrot-color);
+  border-color: var(--carrot-color);
 }

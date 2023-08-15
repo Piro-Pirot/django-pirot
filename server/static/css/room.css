@@ -1,3 +1,16 @@
+.bubble-notice {
+    display: block;
+    border-radius: 5rem;
+    background-color: var(--input-background);
+    padding: 1rem;
+    margin: 0 2rem 2rem 2rem;
+    text-align: center;
+}
+
+.bubble-notice .bubble-notice-content {
+    width: 80%;
+}
+
 .bubble-box,
 .bubble-box-me {
     display: block;
@@ -219,7 +232,7 @@
 }
 
 .friend-list-me-container,
-.middle-section-content .btn-friend-container {
+.btn-friend-container {
     transition: 0.2s;
     padding-left: 0.3rem;
     position: relative;
@@ -236,7 +249,7 @@
     background-color: var(--carrot-super-light);
 }
 
-.middle-section-content .btn-friend-container {
+.btn-friend-container {
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
 }
@@ -245,7 +258,7 @@
     margin-top: 0rem;
 }
 
-.middle-section-content .btn-friend {
+.btn-friend {
     /* padding: 1rem 2rem; */
     /* background-color: white; */
     display: flex;
@@ -397,14 +410,19 @@
     opacity: 1;
 }
 
-.chat-name-icons > #chat-search-btn {
+.chat-name-icons > #chat-search-btn,
+.chat-name-icons > #chat-member-add {
     font-size: 1.7rem;
     margin-left: 2rem;
     cursor: pointer;
 }
 
+.chat-name-icons > #chat-member-add {
+    font-size: 2.5rem;
+}
+
 .chat-name-icons > i:last-child {
     font-size: 2rem;
-    margin-left: 3rem;
+    margin-left: 2rem;
     cursor: pointer;
 }

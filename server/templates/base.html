@@ -116,6 +116,18 @@
         </div>
     </dialog>
 
+    <!-- <div class="confirm-modal">
+        <div class="confirm-modal-container">
+            <p class="confirm-modal-content">
+                정말로 정말로 정말로?
+            </p>
+            <div class="btn-container">
+                <button class="btn-confirm-modal">확인</button>
+                <button class="btn-cancel-modal">취소</button>
+            </div>
+        </div>
+    </div> -->
+
     <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     {% block extra %}
@@ -124,7 +136,6 @@
     <script src="{% static 'js/base.js' %}"></script>
     <script src="{% static 'js/settingsModal.js' %}"></script>
     {% if urlType == 'main' %}
-        <script src="{% static 'js/chat/roomBtn.js' %}"></script>
         <script src="{% static 'js/roomModal.js' %}"></script>
     {% elif urlType == 'friends' %}
         <script src="{% static 'js/chat/friendBtn.js' %}"></script>
