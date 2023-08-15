@@ -229,8 +229,8 @@ background-color: #f3b95431;
 
 .whiteblock {
   position: absolute;
-  background-color: white;
-  width: calc(100% - 1rem);
+  background-color: var(--chat-input);
+  width: calc(100% - 2*var(--section-padding));
   height: calc(100% - 2*var(--section-padding));
   border-radius: 0.8rem;
   top: 50%;

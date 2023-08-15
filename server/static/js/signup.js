@@ -139,3 +139,4 @@ function signup_check(){
     alert("가입이 완료되었습니다.")
 }
 
+//비밀번호 확인
