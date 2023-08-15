@@ -4,16 +4,43 @@
 <!-- 합격자 명단 추가 -->
 
 {% block content %}
-<h2>합격자 정보 입력</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input name="name" placeholder="이름을 입력하세요." required/>
-    <input name="phone" placeholder="전화번호를 입력하세요." required/>
-    <input type="submit" name="keepgoing" value="저장 및 계속 추가" />
-    <input type="submit" name="save" value="저장 완료" />
-</form>
-{{ level }}기 합격자 목록
-{% for passer in passers %}
-<div>{{ passer.passer_name }} {{ passer.passer_phone }}</div>
-{% endfor %}
+<div class="passer-gen">
+    <h2 class="staff-setting-title">합격자 정보 입력</h2>
+    <form class="passer-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="이름을 입력하세요." required/>
+        <input type="text" name="phone" placeholder="전화번호를 입력하세요." required/>
+        <div>
+            <input type="submit" name="keepgoing" value="저장 및 계속 추가" />
+            <input type="submit" name="save" value="저장 완료" />
+        </div>
+    </form>
+</div>
+
+<div class="passer-list-container">
+    <h2 class="staff-setting-title">
+        {{ level }}기 합격자 목록
+    </h2>
+    <div class="passer-list">
+        {% for passer in passers %}
+        <div class="passer-block">
+            <div class="passer-name">
+                {{ passer.passer_name }}
+            </div>
+            <div class="passer-phone">
+                {{ passer.passer_phone }}
+            </div>
+        </div>
+        {% endfor %}    
+    </div>
+</div>
+
+<script>
+    // 합격자 리스트가 항상 가장 아래로 스크롤되게함
+    window.onload = () => {
+        const passerList = document.querySelector(".passer-list");
+        passerList.scrollTop = passerList.scrollHeight;
+        console.log(passerList.scrollTop);
+    };
+</script>
 {% endblock %}

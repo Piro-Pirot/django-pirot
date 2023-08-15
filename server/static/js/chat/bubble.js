@@ -160,6 +160,9 @@ function createBubble(bubbleData, timeFlag, profileFlag) {
         let bubbleHeader = document.createElement('div');
         bubbleHeader.classList.add('bubble-header');
 
+        let profileImgContainer = document.createElement('div');
+        profileImgContainer.classList.add('bubble-profile-img');
+
         let profileImg = document.createElement('img');
         profileImg.setAttribute('src', bubbleData['profile_img']);
 
@@ -174,12 +177,13 @@ function createBubble(bubbleData, timeFlag, profileFlag) {
         nameLabel.classList.add('bubble-username');
 
         // 사진을 표시해야 하면 모든 말풍선에 marginTop을 주기
-        if(profileFlag) {
-            bubbleDiv.style.marginTop = '1rem';
-        }
+        // if(profileFlag) {
+        //     bubbleDiv.style.marginTop = '1rem';
+        // }
         // 사진을 표시해야하고, 로그인 사용자가 아니라면 사진과 이름 표시
         if(profileFlag && bubbleData['user__username'] !== curUsername) {
-            bubbleHeader.appendChild(profileImg);
+            profileImgContainer.appendChild(profileImg);
+            bubbleHeader.appendChild(profileImgContainer);
             bubbleHeader.appendChild(nameLabel);
             bubbleContainer.appendChild(bubbleHeader);
         }
