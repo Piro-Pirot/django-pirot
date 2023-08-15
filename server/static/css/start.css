@@ -439,10 +439,16 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2.5rem 15rem;
-  width: 50rem;
-  border: 2px solid var(--carrot-dark);
-  border-radius: 2rem;
+  padding: 2.5rem 5rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  width: 46rem;
+  height: 95%;
+  border-top: 4px solid var(--carrot-dark);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.15), 
+  0 2px 2px rgba(0,0,0,0.15), 
+  0 4px 4px rgba(0,0,0,0.15), 
+  0 8px 8px rgba(0,0,0,0.15);
 }
 
 /* .form-group > label {
@@ -465,14 +471,14 @@ button:active {
   box-shadow: none;
 } */
 
-#username, #password1, #password2, #phone_number, #input_authnum  {
+#username, #password1, #password2, #phone_number, #input_authnum, #userid  {
   border: none; 
   outline: none;
 }
 
 table td {
   width: 50%;
-  height: 4rem;
+  height: 3.7rem;
   font-size: 1.2rem;
 }
 
@@ -491,12 +497,15 @@ table input:focus {
   box-shadow: none;
   border: 2px solid var(--carrot-light);  
 } */
-#username:focus, #password1:focus, #password2:focus, #phone_number:focus, #input_authnum:focus {
+#username:focus, #password1:focus, #password2:focus, #phone_number:focus, #input_authnum:focus, #userid:focus {
   border: 2px solid var(--carrot-light);  
   border-radius: 1rem; 
   transition: .2s;
 }
 
+#input_sms {
+  visibility: hidden;
+}
 
 table button {
   border-radius: 2rem;
@@ -510,14 +519,13 @@ table button {
 
 
 #signup_button {
-  width: 20rem;
-  height: 3rem;
+  width: 12rem;
+  padding: 0.5rem;
   border: none;
   border-radius: 2rem;
   background-color: var(--carrot-light);
   margin-top: 3rem;
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 1rem;
 }
 
 .time-limit-bottom {
@@ -548,7 +556,7 @@ table button {
 }
 
 .assgin-header {
-  font-size: 2rem;
+  font-size: 1.7rem;
   font-weight: 700;
   margin-bottom: 2.5rem;
 }

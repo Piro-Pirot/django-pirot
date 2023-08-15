@@ -27,4 +27,11 @@
         </div>
     </form>
 </div>
+<script>
+    const profileEditButton = document.querySelector(".profileEdit");
+    const profileEditForm = document.querySelector(".profile-setting-form");
+    profileEditButton.onclick = () => {
+        profileEditForm.classList.toggle("active");
+    };
+</script>
 {% endblock %}

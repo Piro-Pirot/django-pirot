@@ -61,8 +61,6 @@ const inviteRequest = async(inviteList, roomId, channelId) => {
   }
 }
 
-CHAT = 0
-NOTICE = 1
 const inviteResponse = (newNameDic, inviterName) => {
   let inviteMsg = `${inviterName}님이 `;
   for(let i = 0; i < Object.keys(newNameDic).length - 1; i++) {

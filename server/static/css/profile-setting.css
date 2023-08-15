@@ -4,15 +4,22 @@
   width: 100%;
 }
 
-.setting-section-title,
-.staff-header {
+.setting-header-container {
   width: 100%;
   height: 6rem;
+  padding: var(--section-padding) var(--section-padding) 0 var(--section-padding);
+  background-color: var(--body-bgclr);
+}
+
+.setting-header {
+  width: 100%;
+  height: 100%;
+  background-color: var(--section-bgclr);
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 2.4rem;
-  border-bottom: 1px solid var(--font-color);
+  border-radius:  0.8rem;
 }
 
 
@@ -31,7 +38,7 @@
   margin-top: 3rem;
   position: relative;
 }
-.setting-profile-image::after {
+.staff-profile-setting .setting-profile-image::after {
   content: '';
   display: block;
   width: 17rem;
@@ -113,6 +120,7 @@
   font-size: 1rem;
   cursor: pointer;
   transition: 0.2s;
+  color: var(--alt-fontclr);
 }
 
 .profile-setting-form input[type=submit]:hover {
@@ -121,7 +129,7 @@
 
 
 
-/* -----운영진 프로필----- */
+/* -----운영진 설정----- */
 
 .staff-setting {
   width: 100%;
@@ -135,15 +143,16 @@
 }
 
 .staff-container-left {
+  background-color: var(--body-bgclr);
+  padding: var(--section-padding) 0 var(--section-padding) var(--section-padding);
   width: 20rem;
-  /* background-color: pink; */
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+  /* position: relative; */
 }
 
-.staff-container-left::after {
+/* .staff-container-left::after {
   content: '';
   display: block;
   width: 3px;
@@ -152,19 +161,21 @@
   background-color: var(--carrot-light);
   position: absolute;
   right: 0;
-}
+} */
 
 .staff-container-left .staff-menu {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 90%;
-  width: 15rem;
   justify-content: space-evenly;
+  border-radius: 0.8rem;
+  background-color: var(--section-bgclr);
 }
 
 .staff-menu a {
-  width: 100%;  
+  width: 80%;  
 }
 
 .staff-menu button {
@@ -201,12 +212,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--body-bgclr);
+  padding: 0.6rem;
 }
+
+
+
+/* 운영진프로필 */
 
 .staff-profile-setting {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
+  width: 100%;
+  height: 100%;
 }
 
 .code-create {
@@ -218,6 +240,20 @@
 
 .staff-setting-title {
   font-size: 2rem;
+}
+
+
+
+/* 코드생성 */
+.code-create {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
+  width: 100%;
+  height: 100%;
 }
 
 .code-create #code {
@@ -254,5 +290,285 @@
 }
 
 
+/* 동아리 기본 설정 */
 
+.default-profile,
+.staff-authority,
+.member-delete {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
+  width: 100%;
+  height: 100%;
+}
+
+.gen-form {
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.gen-form > div {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.gen-form > div i {
+  font-size: 1.2rem;
+  position: absolute;
+  right: -2.5rem;
+  color: var(--font-color);
+
+}
+
+.gen-form .gen-form-info {
+  position: absolute;
+  right: -15rem;
+  font-size: 0.8rem;
+  color: var(--font-color);
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.2s;
+  text-align: center;
+  background-color: var(--carrot-super-light);
+  border-radius: 0.8rem;
+  padding: 0.2rem;
+  line-height: 1rem;
+}
+
+.gen-form .gen-form-info.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.gen-form input[type=text] {
+  color: var(--font-color);
+  background-color: var(--carrot-super-light);
+  border: 2px solid var(--carrot-color);
+  border-radius: 0.8rem 0 0 0.8rem;
+  height: 2.5rem;
+  width: 10rem;
+  text-align: center;
+  font-size: 1.2rem;
+  outline: 0;
+  transition: 0.1s;
+}
+
+.gen-form input[type=text]:focus {
+  border: 2px solid var(--carrot-color);
+}
+
+.gen-form input[type=submit] {
+  border: 0;
+  height: 2.5rem;
+  background-color: var(--carrot-color);
+  border-radius: 0 0.8rem 0.8rem 0;
+  font-size: 1rem;
+  transition: 0.2s;
+  color: var(--alt-fontclr);
+  cursor: pointer;
+}
+.gen-form input[type=submit]:hover {
+  background-color: var(--carrot-dark);
+}
+
+
+/* 합격자 명단 추가 */
+
+.passer-gen,
+.passer-list-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--section-bgclr);
+  width: calc(50% - 0.3rem);
+  height: 100%;
+  border-radius: 0.8rem;
+}
+
+.passer-gen {
+  margin-right: 0.3rem;
+}
+
+.passer-list-container {
+  margin-left: 0.3rem;
+}
+
+.passer-gen .passer-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.passer-form > input[type=text] {
+  border: 2px solid var(--section-bgclr);
+  padding: 0.4rem 0.6rem;
+  background-color: var(--carrot-super-light);
+  border-radius: 1rem;
+  font-size: 1.2rem;
+  transition: 0.2s;
+  outline: 0;
+  margin-bottom: 1.5rem;
+}
+
+.passer-form > input[type=text]:focus {
+  border: 2px solid var(--carrot-color);
+}
+
+.passer-form > div {
+  margin-top: 1rem;
+  text-align: center;
+}
+.passer-form > div > input {
+  border: 0;
+  border-radius: 0.8rem;
+  font-size: 1rem;
+  padding: 0.3rem 0.5rem;
+  color: var(--send-fontclr);
+  cursor: pointer;
+}
+
+.passer-form > div > input:first-child {
+  background-color: var(--carrot-light);
+  transition: 0.2s;
+  margin-right: 0.8rem;
+}
+
+.passer-form > div > input:first-child:hover {
+  background-color: var(--carrot-light-dark);
+}
+
+.passer-form > div > input:last-child {
+  background-color: var(--carrot-color);
+  transition: 0.2s;
+}
+
+.passer-form > div > input:last-child:hover {
+  background-color: var(--carrot-dark);
+}
+
+.passer-list {
+  background-color: pink;
+  height: 25rem;
+  width: 18rem;
+  border: 1px solid var(--carrot-light);
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
+  margin-top: 2rem;
+  overflow-y: scroll;
+  padding: 0.6rem 0;
+}
+
+.passer-block {
+  display: flex;
+  padding: 0.5rem 0.3rem;
+  width: 100%;
+}
+
+.passer-block .passer-name,
+.passer-block .passer-phone {
+  text-align: center;
+}
+
+.passer-block .passer-name {
+  width: 40%
+}
+
+.passer-block .passer-phone {
+  width: 60%
+}
+
+
+
+/* 운영진 권한 설정 */
+
+.authority-container {
+  background-color: var(--section-bgclr);
+  width: 25rem;
+  height: 25rem;
+  border: 1px solid var(--carrot-color);
+  border-radius: 0.8rem;
+  padding: 0.6rem 0;
+  margin-top: 2rem;
+  overflow-y: scroll;
+}
+
+.authority-passer-div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0.7rem;
+}
+
+.authority-passer-div > div:first-child {
+  width: 30%;
+  text-align: center;
+}
+.authority-passer-div > div:nth-child(2) {
+  width: 50%;
+  text-align: center;
+}
+.authority-passer-div > div:last-child {
+  width: 20%
+}
+
+.staff-authority form {
+  text-align: center;
+}
+
+
+
+/* 회원삭제 */
+
+.member-delete-list {
+  background-color: var(--section-bgclr);
+  width: 20rem;
+  height: 25rem;
+  border: 1px solid var(--carrot-color);
+  border-radius: 0.8rem;
+  padding: 0.6rem 1rem;
+  margin-top: 2rem;
+  overflow-y: scroll;
+}
+
+.delete-block {
+  display: flex;
+  background-color: var(--section-bgclr);
+  align-items: center;
+  padding: 0.8rem 0;
+  width: 100%;
+  transition: 0.1s;
+  border-radius: 0.8rem;
+}
+
+.delete-block:hover {
+  background-color: var(--carrot-super-light);
+}
+
+.delete-block div:first-child {
+  width: 60%;
+  text-align: center;
+}
+
+.delete-block div:last-child {
+  width: 40%;
+  text-align: center;
+}
+.delete-block div:last-child > input {
+  outline: 0;
+  border: 0;
+  background-color: rgb(255, 101, 101);
+  color: white;
+  border-radius: 0.8rem;
+  padding: 0.2rem 0.4rem;
+}
+
+.delete-block div:last-child > input:hover {
+  background-color: rgb(255, 62, 62);
+}
 

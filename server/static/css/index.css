@@ -624,7 +624,8 @@ section.show-animation .animate {
 }
 
 .people-photo > img {
-  border: 3px groove white;
+  border: 2px solid white;
+  padding: 1rem;
   border-radius: 10rem;
 }
 
@@ -712,6 +713,13 @@ footer {
   nav > .nav-left {
     font-size: 1.2rem;
   }
+  .login-btn {
+    font-size: 1rem;
+  }
+  nav {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 933px) {
@@ -755,12 +763,15 @@ footer {
     margin-right: 1rem;
   }
   nav > .nav-left {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
   nav {
     padding-left: 4rem;
     padding-right: 4rem;
   }
+
+  nav > .nav-right .nav-right-item:nth-child(1) {}
+
 }
 
 
@@ -940,6 +951,11 @@ footer {
   #footer-right {
     padding-right: 0.5rem;
   }
+  .modal {
+    width: 12rem;
+    height: 18rem;
+  }
+
 } 
 
 /* 모바일 햄버거 */

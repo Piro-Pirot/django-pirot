@@ -230,8 +230,8 @@ background-color: #f3b95431;
 
 .whiteblock {
   position: absolute;
-  background-color: white;
-  width: calc(100% - 1rem);
+  background-color: var(--chat-input);
+  width: calc(100% - 2*var(--section-padding));
   height: calc(100% - 2*var(--section-padding));
   border-radius: 0.8rem;
   top: 50%;
@@ -364,7 +364,7 @@ background-color: #f3b95431;
   width: 15%;
   margin-left: 0.5rem;
   background-color: var(--carrot-color);
-  color: var(--alt-fontclr);
+  color: var(--send-fontclr);
   font-size: 1.2rem;
   border: 0;
   border-radius: 0.5rem;
@@ -478,7 +478,7 @@ background-color: #f3b95431;
   outline: 0;
   border-radius: 1rem;
   background-color: var(--carrot-color);
-  color: var(--alt-fontclr);
+  color: var(--send-fontclr);
   transition: 0.2s;
   cursor: pointer;
 }
