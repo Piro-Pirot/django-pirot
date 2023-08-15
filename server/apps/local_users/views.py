@@ -214,5 +214,8 @@ def preferences(request):
             checkedAlarm = request.POST.get('alarm')
             curUserObj.notice = int(checkedAlarm)
             curUserObj.save()
+        else:
+            curUserObj.notice = 0
+            curUserObj.save()
 
         return redirect(f'/room/{channel_id}/main/')
