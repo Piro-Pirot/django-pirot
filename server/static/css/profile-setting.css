@@ -31,7 +31,7 @@
   margin-top: 3rem;
   position: relative;
 }
-.setting-profile-image::after {
+.staff-profile-setting .setting-profile-image::after {
   content: '';
   display: block;
   width: 17rem;
@@ -254,5 +254,51 @@
 }
 
 
+/* 동아리 기본 설정 */
+
+.default-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gen-form {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.gen-form > div {
+  display: flex;
+  align-items: center;
+}
+
+.gen-form input[type=text] {
+  color: var(--font-color);
+  background-color: var(--carrot-super-light);
+  border: 2px solid var(--carrot-color);
+  border-radius: 0.8rem 0 0 0.8rem;
+  height: 2.5rem;
+  width: 10rem;
+  text-align: center;
+  font-size: 1.2rem;
+  outline: 0;
+  transition: 0.1s;
+}
+
+.gen-form input[type=text]:focus {
+  border: 2px solid var(--carrot-color);
+}
+
+.gen-form input[type=submit] {
+  border: 0;
+  height: 2.5rem;
+  background-color: var(--carrot-color);
+  border-radius: 0 0.8rem 0.8rem 0;
+  font-size: 1rem;
+  transition: 0.2s;
+}
+.gen-form input[type=submit]:hover {
+  background-color: var(--carrot-dark);
+}
 
 
