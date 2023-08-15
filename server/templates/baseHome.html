@@ -105,7 +105,7 @@
                     </div>
                     <div class="checkbox-wrapper-22 alarm-toggle">
                         <label class="switch" for="checkbox2">
-                            <input type="checkbox" id="checkbox2" />
+                            <input name="alarm" value="1" type="checkbox" id="checkbox2" {% if request.user.notice == 1 %}checked{% endif %}/>
                             <div class="slider round"></div>
                         </label>
                     </div>
