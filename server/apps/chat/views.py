@@ -321,6 +321,8 @@ def enter_room(request, channelId, roomId, type):
         if curRoom.room_type == BLIND_ROOM:
             #익명채팅방
             roomMembers = BlindRoomMember.objects.filter(room=curRoom)
+            # 딕셔너리로 익명채팅방에서의 nickname가져오기
+            myBlindRoom_nicknames = BlindRoomMember.objects.filter(room=curRoom,)
         else:
             roomMembers = RoomMember.objects.filter(room=curRoom)
 
