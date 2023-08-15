@@ -138,3 +138,4 @@ function confirm_authnum(){
 function signup_check(){
     alert("가입이 완료되었습니다.")
 }
+

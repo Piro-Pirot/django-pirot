@@ -33,14 +33,15 @@ const darkModeDiv = document.querySelector(".checkbox-wrapper-13:last-child");
 lightModeCheckbox.addEventListener("change", () => {
   if (lightModeCheckbox.checked) {
     body.classList.remove("dark-mode");
-    body.classList.remove("bw-mode")
-  }
+    body.classList.remove("bw-mode");
+  };
   if (darkModeCheckbox.checked) {
     darkModeCheckbox.checked = false;
   };
   if (bwModeCheckbox.checked) {
     bwModeCheckbox.checked = false;
   };
+  localStorage.setItem('theme', 'light-mode');
 });
 darkModeCheckbox.addEventListener("change", () => {
   if (darkModeCheckbox.checked) {
@@ -54,6 +55,7 @@ darkModeCheckbox.addEventListener("change", () => {
   if (bwModeCheckbox.checked) {
     bwModeCheckbox.checked = false;
   };
+  localStorage.setItem('theme', 'dark-mode')
 });
 bwModeCheckbox.addEventListener("change", () => {
   if (bwModeCheckbox.checked) {
@@ -66,5 +68,6 @@ bwModeCheckbox.addEventListener("change", () => {
   if (darkModeCheckbox.checked) {
     darkModeCheckbox.checked = false;
   };
+  localStorage.setItem('theme', 'bw-mode')
 });
 

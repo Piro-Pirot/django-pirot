@@ -139,7 +139,12 @@ function createBubble(bubbleData, timeFlag, profileFlag) {
     if(bubbleData['is_notice'] === NOTICE) {
         bubbleDiv.classList.add('bubble-notice');
         bubbleContainer.classList.add('bubble-notice-container');
-        bubbleContainer.innerHTML = bubbleData['content'];
+
+        let bubbleNotice = document.createElement('div');
+        bubbleNotice.classList.add('bubble-notice-content')
+        bubbleNotice.innerHTML = bubbleData['content'];
+        
+        bubbleContainer.appendChild(bubbleNotice);
     } else {
         if(bubbleData['user__username'] === curUsername) {
             // 로그인 사용자의 말풍선인 경우

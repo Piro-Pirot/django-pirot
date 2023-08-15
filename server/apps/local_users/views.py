@@ -91,7 +91,7 @@ def profile_setting(request, channelID):
 
         return redirect(url)
 
-    if request.user.id == '491e61f0-f98b-43cd-b6df-90bedd90541e': # 기수가 없는 admin 예외 처리
+    if request.user.username == 'admin': # 기수가 없는 admin 예외 처리
         level = 0
     else:
         channelPasser = Passer.objects.filter(channel=channel, passer_name=current_user.name, passer_phone=current_user.phone_number).get()
@@ -119,8 +119,11 @@ def request_api(phone_num, auth_num):
     message = "POST" + " " + URI + "\n" + timestamp + "\n" + ACCESS_KEY
     message = bytes(message, 'UTF-8')
 
-    secret_key = getattr(settings, 'SECRET_KEY')
+    secret_key = getattr(settings,'SECRET_KEY')
+    secret_key = secret_key[1:len(secret_key)-2]
     secret_key = bytes(secret_key, 'UTF-8')
+    
+    SMS_SENDER = getattr(settings, 'SMS_SENDER')
     
     # API 요청의 무결성을 보장하기 위한 서명 값 생성
     # Body를 Access Key ID와 맵핑되는 Secret Key로 암호화한 서명값
@@ -137,21 +140,22 @@ def request_api(phone_num, auth_num):
     body = {
         "type" : "SMS",
         "contentType" : "COMM",
-        "from" : getattr(settings, 'SMS_SENDER'),
+        "from" : str(SMS_SENDER),
         "content" : f"[Pirot] 인증번호 [{auth_num}]를 입력해주세요.",
         "messages" : [{
             "to" : f"{phone_num}"
         }]
     }
+    #디버깅
+    print("sms_sender: ", SMS_SENDER)
+    print("URL: ", URL)
+    print("message: ", message)
+    
     # NCP(naver cloud platform) API에 POST 요청 -> 그러면 SMS 발송됨
     requests.post(URL, data=json.dumps(body), headers=headers)
-    
-    #디버깅
-    print("request headers: ", headers)
-    print("Request body: ", json.dumps(body))
 
 # SMS 인증번호 생성 , 데이터 베이스에 저장한 후 SMS 발송하는 함수
-def post(request):
+def sms_sender(request):
     # http POST 요청으로 전달된 JSON 데이터를 파싱(JSON->python). 사용자가 입력한 휴대폰 번호가 포함되어있음.
     data = json.loads(request.body)
     try:
@@ -171,17 +175,18 @@ def post(request):
         return JsonResponse({'message' : '인증번호 발송 및 DB 입력완료'}, status=200)   
 
 def sms_check(request):
-    data = json.loads(request.body)
-    user = User.objects.filter(phone_number=data['hypen_phone_num'])
-    # 아이디 중복검사하기!
-    # if len(user) == 1:
-    #     return JsonResponse({'is_auth': False})
-    # else:
-    verification = SMS_Auth.objects.get(phone_num=data['phone_num'])
-    if verification.auth_num == data['auth_num']:
-        return JsonResponse({'is_auth': True})
-    else:
-        return JsonResponse({'is_auth' : False})
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        # user = User.objects.filter(phone_number=data['hypen_phone_num'])
+        # 아이디 중복검사하기!
+        # if len(user) == 1:
+        #     return JsonResponse({'is_auth': False})
+        # else:
+        verification = SMS_Auth.objects.get(phone_num=data['phone_num'])
+        if verification.auth_num == data['auth_num']:
+            return JsonResponse({'is_auth': True})
+        else:
+            return JsonResponse({'is_auth' : False})
         
             
 
@@ -200,3 +205,25 @@ def channel_code(request):
         pass
     else:
         return render(request, template_name='users/channelCode.html')
+
+
+# 전체 설정 모달
+
+def preferences(request):
+    if request.method == 'POST':
+        channel_id = request.POST.get('channelId')
+        curUserObj = request.user
+        if request.POST.get('theme'):
+             # 아무것도 선택하지 않는 경우는 안 됨
+            checkedTheme = request.POST.get('theme')
+            curUserObj.theme = str(checkedTheme)
+            curUserObj.save()
+        if request.POST.get('alarm'):
+            checkedAlarm = request.POST.get('alarm')
+            curUserObj.notice = int(checkedAlarm)
+            curUserObj.save()
+        else:
+            curUserObj.notice = 0
+            curUserObj.save()
+
+        return redirect(f'/room/{channel_id}/main/')
