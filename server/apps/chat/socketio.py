@@ -1,5 +1,6 @@
 import base64
 import json
+import os
 from bs4 import BeautifulSoup
 import markdown
 from pygments.styles import get_style_by_name
@@ -12,6 +13,9 @@ import server.apps.bubbles.views as bubble
 import server.apps.posts.views as post
 from django.db.models import F, Func, Value, CharField
 
+from datetime import datetime
+import imghdr
+
 
 ROOM = 0
 BLIND_ROOM = 1
@@ -22,7 +26,7 @@ sio = socketio.AsyncServer(async_mode='asgi')
 app = socketio.ASGIApp(sio)
 
 # 말풍선 하나 json 변환
-def bubble_serializer(bubble_obj, is_blind):
+def bubble_serializer(bubble_obj, is_blind, profile_img):
     dic = {}
     dic['user'] = bubble_obj.user.username
     dic['user__name'] = bubble_obj.user.name
@@ -36,11 +40,15 @@ def bubble_serializer(bubble_obj, is_blind):
     if is_blind:
         dic['nickname'] = bubble_obj.nickname
         dic['profile_img'] = bubble_obj.profile_img.url
+    else:
+        dic['profile_img'] = profile_img
     dic['month'] = dic['created_at'][5:7]
     dic['day'] = dic['created_at'][8:10]
     dic['hour'] = dic['created_at'][11:13]
     dic['min'] = dic['created_at'][14:16]
     json_dic = json.dumps(dic)
+
+    print(json_dic)
     
     return json_dic
 
@@ -88,6 +96,7 @@ async def connect(sid, environ, auth):
 async def send_message(sid, data):
     roomId = int(data['roomId'])
     room = await sync_to_async(Room.objects.get)(id=roomId)
+    user = await sync_to_async(User.objects.get)(username=data['user'])
 
     data['msg'] = str(BeautifulSoup(data['msg']))
 
@@ -104,30 +113,56 @@ async def send_message(sid, data):
         newBubble = bubble_serializer(newBubble, True)
     else:
         newBubble = await bubble.save_msg(room, data)
+        newBubble['user_profile_img'] = user.profile_img
         newBubble = bubble_serializer(newBubble, False)
     
     await sio.emit('display_message', newBubble, to=roomId)
     print('massage was saved')
 
+
 @sio.on('send_file')
 async def send_file(sid, data):
-    room_id = data['roomId']
-    room = Room.objects.get(id=room_id)
+    room_id = int(data['roomId'])
+    room = await sync_to_async(Room.objects.get)(id=room_id)
+    user = await sync_to_async(User.objects.get)(username=data['user'])
     print('saving file...')
     buffer = base64.b64decode(data['file'])
     print(buffer)
-    with open('result.png', 'wb') as output_file:
-        output_file.write(buffer)
+    today = datetime.today().strftime("%Y%m%d")
 
-    if room.room_type == BLIND_ROOM:
-        #익명채팅방
-        newBubble = await bubble.save_blind_msg(room, data)
-        newBubble = bubble_serializer(newBubble, True)
-    else:
-        newBubble = await bubble.save_msg(room, data)
-        newBubble = bubble_serializer(newBubble, False)
+    # 디렉토리가 없으면 만들기
+    if not os.path.isdir(f'media/{today}/'):
+        os.makedirs(f'media/{today}/')
     
-    await sio.emit('diaplay_message', newBubble, to=room_id)
+    file_list = os.listdir(f'media/{today}')
+    # 파일 쓰기
+    with open(f'media/{today}/upload{len(file_list)}', 'wb') as output_file:
+        output_file.write(buffer)
+    
+    filename = f'media/{today}/upload{len(file_list)}'
+
+    img_type = imghdr.what(f'media/{today}/upload{len(file_list)}')
+    
+    if img_type != None:
+        os.rename(filename, f'{filename}.{img_type}')
+        data['file'] = f'{today}/upload{len(file_list)}.{img_type}'
+        print(data)
+
+        if room.room_type == BLIND_ROOM:
+            #익명채팅방
+            newBubble = await bubble.save_blind_msg(room, data)
+            newBubble = bubble_serializer(newBubble, True, '')
+        else:
+            newBubble = await bubble.save_msg(room, data)
+            try:
+                newBubble = bubble_serializer(newBubble, False, user.profile_img.url)
+            except:
+                newBubble = bubble_serializer(newBubble, False, '')
+        
+        await sio.emit('display_message', newBubble, to=room_id)
+    else:
+        os.remove(filename)
+
 
 @sio.event
 async def disconnect(sid):
