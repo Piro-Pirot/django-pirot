@@ -394,3 +394,15 @@ def enter_room(request, channelId, roomId, type):
     # 채팅 방의 멤버가 아니라면 튕기기
     errorMsg = '잘못된 접근입니다.'
     return render(request, 'error.html', {'errorMsg': errorMsg})
+
+# def load_reddots(request):
+#     # reddots을 불러오는 ajax
+#     if request.method == 'POST' and request.user.is_authenticated:
+#         req = json.loads(request.body)
+#         room_id = req['roomId']
+#         curUsername = req['curUsername']
+
+#         thisRoom = Room.objects.get(id=room_id)
+
+
+    

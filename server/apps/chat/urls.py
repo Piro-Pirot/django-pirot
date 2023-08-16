@@ -8,4 +8,5 @@ urlpatterns = [
     path('invite_member_ajax/', invite_member_ajax),
     path('<int:channelId>/<str:type>/', main_room),
     path('<int:channelId>/<int:roomId>/<str:type>/', enter_room),
+    # path('create_reddots_ajax/', load_reddots),
 ]
