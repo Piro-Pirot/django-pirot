@@ -38,6 +38,15 @@
             {% endblock %}    
         </section>
     </div>
+
+    <!-- 모바일 반응형 'mob' -->
+    <div class="mob-container">
+        <div class="warning">
+            본 웹서비스는 쾌적한 사용환경을 위해
+            <br> 모바일 화면을 지원하지 않습니다
+        </div>
+    </div>
+
     <form action="/user/preferences/" method="post">
         {% csrf_token %}
         <dialog class="modal settings-modal">

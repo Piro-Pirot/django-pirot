@@ -6,6 +6,7 @@
 @import 'profile-setting.css';
 @import 'friendly.css';
 @import 'board.css';
+@import 'mobile_responsive/mob-base.css';
 
 .container {
   display: flex;
@@ -225,7 +226,7 @@ background-color: #f3b95431;
   width: calc(100vw - 24rem);
   height: 100vh;
   padding: var(—section-padding) var(—section-padding) 0 var(—section-padding);
-  background-color: #e3e3e3;
+  background-color: var(--body-bgclr);
 }
 
 .whiteblock {
@@ -338,10 +339,22 @@ background-color: #f3b95431;
   font-size: 1.3rem;
 }
 
-#attachIcon {
+#imageIcon {
   /* padding: 0.2rem; */
   border-top-left-radius: 0.5rem;
+}
+
+#imageIcon .attach-label{
   cursor: pointer;
+}
+
+.chat-icons #upload-file {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
 }
 
 #reserveMsg {
@@ -349,7 +362,7 @@ background-color: #f3b95431;
   cursor: pointer;
 }
 
-#imageIcon {
+#attachIcon {
   border-bottom-left-radius: 0.5rem;
   cursor: pointer;
 }
@@ -486,7 +499,3 @@ background-color: #f3b95431;
 .post-input-container > button:hover {
   background-color: var(--carrot-dark);
 }
-
-/* .board > div:last-child {
-  margin-bottom: 150%;
-} */

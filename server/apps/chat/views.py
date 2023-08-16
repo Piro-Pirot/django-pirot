@@ -321,6 +321,8 @@ def enter_room(request, channelId, roomId, type):
         if curRoom.room_type == BLIND_ROOM:
             #익명채팅방
             roomMembers = BlindRoomMember.objects.filter(room=curRoom)
+            # 딕셔너리로 익명채팅방에서의 nickname가져오기
+            myBlindRoom_nicknames = BlindRoomMember.objects.filter(room=curRoom,)
         else:
             roomMembers = RoomMember.objects.filter(room=curRoom)
 
@@ -405,4 +407,17 @@ def enter_room(request, channelId, roomId, type):
 #         thisRoom = Room.objects.get(id=room_id)
 
 
+def setting_blindroom_profile(request):
+    if request.method == 'POST':
+        # 익명채팅방 이름 수정
+        room_id = request.POST['roomId']
+        Member = BlindRoomMember.objects.get(user=request.user, room=room_id)
+        fixed_nickname = request.POST.get('nickname')
+        Member.nickname = fixed_nickname
+        Member.save()
+        
+        
+        # 닉네임 수정
+        
+        return render(request, 'rooms/room.html', {'nickname': Member.nickname})
     

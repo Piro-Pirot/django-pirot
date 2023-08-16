@@ -21,22 +21,42 @@ import base64
 def main(request):
     return render(request, "index.html")
 
+def username_check_ajax(request):
+    req = json.loads(request.body)
+    input_username = req['username']
+
+    is_there_same_username = User.objects.filter(username=input_username)
+    if len(is_there_same_username) or not input_username.encode().isalnum():
+        return JsonResponse({'result': False})
+    else:
+        return JsonResponse({'result': True})
+
 
 def signup(request):
     if request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            auth.login(request, user)
-            return redirect('/')
-        else:
-            return redirect('/user/signup/')
+        username = request.POST['username']
+        name = request.POST['name']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        phone_number = request.POST['phone_number']
+
+        is_same_username = User.objects.filter(username=username)
+        if len(is_same_username):
+            return render(request, 'error.html', {'errorMsg': '아이디가 중복되었습니다.'})
+        if password1 != password2:
+            return render(request, 'error.html', {'errorMsg': '비밀번호가 다릅니다.'})
+        
+        new_user = User.objects.create_user(
+            username = username,
+            name = name,
+            password = password1,
+            phone_number = phone_number
+        )
+        new_user.save()
+        auth.login(request, new_user)
+        return redirect('/')
     else:
-        form = SignupForm()
-        context = {
-            'form': form,
-        }
-        return render(request, template_name='users/signup.html', context=context)
+        return render(request, 'users/signup.html')
 
 @csrf_exempt
 def login(request):
