@@ -268,6 +268,10 @@ def main_room(request, channelId, type):
         myJoinInfo = Join.objects.filter(user=request.user)
         for joinInfo in myJoinInfo:
             myChannels.append(Channel.objects.get(id=joinInfo.passer.channel.id))
+
+
+        # 회원가입되어 있으며, 채널에 연결된 회원 정보 -> user객체와 passer 객체가 있음
+        channel_join_list = Join.objects.filter(passer__channel=curChannel)
     else:
         return redirect('/')
 
@@ -285,6 +289,7 @@ def main_room(request, channelId, type):
             'myPassInfo': myPassInfo,
             'urlType': type,
             'myChannels': myChannels,
+            'channel_join_list': channel_join_list
         }
     )
 
@@ -356,6 +361,9 @@ def enter_room(request, channelId, roomId, type):
         myJoinInfo = Join.objects.filter(user=request.user)
         for joinInfo in myJoinInfo:
             myChannels.append(Channel.objects.get(id=joinInfo.passer.channel.id))
+
+        # 회원가입되어 있으며, 채널에 연결된 회원 정보 -> user객체와 passer 객체가 있음
+        channel_join_list = Join.objects.filter(passer__channel=curChannel)
     else:
         return redirect('/')
 
@@ -388,6 +396,7 @@ def enter_room(request, channelId, roomId, type):
                     'myPassInfo': myPassInfo,
                     'urlType': type,
                     'myChannels': myChannels,
+                    'channel_join_list': channel_join_list
                 }
             )
         
