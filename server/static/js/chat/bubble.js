@@ -51,6 +51,11 @@ let lastMin = 0;
 let lastSender = '';
 let lastBubbleType = CHAT;
 
+// 마지막 말풍선의 년, 월, 일 저장
+let lastYear = 0;
+let lastMonth = 0;
+let lastDate = 0;
+
 function isSameWithNext(thisBubble, nextBubble) {
     if((thisBubble['hour'] == nextBubble['hour']
     && thisBubble['min'] == nextBubble['min']
@@ -87,6 +92,10 @@ const loadBubblesResponse = (ajaxBubbles) => {
     lastMin = firstBubble['min'];
     lastSender = firstBubble['user__username'];
     lastBubbleType = firstBubble['is_notice'];
+
+    lastYear = firstBubble['year'];
+    lastMonth = firstBubble['month'];
+    lastDate = firstBubble['day'];
     
     for(let i = 1; i < ajaxBubbles.length - 1; i++) {
         const prevBubble = ajaxBubbles[i-1];
@@ -103,6 +112,10 @@ const loadBubblesResponse = (ajaxBubbles) => {
         lastMin = lastBubble['min'];
         lastSender = lastBubble['user__username'];
         lastBubbleType = lastBubble['is_notice'];
+
+        lastYear = lastBubble['year'];
+        lastMonth = lastBubble['month'];
+        lastDate = lastBubble['day'];
         createBubble(lastBubble, true, isSameWithPrev(secondLastBubble, lastBubble));
     } catch {
         console.log('theres no next bubble');
