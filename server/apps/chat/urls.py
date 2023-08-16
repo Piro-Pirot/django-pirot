@@ -8,5 +8,5 @@ urlpatterns = [
     path('invite_member_ajax/', invite_member_ajax),
     path('<int:channelId>/<str:type>/', main_room),
     path('<int:channelId>/<int:roomId>/<str:type>/', enter_room),
-    path('setting_blindroom/<int:channelId>/<int:roomId>/<str:type>/', setting_blindroom),
+    path('setting_blindroom/', setting_blindroom_profile),
 ]
