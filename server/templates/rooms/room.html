@@ -84,18 +84,22 @@
         </div>
 
         <!-- 채팅방 프로필 사진 & 닉네임 수정(익명채팅방)-->
+        {% if room.room_type == 1 %}
         <form action="setting_blindroom/" method="post" id="form-setting">
             {% csrf_token %}
             <div class="btn-friend-profile-img">
                 이미지 동그랗게 넣어주세요...석류오빠..
                 {% comment %} <img src=""> {% endcomment %}
             </div>
+            {% with target_room_id=room.id %}
             <label>닉네임: </label>
-            <input type='text' name="nickname" value="{{ nickname }}">
+            <input type='text' name="nickname" value="{{ blindroom_nicknames.target_room_id }}">
             <input type="hidden" name="roomId" id="" value="{{ room.id }}">
             <input type="hidden" name="channelId" id="" value="{{ channel.id }}">
             <button type='submit'>수정 완료</button>
+            {% endwith %}
         </form>
+        {% endif %}
 
         <div class="alarm-select">
             <div class="alarm-title">
