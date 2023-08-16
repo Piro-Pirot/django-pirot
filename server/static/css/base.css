@@ -225,7 +225,7 @@ background-color: #f3b95431;
   width: calc(100vw - 24rem);
   height: 100vh;
   padding: var(—section-padding) var(—section-padding) 0 var(—section-padding);
-  background-color: #e3e3e3;
+  background-color: var(--body-bgclr);
 }
 
 .whiteblock {
