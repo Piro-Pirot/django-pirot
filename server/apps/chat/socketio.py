@@ -34,7 +34,10 @@ def bubble_serializer(bubble_obj, is_blind, profile_img):
     dic['content'] = bubble_obj.content
     dic['is_delete'] = bubble_obj.is_delete
     dic['read_cnt'] = bubble_obj.read_cnt
-    dic['file'] = bubble_obj.file.url
+    try:
+        dic['file'] = bubble_obj.file.url
+    except:
+        dic['file'] = ''
     dic['is_notice'] = bubble_obj.is_notice
     dic['created_at'] = str(bubble_obj.created_at)
     if is_blind:
@@ -42,6 +45,7 @@ def bubble_serializer(bubble_obj, is_blind, profile_img):
         dic['profile_img'] = bubble_obj.profile_img.url
     else:
         dic['profile_img'] = profile_img
+    dic['year'] = dic['created_at'][0:4]
     dic['month'] = dic['created_at'][5:7]
     dic['day'] = dic['created_at'][8:10]
     dic['hour'] = dic['created_at'][11:13]
@@ -110,12 +114,15 @@ async def send_message(sid, data):
     if room.room_type == BLIND_ROOM:
         #익명채팅방
         newBubble = await bubble.save_blind_msg(room, data)
-        newBubble = bubble_serializer(newBubble, True)
+        newBubble = bubble_serializer(newBubble, True, '')
     else:
         newBubble = await bubble.save_msg(room, data)
-        newBubble['user_profile_img'] = user.profile_img
-        newBubble = bubble_serializer(newBubble, False)
-    
+        # newBubble['user_profile_img'] = user.profile_img
+        try:
+            newBubble = bubble_serializer(newBubble, False, user.profile_img.url)
+        except:
+            newBubble = bubble_serializer(newBubble, False, '')
+
     await sio.emit('display_message', newBubble, to=roomId)
     print('massage was saved')
 
