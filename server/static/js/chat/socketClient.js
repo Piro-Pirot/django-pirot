@@ -13,6 +13,7 @@ socket.on('connect', async () => {
 let bScroll = 0;
 
 socket.on('display_message', async (data) => {
+    console.log(data);
     data = JSON.parse(data);
     console.log(data);
     let offsetH = 0;
@@ -33,7 +34,7 @@ socket.on('display_message', async (data) => {
     // console.log('calcScroll is...', calcScroll());
     // console.log('bScroll is...', bScroll);
     // 스크롤을 너무 많이 올린 게 아니라면 맨 아래로
-    if(bScroll - 700 <= offsetH) {
+    if(bScroll - 500 <= offsetH) {
         console.log('controlling!');
         controlScroll();
     }
@@ -54,7 +55,7 @@ function onClickSendMessage(user, id) {
 
     controlScroll();
 
-    socket.emit('send_message', {'msg': msg, 'file': 'delete me js', 'user': user, 'roomId': id});
+    socket.emit('send_message', {'msg': msg, 'file': '', 'user': user, 'roomId': id});
     console.log('send successfully');
 
     document.querySelector('.input').value = null;
@@ -104,12 +105,12 @@ function displayMessage(bubbleData, newTimeFlag) {
         profileImgContainer.classList.add('bubble-profile-img');
 
         let profileImg = document.createElement('img');
-        profileImg.setAttribute('src', bubbleData['file']);
+        profileImg.setAttribute('src', bubbleData['profile_img']);
 
         let nameLabel = document.createElement('label');
         const BLIND_ROOM = 1;
         if(curRoomType == BLIND_ROOM) {
-            // 익명 질문 방이면
+            // 익명 채팅방이면
             nameLabel.innerText = bubbleData['nickname'];
         } else {
             nameLabel.innerText = bubbleData['user__name'];
@@ -133,6 +134,21 @@ function displayMessage(bubbleData, newTimeFlag) {
         bubbleContent.classList.add('bubble-content');
         bubbleContent.innerHTML = bubbleData['content'];
 
+        // 파일을 첨부했다면
+        console.log(bubbleData['file']);
+        let bubbleFileContainer = '';
+        let bubbleFileContent = '';
+        if(!!bubbleData['file']) {
+            bubbleFileContent = document.createElement('img');
+            bubbleFileContent.setAttribute('src', bubbleData['file']);
+            bubbleFileContent.classList.add('bubble-content');
+
+            bubbleFileContent.style.cursor = 'pointer';
+            bubbleFileContent.addEventListener('click', () => {
+                open(bubbleData['file'], '_blank');
+            });
+        }
+
         let bubbleTime = document.createElement('label');
         bubbleTime.classList.add('bubble-time');
         bubbleTime.innerText = `${bubbleData['hour']}:${bubbleData['min']}`;
@@ -140,9 +156,17 @@ function displayMessage(bubbleData, newTimeFlag) {
         if(bubbleData['user'] === curUsername) {
             //나의 말풍선일 때
             bubbleContentContainer.appendChild(bubbleTime);
-            bubbleContentContainer.appendChild(bubbleContent);
+            if(!!bubbleData['file']) {
+                bubbleContentContainer.appendChild(bubbleFileContent);
+            } else {
+                bubbleContentContainer.appendChild(bubbleContent);
+            }
         } else {
-            bubbleContentContainer.appendChild(bubbleContent);
+            if(!!bubbleData['file']) {
+                bubbleContentContainer.appendChild(bubbleFileContent);
+            } else {
+                bubbleContentContainer.appendChild(bubbleContent);
+            }
             bubbleContentContainer.appendChild(bubbleTime);
         }
 
