@@ -108,6 +108,12 @@ def load_bubbles(request):
                     function='DATE_FORMAT',
                     output_field=CharField()
                 ),
+                year=Func(
+                    F('created_at'),
+                    Value('%Y'),
+                    function='DATE_FORMAT',
+                    output_field=CharField()
+                ),
                 month=Func(
                     F('created_at'),
                     Value('%m'),
@@ -139,6 +145,12 @@ def load_bubbles(request):
                     function='DATE_FORMAT',
                     output_field=CharField()
                 ),
+                year=Func(
+                    F('created_at'),
+                    Value('%Y'),
+                    function='DATE_FORMAT',
+                    output_field=CharField()
+                ),
                 month=Func(
                     F('created_at'),
                     Value('%m'),
@@ -161,15 +173,3 @@ def load_bubbles(request):
             return JsonResponse({'result': None})
         
         return JsonResponse({'result': json.dumps(bubbles, default=str)})
-
-
-def upload_files(request):
-    if request.method == "POST":
-        print(request.FILES.values())
-        return redirect('/')
-        
-    for key, value in request.GET.items():
-        print('new get request..', key, value)
-        
-    print('i am get method')
-    return redirect('/')

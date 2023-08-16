@@ -13,11 +13,12 @@ socket.on('connect', async () => {
 let bScroll = 0;
 
 socket.on('display_message', async (data) => {
+    console.log(data);
     data = JSON.parse(data);
     console.log(data);
     let offsetH = 0;
-    if(data['hour'] == lastHour && data['min'] == lastMin && data['user__name'] == lastSender && lastBubbleType == CHAT) {
-        // 마지막 말풍선과 시간이 같고 보낸 사람이 같고 마지막 말풍선이 CHAT일 때 시간과 프로필을 표시하지 않음
+    if(data['year'] == lastYear && data['month'] == lastMonth && data['day'] == lastDate && data['hour'] == lastHour && data['min'] == lastMin && data['user__name'] == lastSender && lastBubbleType == CHAT) {
+        // 마지막 말풍선과 시간이 같고 보낸 사람이 같고 마지막 말풍선이 CHAT일 때 마지막 말풍선의 시간을 지움
         offsetH = displayMessage(data, false);
     } else {
         offsetH = displayMessage(data, true);
@@ -25,6 +26,10 @@ socket.on('display_message', async (data) => {
         lastMin = data['min'];
         lastSender = data['user__name'];
         lastBubbleType = data['is_notice'];
+
+        lastYear = data['year'];
+        lastMonth = data['month'];
+        lastDate = data['day'];
     }
     console.log('offsetH is ...', offsetH);
     // console.log('conv height is...', conversationSection.scrollHeight);
@@ -33,7 +38,7 @@ socket.on('display_message', async (data) => {
     // console.log('calcScroll is...', calcScroll());
     // console.log('bScroll is...', bScroll);
     // 스크롤을 너무 많이 올린 게 아니라면 맨 아래로
-    if(bScroll - 700 <= offsetH) {
+    if(bScroll - 500 <= offsetH) {
         console.log('controlling!');
         controlScroll();
     }
@@ -54,7 +59,53 @@ function onClickSendMessage(user, id) {
 
     controlScroll();
 
-    socket.emit('send_message', {'msg': msg, 'file': 'delete me js', 'user': user, 'roomId': id});
+    let today = new Date(); 
+
+    let year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let date = today.getDate();
+    let day = today.getDay();
+
+    if(year != lastYear || month != lastMonth || date != lastDate) {
+        // 마지막 말풍선과 년, 월, 일 중 하나라도 다를 때 notice 말풍선 생성
+        console.log('lastYear is...', lastYear);
+        console.log('lastMonth is...', lastMonth);
+        console.log('lastDate is...', lastDate);
+        switch(day) {
+            case 0:
+                day = '일';
+                break;
+            case 1:
+                day = '월';
+                break;
+            case 2:
+                day = '화';
+                break;
+            case 3:
+                day = '수';
+                break;
+            case 4:
+                day = '목';
+                break;
+            case 5:
+                day = '금';
+                break;
+            case 6:
+                day = '토';
+                break;
+        }
+        NOTICE = 1
+        socket.emit('send_message', {
+            'msg': `${year}년 ${month}월 ${date}일 ${day}요일`,
+            'file': '', 'user': user, 'roomId': id, 'bubbleType': NOTICE
+        });
+        console.log('send today!!!');
+        lastYear = year;
+        lastMonth = month;
+        lastDate = date;
+    }
+
+    socket.emit('send_message', {'msg': msg, 'file': '', 'user': user, 'roomId': id});
     console.log('send successfully');
 
     document.querySelector('.input').value = null;
@@ -104,12 +155,12 @@ function displayMessage(bubbleData, newTimeFlag) {
         profileImgContainer.classList.add('bubble-profile-img');
 
         let profileImg = document.createElement('img');
-        profileImg.setAttribute('src', bubbleData['file']);
+        profileImg.setAttribute('src', bubbleData['profile_img']);
 
         let nameLabel = document.createElement('label');
         const BLIND_ROOM = 1;
         if(curRoomType == BLIND_ROOM) {
-            // 익명 질문 방이면
+            // 익명 채팅방이면
             nameLabel.innerText = bubbleData['nickname'];
         } else {
             nameLabel.innerText = bubbleData['user__name'];
@@ -133,6 +184,21 @@ function displayMessage(bubbleData, newTimeFlag) {
         bubbleContent.classList.add('bubble-content');
         bubbleContent.innerHTML = bubbleData['content'];
 
+        // 파일을 첨부했다면
+        console.log(bubbleData['file']);
+        let bubbleFileContainer = '';
+        let bubbleFileContent = '';
+        if(!!bubbleData['file']) {
+            bubbleFileContent = document.createElement('img');
+            bubbleFileContent.setAttribute('src', bubbleData['file']);
+            bubbleFileContent.classList.add('bubble-content');
+
+            bubbleFileContent.style.cursor = 'pointer';
+            bubbleFileContent.addEventListener('click', () => {
+                open(bubbleData['file'], '_blank');
+            });
+        }
+
         let bubbleTime = document.createElement('label');
         bubbleTime.classList.add('bubble-time');
         bubbleTime.innerText = `${bubbleData['hour']}:${bubbleData['min']}`;
@@ -140,9 +206,17 @@ function displayMessage(bubbleData, newTimeFlag) {
         if(bubbleData['user'] === curUsername) {
             //나의 말풍선일 때
             bubbleContentContainer.appendChild(bubbleTime);
-            bubbleContentContainer.appendChild(bubbleContent);
+            if(!!bubbleData['file']) {
+                bubbleContentContainer.appendChild(bubbleFileContent);
+            } else {
+                bubbleContentContainer.appendChild(bubbleContent);
+            }
         } else {
-            bubbleContentContainer.appendChild(bubbleContent);
+            if(!!bubbleData['file']) {
+                bubbleContentContainer.appendChild(bubbleFileContent);
+            } else {
+                bubbleContentContainer.appendChild(bubbleContent);
+            }
             bubbleContentContainer.appendChild(bubbleTime);
         }
 

@@ -226,13 +226,13 @@ background-color: #f3b95431;
   width: calc(100vw - 24rem);
   height: 100vh;
   padding: var(—section-padding) var(—section-padding) 0 var(—section-padding);
-  background-color: #e3e3e3;
+  background-color: var(--body-bgclr);
 }
 
 .whiteblock {
   position: absolute;
-  background-color: white;
-  width: calc(100% - 1rem);
+  background-color: var(--chat-input);
+  width: calc(100% - 2*var(--section-padding));
   height: calc(100% - 2*var(--section-padding));
   border-radius: 0.8rem;
   top: 50%;
@@ -339,10 +339,22 @@ background-color: #f3b95431;
   font-size: 1.3rem;
 }
 
-#attachIcon {
+#imageIcon {
   /* padding: 0.2rem; */
   border-top-left-radius: 0.5rem;
+}
+
+#imageIcon .attach-label{
   cursor: pointer;
+}
+
+.chat-icons #upload-file {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
 }
 
 #reserveMsg {
@@ -350,7 +362,7 @@ background-color: #f3b95431;
   cursor: pointer;
 }
 
-#imageIcon {
+#attachIcon {
   border-bottom-left-radius: 0.5rem;
   cursor: pointer;
 }

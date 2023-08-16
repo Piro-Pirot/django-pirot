@@ -1,3 +1,91 @@
+// 화면이 시작되면 아이디에 바로 포커스
+let inputUsername = document.getElementById('username');
+inputUsername.focus();
+const redColor = '#E02B0C';
+const carrotColor = '#fba405';
+inputUsername.style.borderColor = redColor;
+console.log(inputUsername);
+
+/* 로그인 id 중복 검사 Ajax */
+const usernameValidateAjax = async(username) => {
+    let usernameCookie = document.cookie;
+    let csrfToken = usernameCookie.substring(usernameCookie.indexOf('=') + 1);
+
+    const url = '/user/username_check_ajax/';
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            "charset" : "utf-8",
+            "X-CSRFToken": csrfToken,
+        },
+        body: JSON.stringify({username: username}),
+    });
+
+    if(res.ok) {
+        let {result: result} = await res.json();
+        usernameValidateResponse(result);
+    }
+}
+
+const usernameValidateResponse = (result) => {
+    let checker = document.querySelector('.username-check');
+    if(result) {
+        inputUsername.style.borderColor = carrotColor;
+        checker.className = 'username-check';
+    } else {
+        inputUsername.style.borderColor = redColor;
+        checker.classList.add('check-hidden');
+    }
+}
+
+inputUsername.addEventListener('input', () => {
+    usernameValidateAjax(inputUsername.value);
+});
+
+
+/* 비밀번호 유효성 검사 */
+let password1 = document.getElementById('password1');
+password1.style.borderColor = redColor;
+
+password1.addEventListener('input', () => {
+    let checker = document.querySelector('.password1-check');
+    const passwordRule = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/;
+    if(passwordRule.test(password1.value)) {
+        password1.style.borderColor = carrotColor;
+        checker.className = 'password1-check';
+    } else {
+        password1.style.borderColor = redColor;
+        checker.classList.add('check-hidden');
+    }
+})
+
+
+
+/* 비밀번호 일치 검사 */
+let password2 = document.getElementById('password2');
+password2.style.borderColor = redColor;
+
+password2.addEventListener('input', () => {
+    const password1 = document.getElementById('password1');
+    let checker = document.querySelector('.password2-check');
+    if(password2.value === password1.value) {
+        password2.style.borderColor = carrotColor;
+        checker.className = 'password2-check';
+    } else {
+        password2.style.borderColor = redColor;
+        checker.classList.add('check-hidden');
+    }
+});
+
+/* 인증번호 엔터 */
+document.getElementById('input_authnum').addEventListener('keydown', (event) => {
+    if (event.key == 'Enter') {
+        event.preventDefault();
+        document.querySelector('.signup-input-container #confirm').click();
+    }
+});
+
 const autoHyphen = (target) => {
     target.value = target.value
       .replace(/[^0-9]/g, '')
@@ -59,6 +147,10 @@ function send_authnum(){
     xhr.send(data);
 
     // 인증하기 버튼 활성화
+    let inputTds = document.querySelectorAll('.input_sms');
+    inputTds.forEach(element => {
+        element.className = 'input_sms';
+    });
     document.getElementById("input_authnum").focus();
     btnAuthConfirm = document.getElementById("confirm");
     btnAuthConfirm.classList.add('auth-btn-active');
@@ -135,7 +227,20 @@ function confirm_authnum(){
     onAuthReq(phonenum_without_hypen, inputAuthNumber, inputPhoneNumber);
 }
 
-function signup_check(){
-    alert("가입이 완료되었습니다.")
+function validateForm() {
+    let form = document.forms["signup-form"];
+    form.forEach(element => {
+        if (element.value == "") {
+          alert(`${element} 항목이 누락되었습니다.`);
+          return false;
+        }
+    });
+    return true;
 }
 
+function signup_check(){
+    if(validateForm())
+        alert("가입이 완료되었습니다.");
+}
+
+//비밀번호 확인
