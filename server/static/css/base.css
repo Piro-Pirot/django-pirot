@@ -6,6 +6,7 @@
 @import 'profile-setting.css';
 @import 'friendly.css';
 @import 'board.css';
+@import 'mobile_responsive/mob-base.css';
 
 .container {
   display: flex;
@@ -498,7 +499,3 @@ background-color: #f3b95431;
 .post-input-container > button:hover {
   background-color: var(--carrot-dark);
 }
-
-/* .board > div:last-child {
-  margin-bottom: 150%;
-} */
