@@ -2,6 +2,9 @@
 nav {
     border-bottom: 4px solid var(--carrot-dark);
 }
+main{
+    padding-top: 3rem;
+}
 .error-main {
     display: flex;
     flex-direction: column;
@@ -9,7 +12,7 @@ nav {
 }
 .error-label {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
 }
 .error-label h1 {
     font-size: 1.5rem;
@@ -25,7 +28,13 @@ nav {
     font-weight: 700;
     margin-top: 1rem;
 }
-
+.error-mainimg {
+    width: 20rem;
+    margin-top: 1rem;
+}
+.error-mainimg img {
+    width: 100%
+}
 /* 버튼 스타일 */
 .error-main div a button {
     border-radius: 1rem;
@@ -42,7 +51,7 @@ nav {
     0 2px 2px rgba(0,0,0,0.15);
 }
 .back-button {
-    margin-top: 3rem;
+    margin-top: 1rem;
 }
 .error-main div a button:hover {
     cursor: pointer;
