@@ -2,7 +2,7 @@
     {% for room in myRooms %}
         {% if room.room.room_type == 2 %}
         <!-- 개인채팅방 -->
-        <li class="btn-room-container">
+        <li id="{{ room.room.id }}" class="btn-room-container">
             <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
                 <div class="btn-room room-{{ room.room.id }}">
                     <div class="room-profile-img">
@@ -23,7 +23,7 @@
         </li>
         {% else %}
         <!-- 단체채팅방 -->
-        <li class="btn-room-container group">
+        <li id="{{ room.room.id }}" class="btn-room-container group">
             <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
                 <div class="btn-room room-{{ room.room.id }}">
                     <div class="room-profile-img">
@@ -39,7 +39,7 @@
 
     {% for room in myBlindRooms %}
     <!-- 익명채팅방 -->
-    <li class="btn-room-container blind">
+    <li id="{{ room.room.id }}" class="btn-room-container blind">
         <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
             <div class="btn-room room-{{ room.room.id }}">
                 <div class="room-profile-img">
@@ -62,12 +62,12 @@
         <div class="title">
             새로운 채팅방 만들기
         </div>
-        <input type="text" placeholder="이름을 검색하세요">
+        <input type="text" id="input-new-chat" placeholder="이름을 검색하세요">
         <div class="invite-list">
-            <ul>
+            <ul class="invite-ul">
                 {% for join_info in channel_join_list %}
                 {% if join_info.user != user %}
-                <li>
+                <li id="{{ join_info.passer.id }}">
                     <div class="btn-friend">
                         <div class="btn-friend-profile-img">
                             <img src="{{ join_info.user.profile_img }}" alt="">
@@ -114,10 +114,3 @@
     </div>
     </form>
 </dialog>
-
-<script>
-    let roomListRoomId = {{ room.id }};
-    /* 선택된 채팅방 색칠 */
-    const selectedRoom = document.querySelector(`.room-${roomListRoomId}`)
-    selectedRoom.parentElement.classList.add('selected-room');
-</script>
