@@ -58,15 +58,22 @@
           로그인
         </div>
         {% endif %}
-        <div id="signup" class="nav-right-item signup-btn">
+
+        {% if user.is_authenticated %} 
+        <div id="signupAndLogout" class="nav-right-item signup-btn">
+          로그아웃
+        </div>
+        {% else %}
+        <div id="signupAndLogout" class="nav-right-item signup-btn">
           회원가입
         </div>
+        {% endif %}
       </div>
       <div class="nav-right-mobile">
         <i class="fa-solid fa-bars"></i>
       </div>  
       <div class="nav-right-mobile-menu">
-         <!-- 로그인이 된 경우 -->
+        <!-- 로그인이 된 경우 -->
         {% if user.is_authenticated %} 
         <!-- 그 중 가입된 첫 번째 채널이 없는 경우 -->
         {% if myJoinInfo.first == None %}
@@ -94,7 +101,12 @@
           로그인
         </div>
         {% endif %}
+
+        {% if user.is_authenticated %}
+        <div><a href="/user/logout/">로그아웃</a></div>
+        {% else %}
         <div><a href="/user/signup/">회원가입</a></div>
+        {% endif %}
       </div>
     </nav>
     <div>
