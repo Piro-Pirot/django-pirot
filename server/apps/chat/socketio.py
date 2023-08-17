@@ -11,6 +11,7 @@ from asgiref.sync import sync_to_async
 from server.apps.chat.models import *
 import server.apps.bubbles.views as bubble
 import server.apps.posts.views as post
+import server.apps.chat.views as chat
 from django.db.models import F, Func, Value, CharField
 
 from datetime import datetime
@@ -175,6 +176,16 @@ async def send_file(sid, data):
 async def disconnect(sid):
     print('disconnect ', sid)
 
+@sio.on('sleep')
+async def handle_sleep(sid, data):
+    print('disconnecting', sid)
+    roomId = int(data['roomId'])
+    room = await sync_to_async(Room.objects.get)(id=roomId)
+    exitTime = await post.save_exitInfo(room, data)
+    curUserObj = await sync_to_async(User.objects.get)(id=data['curUserId'])
+    print(curUserObj)
+    print(exitTime)
+    print('exit time was saved')
 
 @sio.on('send_post')
 async def send_post(sid, data):

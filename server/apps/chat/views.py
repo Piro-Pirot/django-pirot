@@ -421,3 +421,19 @@ def setting_blindroom_profile(request):
         
         return render(request, 'rooms/room.html', {'nickname': Member.nickname})
     
+
+def save_exitInfo(room, data):
+    curUserId = data['curUserId']
+    curUserObj = User.objects.get(id=curUserId)
+    exitTime = data['exitTime']
+
+    if room.room_type == 'BLIND_ROOM':
+        roomMemberObj = BlindRoomMember.objects.get(user=curUserObj, room=room)
+        roomMemberObj.exit_time = exitTime
+        roomMemberObj.save()
+    else:
+        roomMemberObj = RoomMember.objects.get(user=curUserObj, room=room)
+        roomMemberObj.exit_time = exitTime
+        roomMemberObj.save()
+
+    return roomMemberObj.exit_time

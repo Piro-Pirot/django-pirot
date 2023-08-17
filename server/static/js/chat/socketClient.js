@@ -12,6 +12,17 @@ socket.on('connect', async () => {
 
 let bScroll = 0;
 
+// disconnect 직전 사용자의 정보와 채팅방의 정보, 나간 시각 필요
+socket.on('disconnecting', async () => {
+    console.log('disconnecting')
+    await socket.emit('sleep', {
+        'roomId': curRoomId,
+        'curUserId': curUserId,
+        'exitTime': Date.now() //퇴장시각 (밀리초 단위)
+    })
+  });
+
+
 socket.on('display_message', async (data) => {
     console.log(data);
     data = JSON.parse(data);
