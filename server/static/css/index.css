@@ -1,9 +1,10 @@
 @import 'style.css';
+@import 'mobile_responsive/mob-index.css';
 
 body {
   display: flex;
   justify-content: center;
-  padding-top: 12rem;
+  /* padding-top: 12rem; */
   font-size: 1rem;
   color: black;
 }
@@ -13,9 +14,10 @@ main {
 
 .boss-container {
   width: 81.5rem;
+  padding-top: 12rem;
 }
 /* Navbar */
-nav {
+.boss-container nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -774,10 +776,22 @@ footer {
 
 }
 
+.mobile-boss-container {
+  display: none;
+}
+
 
 @media screen and (max-width: 767px) {
 
-  body {
+  .boss-container {
+    display: none;
+  }
+
+  .mobile-boss-container {
+    display: block;
+  }
+}
+  /* body {
     justify-content: start;
   }
   main {
@@ -956,11 +970,11 @@ footer {
     height: 18rem;
   }
 
-} 
+}  */
 
 /* 모바일 햄버거 */
 
-.nav-right-mobile {
+/* .nav-right-mobile {
   background-color: var(--carrot-light);
   border-radius: 1rem;
   padding: 0.7rem;
@@ -999,7 +1013,7 @@ footer {
   justify-content: center;
   
   /* background-color: var(--carrot-light); */
-}
+/* }
 .nav-right-mobile-menu > div:hover {
   background-color: var(--carrot-light);
   border-radius: 1rem;
@@ -1011,7 +1025,9 @@ footer {
 }
 .nav-right-mobile-menu.active {
   display: flex;
-}
+} */
+
+
 
 /* login modal */
 
