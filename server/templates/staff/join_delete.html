@@ -13,6 +13,7 @@
             <div class="delete-block">
                 <div>{{ passer.level }}기 {{ passer.passer_name }}</div>
                 <div>
+                    <input type="hidden" name="passerId" value="{{ passer.id }}">
                     <input type="submit" value="삭제" />
                 </div>
             </div>
