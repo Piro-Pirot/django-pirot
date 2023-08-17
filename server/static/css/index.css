@@ -720,7 +720,10 @@ footer {
     padding-left: 4rem;
     padding-right: 4rem;
   }
-  .nav-right-mobile-menu {
+  .nav-right-mobile-menu .active {
+    visibility: hidden; 
+  }
+  #hamberg {
     display: none;
   }
 }
@@ -772,7 +775,10 @@ footer {
     padding-left: 4rem;
     padding-right: 4rem;
   }
-  .nav-right-mobile-menu {
+  .nav-right-mobile-menu .active {
+    display: none;
+  }
+  #hamberg {
     display: none;
   }
 }
