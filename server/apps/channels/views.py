@@ -187,7 +187,6 @@ def join_delete(request, channelID):
 
     if request.method == "POST":
         user = request.POST['user']
-        # 현재 동아리의 user(실명과 전화번호가 고유성 부여)
         passer = Passer.objects.get(passer_name=user.name, passer_phone=user.phone_number, channel=channel)
         join = Join.objects.get(passer=passer) # passer 지우기 전에 불러와야 함
         join.delete() # 회원 삭제
