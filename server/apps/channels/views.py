@@ -244,13 +244,13 @@ def search_friends_ajax(request):
             result_member_list.append(member.id)
 
 
-        # 나를 제외한 search_letter를 포함하는 채널 구성원
-        search_letter_members = Passer.objects.filter(channel=curChannel, passer_name__contains=search_letter).exclude(passer_name=request.user.name)
-
-
         # search_cho: 검색어의 초성 모두 추출
         # search_letter: 검색어 중 자모 결합인 경우
         search_cho, search_letter = get_chosung_from_input(search_input_value)
+
+
+        # 나를 제외한 search_letter를 포함하는 채널 구성원
+        search_letter_members = Passer.objects.filter(channel=curChannel, passer_name__contains=search_letter).exclude(passer_name=request.user.name)
         
 
         for member in search_letter_members:
