@@ -186,13 +186,18 @@ def join_delete(request, channelID):
     channelPassers = Passer.objects.filter(channel=channel)
 
     if request.method == "POST":
-        user = request.POST['user']
-        passer = Passer.objects.get(passer_name=user.name, passer_phone=user.phone_number, channel=channel)
-        join = Join.objects.get(passer=passer) # passer 지우기 전에 불러와야 함
-        join.delete() # 회원 삭제
-        passer.delete() # 합격자 명단에서도 삭제
+        passerId = request.POST.get('passerId')
+        passer = Passer.objects.get(id=passerId)
+        try:
+            join = Join.objects.get(passer=passer)
+            join.delete() # 동아리 회원이면 회원 삭제
+            passer.delete() # 합격자 명단에서도 삭제
+        except:
+            passer.delete() # 아직 가입하지 않은 경우, 합격자 명단에서만 삭제     
 
-        return redirect("/staff/join_delete/%s") % (channelID)
+        url = '/staff/join_delete/%s' % (channelID)
+        
+        return redirect(url)
 
     return render(request, 'staff/join_delete.html', {"channel":channel, "channelPassers":channelPassers}) # 회원 실명, 기수 참조 가능
 
