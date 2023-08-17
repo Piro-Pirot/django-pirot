@@ -5,6 +5,7 @@ import string
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from .searchHangul import *
 
 def index(request):
     myJoinInfo = ''
@@ -224,7 +225,49 @@ def bookmark(request):
             ).save()
 
             return JsonResponse({'type': 'added'})
-    
+
+
+# 친구 검색
+def search_friends_ajax(request):
+    if request.method == 'POST':
+        req = json.loads(request.body)
+        channel_id = req['channelId']
+        curChannel = Channel.objects.get(id=channel_id)
+        search_input_value = req['inputValue']
+
+        # 나를 제외한 search_input_value를 포함하는 채널 구성원
+        search_members = Passer.objects.filter(channel=curChannel, passer_name__contains=search_input_value).exclude(passer_name=request.user.name)
+
+        # 채널 구성원들 id를 모은 리스트
+        result_member_list = []
+        for member in search_members:
+            result_member_list.append(member.id)
+
+
+        # 나를 제외한 search_letter를 포함하는 채널 구성원
+        search_letter_members = Passer.objects.filter(channel=curChannel, passer_name__contains=search_letter).exclude(passer_name=request.user.name)
+
+
+        # search_cho: 검색어의 초성 모두 추출
+        # search_letter: 검색어 중 자모 결합인 경우
+        search_cho, search_letter = get_chosung_from_input(search_input_value)
+        
+
+        for member in search_letter_members:
+            member_cho = get_chosung_from_str(member.passer_name)
+            # 검색어의 초성에 해당하고 result_member_list에 존재하지 않으면 추가
+            for ch in member_cho:
+                if len(search_cho) != 0 and ch in search_cho and member.id not in result_member_list:
+                    result_member_list.append(member.id)
+
+        print(result_member_list)
+
+        result_member_list = json.dumps(result_member_list)
+
+
+        return JsonResponse({'result_list': result_member_list})
+
+
 
 def start(request):
     return render(request, template_name="users/channel.html")

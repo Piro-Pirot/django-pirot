@@ -150,8 +150,10 @@
     <script src="{% static 'js/theme.js' %}"></script>
     {% if urlType == 'main' %}
         <script src="{% static 'js/roomModal.js' %}"></script>
+        <script src="{% static 'js/searchRooms.js' %}"></script>
     {% elif urlType == 'friends' %}
         <script src="{% static 'js/chat/friendBtn.js' %}"></script>
+        <script src="{% static 'js/searchFriends.js' %}"></script>
     {% endif %}
 </body>
 </html>

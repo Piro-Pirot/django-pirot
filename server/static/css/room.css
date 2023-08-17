@@ -131,6 +131,10 @@
     background-color: var(--carrot-super-light);
 }
 
+.btn-room-list .room-hidden {
+    display: none;
+}
+
 
 /* 익명채팅방 아이콘 */
 .blind a::after {
@@ -273,6 +277,10 @@
 
 .btn-friend-list > .btn-friend-container:first-child {
     margin-top: 0rem;
+}
+
+.btn-friend-list .friend-hidden {
+    display: none;
 }
 
 .btn-friend {
