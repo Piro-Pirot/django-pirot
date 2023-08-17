@@ -43,11 +43,11 @@ searchRoomsInput.addEventListener('input', () => {
   searchRoomsRequest(curChannelId, searchRoomsInput.value);
 });
 
-// focus 해제되었을 때 전부 보이기
-searchRoomsInput.addEventListener('focusout', () => {
-  searchRoomsInput.value = '';
-  searchRoomsRequest(curChannelId, searchRoomsInput.value);
-});
+// focus 되었을 때 전부 보이기
+// searchRoomsInput.addEventListener('focusout', () => {
+//   searchRoomsInput.value = '';
+//   searchRoomsRequest(curChannelId, searchRoomsInput.value);
+// });
 
 
 
