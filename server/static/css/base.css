@@ -123,9 +123,10 @@
 }
 
 .channel-name-select {
-  width: 11rem;
+  width: 12em;
   box-sizing: border-box;
   position: relative;
+  text-overflow: ellipsis;
 }
 
 .select-btn {
@@ -159,7 +160,7 @@
 
 .select-options {
   display: none;
-  background-color: rgb(246, 244, 244);
+  background-color: var(--body-bgclr);
   box-sizing: border-box;
   position: absolute;
   width: 100%;
@@ -179,11 +180,11 @@
   display: flex;
   align-items: center;
   font-size: 1.2rem;
-  color: black;
+  color: var(--alt-fontclr);
 }
 
 .channel-option:hover {
-background-color: #f3b95431;
+background-color: var(--carrot-super-light);
 }
 
 .search-box > input {
@@ -212,7 +213,7 @@ background-color: #f3b95431;
 .search-box > i {
   font-size: 1.7rem;
   position: absolute;
-  right: 4rem;
+  right: 2.8rem;
   cursor: pointer;
 }
 
