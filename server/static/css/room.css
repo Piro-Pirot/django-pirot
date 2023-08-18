@@ -125,6 +125,7 @@
     transition: 0.2s;
     /* border-bottom: 1px solid #face8331; */
     position: relative;
+    border-radius: 1rem;
 }
 
 .btn-room-container a:hover {
