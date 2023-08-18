@@ -2,6 +2,7 @@
   font-family: 'GowunBatang-Regular';
   width: 100vw;
   padding-top: 7rem;
+  display: none;
 }
 
 .slide-menu {
@@ -174,13 +175,6 @@
 .desc-title div {
   margin-bottom: 1rem;
 }
-
-/* .section-image {
-  width: 80%;
-  background-image: url("../../image/pirot_demo.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-} */
 
 .section-image {
   width: 80%;

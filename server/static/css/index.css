@@ -786,23 +786,14 @@ footer {
 }
 
 
-@media (min-width: 351px) and (max-width: 767px) {
+/* @media (min-width: 351px) and (max-width: 767px) {
 
 .mobile-boss-container {
   display: none;
-}
+} */
 
 
-@media screen and (max-width: 767px) {
 
-  .boss-container {
-    display: none;
-  }
-
-  .mobile-boss-container {
-    display: block;
-  }
-}
   /* body {
     justify-content: start;
   }
@@ -1179,7 +1170,6 @@ dialog {
 
 .developers-section {
   height: 50rem;
-
 }
 
 .dev-section-container {  
@@ -1208,7 +1198,6 @@ dialog {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-color: #fff9ef; */
   border-radius: 0 1.2rem 0 1.2rem;
   width: 20rem;
   padding: 2rem 0;
@@ -1222,7 +1211,6 @@ dialog {
 .image-content {
   position: relative;
   margin-bottom: 1rem;
-  /* box-shadow: 0 15px 50px rgba(0,0,0,0.15); */
   border-radius: 50%;
 }
 
@@ -1247,7 +1235,7 @@ dialog {
   text-align: center;
 }
 
-.card-content h2{
+.card-content h2 {
   font-size: 2.2rem;
   font-weight: 700;
   margin-bottom: 1rem;
@@ -1258,3 +1246,16 @@ dialog {
 .card-content p {
   font-size: 1.5rem;
 }
+
+
+@media screen and (max-width: 767px) {
+
+  .boss-container {
+    display: none;
+  }
+
+  .mobile-boss-container {
+    display: block;
+  }
+}
+
