@@ -21,7 +21,13 @@ def index(request):
 def profile_staff(request, channelID):
 
     channel = Channel.objects.get(id=channelID) # 임시!! 위에 모델 임포트도 지우기 나중에
+    channelDefaultImg = channel.default_image
     current_user = request.user
+
+    # 테스트 단계에서 프로필 없는 사람들을 위해 예외 처리
+    if not current_user.profile_img:
+        current_user.profile_img = channelDefaultImg
+        current_user.save()
 
     if request.method == 'POST':
         if 'delete' in request.POST:
