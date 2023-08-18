@@ -31,7 +31,7 @@ window.onload = function() {
   }, 0)
 };
 
-const loginButton = document.querySelector("#login");
+
 const loginModal = document.querySelector("#loginModal");
 const signupLogoutButton = document.querySelector("#signupAndLogout");
 const signupModal = document.querySelector("#signupModal");
@@ -84,10 +84,10 @@ creatorButton.addEventListener("click", () => {
 });
 
 
-const NavBtn = document.querySelector('.nav-right-mobile');
-const MobileMenu = document.querySelector('.nav-right-mobile-menu');
+// const NavBtn = document.querySelector('.nav-right-mobile');
+// const MobileMenu = document.querySelector('.nav-right-mobile-menu');
 
-NavBtn.addEventListener('click', () => {
-  MobileMenu.classList.toggle("active"); 
-  NavBtn.classList.toggle("active");
-});
+// NavBtn.addEventListener('click', () => {
+//   MobileMenu.classList.toggle("active"); 
+//   NavBtn.classList.toggle("active");
+// });
