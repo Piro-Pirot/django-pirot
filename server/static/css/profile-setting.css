@@ -372,7 +372,7 @@
 }
 
 .gen-form input[type=text]::placeholder {
-  color: rgb(237, 237, 237);
+  color: var(--placeholder);
   font-size: 1rem;
 }
 

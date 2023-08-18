@@ -108,7 +108,8 @@ dialog {
   border-radius: 1.5rem;
   font-size: 1rem;
   transition: 0.2s;
-  caret-color: var(--font-size);
+  caret-color: var(--alt-fontclr);
+  color: var(--alt-fontclr);
 }
 
 .modal-content input[type=text]::placeholder {

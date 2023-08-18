@@ -37,6 +37,7 @@
   --modal-bgclr: rgba(255, 255, 255, 0.986); 
   --iconBar-bgclr: #f0f0f0; 
   --orange-stick: var(--carrot-color);
+  --placeholder: rgba(174, 174, 174, 0.668);
 
 }
 
@@ -63,6 +64,7 @@
   --modal-bgclr: rgb(35, 35, 35);
   --iconBar-bgclr: var(--body-bgclr);
   --orange-stick: var(--carrot-color);
+  --placeholder: rgb(237, 237, 237);
 }
 
 
@@ -88,6 +90,7 @@
   --modal-bgclr: rgb(52, 52, 52);
   --iconBar-bgclr: var(--body-bgclr);
   --orange-stick: #808080;
+  --placeholder: rgb(237, 237, 237);
 }
 
 
