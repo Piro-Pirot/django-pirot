@@ -99,12 +99,15 @@ def profile_setting(request, channelID):
     if Staff.objects.filter(user=current_user).exists():
         url = '/staff/setting/%s' % (channelID)
         return redirect(url)
+    
+    if not current_user.profile_img:
+        current_user.profile_img = channelDefaultImg
+        current_user.save()
 
     if request.method == 'POST':
         if 'delete' in request.POST:
             current_user.profile_img.delete()
             current_user.profile_img = channelDefaultImg # 채널의 default_img로 표시되도록
-            current_user.save()
         elif 'change' in request.POST:
             if request.FILES.get('profile_img'):
                 current_user.profile_img = request.FILES['profile_img']
