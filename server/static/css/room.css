@@ -125,10 +125,15 @@
     transition: 0.2s;
     /* border-bottom: 1px solid #face8331; */
     position: relative;
+    border-radius: 1rem;
 }
 
 .btn-room-container a:hover {
     background-color: var(--carrot-super-light);
+}
+
+.btn-room-list .room-hidden {
+    display: none;
 }
 
 
@@ -273,6 +278,10 @@
 
 .btn-friend-list > .btn-friend-container:first-child {
     margin-top: 0rem;
+}
+
+.btn-friend-list .friend-hidden {
+    display: none;
 }
 
 .btn-friend {
