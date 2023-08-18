@@ -59,6 +59,10 @@
   left: -0.8rem;
 }
 
+.setting-profile-image.no-line::after {
+  display: none;
+}
+
 .setting-profile-image i {
   position: absolute;
   bottom: 0;
@@ -206,7 +210,7 @@
   background-color: var(--carrot-super-light);
 }
 
-.staff-menu button.bottom-line::after {
+/* .staff-menu button.bottom-line::after {
   content: '';
   display: block;
   width: 10rem;
@@ -215,7 +219,7 @@
   position: absolute;
   bottom: -1.2rem;
   left: 2.5rem;
-}
+} */
 
 .staff-container-right {
   width: calc(100% - 20rem);
@@ -365,6 +369,11 @@
   font-size: 1.2rem;
   outline: 0;
   transition: 0.1s;
+}
+
+.gen-form input[type=text]::placeholder {
+  color: rgb(237, 237, 237);
+  font-size: 1rem;
 }
 
 .gen-form input[type=text]:focus {
