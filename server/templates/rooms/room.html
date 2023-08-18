@@ -30,18 +30,20 @@
         </div>
         <div class="conversation"></div>
         <div class="chat-input">
-            <textarea class="input"></textarea>
-            <div class="code-input" id="editor-container"></div>
-            <div class="chat-icons">                
-                <div id="imageIcon">
-                    <label for="upload-file" class="attach-label"><i class="ri-image-2-fill"></i></label>
-                    <input type="file" name="upload-file" id="upload-file" accept="image/*">
+            <div class="chat-input-container">
+                <textarea class="input"></textarea>
+                <div class="code-input" id="editor-container"></div>
+                <div class="chat-icons">                
+                    <div id="imageIcon">
+                        <label for="upload-file" class="attach-label"><i class="ri-image-2-fill"></i></label>
+                        <input type="file" name="upload-file" id="upload-file" accept="image/*">
+                    </div>
+                    <div id="codeIcon">
+                        <i class="ri-code-line"></i>
+                    </div>
                 </div>
-                <div id="codeIcon">
-                    <i class="ri-code-line"></i>
-                </div>
+                <button type="button" class='btn-send' onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
             </div>
-            <button type="button" class='btn-send' onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
         </div>
     </div>
     <div class="board-container">

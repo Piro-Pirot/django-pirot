@@ -116,6 +116,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 7rem;
+    line-height: 2rem;
 }
 
 .btn-room-container a {

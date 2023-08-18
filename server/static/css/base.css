@@ -315,11 +315,17 @@ background-color: var(--carrot-super-light);
   background-color: var(--section-bgclr);
 }
 
+.chat-input-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
 .chat-input textarea {
   outline: 0;
   padding: 0.3rem 0.5rem;
   height: 100%;
-  width: 80%;
+  width: calc(85% - 3rem);
   border: 1px solid var(--carrot-light);
   border-radius: 0.5rem;
   resize: none;
@@ -339,7 +345,7 @@ background-color: var(--carrot-super-light);
   width: 2rem;
   border: 1px solid var(--carrot-light);
   border-radius: 0.5rem;
-  margin-left: 0.5rem;
+  margin: 0 0.5rem;
 }
 
 .chat-icons div {
@@ -393,7 +399,7 @@ background-color: var(--carrot-super-light);
 .chat-input button {
   height: 100%;
   width: 15%;
-  margin-left: 0.5rem;
+  /* margin-left: 0.5rem; */
   background-color: var(--carrot-color);
   color: var(--send-fontclr);
   font-size: 1.2rem;
