@@ -35,13 +35,34 @@
         </section>
     </div>
 
+    <div class="mob-icons hide-element">
+        <section class="mob-icon-bar">
+            <i class="ri-menu-2-line mob-menu-icon"></i>
+            {% if urlType == 'friends' %}
+            <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-fill mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line mob-room-icon"></i></a>
+            {% elif urlType == 'main' %}
+            <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-fill mob-room-icon"></i></a>
+            {% else %}
+            <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line mob-room-icon"></i></a>
+            {% endif %}
+            {% if request.user.profile_img %}
+                <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img class="mob-profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+            {% else %}
+                <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img class="mob-profile-icon" src="{{ channel.default_image.url }}" alt="프로필"></a>
+            {% endif %}
+        </section>
+    </div>
+
     <!-- 모바일 반응형 'mob' -->
-    <div class="mob-container">
+    <!-- <div class="mob-container">
         <div class="warning">
             본 웹서비스는 쾌적한 사용환경을 위해
             <br> 모바일 화면을 지원하지 않습니다
         </div>
-    </div>
+    </div> -->
 
     <form action="/user/preferences/" method="post">
         {% csrf_token %}
@@ -98,6 +119,7 @@
     </script>
     {% block extra %}
     {% endblock %}
+    <script src="{% static 'js/mob-setting.js' %}"></script>
     <script src="{% static 'js/iconBar.js' %}"></script>
     <script src="{% static 'js/settingsModal.js' %}"></script>
     <script src="{% static 'js/theme.js' %}"></script>

@@ -1,4 +1,4 @@
-const loadPosts = async(roomId, curUsername) => {
+const loadPosts = async (roomId, curUsername) => {
     const url = '/posts/load_posts_ajax/';
     const res = await fetch(url, {
         method: 'POST',
@@ -6,11 +6,11 @@ const loadPosts = async(roomId, curUsername) => {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrfToken
         },
-        body: JSON.stringify({roomId: roomId, curUsername: curUsername})
+        body: JSON.stringify({ roomId: roomId, curUsername: curUsername })
     });
 
     if (res.ok) {
-        let {result: ajaxPosts} = await res.json();
+        let { result: ajaxPosts } = await res.json();
         ajaxPosts = JSON.parse(ajaxPosts);
 
         loadPostsResponse(ajaxPosts);
@@ -30,14 +30,14 @@ function createPost(postData) {
     let postId = postData['id']
     let postUser = postData['user__username']
     let roomId = postData['room']
-    
+
     let postContainer = document.createElement('div');
     let postBox = document.createElement('div'); //석류가 추가한 코드
     let postDiv = document.createElement('div');
     let buttonDiv = document.createElement('div')
 
     // 로그인 사용자가 작성한 게시글인 경우
-    if(postUser == curUsername) {
+    if (postUser == curUsername) {
         let happyBtn = document.createElement('button');
         happyBtn.classList.add('happy');
         let happyImg = document.createElement('i');
@@ -47,7 +47,7 @@ function createPost(postData) {
         happyCount.classList.add(`happy-count-${postId}`);
         happyBtn.appendChild(happyImg);
         happyBtn.appendChild(happyCount);
-        happyBtn.onclick = function() {
+        happyBtn.onclick = function () {
             onClickHappy(postId, roomId);
         };
         buttonDiv.appendChild(happyBtn); // 기뻐요
@@ -61,7 +61,7 @@ function createPost(postData) {
         sadCount.classList.add(`sad-count-${postId}`);
         sadBtn.appendChild(sadImg);
         sadBtn.appendChild(sadCount);
-        sadBtn.onclick = function() {
+        sadBtn.onclick = function () {
             onClickSad(postId, roomId);
         };
         buttonDiv.appendChild(sadBtn); // 슬퍼요
@@ -71,7 +71,7 @@ function createPost(postData) {
         deleteBtn.classList.add('delete');
         deleteIcon.classList.add('ri-close-line');
         deleteBtn.appendChild(deleteIcon);
-        deleteBtn.onclick = function() {
+        deleteBtn.onclick = function () {
             onClickDelete(postId, roomId);
         };
         buttonDiv.appendChild(deleteBtn); // 삭제 버튼
@@ -80,10 +80,10 @@ function createPost(postData) {
         postContainer.classList.add('post-container');
 
         // 자신이 누른 버튼 확인
-        if (postData['curhappyCount']==1) {
+        if (postData['curhappyCount'] == 1) {
             happyBtn.classList.toggle('checked');
         }
-        if (postData['cursadCount']==1) {
+        if (postData['cursadCount'] == 1) {
             sadBtn.classList.toggle('checked');
         }
     } else {
@@ -96,7 +96,7 @@ function createPost(postData) {
         happyCount.classList.add(`happy-count-${postId}`);
         happyBtn.appendChild(happyImg);
         happyBtn.appendChild(happyCount);
-        happyBtn.onclick = function() {
+        happyBtn.onclick = function () {
             onClickHappy(postId, roomId);
         };
         buttonDiv.appendChild(happyBtn);
@@ -110,7 +110,7 @@ function createPost(postData) {
         sadCount.classList.add(`sad-count-${postId}`);
         sadBtn.appendChild(sadImg);
         sadBtn.appendChild(sadCount);
-        sadBtn.onclick = function() {
+        sadBtn.onclick = function () {
             onClickSad(postId, roomId);
         };
         buttonDiv.appendChild(sadBtn);
@@ -119,10 +119,10 @@ function createPost(postData) {
         postContainer.classList.add('post-container');
 
         // 자신이 누른 버튼 확인
-        if (postData['curhappyCount']==1) {
+        if (postData['curhappyCount'] == 1) {
             happyBtn.classList.toggle('checked');
         }
-        if (postData['cursadCount']==1) {
+        if (postData['cursadCount'] == 1) {
             sadBtn.classList.toggle('checked');
         }
     }
@@ -157,7 +157,7 @@ function createPost(postData) {
 function createHappy(happyData) {
     console.log(happyData);
     let postId = happyData['postId'];
-    
+
     let happySelector = `.happy-count-${postId}`
     let happyCountElement = document.querySelector(happySelector);
     happyCountElement.innerText = happyData['happyCount'];
@@ -170,7 +170,7 @@ function createHappy(happyData) {
 function createSad(sadData) {
     console.log(sadData);
     let postId = sadData['postId'];
-    
+
     let happySelector = `.happy-count-${postId}`
     let happyCountElement = document.querySelector(happySelector);
     happyCountElement.innerText = sadData['happyCount'];
@@ -191,43 +191,89 @@ function controlScrollboard() {
 
 
 // 게시판 창 열고 닫기
-const boardCloseButton = document.getElementById("widthControl");
-const chatContainer = document.querySelector(".chat-conversation-container");
-const boardContainer = document.querySelector(".board-container");
+if (matchMedia("(min-width: 768px)").matches) {
+    const boardCloseButton = document.getElementById("widthControl");
+    const chatContainer = document.querySelector(".chat-conversation-container");
+    const boardContainer = document.querySelector(".board-container");
 
-const boardHeader = boardContainer.querySelector(".board-header");
-const boardContents = boardContainer.querySelector(".board").childNodes;
-const boardInput = boardContainer.querySelector(".post-input")
-const boardInputContainer = boardContainer.querySelector(".post-input-container");
-const boardOpenButton = document.getElementById("boardOpen");
+    const boardHeader = boardContainer.querySelector(".board-header");
+    const boardContents = boardContainer.querySelector(".board").childNodes;
+    const boardInput = boardContainer.querySelector(".post-input")
+    const boardInputContainer = boardContainer.querySelector(".post-input-container");
+    const boardOpenButton = document.getElementById("boardOpen");
 
-chatContainer.style.transition = '0.3s';
-boardContainer.style.transition = '0.3s';
+    chatContainer.style.transition = '0.3s';
+    boardContainer.style.transition = '0.3s';
 
-boardCloseButton.onclick = () => {
-    boardContainer.style.width = '3rem';
-    chatContainer.style.width = 'calc(100% - 3rem)';
-    boardHeader.innerText = '';
-    for(let i = 0; i < boardContents.length; i++) {
-        if (boardContents[i].nodeName.toLowerCase() == 'div') {
-            boardContents[i].style.display = 'none';
+    boardCloseButton.onclick = boardClose;
+    function boardClose() {
+        boardContainer.style.width = '3rem';
+        chatContainer.style.width = 'calc(100% - 3rem)';
+        boardHeader.innerText = '';
+        for (let i = 0; i < boardContents.length; i++) {
+            if (boardContents[i].nodeName.toLowerCase() == 'div') {
+                boardContents[i].style.display = 'none';
+            };
         };
+        boardInputContainer.style.display = 'none';
+        boardOpenButton.style.visibility = "visible";
     };
-    boardInputContainer.style.display = 'none';
-    boardOpenButton.style.visibility = "visible";
-};
 
-boardOpenButton.onclick = () => {
-    boardContainer.style.width = '18rem';
-    chatContainer.style.width = 'calc(100% - 18rem)';
-    boardHeader.innerText = 'Board';
-    for(let i = 0; i < boardContents.length; i++) {
-        if (boardContents[i].nodeName.toLowerCase() == 'div') {
-            boardContents[i].style.display = 'block';
+    boardOpenButton.onclick = boardOpen;
+    function boardOpen() {
+        boardContainer.style.width = '18rem';
+        chatContainer.style.width = 'calc(100% - 18rem)';
+        boardHeader.innerText = 'Board';
+        for (let i = 0; i < boardContents.length; i++) {
+            if (boardContents[i].nodeName.toLowerCase() == 'div') {
+                boardContents[i].style.display = 'block';
+            };
         };
+        boardInputContainer.style.display = 'block';
+        boardOpenButton.style.visibility = "hidden";
     };
-    boardInputContainer.style.display = 'block';
-    boardOpenButton.style.visibility = "hidden";
-};
+}
 
+if (matchMedia("(max-width: 768px)").matches) {
+    const boardCloseButton = document.getElementById("widthControl");
+    const chatContainer = document.querySelector(".chat-conversation-container");
+    const boardContainer = document.querySelector(".board-container");
 
+    const boardHeader = boardContainer.querySelector(".board-header");
+    const boardContents = boardContainer.querySelector(".board").childNodes;
+    const boardInput = boardContainer.querySelector(".post-input")
+    const boardInputContainer = boardContainer.querySelector(".post-input-container");
+    const boardOpenButton = document.getElementById("boardOpen");
+
+    chatContainer.style.transition = '0.3s';
+    boardContainer.style.transition = '0.3s';
+
+    function boardClose() {
+        boardContainer.style.width = '3rem';
+        chatContainer.style.width = '100%';
+        boardHeader.innerText = '';
+        document.querySelector('.btn-send').innerText = 'SEND';
+        for (let i = 0; i < boardContents.length; i++) {
+            if (boardContents[i].nodeName.toLowerCase() == 'div') {
+                boardContents[i].style.display = 'none';
+            };
+        };
+        boardInputContainer.style.display = 'none';
+        boardOpenButton.style.visibility = "visible";
+    };
+    boardCloseButton.onclick = boardClose;
+    function boardOpen() {
+        boardContainer.style.width = '50%';
+        chatContainer.style.width = '50%';
+        boardHeader.innerText = 'Board';
+        document.querySelector('.btn-send').innerText = '';
+        for (let i = 0; i < boardContents.length; i++) {
+            if (boardContents[i].nodeName.toLowerCase() == 'div') {
+                boardContents[i].style.display = 'block';
+            };
+        };
+        boardInputContainer.style.display = 'block';
+        boardOpenButton.style.visibility = "hidden";
+    };
+    boardOpenButton.onclick = boardOpen;
+}

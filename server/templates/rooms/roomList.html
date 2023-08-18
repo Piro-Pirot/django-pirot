@@ -2,7 +2,7 @@
     {% for room in myRooms %}
         {% if room.room.room_type == 2 %}
         <!-- 개인채팅방 -->
-        <li class="btn-room-container">
+        <li id="{{ room.room.id }}" class="btn-room-container">
             <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
                 <div class="btn-room room-{{ room.room.id }}">
                     <div class="room-profile-img">
@@ -23,7 +23,7 @@
         </li>
         {% else %}
         <!-- 단체채팅방 -->
-        <li class="btn-room-container group">
+        <li id="{{ room.room.id }}" class="btn-room-container group">
             <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
                 <div class="btn-room room-{{ room.room.id }}">
                     <div class="room-profile-img">
@@ -39,7 +39,7 @@
 
     {% for room in myBlindRooms %}
     <!-- 익명채팅방 -->
-    <li class="btn-room-container blind">
+    <li id="{{ room.room.id }}" class="btn-room-container blind">
         <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
             <div class="btn-room room-{{ room.room.id }}">
                 <div class="room-profile-img">
@@ -62,19 +62,20 @@
         <div class="title">
             새로운 채팅방 만들기
         </div>
-        <input type="text" placeholder="이름을 검색하세요">
+        <input type="text" id="input-new-chat" placeholder="이름을 검색하세요">
         <div class="invite-list">
-            <ul>
-                {% for favorites in myFavorites %}
-                <li>
+            <ul class="invite-ul">
+                {% for join_info in channel_join_list %}
+                {% if join_info.user != user %}
+                <li id="{{ join_info.passer.id }}">
                     <div class="btn-friend">
                         <div class="btn-friend-profile-img">
-                            <img src="{{ favorites.join_set.first.user.profile_img }}" alt="">
+                            <img src="{{ join_info.user.profile_img }}" alt="">
                         </div>
-                        <label for="">{{ favorites }}</label>
+                        <label for="">{{ join_info.passer }}</label>
                         <div class="checkbox-wrapper-30 checkbox">
                             <span class="checkbox">
-                                <input name="{{ favorites.id }}" type="checkbox" />
+                                <input name="{{ join_info.passer.id }}" type="checkbox" />
                                 <svg>
                                     <use xlink:href="#checkbox-30" class="checkbox"></use>
                                 </svg>
@@ -87,29 +88,7 @@
                         </div>
                     </div>
                 </li>
-                {% endfor %}
-                {% for friend in myFriends %}
-                <li>
-                    <div class="btn-friend">
-                        <div class="btn-friend-profile-img">
-                            <img src="{{ friend.join_set.first.user.profile_img }}" alt="">
-                        </div>
-                        <label for="">{{ friend }}</label>
-                        <div class="checkbox-wrapper-30 checkbox">
-                            <span class="checkbox">
-                                <input name="{{ friend.id }}" type="checkbox" />
-                                <svg>
-                                    <use xlink:href="#checkbox-30" class="checkbox"></use>
-                                </svg>
-                            </span>
-                            <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-                                <symbol id="checkbox-30" viewBox="0 0 22 22">
-                                    <path fill="none" stroke="currentColor" d="M5.5,11.3L9,14.8L20.2,3.3l0,0c-0.5-1-1.5-1.8-2.7-1.8h-13c-1.7,0-3,1.3-3,3v13c0,1.7,1.3,3,3,3h13 c1.7,0,3-1.3,3-3v-13c0-0.4-0.1-0.8-0.3-1.2"/>
-                                </symbol>
-                            </svg>
-                        </div>
-                    </div>
-                </li>
+                {% endif %}
                 {% endfor %}
             </ul>
         </div>
@@ -135,10 +114,3 @@
     </div>
     </form>
 </dialog>
-
-<script>
-    let roomListRoomId = {{ room.id }};
-    /* 선택된 채팅방 색칠 */
-    const selectedRoom = document.querySelector(`.room-${roomListRoomId}`)
-    selectedRoom.parentElement.classList.add('selected-room');
-</script>

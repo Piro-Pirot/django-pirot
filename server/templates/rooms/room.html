@@ -132,11 +132,11 @@
         <div class="title">
             채팅방 초대하기
         </div>
-        <input type="text" placeholder="이름을 검색하세요">
+        <input type="text" id="input-new-friend" placeholder="이름을 검색하세요">
         <div class="invite-list">
-            <ul>
+            <ul class="invite-friend-ul">
                 {% for notMember in notMembers %}
-                <li>
+                <li id="{{ notMember.id }}">
                     <div class="btn-friend">
                         <div class="btn-friend-profile-img">
                             <img src="{{ notMember.join_set.first.user.profile_img }}" alt="">

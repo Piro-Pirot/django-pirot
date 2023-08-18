@@ -387,7 +387,7 @@ function onClickHappy(post_id, room_id) {
     socket.emit('send_happy', {'user': curUsername, 'postId': post_id, 'roomId': room_id});
     // console.log(curUsername)
     console.log('send successfully');
-
+    displayMyHappy(post_id);
 }
 
 // Sad click -> id는 post id
@@ -395,7 +395,39 @@ function onClickSad(post_id, room_id) {
 
     socket.emit('send_sad', {'user': curUsername, 'postId': post_id, 'roomId': room_id});
     console.log('send successfully');
+    displayMySad(post_id);
+}
 
+function displayMyHappy(postId) {
+    let happySelector = `.happy-count-${postId}`
+    let happyCountElement = document.querySelector(happySelector);
+
+    let sadSelector = `.sad-count-${postId}`
+    let sadCountElement = document.querySelector(sadSelector);
+
+    if (sadCountElement.parentElement.classList.contains('checked')) {
+        sadCountElement.parentElement.classList.toggle('checked');
+        happyCountElement.parentElement.classList.toggle('checked');
+    }
+    else {
+        happyCountElement.parentElement.classList.toggle('checked');
+    }
+}
+
+function displayMySad(postId) {
+    let happySelector = `.happy-count-${postId}`
+    let happyCountElement = document.querySelector(happySelector);
+
+    let sadSelector = `.sad-count-${postId}`
+    let sadCountElement = document.querySelector(sadSelector);
+
+    if (happyCountElement.parentElement.classList.contains('checked')) {
+        happyCountElement.parentElement.classList.toggle('checked');
+        sadCountElement.parentElement.classList.toggle('checked');
+    }
+    else {
+        sadCountElement.parentElement.classList.toggle('checked');
+    }
 }
 
 
@@ -413,14 +445,6 @@ async function displayHappy(happyData) {
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = happyData['sadCount'];
 
-    // 자신이 누른 버튼 확인
-    // if (happyData['curHappyCount']==1) {
-    //     happyCountElement.parentElement.classList.toggle('checked');
-    // }
-    // if (happyData['curSadCount']==1) {
-    //     sadCountElement.parentElement.classList.toggle('checked');
-    // }
-
 }
 
 async function displaySad(sadData) {
@@ -434,33 +458,6 @@ async function displaySad(sadData) {
     let sadSelector = `.sad-count-${postId}`
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = sadData['sadCount'];
-
-    // 자신이 누른 버튼 확인
-    // if (sadData['curHappyCount']==1) {
-    //     happyCountElement.parentElement.classList.toggle('checked');
-    // }
-    // if (sadData['curSadCount']==1) {
-    //     sadCountElement.parentElement.classList.toggle('checked');
-    // }
-}
-
-async function displayMine(Data) {
-    console.log(Data);
-    let postId = Data['postId'];
-
-    let Selector = `.happy-count-${postId}`
-    let happyCountElement = document.querySelector(happySelector);
-
-    let sadSelector = `.sad-count-${postId}`
-    let sadCountElement = document.querySelector(sadSelector);
-
-    // 자신이 누른 버튼 확인
-    if (Data['curHappyCount']==1) {
-        happyCountElement.parentElement.classList.toggle('checked');
-    }
-    if (Data['curSadCount']==1) {
-        sadCountElement.parentElement.classList.toggle('checked');
-    }
 
 }
 

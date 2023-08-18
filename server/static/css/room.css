@@ -125,10 +125,15 @@
     transition: 0.2s;
     /* border-bottom: 1px solid #face8331; */
     position: relative;
+    border-radius: 1rem;
 }
 
 .btn-room-container a:hover {
     background-color: var(--carrot-super-light);
+}
+
+.btn-room-list .room-hidden {
+    display: none;
 }
 
 
@@ -275,6 +280,10 @@
     margin-top: 0rem;
 }
 
+.btn-friend-list .friend-hidden {
+    display: none;
+}
+
 .btn-friend {
     /* padding: 1rem 2rem; */
     /* background-color: white; */
@@ -396,7 +405,8 @@
     margin-left: 3rem;
     font-size: 1.5rem;
     width: 50%;
-    text-overflow: elipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .chat-name-content .chat-name-icons {
@@ -446,4 +456,13 @@
     font-size: 2rem;
     margin-left: 2rem;
     cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    #chat-member-add:active {
+        color: var(--carrot-color);
+    }
+    #chat-setting:active {
+        color: var(--carrot-color);
+    }
 }
