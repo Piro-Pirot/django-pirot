@@ -14,22 +14,21 @@
 </head>
 
 <body>
-  <div class="boss-container">
+
+
+  <!-- 모바일 반응형 -->
+  <div class="mobile-boss-container">
     <nav>
-      <div class="nav-left">
-        <div class="nav-left-item">
-          <a href="/"><img src="{% static 'image/pirot_logo_long.png' %}"></a>
-        </div>
-      </div>
-      <div class="nav-right">
+      <div class="mob-logo">
+        <a href="/"><img src="{% static 'image/pirot_logo_long.png' %}" alt="피롯로고"></a>
       </div>
     </nav>
-
     <main>
       {% block content %}
       {% endblock %}
     </main>
-      
+  </div>
+
 
   {% comment %} <script src="{% static 'js/index.js' %}"></script> {% endcomment %}
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

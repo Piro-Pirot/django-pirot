@@ -1,9 +1,8 @@
 @import 'style.css';
 
 body {
-  display: flex;
-  justify-content: center;
-  padding-top: 6rem;
+  /* display: flex;
+  justify-content: center; */
   font-size: 1rem;
   margin: 0;
 }
@@ -12,12 +11,14 @@ main {
 }
 
 .boss-container {
+  padding-top: 6rem;
   width: 81.5rem;
   display: flex;
   justify-content: center;
+  margin: 0 auto;
 }
 /* Navbar */
-nav {
+.boss-container nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -53,11 +54,12 @@ nav.sticky {
 
 main {
   width: 40rem;
-  height: calc(100vh - 6rem);
+  height: calc(100vh - 4rem);
   color: black;
   padding-top: 4.5rem;
   display: flex;
   justify-content: center;
+  margin: 0 auto
 }
 
 /* .start-container {
@@ -99,6 +101,7 @@ main {
   letter-spacing: 2px;
   font-weight: 700;
   color: white;
+  text-align: center;
 }
 
 .start-form a:hover {
@@ -116,9 +119,6 @@ main {
 
 /* channel create page */
 
-.start-container .channel-create {
-  /* width: 80%; */
-}
 
 .channel-create-title {
   margin-bottom: 2rem;
@@ -216,14 +216,14 @@ main {
 }
 
 .channel-code-input label {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   margin-right: 1.5rem;
 }
 
 .channel-code-input input[type=text] {
   outline: 0;
   border: 2px solid white;
-  height: 2.3rem;
+  height: 3rem;
   border-radius: 1rem;
   background-color: var(--input-background);
   font-size: 1.1rem;
@@ -430,4 +430,77 @@ main {
       right: 8px;
       top: 38px;
   }
+}
+
+
+/* 모바일 반응형 */
+.mobile-boss-container {
+  /* display: none; */
+}
+
+.mobile-boss-container nav {
+  width: 100%;
+  height: 4rem;
+  border-bottom: 1px solid #face83;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  padding: 0 3rem;
+}
+
+.mob-logo img {
+  width: 7rem;
+}
+
+.start-form p.mob,
+.channel-sent-title p.mob,
+.channel-sent-title h1.mob {
+  display: none;
+}
+
+@media screen and (max-width: 767px) {
+
+  .boss-container {
+    display: none;
+  }
+
+  .mobile-boss-container {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .mobile-boss-container nav {
+    padding: 0 1rem;
+  }
+
+  body {
+    height: 100vh;
+    width: 100vw;
+  }
+
+  main,
+  .channel-create {
+    width: 20rem;
+  }
+
+  .start-title > h1,
+  .channel-create-title > h1,
+  channel-sent-title > h1 {
+    font-size: 2rem;
+    line-height: 3.5rem;
+  }
+
+  .start-form p.lap,
+  .channel-sent-title p.lap,
+  .channel-sent-title h1.lap {
+    display: none;
+  }
+
+  .start-form p.mob,
+  .channel-sent-title p.mob,
+  .channel-sent-title h1.mob {
+    display: block
+  }
+
 }

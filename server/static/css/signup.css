@@ -1,7 +1,7 @@
 /* sign-up */
-
-nav {
-    border-bottom: 4px solid var(--carrot-dark);
+.signup-content {
+    display: flex;
+    justify-content: center;
 }
 .assgin-container {
     display: flex;
@@ -23,7 +23,13 @@ nav {
     font-size: 1.5rem;
     margin-bottom: 1rem;
     line-height: 2rem;
+    text-align: center;
 }
+
+.signup-slogan h1.mob {
+    display: none;
+}
+
 .signup-slogan .signup-title {
     font-size: 2.5rem;
     color: var(--carrot-color);
@@ -214,5 +220,12 @@ border: 2px solid var(--carrot-light);
 
     #time_limit {
         font-size: 0.8rem;
+    }
+
+    .signup-slogan h1.lap {
+        display: none;
+    }
+    .signup-slogan h1.mob {
+        display: block;
     }
 }
