@@ -12,6 +12,7 @@ urlpatterns = [
     path("join_delete/<int:channelID>/", views.join_delete),
     
     path('bookmark_ajax/', views.bookmark),
+    path('search_friends_ajax/', views.search_friends_ajax),
 
     path('channel/', views.start),
     path('channel/create/', views.channel_create),

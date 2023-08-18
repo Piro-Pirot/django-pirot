@@ -1,0 +1,70 @@
+/* error.css */
+nav {
+    border-bottom: 4px solid var(--carrot-dark);
+}
+main{
+    padding-top: 3rem;
+}
+.error-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.error-label {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.error-label h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 2rem;
+}
+.label-title {
+    font-size: 2rem;
+    color: var(--carrot-color);
+}
+.errorMsg {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 1rem;
+}
+.error-mainimg {
+    width: 20rem;
+    margin-top: 1rem;
+}
+.error-mainimg img {
+    width: 100%
+}
+/* 버튼 스타일 */
+.error-main div a button {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: none;
+    background-color: var(--carrot-light);
+    padding: 0 2rem;    
+    height: 2.5rem;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.15),
+    0 1px 1px rgba(0,0,0,0.15),
+    0 2px 2px rgba(0,0,0,0.15),
+    0 2px 2px rgba(0,0,0,0.15);
+}
+.back-button {
+    margin-top: 1rem;
+}
+.error-main div a button:hover {
+    cursor: pointer;
+    color: black;
+    background-color: var(--carrot-color);
+}
+
+/* 반응형 */
+@media screen and (max-width:768px) {
+    .boss-container {
+        width: 22rem;
+    }
+    .errorMsg {
+        font-size: 1.5rem;
+    }
+}

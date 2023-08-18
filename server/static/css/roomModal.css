@@ -127,6 +127,10 @@ dialog {
   width: 70%;
 }
 
+.invite-list .invite-new-hidden {
+  display: none;
+}
+
 .invite-list li {
   padding: 0 1rem;
   border-radius: 1rem;
@@ -228,7 +232,7 @@ dialog {
   -moz-appearance: none;
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
-  background-color: var(--bg);
+/* background-color: var(--bg); */
   border-radius: calc(var(--size, 1) * 4px);
   border: calc(var(--newBrdr, var(--size, 1)) * 1px) solid;
   color: var(--newBrdrClr, var(--brdr));

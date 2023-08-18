@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pirot: 당신의 동아리를 위한 완벽한 커뮤니케이션</title>
   <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
   <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <script src="https://kit.fontawesome.com/58e1f810db.js" crossorigin="anonymous"></script>
@@ -57,14 +58,21 @@
           로그인
         </div>
         {% endif %}
-        <div id="signup" class="nav-right-item signup-btn">
+
+        {% if user.is_authenticated %} 
+        <div id="signupAndLogout" class="nav-right-item signup-btn">
+          로그아웃
+        </div>
+        {% else %}
+        <div id="signupAndLogout" class="nav-right-item signup-btn">
           회원가입
         </div>
+        {% endif %}
       </div>
       <div class="nav-right-mobile">
         <i class="fa-solid fa-bars"></i>
       </div>  
-      <div class="nav-right-mobile-menu">
+      <div class="nav-right-mobile-menu" id="hamberg">
          <!-- 로그인이 된 경우 -->
         {% if user.is_authenticated %} 
         <!-- 그 중 가입된 첫 번째 채널이 없는 경우 -->
@@ -89,11 +97,16 @@
         {% endif %}
         <!-- 로그인이 안 된 경우 -->
         {% else %}
-        <div id="login" class="nav-right-item login-btn">
+        <div id="login" class="nav-right-item login-btn login-btn-mobile">
           로그인
         </div>
         {% endif %}
+
+        {% if user.is_authenticated %}
+        <div><a href="/user/logout/">로그아웃</a></div>
+        {% else %}
         <div><a href="/user/signup/">회원가입</a></div>
+        {% endif %}
       </div>
     </nav>
     <div>
@@ -239,57 +252,208 @@
           </div>
         </div>
       </section>
-      <section class="md-people">
+
+      <!-- <section class="md-people">
         <div class="md-people-container animate">
           <div class="people-header">
             <div id="people-header1">피롯</div>
             <div id="people-header2">을 만든 사람들</div>
+          </div> -->
+
+      <section class="developers-section">
+        <div class="dev-section-container animate">
+          <div class="developers-section-title">
+            만든 사람들
           </div>
-          <div id="people-content">
-            <div id="people-left">
-              <div class="people-left-content">
-                <div class="people-photo"><img src="{% static 'image/pirot_logo_carrot.png' %}" alt=""></div>
-                <div class="people-info">
-                  <div class="people-name">양원채</div>
-                  <div class="people-talk">룰루랄라</div>
+          <div class="swiper">
+            <div class="swiper-wrapper">
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/wonchae.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>양원채</h2>
+                  <p>백엔드 / 팀장</p>
                 </div>
               </div>
-              <div class="people-left-content">
-                <div class="people-photo"><img src="{% static 'image/pirot_logo_carrot.png' %}" alt=""></div>
-                <div class="people-info">
-                  <div class="people-name">박석류</div>
-                  <div class="people-talk">룰루랄채</div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/seokryu.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>박석류</h2>
+                  <p>프론트엔드</p>
                 </div>
               </div>
-              <div class="people-left-content">
-                <div class="people-photo"><img src="{% static 'image/pirot_logo_carrot.png' %}" alt=""></div>
-                <div class="people-info">
-                  <div class="people-name">정혜인</div>
-                  <div class="people-talk">룰루랄라</div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/sunwoo.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>김선우</h2>
+                  <p>프론트엔드</p>
                 </div>
               </div>
-            </div>
-            <div id="people-right">
-              <div class="people-right-content">
-                <div class="people-photo"><img src="{% static 'image/pirot_logo_carrot.png' %}" alt=""></div>
-                <div class="people-info">
-                  <div class="people-name">장민서</div>
-                  <div class="people-talk">룰루랄라</div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/wonchae.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>정혜인</h2>
+                  <p>백엔드</p>
                 </div>
               </div>
-              <div class="people-right-content">
-                <div class="people-photo"><img src="{% static 'image/pirot_logo_carrot.png' %}" alt=""></div>
-                <div class="people-info">
-                  <div class="people-name">김선우</div>
-                  <div class="people-talk">룰루랄라</div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/minseo.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>장민서</h2>
+                  <p>백엔드</p>
                 </div>
               </div>
-            </div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/wonchae.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>양원채</h2>
+                  <p>백엔드 / 팀장</p>
+                </div>
+              </div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/seokryu.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>박석류</h2>
+                  <p>프론트엔드</p>
+                </div>
+              </div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/sunwoo.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>김선우</h2>
+                  <p>프론트엔드</p>
+                </div>
+              </div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/wonchae.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>정혜인</h2>
+                  <p>백엔드</p>
+                </div>
+              </div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/minseo.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>장민서</h2>
+                  <p>백엔드</p>
+                </div>
+              </div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/wonchae.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>양원채</h2>
+                  <p>백엔드 / 팀장</p>
+                </div>
+              </div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/seokryu.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>박석류</h2>
+                  <p>프론트엔드</p>
+                </div>
+              </div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/sunwoo.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>김선우</h2>
+                  <p>프론트엔드</p>
+                </div>
+              </div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/wonchae.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>정혜인</h2>
+                  <p>백엔드</p>
+                </div>
+              </div>
+  
+              <div class="swiper-slide card" >
+                <div class="image-content">
+                  <div class="card-image">
+                    <img src="{% static 'image/developers/minseo.jpeg' %}" alt="개발자양원채" class="card-img">
+                  </div>
+                </div>
+                <div class="card-content">
+                  <h2>장민서</h2>
+                  <p>백엔드</p>
+                </div>
+              </div>
+  
+            </div> 
           </div>
         </div>
-
-
+        
       </section>
+      
     </main>
     <footer>
       <div id="footer-left">
@@ -364,6 +528,29 @@
       });
     };
     loginModal.style.opacity = '0';
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script>
+    var swiper = new Swiper('.swiper', {
+      effect: 'coverflow',
+      spaceBetween: 48,
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: 'auto',
+      coverflowEffect: {
+        rotate: 0,
+        stretch: 10,
+        depth: 100,
+        modifier: 2,
+        slideShadows: true,
+      },
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
+      loop: true,
+    });
   </script>
 </body>
 
