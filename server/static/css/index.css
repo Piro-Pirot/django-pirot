@@ -720,6 +720,12 @@ footer {
     padding-left: 4rem;
     padding-right: 4rem;
   }
+  .nav-right-mobile-menu .active {
+    visibility: hidden; 
+  }
+  #hamberg {
+    display: none;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 933px) {
@@ -769,13 +775,16 @@ footer {
     padding-left: 4rem;
     padding-right: 4rem;
   }
-
-  nav > .nav-right .nav-right-item:nth-child(1) {}
-
+  .nav-right-mobile-menu .active {
+    display: none;
+  }
+  #hamberg {
+    display: none;
+  }
 }
 
 
-@media screen and (max-width: 767px) {
+@media (min-width: 351px) and (max-width: 767px) {
 
   body {
     justify-content: start;
@@ -951,12 +960,187 @@ footer {
   #footer-right {
     padding-right: 0.5rem;
   }
-  .modal {
-    width: 12rem;
-    height: 18rem;
+} 
+
+@media (min-width: 1px) and (max-width:350px) {
+  body {
+    justify-content: start;
+  }
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  body section {
+    width: 20rem;
+  }
+  .ui-section, .md-section-small, .md-section2-small, .md-people {
+    align-items: center;
+  }
+  .ui-section-demo img {
+    width: 20rem;
+
+  }
+  #service, #creator, .main-section-right, .main-section {
+    display: none;
+  }
+  .main-section-mobile {
+    margin-bottom: 5rem;
+  }
+  .main-section-mobile-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    
+  }
+  .main-section-mobile-title {
+    display: flex;
+    flex-direction: column;
+
+  }
+  .main-section-mobile-title > div {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.2rem;
+    margin-bottom: 1rem;
   }
 
-} 
+  .main-section-mobile-title > div > img {
+    width: 1.2rem;
+    display: inline-block;
+  }
+  .main-section-demo > img {
+    width: 20rem;
+    position: unset;
+  }
+  .ui-section-title {
+    font-size: 2rem;
+  }
+  .ui-section-desc {
+    font-size: 1.5rem;
+  }
+  .md-section-small-title {
+    font-size: 2rem;
+  }
+  .md-section-small-desc {
+    font-size: 1.5rem;
+  }
+  .md-section2-small-title {
+    font-size: 2rem;
+  }
+  .md-section2-content {
+    font-size: 1.5rem;
+  }
+  footer {
+    width: 100%;
+  }
+  .ui-section {
+    height:auto;
+  }
+
+  .md-section-small {
+    height: 45rem;
+  }
+  .md-section2-small {
+    margin-bottom: 5rem;
+  }
+  .md-section-small-title {
+    display: flex;
+    flex-direction: column;
+  }
+  .md-section-small-title > div {
+    margin-bottom: 1rem;
+  }
+
+  .md-section-demo-small {
+    width: 20rem;
+  }
+  .md-section-demo-small > img {
+    width: 100%;
+  } 
+  .md-section-small-demo {
+    width: 20rem;
+  }
+  .md-section-small-demo > img {
+    width: 100%;
+  }
+  .md-people {
+    height: 48rem;
+  }
+  .people-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+  }
+  #people-header1 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--carrot-color);
+  }
+  
+  #people-header2 {
+    font-size: 1.9rem;
+  }
+  
+  #people-content {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6rem;
+  }
+ 
+  .people-left-content, .people-right-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:10rem;
+    height:7rem;
+    background-color: var(--carrot-light);
+    border-radius: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .people-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 1rem;
+  }
+  
+  .people-name {
+    font-size: 0.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .people-photo > img {
+    border-radius: 10rem;
+    border: none;
+  }
+  .main-section-team {
+    position: static;
+  }
+  nav > .nav-right {
+    display: none;
+  }
+  #footer-left, #footer-center {
+    font-size: 0.3rem;
+  }
+  #footer-right-img {
+    width: 6rem;
+  }
+  #footer-left {
+    padding-left: 0.5rem;
+  }
+  #footer-right {
+    padding-right: 0.5rem;
+  }
+  .modal input {
+    height: 3rem;
+  }
+}
 
 /* 모바일 햄버거 */
 
@@ -972,7 +1156,6 @@ footer {
   font-size: 1.5rem;
   color: white;
 }
-
 .nav-right-mobile-menu {
   flex-direction: column;
   align-items: center;
@@ -989,18 +1172,15 @@ footer {
   0 4px 4px rgba(0,0,0,0.15), 
   0 8px 8px rgba(0,0,0,0.15);
   transition: 0.4s;
-
 }
-.nav-right-mobile-menu > div {
+.nav-right-mobile-menu > div, .nav-right-mobile-menu > a {
   width: 100%;
   height: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  /* background-color: var(--carrot-light); */
 }
-.nav-right-mobile-menu > div:hover {
+.nav-right-mobile-menu > div:hover, .nav-right-mobile-menu > a:hover {
   background-color: var(--carrot-light);
   border-radius: 1rem;
   transition: 1.2s;
@@ -1145,4 +1325,90 @@ footer {
 
 dialog {
   transition: 0.3s;
+}
+
+
+
+/* swiper.js */
+
+.developers-section {
+  height: 50rem;
+
+}
+
+.dev-section-container {  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.developers-section-title {
+  font-size: 3rem;
+}
+
+.swiper {
+  width: 90%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.swiper-3d .swiper-slide-shadow-left,
+.swiper-3d .swiper-slide-shadow-right {
+  background-image: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #fff9ef; */
+  border-radius: 0 1.2rem 0 1.2rem;
+  width: 20rem;
+  padding: 2rem 0;
+  filter: blur(2px);
+}
+
+.swiper-slide-active {
+  filter: blur(0px);
+}
+
+.image-content {
+  position: relative;
+  margin-bottom: 1rem;
+  /* box-shadow: 0 15px 50px rgba(0,0,0,0.15); */
+  border-radius: 50%;
+}
+
+
+.card-image {
+  position: relative;
+  height: 15rem;
+  width: 15rem;
+  border-radius: 50%;
+  padding: 6px;
+  border: 6px solid #fba405;
+}
+
+.card-image .card-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.card-content {
+  text-align: center;
+}
+
+.card-content h2{
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: 0.4rem;
+  color: #333;
+}
+
+.card-content p {
+  font-size: 1.5rem;
 }

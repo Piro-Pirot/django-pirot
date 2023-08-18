@@ -12,6 +12,8 @@ from django.db.models import Q, F
 
 from bs4 import BeautifulSoup
 
+from server.apps.channels.searchHangul import *
+
 # Create your views here.
 
 NO = 0
@@ -252,7 +254,7 @@ def main_room(request, channelId, type):
         # 현재 로그인 사용자
         myPassInfo = Passer.objects.get(passer_name=request.user.name, channel=curChannel)
         # 현재 로그인 사용자의 채널 구성원들
-        myFriends = Passer.objects.filter(channel__id=channelId).exclude(id=myPassInfo.id)
+        myFriends = Passer.objects.filter(channel__id=channelId).exclude(id=myPassInfo.id).order_by('-level', 'passer_name')
 
         # 내가 즐겨찾기 한 사람
         my_favorites = []
@@ -268,6 +270,10 @@ def main_room(request, channelId, type):
         myJoinInfo = Join.objects.filter(user=request.user)
         for joinInfo in myJoinInfo:
             myChannels.append(Channel.objects.get(id=joinInfo.passer.channel.id))
+
+
+        # 회원가입되어 있으며, 채널에 연결된 회원 정보 -> user객체와 passer 객체가 있음
+        channel_join_list = Join.objects.filter(passer__channel=curChannel)
     else:
         return redirect('/')
 
@@ -285,6 +291,7 @@ def main_room(request, channelId, type):
             'myPassInfo': myPassInfo,
             'urlType': type,
             'myChannels': myChannels,
+            'channel_join_list': channel_join_list
         }
     )
 
@@ -316,7 +323,7 @@ def enter_room(request, channelId, roomId, type):
         # 현재 로그인 사용자
         myPassInfo = Passer.objects.get(passer_name=request.user.name, channel=curChannel)
         # 현재 로그인 사용자의 채널 구성원들
-        myFriends = Passer.objects.filter(channel=curChannel).exclude(id=myPassInfo.id)
+        myFriends = Passer.objects.filter(channel=curChannel).exclude(id=myPassInfo.id).order_by('-level', 'passer_name')
 
         if curRoom.room_type == BLIND_ROOM:
             #익명채팅방
@@ -358,6 +365,9 @@ def enter_room(request, channelId, roomId, type):
         myJoinInfo = Join.objects.filter(user=request.user)
         for joinInfo in myJoinInfo:
             myChannels.append(Channel.objects.get(id=joinInfo.passer.channel.id))
+
+        # 회원가입되어 있으며, 채널에 연결된 회원 정보 -> user객체와 passer 객체가 있음
+        channel_join_list = Join.objects.filter(passer__channel=curChannel)
     else:
         return redirect('/')
 
@@ -390,6 +400,7 @@ def enter_room(request, channelId, roomId, type):
                     'myPassInfo': myPassInfo,
                     'urlType': type,
                     'myChannels': myChannels,
+                    'channel_join_list': channel_join_list
                 }
             )
         
@@ -412,4 +423,184 @@ def setting_blindroom_profile(request):
         
         return render(request, 'rooms/room.html', {'nickname': Member.nickname}) 
     
+
+# 채팅방 검색
+def search_rooms_ajax(request):
+    if request.method == 'POST':
+        req = json.loads(request.body)
+        channel_id = req['channelId']
+        cur_channel = Channel.objects.get(id=channel_id)
+        search_input_value = req['inputValue']
+        print(search_input_value)
+
+        # 검색어 중 search_input_value에 정확히 해당하는 내가 참여하고 있는 채팅방
+        search_rooms = RoomMember.objects.filter(room__channel=cur_channel, room__room_name__contains=search_input_value, user=request.user)
+
+        # 익명 채팅방
+        search_blind_rooms = BlindRoomMember.objects.filter(room__channel=cur_channel, room__room_name__contains=search_input_value, user=request.user)
+        
+        # 참여 중인 채팅방들 id를 모은 리스트
+        result_room_list = []
+
+        for room_m in search_rooms:
+            result_room_list.append(room_m.room.id)
+        for room_m in search_blind_rooms:
+            result_room_list.append(room_m.room.id)
+
+        # search_cho: 검색어의 초성 모두 추출
+        # search_letter: 검색어 중 자모 결합인 경우
+        search_cho, search_letter = get_chosung_from_input(search_input_value)
+
+
+        # 검색어 중 search_letter에 정확히 해당하는 내가 참여하고 있는 채팅방
+        search_letter_rooms = RoomMember.objects.filter(room__channel=cur_channel, room__room_name__contains=search_letter, room__room_type=ROOM, user=request.user)
+
+        # 익명 채팅방
+        search_letter_blind_rooms = BlindRoomMember.objects.filter(room__channel=cur_channel, room__room_name__contains=search_letter, user=request.user)
+        
+
+        # 내가 참여하고 있는 개인채팅방
+        search_direct_rooms = RoomMember.objects.filter(room__channel=cur_channel, room__room_type=DIRECT_ROOM, user=request.user)
+
+        # 개인채팅방 이름 가져와 검색어와 비교
+        for room_m in search_direct_rooms:
+            direct_roomname = room_m.room.roommember_set.exclude(user=request.user)
+            direct_roomname = str(direct_roomname[0].user.join.get(passer__channel=cur_channel).passer)
+
+            # search_letter에 정확히 해당하지 않는 경우 제외
+            if direct_roomname.find(search_letter) == -1:
+                search_direct_rooms.exclude(id=room_m.id)
+
+            # 초성비교
+            room_cho = get_chosung_from_str(direct_roomname)
+            print(room_cho)
+            for ch in room_cho:
+                if len(search_cho) != 0 and ch in search_cho and room_m.room.id not in result_room_list:
+                    result_room_list.append(room_m.room.id)
+            
+        print('======')
+
+        for room_m in search_letter_rooms:
+            # room_name의 초성을 모두 추출
+            room_cho = get_chosung_from_str(room_m.room.room_name)
+            print(room_cho)
+            # 검색어의 초성에 해당하고 result_room_list에 존재하지 않으면 추가
+            for ch in room_cho:
+                if len(search_cho) != 0 and ch in search_cho and room_m.room.id not in result_room_list:
+                    print(room_m.room.id)
+                    result_room_list.append(room_m.room.id)
+
+        print('======')
+
+        for room_m in search_letter_blind_rooms:
+            room_cho = get_chosung_from_str(room_m.room.room_name)
+            print(room_cho)
+            for ch in room_cho:
+                if len(search_cho) != 0 and ch in search_cho and room_m.room.id not in result_room_list:
+                    print(room_m.room.id)
+                    result_room_list.append(room_m.room.id)
+
+        print(result_room_list)
+
+        result_room_list = json.dumps(result_room_list)
+
+
+        return JsonResponse({'result_list': result_room_list})
     
+
+def search_new_chat_friend_ajax(request):
+    if request.method == 'POST':
+        req = json.loads(request.body)
+        channel_id = req['channelId']
+        cur_channel = Channel.objects.get(id=channel_id)
+        search_input_value = req['inputValue']
+        
+        search_cho, search_letter = get_chosung_from_input(search_input_value)
+
+        # 회원가입되어 있으며, 채널에 연결된 회원 정보 -> user객체와 passer 객체가 있음
+        channel_join_list = Join.objects.filter(passer__channel=cur_channel)
+
+        # search_input_value에 정확히 일치하는 join 정보만 추출
+        joined_passer_list = []
+        # search_letter에 정확히 일치하는 join 정보만 추출
+        join_letter_list = []
+        for join in channel_join_list:
+            if str(join.passer).find(search_input_value) != -1:
+                joined_passer_list.append(join.passer.id)
+            if str(join.passer).find(search_letter) != -1:
+                join_letter_list.append(join.passer)
+
+
+        # join passer 객체들 초성 비교
+        for passer in join_letter_list:
+            joined_passer_cho = get_chosung_from_str(str(passer))
+            print(joined_passer_cho)
+            for ch in joined_passer_cho:
+                if len(search_cho) != 0 and ch in search_cho and passer.id not in joined_passer_list:
+                    joined_passer_list.append(passer.id)
+        
+        joined_passer_list = json.dumps(joined_passer_list)
+
+        return JsonResponse({'result_list': joined_passer_list})
+        
+def search_invite_friend_ajax(request):
+    if request.method == 'POST':
+        req = json.loads(request.body)
+        channel_id = req['channelId']
+        cur_channel = Channel.objects.get(id=channel_id)
+        room_id = req['roomId']
+        cur_room = Room.objects.get(id=room_id)
+        search_input_value = req['inputValue']
+        
+        search_cho, search_letter = get_chosung_from_input(search_input_value)
+
+        # 현재 채팅방 참여자들
+        if cur_room.room_type == BLIND_ROOM:
+            #익명채팅방
+            room_members = BlindRoomMember.objects.filter(room=cur_room)
+        else:
+            room_members = RoomMember.objects.filter(room=cur_room)
+        
+        # 가입된 Passer들 == passer이면서 join인 경우
+        channel_join_list = Join.objects.filter(passer__channel=cur_channel)
+
+        # 채팅방 참여자들은 제외
+        for join in channel_join_list:
+            if cur_room.room_type == BLIND_ROOM:
+                try:
+                    join.user.roommember_set.get(room=cur_room)
+                    channel_join_list.exclude(id=join.id)
+                except:
+                    print('catch!!')
+                    continue
+            else:
+                try:
+                    join.user.blindroommember_set.get(room=cur_room)
+                    channel_join_list.exclude(id=join.id)
+                except:
+                    print('catch!!')
+                    continue
+
+
+        # search_input_value에 정확히 일치하는 join 정보만 추출
+        joined_passer_list = []
+        # search_letter에 정확히 일치하는 join 정보만 추출
+        join_letter_list = []
+        for join in channel_join_list:
+            if str(join.passer).find(search_input_value) != -1:
+                joined_passer_list.append(join.passer.id)
+            if str(join.passer).find(search_letter) != -1:
+                join_letter_list.append(join.passer)
+
+
+        # join passer 객체들 초성 비교
+        for passer in join_letter_list:
+            joined_passer_cho = get_chosung_from_str(str(passer))
+            print(joined_passer_cho)
+            for ch in joined_passer_cho:
+                if len(search_cho) != 0 and ch in search_cho and passer.id not in joined_passer_list:
+                    joined_passer_list.append(passer.id)
+        
+        joined_passer_list = json.dumps(joined_passer_list)
+
+        return JsonResponse({'result_list': joined_passer_list})

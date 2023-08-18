@@ -17,8 +17,8 @@ socket.on('display_message', async (data) => {
     data = JSON.parse(data);
     console.log(data);
     let offsetH = 0;
-    if(data['hour'] == lastHour && data['min'] == lastMin && data['user__name'] == lastSender && lastBubbleType == CHAT) {
-        // 마지막 말풍선과 시간이 같고 보낸 사람이 같고 마지막 말풍선이 CHAT일 때 시간과 프로필을 표시하지 않음
+    if(data['year'] == lastYear && data['month'] == lastMonth && data['day'] == lastDate && data['hour'] == lastHour && data['min'] == lastMin && data['user__name'] == lastSender && lastBubbleType == CHAT) {
+        // 마지막 말풍선과 시간이 같고 보낸 사람이 같고 마지막 말풍선이 CHAT일 때 마지막 말풍선의 시간을 지움
         offsetH = displayMessage(data, false);
     } else {
         offsetH = displayMessage(data, true);
@@ -26,6 +26,10 @@ socket.on('display_message', async (data) => {
         lastMin = data['min'];
         lastSender = data['user__name'];
         lastBubbleType = data['is_notice'];
+
+        lastYear = data['year'];
+        lastMonth = data['month'];
+        lastDate = data['day'];
     }
     console.log('offsetH is ...', offsetH);
     // console.log('conv height is...', conversationSection.scrollHeight);
@@ -54,6 +58,52 @@ function onClickSendMessage(user, id) {
     msgBox.focus();
 
     controlScroll();
+
+    let today = new Date(); 
+
+    let year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let date = today.getDate();
+    let day = today.getDay();
+
+    if(year != lastYear || month != lastMonth || date != lastDate) {
+        // 마지막 말풍선과 년, 월, 일 중 하나라도 다를 때 notice 말풍선 생성
+        console.log('lastYear is...', lastYear);
+        console.log('lastMonth is...', lastMonth);
+        console.log('lastDate is...', lastDate);
+        switch(day) {
+            case 0:
+                day = '일';
+                break;
+            case 1:
+                day = '월';
+                break;
+            case 2:
+                day = '화';
+                break;
+            case 3:
+                day = '수';
+                break;
+            case 4:
+                day = '목';
+                break;
+            case 5:
+                day = '금';
+                break;
+            case 6:
+                day = '토';
+                break;
+        }
+        NOTICE = 1
+        socket.emit('send_message', {
+            'msg': `${year}년 ${month}월 ${date}일 ${day}요일`,
+            'file': '', 'user': user, 'roomId': id, 'bubbleType': NOTICE
+        });
+        console.log('send today!!!');
+        lastYear = year;
+        lastMonth = month;
+        lastDate = date;
+    }
 
     socket.emit('send_message', {'msg': msg, 'file': '', 'user': user, 'roomId': id});
     console.log('send successfully');
@@ -330,7 +380,7 @@ function onClickHappy(post_id, room_id) {
     socket.emit('send_happy', {'user': curUsername, 'postId': post_id, 'roomId': room_id});
     // console.log(curUsername)
     console.log('send successfully');
-
+    displayMyHappy(post_id);
 }
 
 // Sad click -> id는 post id
@@ -338,7 +388,39 @@ function onClickSad(post_id, room_id) {
 
     socket.emit('send_sad', {'user': curUsername, 'postId': post_id, 'roomId': room_id});
     console.log('send successfully');
+    displayMySad(post_id);
+}
 
+function displayMyHappy(postId) {
+    let happySelector = `.happy-count-${postId}`
+    let happyCountElement = document.querySelector(happySelector);
+
+    let sadSelector = `.sad-count-${postId}`
+    let sadCountElement = document.querySelector(sadSelector);
+
+    if (sadCountElement.parentElement.classList.contains('checked')) {
+        sadCountElement.parentElement.classList.toggle('checked');
+        happyCountElement.parentElement.classList.toggle('checked');
+    }
+    else {
+        happyCountElement.parentElement.classList.toggle('checked');
+    }
+}
+
+function displayMySad(postId) {
+    let happySelector = `.happy-count-${postId}`
+    let happyCountElement = document.querySelector(happySelector);
+
+    let sadSelector = `.sad-count-${postId}`
+    let sadCountElement = document.querySelector(sadSelector);
+
+    if (happyCountElement.parentElement.classList.contains('checked')) {
+        happyCountElement.parentElement.classList.toggle('checked');
+        sadCountElement.parentElement.classList.toggle('checked');
+    }
+    else {
+        sadCountElement.parentElement.classList.toggle('checked');
+    }
 }
 
 
@@ -356,14 +438,6 @@ async function displayHappy(happyData) {
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = happyData['sadCount'];
 
-    // 자신이 누른 버튼 확인
-    if (happyData['curHappyCount']==1) {
-        happyCountElement.parentElement.classList.toggle('checked');
-    }
-    if (happyData['curSadCount']==1) {
-        sadCountElement.parentElement.classList.toggle('checked');
-    }
-
 }
 
 async function displaySad(sadData) {
@@ -378,13 +452,6 @@ async function displaySad(sadData) {
     let sadCountElement = document.querySelector(sadSelector);
     sadCountElement.innerText = sadData['sadCount'];
 
-    // 자신이 누른 버튼 확인
-    if (sadData['curHappyCount']==1) {
-        happyCountElement.parentElement.classList.toggle('checked');
-    }
-    if (sadData['curSadCount']==1) {
-        sadCountElement.parentElement.classList.toggle('checked');
-    }
 }
 
 

@@ -9,4 +9,8 @@ urlpatterns = [
     path('<int:channelId>/<str:type>/', main_room),
     path('<int:channelId>/<int:roomId>/<str:type>/', enter_room),
     path('setting_blindroom/', setting_blindroom_profile),
+
+    path('search_rooms_ajax/', search_rooms_ajax),
+    path('search_new_chat_friend_ajax/', search_new_chat_friend_ajax),
+    path('search_invite_friend_ajax/', search_invite_friend_ajax),
 ]

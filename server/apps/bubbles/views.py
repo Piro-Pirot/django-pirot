@@ -108,6 +108,12 @@ def load_bubbles(request):
                     function='DATE_FORMAT',
                     output_field=CharField()
                 ),
+                year=Func(
+                    F('created_at'),
+                    Value('%Y'),
+                    function='DATE_FORMAT',
+                    output_field=CharField()
+                ),
                 month=Func(
                     F('created_at'),
                     Value('%m'),
@@ -136,6 +142,12 @@ def load_bubbles(request):
                 min=Func(
                     F('created_at'),
                     Value('%i'),
+                    function='DATE_FORMAT',
+                    output_field=CharField()
+                ),
+                year=Func(
+                    F('created_at'),
+                    Value('%Y'),
                     function='DATE_FORMAT',
                     output_field=CharField()
                 ),

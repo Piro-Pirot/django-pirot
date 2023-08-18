@@ -1,13 +1,49 @@
-{% extends 'base.html' %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pirot: 당신의 동아리를 위한 완벽한 커뮤니케이션</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/start.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/error.css' %}">
+    <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+    <div class="boss-container">
+        <nav>
+            <div class="nav-left">
+                <div class="nav-left-item">
+                    <a href="/"><img src="{% static 'image/pirot_logo_long.png' %}"></a>
+                </div>
+            </div>
+            <div class="nav-right">
+            </div>
+        </nav>
+        <main>
+            <div class="error-main">
+                <div class="error-label">
+                    <h1>놀라운 업무용 채팅 서비스</h1> 
+                    <h1><span class="label-title">Pirot</span> 입니다.</h1>          
+                </div> 
+                <div class="errorMsg">죄송합니다 다시 시도해주세요.</div>
+                <div class="errorMsg">
+                    {{ errorMsg }}
+                </div>
+                <div class="error-mainimg">
+                    <img src="{% static 'image/pirot_logo_circle.png' %}" alt="">
+                </div>
+                <div class="back-button">
+                    <a href="#" onClick="history.back()"><button>이전 페이지로 이동</button></a>
+                </div>
+            </div>
+        </main>
+    </div>
+        
+</body>
+</html>
 
-{% block content %}
 
-{{ errorMsg }}
-<a href="/"><button>Home</button></a>
-
-{% endblock %}
-
-{% block extra %}
-
-{% endblock %}

@@ -33,21 +33,19 @@ window.onload = function() {
 
 const loginButton = document.querySelector("#login");
 const loginModal = document.querySelector("#loginModal");
-const signupButton = document.querySelector("#signup");
+const signupLogoutButton = document.querySelector("#signupAndLogout");
 const signupModal = document.querySelector("#signupModal");
 const closeButtons = document.querySelectorAll("#close-btn");
 
-// 로그인버튼 누르면 모달창 팝업 --> 이 코드는 index.html코드 하단으로 이동하였음
-// loginModal.style.opacity = '0';
-// loginButton.addEventListener("click", () => {
-//   loginModal.showModal();
-//   loginModal.style.opacity = '1';
-// });
-
 // 회원가입 버튼 누르면 모달창 팝업
-signupButton.addEventListener("click", () => {
-  signupModal.showModal();
-  signupModal.style.opacity = '1';
+signupLogoutButton.addEventListener("click", () => {
+  if (signupLogoutButton.innerText === '회원가입') {
+    signupModal.showModal();
+    signupModal.style.opacity = '1';
+  }
+  else if (signupLogoutButton.innerText === '로그아웃') {
+    location.href = '/user/logout/';
+  };
 });
 
 // X 버튼 누르면 모달창 나가짐
@@ -85,11 +83,23 @@ creatorButton.addEventListener("click", () => {
   window.scrollTo({top: lastSectionTop, behavior: 'smooth'});
 });
 
-
+// 햄버거 누르면 목록 나오게
 const NavBtn = document.querySelector('.nav-right-mobile');
 const MobileMenu = document.querySelector('.nav-right-mobile-menu');
 
 NavBtn.addEventListener('click', () => {
   MobileMenu.classList.toggle("active"); 
   NavBtn.classList.toggle("active");
+});
+
+if(window.screen.availWidth > 768) {
+  MobileMenu.classList.remove("active"); 
+};
+
+// 모바일에서 로그인 누르면 모달
+
+const MobileLogin = document.querySelector('.login-btn-mobile');
+MobileLogin.addEventListener("sclick", () => {
+  loginModal.showModal();
+  loginModal.style.opacity = '1';
 });
