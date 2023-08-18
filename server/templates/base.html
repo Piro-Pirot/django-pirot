@@ -39,6 +39,7 @@
             </div>
         </section>
         <section class="middle-section">
+            <i id="middleCloseOpen" class="ri-arrow-left-double-line"></i>
             <div id="search" class="search-box">
                 <div id="channel-name">
                     <div class="channel-name-select">
@@ -77,13 +78,31 @@
         </section>
     </div>
 
+    <div class="mob-icons hide-element">
+        <section class="mob-icon-bar">
+            <i class="ri-menu-2-line mob-menu-icon"></i>
+            {% if urlType == 'friends' %}
+            <a href="/room/{{ channel.id }}/{{ room.id }}/friends/"><i class="ri-team-fill mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/{{ room.id }}/main/"><i class="ri-chat-3-line mob-room-icon"></i></a>
+            {% elif urlType == 'main' %}
+            <a href="/room/{{ channel.id }}/{{ room.id }}/friends/"><i class="ri-team-line mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/{{ room.id }}/main/"><i class="ri-chat-3-fill mob-room-icon"></i></a>
+            {% endif %}
+            <i id="mob-settings" class="ri-settings-3-line"></i>
+            {% if request.user.profile_img %}
+                <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img class="mob-profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+            {% else %}
+                <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img class="mob-profile-icon" src="{{ channel.default_image.url }}" alt="프로필"></a>
+            {% endif %}
+        </section>
+    </div>
     <!-- 모바일 반응형 'mob' -->
-    <div class="mob-container">
+    <!-- <div class="mob-container">
         <div class="warning">
             본 웹서비스는 쾌적한 사용환경을 위해
             <br> 모바일 화면을 지원하지 않습니다
         </div>
-    </div>
+    </div> -->
 
 <form action="/user/preferences/" method="post">
     {% csrf_token %}
@@ -151,6 +170,10 @@
         let curUserTheme = '{{ request.user.theme }}'
         CHAT = 0
         NOTICE = 1
+        let roomListRoomId = {{ room.id }};
+        /* 선택된 채팅방 색칠 */
+        const selectedRoom = document.querySelector(`.room-${roomListRoomId}`)
+        selectedRoom.parentElement.classList.add('selected-room');
     </script>
     {% block extra %}
     {% endblock %}
@@ -160,9 +183,10 @@
     <script src="{% static 'js/theme.js' %}"></script>
     {% if urlType == 'main' %}
         <script src="{% static 'js/roomModal.js' %}"></script>
+        <script src="{% static 'js/searchRooms.js' %}"></script>
     {% elif urlType == 'friends' %}
         <script src="{% static 'js/chat/friendBtn.js' %}"></script>
+        <script src="{% static 'js/searchFriends.js' %}"></script>
     {% endif %}
-
 </body>
 </html>
