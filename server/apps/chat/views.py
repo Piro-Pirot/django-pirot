@@ -254,7 +254,7 @@ def main_room(request, channelId, type):
         # 현재 로그인 사용자
         myPassInfo = Passer.objects.get(passer_name=request.user.name, channel=curChannel)
         # 현재 로그인 사용자의 채널 구성원들
-        myFriends = Passer.objects.filter(channel__id=channelId).exclude(id=myPassInfo.id)
+        myFriends = Passer.objects.filter(channel__id=channelId).exclude(id=myPassInfo.id).order_by('-level', 'passer_name')
 
         # 내가 즐겨찾기 한 사람
         my_favorites = []
@@ -323,7 +323,7 @@ def enter_room(request, channelId, roomId, type):
         # 현재 로그인 사용자
         myPassInfo = Passer.objects.get(passer_name=request.user.name, channel=curChannel)
         # 현재 로그인 사용자의 채널 구성원들
-        myFriends = Passer.objects.filter(channel=curChannel).exclude(id=myPassInfo.id)
+        myFriends = Passer.objects.filter(channel=curChannel).exclude(id=myPassInfo.id).order_by('-level', 'passer_name')
 
         if curRoom.room_type == BLIND_ROOM:
             #익명채팅방
