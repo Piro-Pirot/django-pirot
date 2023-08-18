@@ -71,23 +71,16 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-const serviceButton = document.querySelector("#service");
+
+//내브바 메뉴 누르면 맞는 섹션으로 자동 스크롤
+const serviceButton = document.getElementById("service");
 serviceButton.addEventListener("click", () => {
   let firstSectionTop = sections[0].offsetTop;
   window.scrollTo({top: firstSectionTop, behavior: 'smooth'});
 });
 
-const creatorButton = document.querySelector("#creator");
+const creatorButton = document.getElementById("creator");
 creatorButton.addEventListener("click", () => {
-  let lastSectionTop = sections[7].offsetTop;
+  let lastSectionTop = sections[5].offsetTop;
   window.scrollTo({top: lastSectionTop, behavior: 'smooth'});
 });
-
-
-// const NavBtn = document.querySelector('.nav-right-mobile');
-// const MobileMenu = document.querySelector('.nav-right-mobile-menu');
-
-// NavBtn.addEventListener('click', () => {
-//   MobileMenu.classList.toggle("active"); 
-//   NavBtn.classList.toggle("active");
-// });
