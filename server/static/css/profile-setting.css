@@ -38,7 +38,7 @@
   margin-top: 3rem;
   position: relative;
 }
-.staff-profile-setting .setting-profile-image::after {
+.setting-profile-image::after {
   content: '';
   display: block;
   width: 17rem;
