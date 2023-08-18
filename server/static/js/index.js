@@ -31,7 +31,7 @@ window.onload = function() {
   }, 0)
 };
 
-const loginButton = document.querySelector("#login");
+
 const loginModal = document.querySelector("#loginModal");
 const signupLogoutButton = document.querySelector("#signupAndLogout");
 const signupModal = document.querySelector("#signupModal");
@@ -83,23 +83,11 @@ creatorButton.addEventListener("click", () => {
   window.scrollTo({top: lastSectionTop, behavior: 'smooth'});
 });
 
-// 햄버거 누르면 목록 나오게
-const NavBtn = document.querySelector('.nav-right-mobile');
-const MobileMenu = document.querySelector('.nav-right-mobile-menu');
 
-NavBtn.addEventListener('click', () => {
-  MobileMenu.classList.toggle("active"); 
-  NavBtn.classList.toggle("active");
-});
+// const NavBtn = document.querySelector('.nav-right-mobile');
+// const MobileMenu = document.querySelector('.nav-right-mobile-menu');
 
-if(window.screen.availWidth > 768) {
-  MobileMenu.classList.remove("active"); 
-};
-
-// 모바일에서 로그인 누르면 모달
-
-const MobileLogin = document.querySelector('.login-btn-mobile');
-MobileLogin.addEventListener("sclick", () => {
-  loginModal.showModal();
-  loginModal.style.opacity = '1';
-});
+// NavBtn.addEventListener('click', () => {
+//   MobileMenu.classList.toggle("active"); 
+//   NavBtn.classList.toggle("active");
+// });

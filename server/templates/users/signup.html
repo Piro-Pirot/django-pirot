@@ -15,109 +15,109 @@
 </head>
 
 <body>
-    <nav>
-        <div class="nav-left">
-            <div class="nav-left-item">
-                <a href="/"><img src="{% static 'image/pirot_logo_long.png' %}"></a>
+    <div class="mobile-boss-container">
+        <nav>
+            <div class="mob-logo">
+                <a href="/"><img src="{% static 'image/pirot_logo_long.png' %}" alt="피롯로고"></a>
             </div>
+        </nav>
+    
+        <div class="signup-content">
+            <form method="POST" action="" name="signup-form">
+                {% csrf_token %}
+                <div class="assgin-container">
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                <div class="signup-slogan">
+                                    <h1 class="lap">환영합니다! 놀라운 업무용 채팅 서비스</h1>
+                                    <h1 class="mob">환영합니다!<br>놀라운 업무용 채팅 서비스</h1>
+                                    <h1><span class="signup-title">Pirot</span> 입니다.</h1>
+                                </div>
+                                <!-- <h3 class="signup-begin">회원가입</h3> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="signup-input-container">
+                                    <label for="userid">아이디</label>
+                                    <div class="username-validator">
+                                        <input type="text" id="username" name="username" required>
+                                        <span class="username-check check-hidden">
+                                            <i class="ri-check-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="signup-input-container">
+                                    <label for="username">이름 (실명)</label>
+                                    <input type="text" id="name" name="name" required>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="signup-input-container">
+                                    <label for="password1">비밀번호</label>
+                                    <div class="password1-validator">
+                                        <input type="password" id="password1" name="password1" required>
+                                        <span class="password1-check check-hidden">
+                                            <i class="ri-check-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="signup-input-container">
+                                    <label for="password2">비밀번호 확인</label>
+                                    <div class="password2-validator">
+                                        <input type="password" id="password2" name="password2" required>
+                                        <span class="password2-check check-hidden">
+                                            <i class="ri-check-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="signup-input-container">
+                                    <label for="phone_number">전화번호</label>
+                                    <input type="text" id="phone_number" name="phone_number" oninput="autoHyphen(this)" required>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="signup-input-container">
+                                    <label for=""></label>
+                                    <button disabled id='send_sms' type="button" onclick="send_authnum()">인증번호 전송</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="input_sms input_sms_hidden">
+                                <div class="signup-input-container">
+                                    <label for="">인증번호 입력</label>
+                                    <input id="input_authnum" type="text" required>
+                                </div>
+                            </td>
+                            <td class="input_sms input_sms_hidden">
+                                <div class="signup-input-container">
+                                    <label for=""></label>
+                                    <div class="time-limit-bottom">
+                                        <div id="time_limit">03:00</div>
+                                        <button type="button" disabled id='confirm' onclick="confirm_authnum()">인증하기</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <button disabled id="signup_button" type="submit" onclick="signup_check()">회원가입 완료하기</button>
+                </div>
+            </form>
         </div>
-        <div class="nav-right">
-        </div>
-    </nav>
-
-    <div class="signup-content">
-        <form method="POST" action="" name="signup-form">
-            {% csrf_token %}
-            <div class="assgin-container">
-                <table>
-                    <tr>
-                        <td colspan="2">
-                            <div class="signup-slogan">
-                                <h1>환영합니다! 놀라운 업무용 채팅 서비스</h1>
-                                <h1><span class="signup-title">Pirot</span> 입니다.</h1>
-                            </div>
-                            <!-- <h3 class="signup-begin">회원가입</h3> -->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="signup-input-container">
-                                <label for="userid">아이디</label>
-                                <div class="username-validator">
-                                    <input type="text" id="username" name="username" required>
-                                    <span class="username-check check-hidden">
-                                        <i class="ri-check-line"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="signup-input-container">
-                                <label for="username">이름 (실명)</label>
-                                <input type="text" id="name" name="name" required>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="signup-input-container">
-                                <label for="password1">비밀번호</label>
-                                <div class="password1-validator">
-                                    <input type="password" id="password1" name="password1" required>
-                                    <span class="password1-check check-hidden">
-                                        <i class="ri-check-line"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="signup-input-container">
-                                <label for="password2">비밀번호 확인</label>
-                                <div class="password2-validator">
-                                    <input type="password" id="password2" name="password2" required>
-                                    <span class="password2-check check-hidden">
-                                        <i class="ri-check-line"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="signup-input-container">
-                                <label for="phone_number">전화번호</label>
-                                <input type="text" id="phone_number" name="phone_number" oninput="autoHyphen(this)" required>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="signup-input-container">
-                                <label for=""></label>
-                                <button disabled id='send_sms' type="button" onclick="send_authnum()">인증번호 전송</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="input_sms input_sms_hidden">
-                            <div class="signup-input-container">
-                                <label for="">인증번호 입력</label>
-                                <input id="input_authnum" type="text" required>
-                            </div>
-                        </td>
-                        <td class="input_sms input_sms_hidden">
-                            <div class="signup-input-container">
-                                <label for=""></label>
-                                <div class="time-limit-bottom">
-                                    <div id="time_limit">03:00</div>
-                                    <button type="button" disabled id='confirm' onclick="confirm_authnum()">인증하기</button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                <button disabled id="signup_button" type="submit" onclick="signup_check()">회원가입 완료하기</button>
-            </div>
-        </form>
     </div>
+    
     <script src="{% static 'js/signup.js'%}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
