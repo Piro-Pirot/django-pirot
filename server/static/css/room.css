@@ -458,6 +458,22 @@
     cursor: pointer;
 }
 
+.code-input {
+    display: none;
+    width: 80%;
+    height: 100%;
+    border-radius: 0.5rem;
+}
+
+.code-input.active {
+    display: block;
+}
+
+.chat-input .input.inactive {
+    display: none;
+}
+
+
 @media screen and (max-width: 768px) {
     #chat-member-add:active {
         color: var(--carrot-color);

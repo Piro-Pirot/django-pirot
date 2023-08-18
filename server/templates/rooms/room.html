@@ -31,17 +31,12 @@
         <div class="conversation"></div>
         <div class="chat-input">
             <textarea class="input"></textarea>
+            <div class="code-input" id="editor-container"></div>
             <div class="chat-icons">                
                 <div id="imageIcon">
                     <label for="upload-file" class="attach-label"><i class="ri-image-2-fill"></i></label>
                     <input type="file" name="upload-file" id="upload-file" accept="image/*">
                 </div>
-                <!-- <div id="reserveMsg">
-                    <i class="ri-time-line"></i>
-                </div>
-                <div id="attachIcon">
-                    <i class="ri-attachment-2"></i>
-                </div> -->
                 <div id="codeIcon">
                     <i class="ri-code-line"></i>
                 </div>
@@ -212,7 +207,7 @@
     // board의 scrollHeight 증가시켜서 더 밑으로 스크롤 할 수 있게 하기
 
 </script>
-
+<script src="{% static 'js/chat/codeSnippet.js' %}"></script>
 <script src="{% static 'js/chat/socketClient.js' %}"></script>
 <script src="{% static 'js/chat/room.js' %}"></script>
 <script src="{% static 'js/chat/bubble.js' %}"></script>
@@ -220,5 +215,6 @@
 
 <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 <script src="{% static 'js/chat/fileSocketClient.js' %}"></script>
+
 
 {% endblock %}
