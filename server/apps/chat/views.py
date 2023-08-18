@@ -412,14 +412,12 @@ def setting_blindroom_profile(request):
     if request.method == 'POST':
         # 익명채팅방 이름 수정
         room_id = request.POST['roomId']
+        channel_id = request.POST['channelId']
         Member = BlindRoomMember.objects.get(user=request.user, room=room_id)
         fixed_nickname = request.POST.get('nickname')
         Member.nickname = fixed_nickname
         Member.save()
-        
-        
-        # 닉네임 수정
-        
-        return render(request, 'rooms/room.html', {'nickname': Member.nickname}) 
+        return redirect(f"/room/{channel_id}/{room_id}/main/")
+    return render(request, 'error.html', {'errorMsg': '잘못된 접근입니다.'})
     
     

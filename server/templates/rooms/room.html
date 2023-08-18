@@ -86,7 +86,7 @@
 
         <!-- 채팅방 프로필 사진 & 닉네임 수정(익명채팅방)-->
         {% if room.room_type == 1 %}
-        <form action="setting_blindroom/" method="post" id="form-setting">
+        <form action="/room/setting_blindroom/" method="post" id="form-setting">
             {% csrf_token %}
             <div class="btn-friend-profile-img">
                 익명채팅방 프로필 이미지 들어가기
