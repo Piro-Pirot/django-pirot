@@ -440,9 +440,6 @@ section.show-animation .animate {
 }
 
 @media screen and (min-width:1980px) {
-  body {
-    padding-top: 16rem;
-  }
   .boss-container {
     width: 120rem;
   }
@@ -477,6 +474,12 @@ section.show-animation .animate {
   .md-section-demo img {
     width: 60rem;
   }
+
+  .developers-section {
+    padding: 10rem 10rem 0;
+    margin-bottom: 13rem;
+  }
+
 }
 
 .md-section2 {
