@@ -92,6 +92,7 @@ def logout(request):
 def profile_setting(request, channelID):
 
     channel = Channel.objects.get(id=channelID)
+    channelDefaultImg = channel.default_image
     current_user = request.user
 
     # 운영진 여부
@@ -102,6 +103,8 @@ def profile_setting(request, channelID):
     if request.method == 'POST':
         if 'delete' in request.POST:
             current_user.profile_img.delete()
+            current_user.profile_img = channelDefaultImg # 채널의 default_img로 표시되도록
+            current_user.save()
         elif 'change' in request.POST:
             if request.FILES.get('profile_img'):
                 current_user.profile_img = request.FILES['profile_img']
