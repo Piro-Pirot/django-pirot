@@ -76,14 +76,31 @@
         </section>
     </div>
 
+    <div class="mob-icons hide-element">
+        <section class="mob-icon-bar">
+            {% if urlType == 'friends' %}
+            <a href="/room/{{ channel.id }}/{{ room.id }}/friends/"><i class="ri-team-fill mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/{{ room.id }}/main/"><i class="ri-chat-3-line mob-room-icon"></i></a>
+            {% elif urlType == 'main' %}
+            <a href="/room/{{ channel.id }}/{{ room.id }}/friends/"><i class="ri-team-line mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/{{ room.id }}/main/"><i class="ri-chat-3-fill mob-room-icon"></i></a>
+            {% endif %}
+            <i id="mob-settings" class="ri-settings-3-line"></i>
+            {% if request.user.profile_img %}
+                <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img class="mob-profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+            {% else %}
+                <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img class="mob-profile-icon" src="{{ channel.default_image.url }}" alt="프로필"></a>
+            {% endif %}
+        </section>
+    </div>
 
     <!-- 모바일 반응형 'mob' -->
-    <div class="mob-container">
+    <!-- <div class="mob-container">
         <div class="warning">
             본 웹서비스는 쾌적한 사용환경을 위해
             <br> 모바일 화면을 지원하지 않습니다
         </div>
-    </div>
+    </div> -->
         
 
 
@@ -145,7 +162,7 @@
     {% block extra %}
     {% endblock %}
 
-    <script src="{% static 'js/base.js' %}"></script>
+    <script src="{% static 'js/base-mob-home.js' %}"></script>
     <script src="{% static 'js/settingsModal.js' %}"></script>
     <script src="{% static 'js/theme.js' %}"></script>
     {% if urlType == 'main' %}
