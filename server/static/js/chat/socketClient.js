@@ -12,15 +12,7 @@ socket.on('connect', async () => {
 
 let bScroll = 0;
 
-// disconnect 직전 사용자의 정보와 채팅방의 정보, 나간 시각 필요
-socket.on('disconnecting', async () => {
-    console.log('disconnecting')
-    await socket.emit('sleep', {
-        'roomId': curRoomId,
-        'curUserId': curUserId,
-        'exitTime': Date.now() //퇴장시각 (밀리초 단위)
-    })
-  });
+
 
 
 socket.on('display_message', async (data) => {
@@ -384,6 +376,10 @@ socket.on('display_sad', async (data) => {
     displaySad(data);
 });
 
+socket.on('display_mine', async (data) => {
+    console.log(data);
+    displayMine(data);
+});
 
 // Happy click -> id는 post id
 function onClickHappy(post_id, room_id) {
@@ -418,12 +414,12 @@ async function displayHappy(happyData) {
     sadCountElement.innerText = happyData['sadCount'];
 
     // 자신이 누른 버튼 확인
-    if (happyData['curHappyCount']==1) {
-        happyCountElement.parentElement.classList.toggle('checked');
-    }
-    if (happyData['curSadCount']==1) {
-        sadCountElement.parentElement.classList.toggle('checked');
-    }
+    // if (happyData['curHappyCount']==1) {
+    //     happyCountElement.parentElement.classList.toggle('checked');
+    // }
+    // if (happyData['curSadCount']==1) {
+    //     sadCountElement.parentElement.classList.toggle('checked');
+    // }
 
 }
 
@@ -440,12 +436,32 @@ async function displaySad(sadData) {
     sadCountElement.innerText = sadData['sadCount'];
 
     // 자신이 누른 버튼 확인
-    if (sadData['curHappyCount']==1) {
+    // if (sadData['curHappyCount']==1) {
+    //     happyCountElement.parentElement.classList.toggle('checked');
+    // }
+    // if (sadData['curSadCount']==1) {
+    //     sadCountElement.parentElement.classList.toggle('checked');
+    // }
+}
+
+async function displayMine(Data) {
+    console.log(Data);
+    let postId = Data['postId'];
+
+    let Selector = `.happy-count-${postId}`
+    let happyCountElement = document.querySelector(happySelector);
+
+    let sadSelector = `.sad-count-${postId}`
+    let sadCountElement = document.querySelector(sadSelector);
+
+    // 자신이 누른 버튼 확인
+    if (Data['curHappyCount']==1) {
         happyCountElement.parentElement.classList.toggle('checked');
     }
-    if (sadData['curSadCount']==1) {
+    if (Data['curSadCount']==1) {
         sadCountElement.parentElement.classList.toggle('checked');
     }
+
 }
 
 
@@ -466,4 +482,18 @@ async function deletedPost(deletedData) {
     let delSelector = `.post-container-${postId}`;
     let delPostContainer = document.querySelector(delSelector);
     delPostContainer.remove()
+}
+
+
+
+socket.on('display_reddot', async (data) => {
+    console.log(data);
+    displayReddot(data);
+});
+
+async function displayReddot(data) {
+    let room = data['roomId']
+    let reddotSelector = `.room-red-dot dot-${room}`;
+    let reddotDiv = document.querySelector(reddotSelector);
+    reddotDiv.setAttribute('style', 'display:block');
 }

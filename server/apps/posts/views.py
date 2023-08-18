@@ -115,6 +115,14 @@ async def save_sad(data):
         return HappyCount, SadCount, curHappyCount, curSadCount
     
 
+async def display_mine(data):
+
+    postObj = await sync_to_async(Post.objects.get)(id=data['postId'])
+    await sync_to_async(postObj.delete)()
+
+    return None
+    
+
 # 게시글 Delete
 async def delete_post(room, data):
 

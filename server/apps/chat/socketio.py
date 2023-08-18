@@ -125,6 +125,7 @@ async def send_message(sid, data):
             newBubble = bubble_serializer(newBubble, False, '')
 
     await sio.emit('display_message', newBubble, to=roomId)
+    # await sio.emit('display_reddot', to=roomId) # 각각의 room에 뿌려서
     print('massage was saved')
 
 
@@ -176,16 +177,6 @@ async def send_file(sid, data):
 async def disconnect(sid):
     print('disconnect ', sid)
 
-@sio.on('sleep')
-async def handle_sleep(sid, data):
-    print('disconnecting', sid)
-    roomId = int(data['roomId'])
-    room = await sync_to_async(Room.objects.get)(id=roomId)
-    exitTime = await post.save_exitInfo(room, data)
-    curUserObj = await sync_to_async(User.objects.get)(id=data['curUserId'])
-    print(curUserObj)
-    print(exitTime)
-    print('exit time was saved')
 
 @sio.on('send_post')
 async def send_post(sid, data):
@@ -207,6 +198,8 @@ async def send_post(sid, data):
 @sio.on('send_happy')
 async def send_happy(sid, data):
     roomId = int(data['roomId'])
+    curUserObj = await sync_to_async(User.objects.get)(username=data['user'])
+    curUserId = curUserObj.id
 
     newhappydata = await post.save_happy(data)
     happyCount, sadCount, curHappyCount, curSadCount = newhappydata
@@ -217,12 +210,17 @@ async def send_happy(sid, data):
     data['curSadCount'] = curSadCount
 
     await sio.emit('display_happy', data, to=roomId)
+    # await sio.emit('display_mine', data, to=curUserId) 이렇게 말고 그냥 ajax
+    await post.display_mine(data)
+
     print('happy was saved')
-    
+
 
 @sio.on('send_sad')
 async def send_sad(sid, data):
     roomId = int(data['roomId'])
+    curUserObj = await sync_to_async(User.objects.get)(username=data['user'])
+    curUserId = curUserObj.id
 
     newsaddata = await post.save_sad(data)
     happyCount, sadCount, curHappyCount, curSadCount = newsaddata
@@ -233,8 +231,9 @@ async def send_sad(sid, data):
     data['curSadCount'] = curSadCount
 
     await sio.emit('display_sad', data, to=roomId)
-    print('sad was saved')
+    await post.display_mine(data)
 
+    print('sad was saved')
 
 @sio.on('send_delete')
 async def send_delete(sid, data):
