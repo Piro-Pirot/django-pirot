@@ -313,10 +313,21 @@ def enter_room(request, channelId, roomId, type):
     curRoom = Room.objects.get(id=roomId)
     title = curRoom.room_name
     curChannel = Channel.objects.get(id=channelId)
+    
+    # 익명채팅방 닉네임 정보
+    blindroom_nicknames = dict()
 
     if type == 'main' or type == 'friends':
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
         myBlindRooms = BlindRoomMember.objects.filter(user=request.user, room__channel=curChannel)
+        
+        # 딕셔너리로 익명채팅방에서의 nickname 저장
+        for room in myBlindRooms:
+            blindroom_nicknames[room.room.id] = room.nickname
+        
+        # 디버깅
+        print(blindroom_nicknames)
+        
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
         myRooms = RoomMember.objects.filter(user=request.user, room__channel=curChannel)
     
@@ -328,8 +339,6 @@ def enter_room(request, channelId, roomId, type):
         if curRoom.room_type == BLIND_ROOM:
             #익명채팅방
             roomMembers = BlindRoomMember.objects.filter(room=curRoom)
-            # 딕셔너리로 익명채팅방에서의 nickname가져오기
-            myBlindRoom_nicknames = BlindRoomMember.objects.filter(room=curRoom,)
         else:
             roomMembers = RoomMember.objects.filter(room=curRoom)
 
@@ -400,6 +409,7 @@ def enter_room(request, channelId, roomId, type):
                     'myPassInfo': myPassInfo,
                     'urlType': type,
                     'myChannels': myChannels,
+                    'blindroom_nicknames' : blindroom_nicknames,
                     'channel_join_list': channel_join_list
                 }
             )
@@ -413,15 +423,13 @@ def setting_blindroom_profile(request):
     if request.method == 'POST':
         # 익명채팅방 이름 수정
         room_id = request.POST['roomId']
+        channel_id = request.POST['channelId']
         Member = BlindRoomMember.objects.get(user=request.user, room=room_id)
         fixed_nickname = request.POST.get('nickname')
         Member.nickname = fixed_nickname
         Member.save()
-        
-        
-        # 닉네임 수정
-        
-        return render(request, 'rooms/room.html', {'nickname': Member.nickname}) 
+        return redirect(f"/room/{channel_id}/{room_id}/main/")
+    return render(request, 'error.html', {'errorMsg': '잘못된 접근입니다.'})
     
 
 # 채팅방 검색
