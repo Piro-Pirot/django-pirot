@@ -9,7 +9,7 @@
     <form class="gen-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}    
         <div>
-            <input type="text" name="level" placeholder="기수를 입력하세요" required/>
+            <input type="text" name="level" placeholder="기수를 입력하세요" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required/>
             <input type="submit" value="정보 입력" />
         </div>
     </form>

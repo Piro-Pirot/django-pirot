@@ -70,6 +70,68 @@ const bookmarkResponse = (type, passerId) => {
   });
 }
 
+
+const noUserModal= document.querySelector(".no-user-modal");
+noUserModal.style.opacity = '0';
+
+// 가입 안 된 사용자 정보 Ajax
+// 정보는 중요하니까 POST
+const getPasserInfoAjax = async (passerId) => {
+  let cookie = document.cookie;
+  let csrfToken = cookie.substring(cookie.indexOf('=') + 1);
+  const url = '/room/load_passer_info_ajax/';
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken
+    },
+    body: JSON.stringify({ passer_id: passerId })
+  });
+
+  if(res.ok) {
+    let { passer_name: passerName, passer_phone_num: passerPhoneNum } = await res.json();
+
+    if(passerName !== null && passerPhoneNum !== null) {
+      showPhoneNum(passerName, passerPhoneNum);
+    }
+  }
+}
+
+// 모달 열기 
+const showPhoneNum = (passerName, passerPhoneNum) => {
+  // 모달 내용 설정
+  let titleDiv = noUserModal.querySelector('.title');
+  titleDiv.innerText = `${passerName}님은`;
+  
+  let phoneInput = noUserModal.querySelector('.no-user-phone');
+  phoneInput.value = passerPhoneNum;
+
+  let noUserDesc1 = noUserModal.querySelector('.no-user-desc1');
+  noUserDesc1.innerText = `채널에 등록된 ${passerName}님의 연락처 정보를 안내합니다.`;
+  let noUserDesc2 = noUserModal.querySelector('.no-user-desc2');
+  noUserDesc2.innerText = '누군가의 소중한 개인정보를 지켜주세요.';
+
+  noUserModal.showModal();
+  noUserModal.style.opacity = "1";
+}
+
+// 모달 닫기
+const noUserCloseButton = document.querySelector(".no-user-modal #close-btn");
+noUserCloseButton.addEventListener("click", () => {
+  if(noUserModal.open) {
+    noUserModal.close();
+    noUserModal.style.opacity = '0';
+  }
+});
+
+//Esc 누르면 모달 opacity 초기화
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    noUserModal.style.opacity = '0';
+  }
+});
+
 //친구들 프로필 호버 했을 떄 더보기 버튼 뜨기
 friendContainer.forEach(container => {
   const moreButton = container.querySelector("#more");
@@ -94,6 +156,16 @@ friendContainer.forEach(container => {
   btnBookmark.addEventListener('click', () => {
     bookmarkAjax(friendName, friendId)
   });
+  
+  // 버튼 클릭 리스너 등록
+  const noUserBtn = container.querySelector('.no-user-btn');
+  try {
+    noUserBtn.addEventListener('click', () => {
+      getPasserInfoAjax(friendId);
+    });
+  } catch {
+    console.log('no no-user-btn!');
+  }
 
   window.addEventListener("click", (event) => {
     if(moreForm.classList.contains("active")) {

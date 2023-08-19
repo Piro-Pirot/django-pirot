@@ -18,7 +18,9 @@
             <div class="bottom-icons">
                 <img src="{% static 'image/chat_room/setting.png' %}" alt="설정아이콘">
                 {% if request.user.profile_img %}
-                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+                    <a href="/user/setting/{{ channel.id }}">
+                        <img class="profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필">
+                    </a>
                 {% else %}
                     <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ channel.default_image.url }}" alt="프로필"></a>
                 {% endif %}

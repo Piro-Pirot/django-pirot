@@ -19,9 +19,22 @@ def index(request):
 
 # 운영진 : 운영진 페이지
 def profile_staff(request, channelID):
-
     channel = Channel.objects.get(id=channelID) # 임시!! 위에 모델 임포트도 지우기 나중에
+    channelDefaultImg = channel.default_image
+
+    # 운영진 여부
     current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
+
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
+        
+
+    # 테스트 단계에서 프로필 없는 사람들을 위해 예외 처리
+    if not current_user.profile_img:
+        current_user.profile_img = channelDefaultImg
+        current_user.save()
 
     if request.method == 'POST':
         if 'delete' in request.POST:
@@ -54,6 +67,14 @@ def passer_create_level(request, channelID):
     channel = Channel.objects.get(id=channelID)
     passers = Passer.objects.filter(channel=channel)
 
+    # 운영진 여부
+    current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
+
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
+
     if request.method == "POST":
         level = request.POST["level"]
         url = '/staff/passer_create/passer/%s/?level=%s' % (channelID, level)
@@ -68,6 +89,14 @@ def passer_create(request, channelID):
     level = request.GET.get("level")
     channel = Channel.objects.get(id=channelID)
     passers = Passer.objects.filter(channel=channel, level=level)
+
+    # 운영진 여부
+    current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
+
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
     
     if request.method == "POST":
         if 'save' in request.POST:
@@ -98,6 +127,14 @@ def passer_create(request, channelID):
 # 참여 코드 생성
 def code_create(request, channelID):
     channel = Channel.objects.get(id=channelID)
+
+    # 운영진 여부
+    current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
+
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
 
     alphabet_list = string.ascii_letters
     digits_list = string.digits
@@ -130,6 +167,14 @@ def code_create(request, channelID):
 def default_profile(request, channelID):
     channel = Channel.objects.get(id=channelID)
 
+    # 운영진 여부
+    current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
+
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
+
     if request.method == "POST":
         if request.FILES.get("default_image"):
             channel.default_image = request.FILES["default_image"]
@@ -153,6 +198,13 @@ def staff_authority(request, channelID):
     staffs = Staff.objects.filter(channel=channel)
     staffPassers = staffs.only('user')
     staffPassers = list(staffPassers.values_list('user__username', flat=True))
+
+    # 운영진 여부
+    current_user = request.user
+
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
 
     
     thislevelPassers = Passer.objects.filter(channel=channel, level=channel.this_level)
@@ -182,9 +234,16 @@ def staff_authority(request, channelID):
 
 # 회원 삭제
 def join_delete(request, channelID):
-    joins = Join.objects.all()
     channel = Channel.objects.get(id=channelID)
     channelPassers = Passer.objects.filter(channel=channel)
+
+    # 운영진 여부
+    current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
+
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
 
     if request.method == "POST":
         passerId = request.POST.get('passerId')
@@ -274,12 +333,17 @@ def start(request):
 
 def channel_create(request):
     if request.method == 'POST':
+        channel_name = request.POST['channel-create-name']
+        channel_desc = request.POST['channel-create-desc']
+        if channel_name == '':
+            return render(request, 'error.html', {'errorMsg': '채널 이름을 정확하게 입력해 주세요.'})
+        
         new_channel = Channel.objects.create(
-            channel_name = request.POST['channel-create-name'],
-            channel_desc = request.POST['channel-create-desc']
+            channel_name = channel_name,
+            channel_desc = channel_desc
         )
         new_channel.save()
-        
+
         # Passer와 Join에 신청자 추가
         new_passer = Passer.objects.create(
             passer_name = request.user.name,
@@ -290,6 +354,11 @@ def channel_create(request):
         Join.objects.create(
             user = request.user,
             passer = new_passer
+        ).save()
+        # 신청자에게 운영진 권한 부여
+        Staff.objects.create(
+            user=request.user,
+            channel = new_channel
         ).save()
 
         return render(request, template_name='users/channelCreateDone.html')

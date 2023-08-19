@@ -1,4 +1,6 @@
 const loadPosts = async (roomId, curUsername) => {
+    let cookie = document.cookie;
+    let csrfToken = cookie.substring(cookie.indexOf('=') + 1);
     const url = '/posts/load_posts_ajax/';
     const res = await fetch(url, {
         method: 'POST',
