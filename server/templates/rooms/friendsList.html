@@ -30,11 +30,18 @@
                 <i id="more" class="ri-more-fill"></i>
             </div>
             <div class="more-form">
+                <!-- 가입된 사용자라면 -->
+                {% if favorites.join_set.first.user %}
                 <form action="/room/create_room/{{ channel.id }}/{{ favorites.join_set.first.user.id }}/" method="post">
                     {% csrf_token %}
                     <input id="bookmark" type="button" value="즐겨찾기 해제" class="b{{ favorites.id }}"></input>
                     <input type="submit" value="1:1 채팅하기"></input>
                 </form>
+                {% else %}
+                <!-- 가입하지 않은 사용자라면 Ajax POST 방식으로 전화번호를 가져옴 -->
+                <input id="bookmark" type="button" value="즐겨찾기 해제" class="b{{ favorites.id }}"></input>
+                <input type="button" value="1:1 채팅하기" class="no-user-btn"></input>
+                {% endif %}
             </div>
         </div>
     </li>
@@ -51,13 +58,34 @@
                 <i id="more" class="ri-more-fill"></i>
             </div>
             <div class="more-form">
+                {% if favorites.join_set.first %}
                 <form action="/room/create_room/{{ channel.id }}/{{ friend.join_set.first.user.id }}/" method="post">
                     {% csrf_token %}
                     <input id="bookmark" type="button" value="즐겨찾기" class="b{{ friend.id }}"></input>
-                    <input type="submit" value="1:1 채팅하기"></input>
+                    <input type="submit"value="1:1 채팅하기"></input>
                 </form>
+                {% else %}
+                <!-- 가입하지 않은 사용자라면 Ajax POST 방식으로 전화번호를 가져옴 -->
+                <input id="bookmark" type="button" value="즐겨찾기" class="b{{ friend.id }}"></input>
+                <input type="button" value="1:1 채팅하기" class="no-user-btn"></input>
+                {% endif %}
             </div>
         </div>
     </li>
     {% endfor %}
 </ol>
+
+<dialog class="modal no-user-modal">
+    <i id="close-btn" class="ri-close-fill"></i>
+    <div class="modal-content">
+        <h1 class="title">이 곳에 제목을 입력하세요</h1>
+        <h2 class="title-desc">
+            <span class='no-user-pirot'>Pirot</span>에 아직 가입하기 전이에요. 😢
+        </h2>
+        <input type="text" disabled class="no-user-phone">
+        <div class="no-user-desc">
+            <p class="no-user-desc1">이 곳에 내용을 입력하세요</p>
+            <p class="no-user-desc2">이 곳에 내용을 입력하세요</p>
+        </div>
+    </div>
+</dialog>

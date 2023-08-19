@@ -21,10 +21,7 @@ dialog {
   opacity: 0;
 }
 
-.settings-modal #close-btn,
-.room-add-modal #close-btn,
-.invite-member-modal #close-btn,
-.chat-settings-modal #close-btn {
+.modal #close-btn {
   position: absolute;
   right: 1rem;
   top: 1rem;
@@ -54,10 +51,7 @@ dialog {
 }
 
 .modal-content > i#back-btn:hover,
-.settings-modal #close-btn:hover,
-.room-add-modal #close-btn:hover,
-.invite-member-modal #close-btn:hover,
-.chat-settings-modal #close-btn:hover {
+.modal #close-btn:hover {
   color: gray;
 }
 
@@ -584,3 +578,35 @@ dialog {
   border-bottom: 1px solid var(--alt-fontclr);
 }
 
+
+/* no-user-modal */
+.no-user-modal .no-user-pirot {
+  color: var(--carrot-color);
+  font-weight: 800;
+  font-size: 1.5rem;
+  padding: 0 0.5rem;
+}
+.no-user-modal .modal-content {
+  font-family: 'GowunBatang-Regular';
+}
+.no-user-modal .title {
+  margin-bottom: 1rem;
+}
+.no-user-modal .title-desc {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+.no-user-modal .no-user-phone {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.no-user-modal .no-user-desc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.no-user-modal .no-user-desc1,
+.no-user-modal .no-user-desc2 {
+  margin-bottom: 1rem;
+}
