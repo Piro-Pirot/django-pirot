@@ -134,7 +134,7 @@ conversations.addEventListener('scroll', async () => {
 
 // 엔터 전송
 let inputBox = document.querySelector('.input');
-inputBox.addEventListener('keydown', (event) => {
+inputBox.addEventListener('keypress', (event) => {
     if (event.key == 'Enter' && event.shiftKey) {
         event.preventDefault();
         console.log("insertLineBreak");
