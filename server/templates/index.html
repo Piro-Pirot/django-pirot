@@ -101,7 +101,7 @@
         </div>
       </section>
 
-      <section class="main-section-mobile">
+      <!-- <section class="main-section-mobile">
         <div class="main-section-mobile-container">
           <div class="main-section-mobile-title">
             <div>우리 동아리만의 커뮤니케이션</div>
@@ -124,7 +124,7 @@
             </a> 🥕
           </div>
         </div>
-      </section>
+      </section> -->
 
       <section class="ui-section">
         <div class="ui-section-container animate">
@@ -772,12 +772,16 @@
     };
     loginModal.style.opacity = '0';
 
-    // const loginModal = document.querySelector("#loginModal");
-    const loginButton = document.getElementById("mobile-login");
-    loginButton.onclick = () => {
+    try {
+      const loginButton = document.getElementById("mobile-login");
+      loginButton.onclick = () => {
       loginModal.showModal();
       loginModal.style.opacity = '1';
+      };
+    } catch (e) {
+      console.log("로그인 버튼은 로그아웃을 하여야 나옵니다!");
     };
+
 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>

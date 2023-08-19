@@ -22,12 +22,22 @@
   border-radius:  0.8rem;
 }
 
+.setting-boss-container {
+  width: 100%;
+  height: calc(100% - 6rem);
+  background-color: var(--body-bgclr);
+  padding: var(--section-padding);
+}
 
 .setting-section-container {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 2.5rem;
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
 }
 
 .setting-profile-image {
@@ -38,7 +48,7 @@
   margin-top: 3rem;
   position: relative;
 }
-.staff-profile-setting .setting-profile-image::after {
+.setting-profile-image::after {
   content: '';
   display: block;
   width: 17rem;
@@ -47,6 +57,10 @@
   position: absolute;
   bottom: -6rem;
   left: -0.8rem;
+}
+
+.setting-profile-image.no-line::after {
+  display: none;
 }
 
 .setting-profile-image i {
@@ -196,7 +210,7 @@
   background-color: var(--carrot-super-light);
 }
 
-.staff-menu button.bottom-line::after {
+/* .staff-menu button.bottom-line::after {
   content: '';
   display: block;
   width: 10rem;
@@ -205,7 +219,7 @@
   position: absolute;
   bottom: -1.2rem;
   left: 2.5rem;
-}
+} */
 
 .staff-container-right {
   width: calc(100% - 20rem);
@@ -355,6 +369,11 @@
   font-size: 1.2rem;
   outline: 0;
   transition: 0.1s;
+}
+
+.gen-form input[type=text]::placeholder {
+  color: var(--placeholder);
+  font-size: 1rem;
 }
 
 .gen-form input[type=text]:focus {

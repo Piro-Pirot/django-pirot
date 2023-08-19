@@ -13,4 +13,5 @@ urlpatterns = [
     path('search_rooms_ajax/', search_rooms_ajax),
     path('search_new_chat_friend_ajax/', search_new_chat_friend_ajax),
     path('search_invite_friend_ajax/', search_invite_friend_ajax),
+    path('load_passer_info_ajax/', load_passer_info_ajax),
 ]

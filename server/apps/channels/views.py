@@ -333,12 +333,17 @@ def start(request):
 
 def channel_create(request):
     if request.method == 'POST':
+        channel_name = request.POST['channel-create-name']
+        channel_desc = request.POST['channel-create-desc']
+        if channel_name == '':
+            return render(request, 'error.html', {'errorMsg': '채널 이름을 정확하게 입력해 주세요.'})
+        
         new_channel = Channel.objects.create(
-            channel_name = request.POST['channel-create-name'],
-            channel_desc = request.POST['channel-create-desc']
+            channel_name = channel_name,
+            channel_desc = channel_desc
         )
         new_channel.save()
-        
+
         # Passer와 Join에 신청자 추가
         new_passer = Passer.objects.create(
             passer_name = request.user.name,
@@ -349,6 +354,11 @@ def channel_create(request):
         Join.objects.create(
             user = request.user,
             passer = new_passer
+        ).save()
+        # 신청자에게 운영진 권한 부여
+        Staff.objects.create(
+            user=request.user,
+            channel = new_channel
         ).save()
 
         return render(request, template_name='users/channelCreateDone.html')

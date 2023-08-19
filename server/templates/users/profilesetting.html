@@ -9,24 +9,32 @@
         프로필 설정
     </div>
 </div>
-<div class="setting-section-container">
-    <div class="setting-profile-image">
-        <img src="{{ user.profile_img.url }}" alt="프로필이미지" style="width:10rem;">
-        <i class="ri-image-edit-fill profileEdit"></i>
-    </div>
-    <p class="setting-profile-name">{{ level }}기 {{ user.name }}</p>
-    <p class="nameCannotChange">이름은 변경할 수 없습니다</p>
-    <form class="profile-setting-form" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div>
+<div class="setting-boss-container">
+    <div class="setting-section-container">
+        <div class="setting-profile-image">
             {% if user.profile_img %}
-                <input type="submit" name="delete" value="사진 삭제">
+                <img src="{{ user.profile_img.url }}" alt="프로필이미지" style="width:10rem;">
+                <i class="ri-image-edit-fill profileEdit"></i>
+            {% else %}
+                <img src="{{ channel.default_image.url }}" alt="채널기본프로필이미지" style="width:10rem;">
+                <i class="ri-image-edit-fill profileEdit"></i>
             {% endif %}
-                <input type="file" name="profile_img" accept=".jpg, .png" />
-                <input type="submit" name="change" value="사진 변경" />
         </div>
-    </form>
+        <p class="setting-profile-name">{{ level }}기 {{ user.name }}</p>
+        <p class="nameCannotChange">이름은 변경할 수 없습니다</p>
+        <form class="profile-setting-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>
+                {% if user.profile_img %}
+                    <input type="submit" name="delete" value="사진 삭제">
+                {% endif %}
+                    <input type="file" name="profile_img" accept=".jpg, .png" />
+                    <input type="submit" name="change" value="사진 변경" />
+            </div>
+        </form>
+    </div>
 </div>
+
 
 <script>
     const profileEditButton = document.querySelector(".profileEdit");
