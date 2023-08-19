@@ -83,11 +83,11 @@
     <div class="mob-icons hide-element">
         <section class="mob-icon-bar">
             {% if urlType == 'friends' %}
-            <a href="/room/{{ channel.id }}/{{ room.id }}/friends/"><i class="ri-team-fill mob-friend-icon"></i></a>
-            <a href="/room/{{ channel.id }}/{{ room.id }}/main/"><i class="ri-chat-3-line mob-room-icon"></i></a>
+            <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-fill mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line mob-room-icon"></i></a>
             {% elif urlType == 'main' %}
-            <a href="/room/{{ channel.id }}/{{ room.id }}/friends/"><i class="ri-team-line mob-friend-icon"></i></a>
-            <a href="/room/{{ channel.id }}/{{ room.id }}/main/"><i class="ri-chat-3-fill mob-room-icon"></i></a>
+            <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-fill mob-room-icon"></i></a>
             {% endif %}
             <i id="mob-settings" class="ri-settings-3-line"></i>
             {% if request.user.profile_img %}
