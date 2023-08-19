@@ -94,7 +94,7 @@ def load_bubbles(request):
                 'user__username', 'room', 'content', 'is_delete',
                 'read_cnt', 'file', 'nickname',
                 'profile_img', 'is_notice', 'created_at',
-                'user__name'
+                'user__name', 'user__id'
             ).annotate(
                 hour=Func(
                     F('created_at'),
@@ -131,7 +131,7 @@ def load_bubbles(request):
             bubbles = Bubble.objects.filter(room=curRoom).values(
                 'user__username', 'room', 'content', 'is_delete',
                 'read_cnt', 'file', 'is_notice', 'created_at',
-                'user__name'
+                'user__name', 'user__id'
             ).annotate(
                 hour=Func(
                     F('created_at'),
@@ -170,6 +170,12 @@ def load_bubbles(request):
             bubble['file'] = bubble['file'].replace('/', '/media/', 1)
             if 'profile_img' in bubble:
                 bubble['profile_img'] = bubble['profile_img'].replace('/', '/media/', 1)
+            else:
+                user_obj = User.objects.get(id=bubble['user__id'])
+                if user_obj.profile_img:
+                    bubble['profile_img'] = user_obj.profile_img.url
+                else:
+                    bubble['profile_img'] = None
 
         bubbles = list(bubbles)
         if len(bubbles) == 0:

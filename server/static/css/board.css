@@ -67,7 +67,7 @@
 }
 
 .post-container button.delete:hover {
-  background-color: #fba50576;
+  background-color: var(--carrot-super-light);
 }
 
 .post-container button.checked {

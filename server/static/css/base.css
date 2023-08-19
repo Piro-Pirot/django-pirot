@@ -337,9 +337,9 @@ background-color: #f3b95431;
 
 .chat-icons {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   height: 100%;
-  width: 4rem;
+  width: 2rem;
   border: 1px solid var(--carrot-light);
   border-radius: 0.5rem;
   margin-left: 0.5rem;
@@ -360,8 +360,8 @@ background-color: #f3b95431;
 }
 
 #imageIcon {
-  /* padding: 0.2rem; */
   border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
 }
 
 #imageIcon .attach-label{
@@ -377,7 +377,7 @@ background-color: #f3b95431;
   border: 0;
 }
 
-#reserveMsg {
+/* #reserveMsg {
   border-top-right-radius: 0.5rem;
   cursor: pointer;
 }
@@ -385,10 +385,11 @@ background-color: #f3b95431;
 #attachIcon {
   border-bottom-left-radius: 0.5rem;
   cursor: pointer;
-}
+} */
 
 #codeIcon {
   border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
   cursor: pointer;
 }
 
