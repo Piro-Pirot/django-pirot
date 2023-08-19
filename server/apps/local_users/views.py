@@ -94,9 +94,10 @@ def profile_setting(request, channelID):
     channel = Channel.objects.get(id=channelID)
     channelDefaultImg = channel.default_image
     current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
 
     # 운영진 여부
-    if Staff.objects.filter(user=current_user).exists():
+    if staffs.filter(user=current_user).exists():
         url = '/staff/setting/%s' % (channelID)
         return redirect(url)
 
