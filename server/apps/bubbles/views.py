@@ -62,7 +62,7 @@ async def save_blind_msg(room, data):
             is_notice = is_notice,
             
             nickname = curBlindUser.nickname,
-            profile_img = curBlindUser.profile_img
+            profile_img = curBlindUser.profile_img.url.replace('/media', '', 1)
         )
     except:
         newBubble = await sync_to_async(BlindBubble.objects.create)(
@@ -73,7 +73,7 @@ async def save_blind_msg(room, data):
             file = data['file'],
             
             nickname = curBlindUser.nickname,
-            profile_img = curBlindUser.profile_img
+            profile_img = curBlindUser.profile_img.url.replace('/media', '', 1)
         )
     await sync_to_async(newBubble.save)()
     
@@ -94,7 +94,7 @@ def load_bubbles(request):
                 'user__username', 'room', 'content', 'is_delete',
                 'read_cnt', 'file', 'nickname',
                 'profile_img', 'is_notice', 'created_at',
-                'user__name'
+                'user__name', 'user__id'
             ).annotate(
                 hour=Func(
                     F('created_at'),
@@ -131,7 +131,7 @@ def load_bubbles(request):
             bubbles = Bubble.objects.filter(room=curRoom).values(
                 'user__username', 'room', 'content', 'is_delete',
                 'read_cnt', 'file', 'is_notice', 'created_at',
-                'user__name'
+                'user__name', 'user__id'
             ).annotate(
                 hour=Func(
                     F('created_at'),
@@ -167,6 +167,15 @@ def load_bubbles(request):
 
         for bubble in bubbles:
             bubble['content'] = str(bubble['content'])
+            bubble['file'] = bubble['file'].replace('/', '/media/', 1)
+            if 'profile_img' in bubble:
+                bubble['profile_img'] = bubble['profile_img'].replace('/', '/media/', 1)
+            else:
+                user_obj = User.objects.get(id=bubble['user__id'])
+                if user_obj.profile_img:
+                    bubble['profile_img'] = user_obj.profile_img.url
+                else:
+                    bubble['profile_img'] = None
 
         bubbles = list(bubbles)
         if len(bubbles) == 0:

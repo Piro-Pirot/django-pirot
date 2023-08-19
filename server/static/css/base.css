@@ -67,11 +67,15 @@
   top: -0.1rem;
 }
 
-.profile-icon {
+.profile-icon img {
   border: 1px solid var(--alt-fontclr);
   border-radius: 50%;
   width: 2.2rem;
   height: 2.2rem;
+  padding: 0.1rem;
+  
+  aspect-ratio: 1/1; /*가로세로 비율 조정*/
+  object-fit: cover; /*사진이 찌그러지지 않게*/
 }
 
 

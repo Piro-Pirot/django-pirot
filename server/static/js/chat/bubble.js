@@ -1,6 +1,3 @@
-let cookie = document.cookie;
-let csrfToken = cookie.substring(cookie.indexOf('=') + 1);
-
 /* 전송 시 스크롤 제어 */
 conversationSection = document.querySelector('.conversation');
 
@@ -21,6 +18,8 @@ conversationSection.addEventListener('scroll', () => {
 // 말풍선 데이터를 Ajax 방식으로 받아오기
 // 장고 쿼리셋 -> json -> html -> 자바스크립트 딕셔너리 과정이 너무 복잡해서
 const loadBubbles = async(roomId) => {
+    let cookie = document.cookie;
+    let csrfToken = cookie.substring(cookie.indexOf('=') + 1);
     const url = '/bubbles/load_bubbles_ajax/';
     const res = await fetch(url, {
         method: 'POST',
@@ -216,7 +215,7 @@ function createBubble(bubbleData, timeFlag, profileFlag) {
         let bubbleFileContent = '';
         if(!!bubbleData['file']) {
             bubbleFileContent = document.createElement('img');
-            bubbleFileContent.setAttribute('src', `/media/${bubbleData['file']}`);
+            bubbleFileContent.setAttribute('src', bubbleData['file']);
             bubbleFileContent.classList.add('bubble-content');
             
             bubbleFileContent.style.cursor = 'pointer';
