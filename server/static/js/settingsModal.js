@@ -34,6 +34,7 @@ lightModeCheckbox.addEventListener("change", () => {
   if (lightModeCheckbox.checked) {
     body.classList.remove("dark-mode");
     body.classList.remove("bw-mode");
+    body.classList.add("light-mode");
   };
   if (darkModeCheckbox.checked) {
     darkModeCheckbox.checked = false;
@@ -41,10 +42,10 @@ lightModeCheckbox.addEventListener("change", () => {
   if (bwModeCheckbox.checked) {
     bwModeCheckbox.checked = false;
   };
-  localStorage.setItem('theme', 'light-mode');
 });
 darkModeCheckbox.addEventListener("change", () => {
   if (darkModeCheckbox.checked) {
+    body.classList.remove("light-mode");
     body.classList.remove("bw-mode");
     body.classList.add("dark-mode");
   }
@@ -55,10 +56,10 @@ darkModeCheckbox.addEventListener("change", () => {
   if (bwModeCheckbox.checked) {
     bwModeCheckbox.checked = false;
   };
-  localStorage.setItem('theme', 'dark-mode')
 });
 bwModeCheckbox.addEventListener("change", () => {
   if (bwModeCheckbox.checked) {
+    body.classList.remove("light-mode");
     body.classList.remove("dark-mode");
     body.classList.add("bw-mode");
   }
@@ -68,6 +69,43 @@ bwModeCheckbox.addEventListener("change", () => {
   if (darkModeCheckbox.checked) {
     darkModeCheckbox.checked = false;
   };
-  localStorage.setItem('theme', 'bw-mode')
 });
 
+var savedTheme = curUserTheme;
+var savedNotice = curUserNotice;
+
+// let alarmDiv = document.querySelector(".checkbox-wrapper-22 alarm-toggle");
+// let alarmChecked = alarmDiv.querySelector('[name="alarm"]');
+
+settingsModalCloseButton.addEventListener("click", () => {
+  if (savedTheme == 'lightMode') {
+    body.classList.remove('dark-mode');
+    body.classList.remove('bw-mode');
+    body.classList.add('light-mode');
+    lightModeCheckbox.checked = true;
+    darkModeCheckbox.checked = false;
+    bwModeCheckbox.checked = false;
+  };
+  if (savedTheme == 'darkMode') {
+    body.classList.remove('light-mode');
+    body.classList.remove('bw-mode');
+    body.classList.add('dark-mode');
+    lightModeCheckbox.checked = false;
+    darkModeCheckbox.checked = true;
+    bwModeCheckbox.checked = false;
+  };
+  if (savedTheme == 'bwMode') {
+    body.classList.remove('light-mode');
+    body.classList.remove('dark-mode');
+    body.classList.add('bw-mode');
+    lightModeCheckbox.checked = false;
+    darkModeCheckbox.checked = false;
+    bwModeCheckbox.checked = true;
+  };
+  // if (savedNotice == '1') {
+  //   alarmChecked.checked = true;
+  // }
+  // else {
+  //   alarmChecked.checked = false;
+  // };
+});
