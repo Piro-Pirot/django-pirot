@@ -94,6 +94,11 @@ def create_group_room(request, channelId):
         )
         new_room.save()
 
+        # 채널의 기본 프로필이 있는지 확인
+        default_img = Channel.objects.get(id=channelId).default_image
+        print(default_img)
+
+
         # 채팅 방 참여자 추가
         room_member_list = []
         for target in targets:
@@ -104,7 +109,7 @@ def create_group_room(request, channelId):
                     user = target_user_info,
                     room = new_room,
                     nickname = f'{fake_korean_first()} {fake_korean_second()}',
-                    profile_img = 'test.png'
+                    profile_img = default_img
                 )
                 new_member.save()
                 room_member_list.append(new_member)
@@ -131,7 +136,7 @@ def create_group_room(request, channelId):
                 user = request.user,
                 room = new_room,
                 nickname = f'{fake_korean_first()} {fake_korean_second()}',
-                profile_img = 'test.png'
+                profile_img = default_img
             )
             new_member_user.save()
             BlindBubble.objects.create(
@@ -252,7 +257,7 @@ def main_room(request, channelId, type):
         myRooms = RoomMember.objects.filter(user=request.user, room__channel=curChannel)
 
         # 현재 로그인 사용자
-        myPassInfo = Passer.objects.get(passer_name=request.user.name, channel=curChannel)
+        myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel=curChannel).last()
         # 현재 로그인 사용자의 채널 구성원들
         myFriends = Passer.objects.filter(channel__id=channelId).exclude(id=myPassInfo.id).order_by('-level', 'passer_name')
 
@@ -321,7 +326,7 @@ def enter_room(request, channelId, roomId, type):
         myRooms = RoomMember.objects.filter(user=request.user, room__channel=curChannel)
     
         # 현재 로그인 사용자
-        myPassInfo = Passer.objects.get(passer_name=request.user.name, channel=curChannel)
+        myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel=curChannel).last()
         # 현재 로그인 사용자의 채널 구성원들
         myFriends = Passer.objects.filter(channel=curChannel).exclude(id=myPassInfo.id).order_by('-level', 'passer_name')
 
@@ -604,3 +609,16 @@ def search_invite_friend_ajax(request):
         joined_passer_list = json.dumps(joined_passer_list)
 
         return JsonResponse({'result_list': joined_passer_list})
+
+def load_passer_info_ajax(request):
+    if request.method == 'POST':
+        req = json.loads(request.body)
+        passer_id = req['passer_id']
+
+        try:
+            passer_info = Passer.objects.get(id=passer_id)
+            return JsonResponse({ 'passer_name': passer_info.passer_name, 'passer_phone_num': passer_info.passer_phone })
+        except:
+            return render(request, 'error.html', { 'errorMsg': '요청하신 정보가 존재하지 않습니다.' })
+        
+    return render(request, 'error.html', { 'errorMsg': '잘못된 접근입니다.' })
