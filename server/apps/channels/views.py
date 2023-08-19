@@ -214,8 +214,11 @@ def staff_authority(request, channelID):
         errorMsg = '잘못된 접근입니다.'
         return render(request, 'error.html', {'errorMsg': errorMsg})
 
-    
-    thislevelPassers = Passer.objects.filter(channel=channel, level=channel.this_level)
+    # 현재 기수를 설정하지 않은 경우에는 전체 회원을 불러오기
+    if channel.this_level:
+        thislevelPassers = Passer.objects.filter(channel=channel, level=channel.this_level)
+    else:
+        thislevelPassers = Passer.objects.filter(channel=channel)
 
     # 원래 저장 상태 불러오기
 
@@ -232,6 +235,7 @@ def staff_authority(request, channelID):
                         channel = channel
                     )
                     newStaff.save()
+
         url = '/staff/staff_authority/%s' % (channelID)
 
         return redirect(url)
