@@ -44,7 +44,11 @@ def bubble_serializer(bubble_obj, is_blind, profile_img):
         dic['nickname'] = bubble_obj.nickname
         dic['profile_img'] = bubble_obj.profile_img.url
     else:
-        dic['profile_img'] = profile_img
+        try:
+            dic['profile_img'] = profile_img.url
+        except:
+            dic['profile_img'] = profile_img
+
     dic['year'] = dic['created_at'][0:4]
     dic['month'] = dic['created_at'][5:7]
     dic['day'] = dic['created_at'][8:10]
@@ -119,9 +123,11 @@ async def send_message(sid, data):
         newBubble = await bubble.save_msg(room, data)
         # newBubble['user_profile_img'] = user.profile_img
         try:
-            newBubble = bubble_serializer(newBubble, False, user.profile_img.url)
+            newBubble = bubble_serializer(newBubble, False, user.profile_img)
         except:
             newBubble = bubble_serializer(newBubble, False, '')
+
+
 
     await sio.emit('display_message', newBubble, to=roomId)
     print('massage was saved')
@@ -152,7 +158,7 @@ async def send_file(sid, data):
     
     if img_type != None:
         os.rename(filename, f'{filename}.{img_type}')
-        data['file'] = f'{today}/upload{len(file_list)}.{img_type}'
+        data['file'] = f'/{today}/upload{len(file_list)}.{img_type}'
         print(data)
 
         if room.room_type == BLIND_ROOM:
@@ -161,10 +167,10 @@ async def send_file(sid, data):
             newBubble = bubble_serializer(newBubble, True, '')
         else:
             newBubble = await bubble.save_msg(room, data)
-            try:
-                newBubble = bubble_serializer(newBubble, False, user.profile_img.url)
-            except:
+            if user.profile_img == None:
                 newBubble = bubble_serializer(newBubble, False, '')
+            else:
+                newBubble = bubble_serializer(newBubble, False, user.profile_img.url)
         
         await sio.emit('display_message', newBubble, to=room_id)
     else:

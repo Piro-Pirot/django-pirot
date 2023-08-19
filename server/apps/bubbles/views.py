@@ -62,7 +62,7 @@ async def save_blind_msg(room, data):
             is_notice = is_notice,
             
             nickname = curBlindUser.nickname,
-            profile_img = curBlindUser.profile_img
+            profile_img = curBlindUser.profile_img.url.replace('/media', '', 1)
         )
     except:
         newBubble = await sync_to_async(BlindBubble.objects.create)(
@@ -73,7 +73,7 @@ async def save_blind_msg(room, data):
             file = data['file'],
             
             nickname = curBlindUser.nickname,
-            profile_img = curBlindUser.profile_img
+            profile_img = curBlindUser.profile_img.url.replace('/media', '', 1)
         )
     await sync_to_async(newBubble.save)()
     
@@ -167,6 +167,9 @@ def load_bubbles(request):
 
         for bubble in bubbles:
             bubble['content'] = str(bubble['content'])
+            bubble['file'] = bubble['file'].replace('/', '/media/', 1)
+            if 'profile_img' in bubble:
+                bubble['profile_img'] = bubble['profile_img'].replace('/', '/media/', 1)
 
         bubbles = list(bubbles)
         if len(bubbles) == 0:
