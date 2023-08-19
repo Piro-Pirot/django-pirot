@@ -85,16 +85,23 @@
         {% if room.room_type == 1 %}
         <form action="/room/setting_blindroom/" method="post" id="form-setting">
             {% csrf_token %}
-            <div class="btn-friend-profile-img">
-                익명채팅방 프로필 이미지 들어가기
-                {% comment %} <img src=""> {% endcomment %}
+            <div class="blind-profile-setting">
+                <div class="blind-profile-img">
+                    {% comment %} <img src=""> {% endcomment %}
+                </div>
+                <div class="blind-name">
+                {% with target_room_id=room.id %}
+                    <p>닉네임</p>
+                    <input id="nickname" type='text' name="nickname" value="{{ blindroom_nicknames|get_key:target_room_id }}">
+                    <i class="ri-edit-line"></i>
+                {% endwith %}
+                </div>
+                
             </div>
-            {% with target_room_id=room.id %}
-                <p>닉네임 : <input type='text' name="nickname" value="{{ blindroom_nicknames|get_key:target_room_id }}"></p>      
-            {% endwith %}
+
             <input type="hidden" name="roomId" id="" value="{{ room.id }}">
             <input type="hidden" name="channelId" id="" value="{{ channel.id }}">
-            <button type='submit'>수정 완료</button>
+            <!-- <button type='submit'>수정 완료</button> -->
         </form>
         {% endif %}
 
@@ -116,7 +123,7 @@
             <input type="hidden" name="channelId" id="" value="{{ channel.id }}">
             <input type="hidden" name="roomId" id="" value="{{ room.id }}">
             <button class="btn-exit" type="button" onclick="confirmExit('{{ user }}', '{{ user.name }}', '{{ room.id }}');">
-                <i class="ri-door-open-fill"></i>
+                <i class="ri-logout-box-r-line"></i>
                 <span>채팅방 나가기</span>
             </button>
         </form>
@@ -207,6 +214,18 @@
     });
 
     // board의 scrollHeight 증가시켜서 더 밑으로 스크롤 할 수 있게 하기
+
+    //익명채팅방 닉네임 input 항상 텍스트의 끝에 focus 되게 하기
+    function setCaretToEnd(input) {
+            input.focus();
+            input.setSelectionRange(input.value.length, input.value.length);
+        };
+
+    var nicknameInput = document.getElementById("nickname");
+
+    nicknameInput.addEventListener("focus", function() {
+        setCaretToEnd(nicknameInput);
+    });
 
 </script>
 

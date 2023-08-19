@@ -97,7 +97,7 @@ dialog {
   font-size: 2rem;
 }
 
-.modal-content input[type=text] {
+.modal-content input[type=text]:not(#nickname) {
   margin-top: 1rem;
   outline: 0;
   border: 2px solid var(--modal-bgclr);
@@ -417,7 +417,7 @@ dialog {
   align-items: center;
   padding: 1rem;
   margin-top: 1.5rem;
-  background-color: var(--carrot-color);
+  background-color: transparent;
   border: none;
   outline: 0;
   border-radius: 1.5rem;
@@ -426,11 +426,14 @@ dialog {
   height: 2.5rem;
   cursor: pointer;
   font-size: 1rem;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .chat-settings-modal .btn-exit:hover {
-  background-color: var(--carrot-dark);
+  background-color: var(--icon-hover);
+}
+
+.chat-settings-modal .btn-exit > i {
+  margin-right: 0.5rem;
 }
 
 /* 테마선택 체크박스 */
@@ -532,3 +535,52 @@ dialog {
 .checkbox-wrapper-13 *:after {
   box-sizing: inherit;
 }
+
+
+
+/* 채팅방 설정 */
+.blind-profile-setting {
+  display: flex;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.blind-profile-img {
+  border: 1px solid var(--alt-fontclr);
+  border-radius: 50%;
+  width: 7rem;
+  height: 7rem;
+  margin-right: 2rem;
+}
+
+.blind-name {
+  text-align: center;
+  position: relative;
+}
+
+.blind-name i {
+  position: absolute;
+  right: -1.2rem;
+  bottom: 0.9em;
+}
+
+#nickname {
+  text-align: center;
+  color: var(--alt-fontclr);
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--alt-fontclr);
+  border-radius: 0;
+  width: 10rem;
+  outline: 0;
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+  padding: 0.6rem;
+}
+
+#nickname:focus {
+  outline: 0;
+  border: 0;
+  border-bottom: 1px solid var(--alt-fontclr);
+}
+
