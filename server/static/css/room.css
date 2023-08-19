@@ -40,10 +40,17 @@
 }
 
 .bubble-header .bubble-profile-img {
-    border: 1px solid var(--font-color);
-    width: 1.7rem;
-    height: 1.7rem;
+    display: inline;
+}
+
+.bubble-header .bubble-profile-img img {
+    /* border: 1px solid var(--font-color); */
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
+    padding: 0.1rem;
+    aspect-ratio: 1/1; /*가로세로 비율 조정*/
+    object-fit: cover; /*사진이 찌그러지지 않게*/
 }
 
 .bubble-box .bubble-content-container,
