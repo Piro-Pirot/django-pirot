@@ -338,6 +338,11 @@ background-color: var(--carrot-super-light);
   border: 1px solid var(--carrot-light);
 }
 
+.code-input {
+  width: calc(85% - 3rem);
+  height: 100%;
+}
+
 .chat-icons {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
