@@ -84,6 +84,7 @@ def load_bubbles(request):
     if request.method == 'POST' and request.user.is_authenticated:
         req = json.loads(request.body)
         room_id = req['roomId']
+        page = req['page']
         
         curRoom = Room.objects.get(id=room_id)
         
@@ -126,7 +127,7 @@ def load_bubbles(request):
                     function='DATE_FORMAT',
                     output_field=CharField()
                 ),
-            ).order_by('created_at')
+            ).order_by('-created_at')[page:page+20]
         else:
             bubbles = Bubble.objects.filter(room=curRoom).values(
                 'user__username', 'room', 'content', 'is_delete',
@@ -163,7 +164,7 @@ def load_bubbles(request):
                     function='DATE_FORMAT',
                     output_field=CharField()
                 ),
-            ).order_by('created_at')
+            ).order_by('-created_at')[page:page+20]
 
         for bubble in bubbles:
             bubble['content'] = str(bubble['content'])
