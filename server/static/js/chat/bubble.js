@@ -10,14 +10,9 @@ function calcScroll() {
     return conversationSection.scrollHeight - conversationSection.scrollTop;
 }
 
-// 현재 스크롤 위치
-conversationSection.addEventListener('scroll', () => {
-    bScroll = calcScroll();
-})
-
 // 말풍선 데이터를 Ajax 방식으로 받아오기
 // 장고 쿼리셋 -> json -> html -> 자바스크립트 딕셔너리 과정이 너무 복잡해서
-const loadBubbles = async(roomId) => {
+const loadBubbles = async(roomId, page) => {
     let cookie = document.cookie;
     let csrfToken = cookie.substring(cookie.indexOf('=') + 1);
     const url = '/bubbles/load_bubbles_ajax/';
@@ -27,7 +22,7 @@ const loadBubbles = async(roomId) => {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrfToken
         },
-        body: JSON.stringify({roomId: roomId})
+        body: JSON.stringify({roomId: roomId, page: page})
     });
 
     if(res.ok) {
@@ -39,7 +34,7 @@ const loadBubbles = async(roomId) => {
         }
 
         // 처음에는 스크롤 맨 아래로
-        controlScroll();
+        if(page === 0) controlScroll();
     }
 }
 
@@ -76,6 +71,7 @@ function isSameWithPrev(prevBubble, thisBubble) {
     return true;
 }
 
+// 말풍선을 위에서 아래로 쌓았었는데 아래에서 위로 쌓아야 함.
 const loadBubblesResponse = (ajaxBubbles) => {
     let timeFlag = true;
     // 첫 번째 말풍선은 프로필을 항상 표시
@@ -121,7 +117,19 @@ const loadBubblesResponse = (ajaxBubbles) => {
     }
 }
 
-loadBubbles(curRoomId);
+loadBubbles(curRoomId, 0);
+
+// 현재 스크롤 위치
+conversations.addEventListener('scroll', async () => {
+    bScroll = calcScroll();
+    if(conversations.scrollTop === 0) {
+        const cntBubbles = conversations.childNodes.length;
+        scrollStorage = conversations.scrollHeight;
+        // 와.. await 걸어 주기!! Height 값이 함수 앞 뒤로 달라야 해요
+        await loadBubbles(curRoomId, cntBubbles);
+        conversations.scrollTop = conversations.scrollHeight - scrollStorage;
+    }
+})
 
 
 // 엔터 전송
@@ -256,5 +264,5 @@ function createBubble(bubbleData, timeFlag, profileFlag) {
     bubbleDiv.appendChild(bubbleContainer);
 
     // 화면에 추가
-    conversations.appendChild(bubbleDiv);
+    conversations.insertBefore(bubbleDiv, conversations.firstChild);
 }
