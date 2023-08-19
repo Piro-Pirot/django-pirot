@@ -26,17 +26,13 @@
             </div>
             <div class="bottom-icons">
                 <i id="settings" class="ri-settings-3-line icon"></i>
-                {% if request.user.profile_img %}
-                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img src="{{ request.user.profile_img.url }}" alt="프로필"></a>
-                {% else %}
-                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img src="{{ channel.default_image.url }}" alt="프로필"></a>
-                {% endif %}
+                <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img class="profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
             </div>
         </section>
         <section class="staff-setting">
             <div class="setting-header-container">
                 <div class="setting-header">
-                    운영진 설정
+                    {{ channel.channel_name }} 운영진 설정
                 </div>
             </div>
             <div class="staff-container">

@@ -92,16 +92,24 @@ def logout(request):
 def profile_setting(request, channelID):
 
     channel = Channel.objects.get(id=channelID)
+    channelDefaultImg = channel.default_image
     current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
 
     # 운영진 여부
-    if Staff.objects.filter(user=current_user).exists():
+    if staffs.filter(user=current_user).exists():
         url = '/staff/setting/%s' % (channelID)
         return redirect(url)
+
+    # 테스트 단계에서 프로필 없는 사람들을 위해 예외 처리
+    if not current_user.profile_img:
+        current_user.profile_img = channelDefaultImg
+        current_user.save()
 
     if request.method == 'POST':
         if 'delete' in request.POST:
             current_user.profile_img.delete()
+            current_user.profile_img = channelDefaultImg # 채널의 default_img로 표시되도록
         elif 'change' in request.POST:
             if request.FILES.get('profile_img'):
                 current_user.profile_img = request.FILES['profile_img']
