@@ -127,9 +127,10 @@
 }
 
 .channel-name-select {
-  width: 11rem;
+  width: 12em;
   box-sizing: border-box;
   position: relative;
+  text-overflow: ellipsis;
 }
 
 .select-btn {
@@ -163,7 +164,7 @@
 
 .select-options {
   display: none;
-  background-color: rgb(246, 244, 244);
+  background-color: var(--body-bgclr);
   box-sizing: border-box;
   position: absolute;
   width: 100%;
@@ -183,11 +184,11 @@
   display: flex;
   align-items: center;
   font-size: 1.2rem;
-  color: black;
+  color: var(--alt-fontclr);
 }
 
 .channel-option:hover {
-background-color: #f3b95431;
+background-color: var(--carrot-super-light);
 }
 
 .search-box > input {
@@ -216,7 +217,7 @@ background-color: #f3b95431;
 .search-box > i {
   font-size: 1.7rem;
   position: absolute;
-  right: 4rem;
+  right: 2.8rem;
   cursor: pointer;
 }
 
@@ -318,11 +319,17 @@ background-color: #f3b95431;
   background-color: var(--section-bgclr);
 }
 
+.chat-input-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
 .chat-input textarea {
   outline: 0;
   padding: 0.3rem 0.5rem;
   height: 100%;
-  width: 80%;
+  width: calc(85% - 3rem);
   border: 1px solid var(--carrot-light);
   border-radius: 0.5rem;
   resize: none;
@@ -335,6 +342,11 @@ background-color: #f3b95431;
   border: 1px solid var(--carrot-light);
 }
 
+.code-input {
+  width: calc(85% - 3rem);
+  height: 100%;
+}
+
 .chat-icons {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -342,7 +354,7 @@ background-color: #f3b95431;
   width: 2rem;
   border: 1px solid var(--carrot-light);
   border-radius: 0.5rem;
-  margin-left: 0.5rem;
+  margin: 0 0.5rem;
 }
 
 .chat-icons div {
@@ -396,7 +408,7 @@ background-color: #f3b95431;
 .chat-input button {
   height: 100%;
   width: 15%;
-  margin-left: 0.5rem;
+  /* margin-left: 0.5rem; */
   background-color: var(--carrot-color);
   color: var(--send-fontclr);
   font-size: 1.2rem;

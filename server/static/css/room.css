@@ -123,6 +123,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 7rem;
+    line-height: 2rem;
 }
 
 .btn-room-container a {
@@ -464,6 +465,23 @@
     margin-left: 2rem;
     cursor: pointer;
 }
+
+.code-input {
+    display: none;
+    width: 80%;
+    height: 100%;
+    border-radius: 0.5rem;
+}
+
+.code-input.active {
+    display: block;
+    text-overflow: ;
+}
+
+.chat-input .input.inactive {
+    display: none;
+}
+
 
 @media screen and (max-width: 768px) {
     #chat-member-add:active {

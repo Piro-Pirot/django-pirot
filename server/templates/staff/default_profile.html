@@ -6,7 +6,7 @@
 {% block content %}
 <div class="default-profile">
     <h2 class="staff-setting-title">동아리 기본 설정</h2>
-    <div class="setting-profile-image">
+    <div class="setting-profile-image no-line">
         <!-- 이미지 너무 커져서 임의로 style 설정!! -->
         <img src="{{ channel.default_image.url }}" alt="채널기본프로필이미지" style="width:10rem;">
         <i class="ri-image-edit-fill profileEdit"></i>
@@ -15,9 +15,9 @@
         {% csrf_token %}
         <div>
             {% if channel.this_level %}
-                <input type="text" name="this_level" value="{{ channel.this_level }}" placeholder="현재 기수 입력" />
+                <input type="text" name="this_level" value="{{ channel.this_level }}" placeholder="현재 기수 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
             {% else %}
-                <input type="text" name="this_level" placeholder="현재 기수를 입력" />
+                <input type="text" name="this_level" placeholder="현재 기수를 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
             {% endif %}
             <input type="submit" value="기수 입력" />
             <i id="genInfo" class="ri-information-line"></i>
