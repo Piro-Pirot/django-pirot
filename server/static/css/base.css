@@ -465,6 +465,10 @@ background-color: var(--carrot-super-light);
   overflow-y: scroll;
 }
 
+.board > div.post-container:last-child {
+  margin-bottom: 100%;
+}
+
 .post-input {
   height: var(--chat-input-height);
   width: 100%;
