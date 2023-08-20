@@ -4,58 +4,63 @@
 <!-- 운영진 프로필 사진 변경 -->
 
 {% block content %}
-<div class="passer-gen">
-    <div class="setting-profile-image">
-    {% if user.profile_img %}
-        <img src="{{ user.profile_img.url }}" alt="프로필이미지">
-        <i class="ri-image-edit-fill profileEdit"></i>
-    {% else %}
-        <img src="{{ channel.default_image.url }}" alt="채널기본프로필이미지">
-        <i class="ri-image-edit-fill profileEdit"></i>
-    {% endif %}
-    </div>
-    <p class="setting-profile-name">{{ level }}기 {{ user.name }}</p>
-    <p class="nameCannotChange">이름은 변경할 수 없습니다</p>
-    <form class="profile-setting-form" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-    	<div>
-            {% if user.profile_img %}
-                <input type="submit" name="delete" value="사진 삭제" />
-            {% endif %}
-                <input type="file" name="profile_img" accept=".jpg, .png" />
-                <input type="submit" name="change" value="사진 변경" />
+<div class="staff-setting-container">
+    <div class="passer-gen staff">
+        <div class="setting-profile-image">
+        {% if user.profile_img %}
+            <img src="{{ user.profile_img.url }}" alt="프로필이미지">
+            <i class="ri-image-edit-fill profileEdit"></i>
+        {% else %}
+            <img src="{{ channel.default_image.url }}" alt="채널기본프로필이미지">
+            <i class="ri-image-edit-fill profileEdit"></i>
+        {% endif %}
         </div>
-    </form>
-</div>
-<div class="passer-list-container">
-    <div class="setting-grid-2 staff">
-        <form action="/user/update_setting/" method="post">
-            <table class="setting-edit-table">
-                <tr>
-                    <td class="left-td"><label for="">아이디</label></td>
-                    <td colspan="2"><input type="text" disabled value="{{ user.username }}"></td>
-                </tr>
-                <tr>
-                    <td class="left-td"><label for="phone-num">전화번호</label></td>
-                    <td><input type="text" name="phone-num" disabled class="setting-phone-num" value="{{ user.phone_number }}" oninput="autoHyphen(this)"></td>
-                    <td><button type="button" id="edit-phone_num">수정</button></td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="edit-password">비밀번호 변경</td>
-                    <td><button type="submit">변경</button></td>
-                </tr>
-                <tr>
-                    <td class="left-td"><label for="origin-pw">기존 비밀번호</label></td>
-                    <td colspan="2"><input type="text" name="origin-pw"></td>
-                </tr>
-                <tr>
-                    <td class="left-td"><label for="new-pw">새로운 비밀번호</label></td>
-                    <td colspan="2"><input type="text" name="new-pw"></td>
-                </tr>
-            </table>
-        </form>
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <p class="setting-profile-name">{{ level }}기 {{ user.name }}</p>
+            <p class="nameCannotChange">이름은 변경할 수 없습니다</p>
+            <form class="profile-setting-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div>
+                    {% if user.profile_img %}
+                        <input type="submit" name="delete" value="사진 삭제" />
+                    {% endif %}
+                        <input type="file" name="profile_img" accept=".jpg, .png" />
+                        <input type="submit" name="change" value="사진 변경" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="passer-list-container staff">
+        <div class="setting-grid-2 staff">
+            <form action="/user/update_setting/" method="post">
+                <table class="setting-edit-table staff">
+                    <tr>
+                        <td class="left-td"><label for="">아이디</label></td>
+                        <td colspan="2"><input type="text" disabled value="{{ user.username }}"></td>
+                    </tr>
+                    <tr>
+                        <td class="left-td"><label for="phone-num">전화번호</label></td>
+                        <td><input class="phone-num-edit" type="text" name="phone-num" disabled class="setting-phone-num" value="{{ user.phone_number }}" oninput="autoHyphen(this)"></td>
+                        <td><button type="button" id="edit-phone_num">수정</button></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="edit-password">비밀번호 변경</td>
+                        <td><button type="submit">변경</button></td>
+                    </tr>
+                    <tr>
+                        <td class="left-td"><label for="origin-pw">기존 비밀번호</label></td>
+                        <td colspan="2"><input type="text" name="origin-pw"></td>
+                    </tr>
+                    <tr>
+                        <td class="left-td"><label for="new-pw">새로운 비밀번호</label></td>
+                        <td colspan="2"><input type="text" name="new-pw"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
     </div>
 </div>
+
 <script>
     const profileEditButton = document.querySelector(".profileEdit");
     const profileEditForm = document.querySelector(".profile-setting-form");

@@ -4,7 +4,7 @@
 <!-- 합격자 명단 추가 -->
 
 {% block content %}
-<div class="passer-gen">
+<div class="passer-gen pass">
     <h2 class="staff-setting-title">합격자 정보 입력</h2>
     <form class="passer-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -17,7 +17,7 @@
     </form>
 </div>
 
-<div class="passer-list-container">
+<div class="passer-list-container pass">
     <h2 class="staff-setting-title">
         {{ level }}기 합격자 목록
     </h2>
