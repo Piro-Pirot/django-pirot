@@ -69,7 +69,7 @@ def signup(request):
 @csrf_exempt
 def login(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, request.POST)
+        form = AuthenticationForm(request, request.POST)        
         if form.is_valid():
             user = form.get_user()
             auth.login(request, user)
@@ -80,10 +80,7 @@ def login(request):
             else:
                 return redirect('/')
         else:
-            context = {
-                'form': form,
-            }
-            return render(request, template_name='index.html', context=context)
+            return render(request, 'error.html', { 'errorMsg': '일치하는 로그인 정보가 없습니다.' })
     else:
         return redirect('/')
 
