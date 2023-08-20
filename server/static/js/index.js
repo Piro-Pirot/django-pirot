@@ -87,7 +87,7 @@ creatorButton.addEventListener("click", () => {
 
 // footer 로고 클릭 상단
 const footerLogo = document.querySelector('#footer-right-img');
-const footerLogoMob = document.querySelector('#footer-logo-img');
+const footerLogoMob = document.querySelector('.footer-logo-img');
 
 footerLogo.addEventListener('click', () => {
   scrollTo(0,0);
@@ -95,7 +95,7 @@ footerLogo.addEventListener('click', () => {
 
 try {
   footerLogoMob.addEventListener('click', () => {
-    scrollTop = 0;
+    scrollTo(0,0);
   });
 } catch {
   console.log('screeeeeeen');

@@ -300,12 +300,15 @@
     height: 3rem;
 }
 
-.btn-friend > .btn-friend-profile-img {
+.btn-friend > .btn-friend-profile-img img {
     width: 2.3rem;
     height: 2.3rem;
     border: 1px solid var(--font-color);
     border-radius: 50%;
     margin-right: 1rem;
+    
+    aspect-ratio: 1/1; /*가로세로 비율 조정*/
+    object-fit: cover; /*사진이 찌그러지지 않게*/
 }
 
 .friend-list-me-container > div.more-icon,
