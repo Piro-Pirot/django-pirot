@@ -15,9 +15,9 @@
         {% csrf_token %}
         <div>
             {% if channel.this_level %}
-                <input type="text" name="this_level" value="{{ channel.this_level }}" placeholder="현재 기수 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+                <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="this_level" value="{{ channel.this_level }}" placeholder="현재 기수 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
             {% else %}
-                <input type="text" name="this_level" placeholder="현재 기수를 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+                <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="this_level" placeholder="현재 기수를 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
             {% endif %}
             <input type="submit" value="기수 입력" />
             <i id="genInfo" class="ri-information-line"></i>

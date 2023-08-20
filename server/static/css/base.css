@@ -478,6 +478,10 @@ background-color: var(--carrot-super-light);
   overflow-y: scroll;
 }
 
+.board > div.post-container:last-child {
+  margin-bottom: 100%;
+}
+
 .post-input {
   height: var(--chat-input-height);
   width: 100%;
@@ -655,9 +659,9 @@ background-color: var(--carrot-super-light);
     display: none;
   }
   /* middle 접기 */
-  .middle-section {
+  /* .middle-section {
     display: none;
-  }
+  } */
   /* board 접기 */
   .board-container {
     width: 3rem;
