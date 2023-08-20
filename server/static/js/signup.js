@@ -50,7 +50,7 @@ password1.style.borderColor = redColor;
 
 password1.addEventListener('input', () => {
     let checker = document.querySelector('.password1-check');
-    const passwordRule = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,16}$/;
+    const passwordRule = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
     if(passwordRule.test(password1.value)) {
         password1.style.borderColor = carrotColor;
         checker.className = 'password1-check';

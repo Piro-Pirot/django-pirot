@@ -110,6 +110,28 @@ nav > .nav-right .signup-btn{
   color: white;
 }
 
+.signup-sentence #a-signup,
+.signup-sentence #lost-password {
+  color: var(--carrot-color);
+}
+.signup-sentence #lost-password  {
+  cursor: pointer;
+}
+.signup-sentence #a-signup {
+  position: relative;
+  margin-right: 1rem;
+}
+.signup-sentence #a-signup::after {
+  content: '';
+  display: inline-block;
+  height: 1rem;
+  width: 1px;
+  background-color: lightgray;
+  position: absolute;
+  right: 0;
+  right: -0.5rem;
+}
+
 #start {
   padding: 0;
   padding: 0.3rem 0.6rem 0.2rem;
@@ -673,6 +695,7 @@ footer {
 
 #footer-right-img {
   width: 8rem;
+  cursor: pointer;
 }
 
 #footer-right-img > img {
@@ -1132,6 +1155,7 @@ footer {
 }
 
 .signup-sentence {
+  display: flex;
   margin-top: 2rem;
 }
 

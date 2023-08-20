@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import User, SMS_Auth
 import phonenumbers
 
+
 class SignupForm(UserCreationForm):
     phone_number = forms.CharField(label='전화번호', max_length=20)
     def clean_phone_number(self):
@@ -29,6 +30,7 @@ class SignupForm(UserCreationForm):
         SMS_Auth.objects.create(phone_num=phone_number, auth_num=None)
         
         return user
+
     
     class Meta:
         model = User

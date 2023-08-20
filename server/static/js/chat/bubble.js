@@ -139,7 +139,7 @@ inputBox.addEventListener('keypress', (event) => {
         event.preventDefault();
         console.log("insertLineBreak");
         const txtArea = document.querySelector('.input');
-        txtArea.value += '\r\n';
+        txtArea.value += '\n';
     }
     if (event.key == 'Enter' && !event.shiftKey) {
         event.preventDefault();
@@ -228,7 +228,7 @@ function createBubble(bubbleData, timeFlag, profileFlag) {
             
             bubbleFileContent.style.cursor = 'pointer';
             bubbleFileContent.addEventListener('click', () => {
-                open(`/media/${bubbleData['file']}`, '_blank');
+                open(bubbleData['file'], '_blank');
             });
         }
 
