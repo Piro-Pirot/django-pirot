@@ -228,7 +228,7 @@ function createBubble(bubbleData, timeFlag, profileFlag) {
             
             bubbleFileContent.style.cursor = 'pointer';
             bubbleFileContent.addEventListener('click', () => {
-                open(`/media/${bubbleData['file']}`, '_blank');
+                open(bubbleData['file'], '_blank');
             });
         }
 
