@@ -673,6 +673,7 @@ footer {
 
 #footer-right-img {
   width: 8rem;
+  cursor: pointer;
 }
 
 #footer-right-img > img {
