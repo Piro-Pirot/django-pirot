@@ -380,7 +380,20 @@ background-color: var(--carrot-super-light);
   cursor: pointer;
 }
 
+#imageIcon2 .attach-label2{
+  cursor: pointer;
+}
+
 .chat-icons #upload-file {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+
+.blind-profile-img #upload_blind_img{
   position: absolute;
   width: 0;
   height: 0;

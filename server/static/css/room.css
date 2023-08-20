@@ -475,7 +475,7 @@
 
 .code-input.active {
     display: block;
-    text-overflow: ;
+    /* text-overflow: ; */
 }
 
 .chat-input .input.inactive {

@@ -321,14 +321,11 @@ def enter_room(request, channelId, roomId, type):
     
     # 익명채팅방 닉네임 정보
     blindroom_nicknames = dict()
+    blindroom_profile_img = dict()
 
     if type == 'main' or type == 'friends':
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
         myBlindRooms = BlindRoomMember.objects.filter(user=request.user, room__channel=curChannel)
-        
-        # 딕셔너리로 익명채팅방에서의 nickname 저장
-        for room in myBlindRooms:
-            blindroom_nicknames[room.room.id] = room.nickname
         
         # 디버깅
         print(blindroom_nicknames)
@@ -344,6 +341,7 @@ def enter_room(request, channelId, roomId, type):
         if curRoom.room_type == BLIND_ROOM:
             #익명채팅방
             roomMembers = BlindRoomMember.objects.filter(room=curRoom)
+            my_blind_info = BlindRoomMember.objects.get(user=request.user, room=curRoom)
         else:
             roomMembers = RoomMember.objects.filter(room=curRoom)
 
@@ -414,8 +412,8 @@ def enter_room(request, channelId, roomId, type):
                     'myPassInfo': myPassInfo,
                     'urlType': type,
                     'myChannels': myChannels,
-                    'blindroom_nicknames' : blindroom_nicknames,
-                    'channel_join_list': channel_join_list
+                    'channel_join_list': channel_join_list,
+                    'my_blind_info': my_blind_info
                 }
             )
         
@@ -431,7 +429,9 @@ def setting_blindroom_profile(request):
         channel_id = request.POST['channelId']
         Member = BlindRoomMember.objects.get(user=request.user, room=room_id)
         fixed_nickname = request.POST.get('nickname')
+        fixed_profile_img = request.FILES['upload_blind_img']
         Member.nickname = fixed_nickname
+        Member.profile_img = fixed_profile_img
         Member.save()
         return redirect(f"/room/{channel_id}/{room_id}/main/")
     return render(request, 'error.html', {'errorMsg': '잘못된 접근입니다.'})

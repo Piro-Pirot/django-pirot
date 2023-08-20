@@ -539,9 +539,11 @@ dialog {
   margin-top: 2rem;
 }
 
-.blind-profile-img {
-  border: 1px solid var(--alt-fontclr);
+.blind-profile-img img{
   border-radius: 50%;
+  padding: 0.1rem;
+  aspect-ratio: 1/1; /*가로세로 비율 조정*/
+  object-fit: cover; /*사진이 찌그러지지 않게*/
   width: 7rem;
   height: 7rem;
   margin-right: 2rem;
