@@ -14,10 +14,10 @@
         <div class="setting-grid-1">
             <div class="setting-profile-image">
                 {% if user.profile_img %}
-                    <img src="{{ user.profile_img.url }}" alt="프로필이미지" style="width:10rem;">
+                    <img src="{{ user.profile_img.url }}" alt="프로필이미지">
                     <i class="ri-image-edit-fill profileEdit"></i>
                 {% else %}
-                    <img src="{{ channel.default_image.url }}" alt="채널기본프로필이미지" style="width:10rem;">
+                    <img src="{{ channel.default_image.url }}" alt="채널기본프로필이미지">
                     <i class="ri-image-edit-fill profileEdit"></i>
                 {% endif %}
             </div>
