@@ -1,7 +1,7 @@
 <div class="friend-list-me">
     <div class="friend-list-me-container">
         <div class="friend-list-me-profile-img">
-            <img src="{{ myPassInfo.join_set.first.user.profile_img }}" alt="">
+            <img src="{{ myPassInfo.join_set.first.user.profile_img.url }}" alt="">
         </div>
         <label for="">{{ myPassInfo }}</label>
         <div class="more-icon">
@@ -22,7 +22,7 @@
     <li id="{{ favorites.id }}" class="btn-friend-container friend-container">
         <div class="btn-friend">
             <div class="btn-friend-profile-img">
-                <img src="{{ favorites.join_set.first.user.profile_img }}" alt="">
+                <img src="{{ favorites.join_set.first.user.profile_img.url }}" alt="">
             </div>
             <label class="fname-label {{ favorites.passer_name }}">{{ favorites }}</label>
             <i id="star" class="ri-star-fill active"></i>
