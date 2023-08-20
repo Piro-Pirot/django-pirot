@@ -437,15 +437,18 @@ def setting_blindroom_profile(request):
         
         if 'upload_blind_img' in request.FILES:
             fixed_profile_img = request.FILES.get('upload_blind_img')
+            print('fixed_profile_img : ', fixed_profile_img)
+            Member.profile_img = fixed_profile_img
+            print("member.profile_img : ", Member.profile_img)
         else:
             print("사진이 request.FILES에 존재하지 않음")
-        print('fixed_profile_img : ', fixed_profile_img)
+            pass
+            
         # fixed_profile_img = request.POST.get('upload_blind_img')
         
         Member.nickname = fixed_nickname
-        Member.profile_img = fixed_profile_img
         Member.save()
-        print("member.profile_img : ", Member.profile_img)
+        
         return redirect(f"/room/{channel_id}/{room_id}/main/")
     return render(request, 'error.html', {'errorMsg': '잘못된 접근입니다.'})
     
