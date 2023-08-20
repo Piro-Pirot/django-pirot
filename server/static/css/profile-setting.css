@@ -47,7 +47,19 @@
   border-radius: 50%;
   margin-top: 3rem;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* overflow: hidden; */
 }
+
+.setting-profile-image > img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .setting-profile-image::after {
   content: '';
   display: block;
