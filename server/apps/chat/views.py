@@ -176,7 +176,7 @@ def exit_room(request):
             BlindRoomMember.objects.get(user=request.user, room=cur_room).delete()
             # 채팅 방에 아무도 없으면 채팅 방 삭제
             try:
-                BlindRoomMember.objects.filter(room=cur_room).first()
+                BlindRoomMember.objects.get(room=cur_room)
             except BlindRoomMember.DoesNotExist:
                 cur_room.delete()
         else:
@@ -337,6 +337,8 @@ def enter_room(request, channelId, roomId, type):
         myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel=curChannel).last()
         # 현재 로그인 사용자의 채널 구성원들
         myFriends = Passer.objects.filter(channel=curChannel).exclude(id=myPassInfo.id).order_by('-level', 'passer_name')
+
+        my_blind_info = ''
 
         if curRoom.room_type == BLIND_ROOM:
             #익명채팅방

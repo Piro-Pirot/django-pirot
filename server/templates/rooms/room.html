@@ -126,7 +126,11 @@
             {% csrf_token %}
             <input type="hidden" name="channelId" id="" value="{{ channel.id }}">
             <input type="hidden" name="roomId" id="" value="{{ room.id }}">
+            {% if room.room_type == 1 %}
+            <button class="btn-exit" type="button" onclick="confirmExit('{{ user }}', '{{ my_blind_info.nickname }}', '{{ room.id }}');">
+            {% else %}
             <button class="btn-exit" type="button" onclick="confirmExit('{{ user }}', '{{ user.name }}', '{{ room.id }}');">
+            {% endif %}
                 <i class="ri-logout-box-r-line"></i>
                 <span>채팅방 나가기</span>
             </button>
