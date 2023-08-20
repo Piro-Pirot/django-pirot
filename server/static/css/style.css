@@ -1,4 +1,5 @@
 @import 'reset.css';
+@import 'solarized-light.css';
 
 :root {
   --carrot-color: #fba405;
@@ -150,5 +151,3 @@ h2 {
   font-size: medium;
   font-weight: bold;
 }
-
-
