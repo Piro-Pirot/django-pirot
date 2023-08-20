@@ -84,3 +84,19 @@ creatorButton.addEventListener("click", () => {
   let lastSectionTop = sections[5].offsetTop;
   window.scrollTo({top: lastSectionTop, behavior: 'smooth'});
 });
+
+// footer 로고 클릭 상단
+const footerLogo = document.querySelector('#footer-right-img');
+const footerLogoMob = document.querySelector('#footer-logo-img');
+
+footerLogo.addEventListener('click', () => {
+  scrollTo(0,0);
+});
+
+try {
+  footerLogoMob.addEventListener('click', () => {
+    scrollTop = 0;
+  });
+} catch {
+  console.log('screeeeeeen');
+}
