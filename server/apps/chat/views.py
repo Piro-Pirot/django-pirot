@@ -342,6 +342,7 @@ def enter_room(request, channelId, roomId, type):
             #익명채팅방
             roomMembers = BlindRoomMember.objects.filter(room=curRoom)
             my_blind_info = BlindRoomMember.objects.get(user=request.user, room=curRoom)
+            print("my_blind_info : ",my_blind_info.profile_img)
         else:
             roomMembers = RoomMember.objects.filter(room=curRoom)
 
@@ -433,6 +434,7 @@ def setting_blindroom_profile(request):
         Member = BlindRoomMember.objects.get(user=request.user, room=room_id)
         fixed_nickname = request.POST.get('nickname')
         fixed_profile_img = request.FILES.get('upload_blind_img')
+        print('fixed_profile_img : ', fixed_profile_img)
         
         # if 'upload_blind_img' in request.FILES:
         #     fixed_profile_img = request.FILES.get('upload_blind_img')
