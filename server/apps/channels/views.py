@@ -106,7 +106,7 @@ def passer_create(request, channelID):
         inputPhone = request.POST['phone']
 
         # 같은 기수에서 같은 이름, 같은 전화번호인 passer가 이미 존재하면 에러페이지로
-        if all_passers.filter(passer_name=inputName, passer_phone=inputPhone).exists:
+        if all_passers.filter(passer_name=inputName, passer_phone=inputPhone).exists():
             errorMsg = '동일한 정보의 합격자가 이미 존재합니다.'
             return render(request, 'error.html', {'errorMsg': errorMsg})
 
@@ -263,12 +263,13 @@ def join_delete(request, channelID):
     if request.method == "POST":
         passerId = request.POST.get('passerId')
         passer = Passer.objects.get(id=passerId)
-        try:
-            join = Join.objects.get(passer=passer)
-            join.delete() # 동아리 회원이면 회원 삭제
-            passer.delete() # 합격자 명단에서도 삭제
-        except:
-            passer.delete() # 아직 가입하지 않은 경우, 합격자 명단에서만 삭제     
+        print(passer)
+        # try:
+        #     join = Join.objects.get(passer=passer)
+        #     join.delete() # 동아리 회원이면 회원 삭제
+        #     passer.delete() # 합격자 명단에서도 삭제
+        # except:
+        #     passer.delete() # 아직 가입하지 않은 경우, 합격자 명단에서만 삭제     
 
         url = '/staff/join_delete/%s' % (channelID)
         
