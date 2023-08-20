@@ -105,7 +105,7 @@ def passer_create(request, channelID):
         inputPhone = request.POST['phone']
 
         # 같은 기수에서 같은 이름, 같은 전화번호인 passer가 이미 존재하면 에러페이지로
-        if passers.filter(passer_name=inputName, passer_phone=inputPhone).exists:
+        if passers.filter(passer_name=inputName, passer_phone=inputPhone).exists():
             errorMsg = '동일한 정보의 합격자가 이미 존재합니다.'
             return render(request, 'error.html', {'errorMsg': errorMsg})
 
