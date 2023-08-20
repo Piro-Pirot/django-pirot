@@ -86,9 +86,13 @@
         <form action="/room/setting_blindroom/" method="post" id="form-setting">
             {% csrf_token %}
             <div class="blind-profile-setting">
-                <div class="blind-profile-img">
-                    {% comment %} <img src=""> {% endcomment %}
-                </div>
+                <label for="blindProfileImg">
+                    <div class="blind-profile-img">
+                        <img id="blindImage" src="">
+                    </div>
+                </label>
+                <input type="file" id="blindProfileImg">
+
                 <div class="blind-name">
                 {% with target_room_id=room.id %}
                     <p>닉네임</p>
@@ -226,6 +230,23 @@
     nicknameInput.addEventListener("focus", function() {
         setCaretToEnd(nicknameInput);
     });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const blindProfileImgFile = document.getElementById('blindProfileImg');
+        blindProfileImgFile.addEventListener('change', (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgPreview = document.getElementById('blindImage');
+                imgPreview.src = e.target.result;
+            };
+            reader.readAsDataURL(selectedFile);
+        }
+        });
+    });
+
 
 </script>
 

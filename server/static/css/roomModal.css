@@ -416,7 +416,7 @@ dialog {
   outline: 0;
   border-radius: 1.5rem;
   transition: 0.2s;
-  color: white;
+  color: var(--alt-fontclr);
   height: 2.5rem;
   cursor: pointer;
   font-size: 1rem;
@@ -533,6 +533,10 @@ dialog {
 
 
 /* 채팅방 설정 */
+.blind-profile-form {
+  position: relative;
+}
+
 .blind-profile-setting {
   display: flex;
   align-items: center;
@@ -545,7 +549,28 @@ dialog {
   width: 7rem;
   height: 7rem;
   margin-right: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
+.blind-profile-img > img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+#blindProfileImg {
+  position: absolute;
+  visibility: hidden;
+}
+#blindChangeProfileBtn {
+  position: absolute;
+  /* display: none; */
+  bottom: 0;
+}
+
 
 .blind-name {
   text-align: center;
