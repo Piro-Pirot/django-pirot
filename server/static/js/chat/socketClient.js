@@ -44,71 +44,140 @@ socket.on('display_message', async (data) => {
     }
 });
 
+// require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.23.0/min/vs' } });
+// require(['vs/editor/editor.main'], function () {
+//     editor = monaco.editor.create(document.getElementById('editor-container'), {
+//         value: "",
+//         language: "javascript"
+//     });
+// })
+
 function onClickSendMessage(user, id) {
     // 서버로 메시지 전송
-    const msgBox = document.querySelector(".input");
-    let msg = msgBox.value;
-    console.log(msg);
-    // 아무것도 안 썼을 때 예외 처리
-    // 개행문자 모두 제거
-    if(msg.replace(/\n|\r|\s*/g, '') === '') return;
-    msg = msg.replace(/\n/, '<br>');
-    console.log(msg);
+    const codeInput = document.querySelector(".code-input");
 
-    msgBox.focus();
+    if (codeInput.classList.contains("active")) {
+        var codeSnippet = editor.getValue();
 
-    controlScroll();
+        if(codeSnippet.replace(/\n|\r|\s*/g, '') === '') return;
 
-    let today = new Date(); 
+        let today = new Date(); 
 
-    let year = today.getFullYear();
-    let month = today.getMonth() + 1;
-    let date = today.getDate();
-    let day = today.getDay();
+        let year = today.getFullYear();
+        let month = today.getMonth() + 1;
+        let date = today.getDate();
+        let day = today.getDay();
 
-    if(year != lastYear || month != lastMonth || date != lastDate) {
-        // 마지막 말풍선과 년, 월, 일 중 하나라도 다를 때 notice 말풍선 생성
-        console.log('lastYear is...', lastYear);
-        console.log('lastMonth is...', lastMonth);
-        console.log('lastDate is...', lastDate);
-        switch(day) {
-            case 0:
-                day = '일';
-                break;
-            case 1:
-                day = '월';
-                break;
-            case 2:
-                day = '화';
-                break;
-            case 3:
-                day = '수';
-                break;
-            case 4:
-                day = '목';
-                break;
-            case 5:
-                day = '금';
-                break;
-            case 6:
-                day = '토';
-                break;
+        if(year != lastYear || month != lastMonth || date != lastDate) {
+            // 마지막 말풍선과 년, 월, 일 중 하나라도 다를 때 notice 말풍선 생성
+            console.log('lastYear is...', lastYear);
+            console.log('lastMonth is...', lastMonth);
+            console.log('lastDate is...', lastDate);
+            switch(day) {
+                case 0:
+                    day = '일';
+                    break;
+                case 1:
+                    day = '월';
+                    break;
+                case 2:
+                    day = '화';
+                    break;
+                case 3:
+                    day = '수';
+                    break;
+                case 4:
+                    day = '목';
+                    break;
+                case 5:
+                    day = '금';
+                    break;
+                case 6:
+                    day = '토';
+                    break;
+            }
+            NOTICE = 1
+            socket.emit('send_message', {
+                'msg': `${year}년 ${month}월 ${date}일 ${day}요일`,
+                'file': '', 'user': user, 'roomId': id, 'bubbleType': NOTICE
+            });
+            console.log('send today!!!');
+            lastYear = year;
+            lastMonth = month;
+            lastDate = date;
         }
-        NOTICE = 1
-        socket.emit('send_message', {
-            'msg': `${year}년 ${month}월 ${date}일 ${day}요일`,
-            'file': '', 'user': user, 'roomId': id, 'bubbleType': NOTICE
-        });
-        console.log('send today!!!');
-        lastYear = year;
-        lastMonth = month;
-        lastDate = date;
+
+        socket.emit('sendCodeSnippet', {'code' : codeSnippet, 'file': '', 'user': user, 'roomId': id });
+        editor.setValue("");
+
+        controlScroll();
+    } else {
+        const msgBox = document.querySelector(".input");
+        let msg = msgBox.value;
+
+        console.log(msg);
+        // 아무것도 안 썼을 때 예외 처리
+        // 개행문자 모두 제거
+        if(msg.replace(/\n|\r|\s*/g, '') === '') return;
+        msg = msg.replace(/\n/, '<br>');
+        console.log(msg);
+
+        msgBox.focus();
+
+        controlScroll();
+
+        let today = new Date(); 
+
+        let year = today.getFullYear();
+        let month = today.getMonth() + 1;
+        let date = today.getDate();
+        let day = today.getDay();
+
+        if(year != lastYear || month != lastMonth || date != lastDate) {
+            // 마지막 말풍선과 년, 월, 일 중 하나라도 다를 때 notice 말풍선 생성
+            console.log('lastYear is...', lastYear);
+            console.log('lastMonth is...', lastMonth);
+            console.log('lastDate is...', lastDate);
+            switch(day) {
+                case 0:
+                    day = '일';
+                    break;
+                case 1:
+                    day = '월';
+                    break;
+                case 2:
+                    day = '화';
+                    break;
+                case 3:
+                    day = '수';
+                    break;
+                case 4:
+                    day = '목';
+                    break;
+                case 5:
+                    day = '금';
+                    break;
+                case 6:
+                    day = '토';
+                    break;
+            }
+            NOTICE = 1
+            socket.emit('send_message', {
+                'msg': `${year}년 ${month}월 ${date}일 ${day}요일`,
+                'file': '', 'user': user, 'roomId': id, 'bubbleType': NOTICE
+            });
+            console.log('send today!!!');
+            lastYear = year;
+            lastMonth = month;
+            lastDate = date;
+        }
+
+        socket.emit('send_message', {'msg': msg, 'file': '', 'user': user, 'roomId': id});
+        
+        document.querySelector('.input').value = null;
     }
-
-    socket.emit('send_message', {'msg': msg, 'file': '', 'user': user, 'roomId': id});
+    
     console.log('send successfully');
-
-    document.querySelector('.input').value = null;
 }
 
 // 말풍선 표시
@@ -178,7 +247,7 @@ function displayMessage(bubbleData, newTimeFlag) {
         // 내용과 시간을 담는 div
         let bubbleContentContainer = document.createElement('div');
         bubbleContentContainer.classList.add('bubble-content-container');
-
+        
         // 내용
         let bubbleContent = document.createElement('div');
         bubbleContent.classList.add('bubble-content');
