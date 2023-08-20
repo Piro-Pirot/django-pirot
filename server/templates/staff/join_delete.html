@@ -7,18 +7,18 @@
 <div class="member-delete">
     <h2 class="staff-setting-title">회원 삭제</h2>
     <div class="member-delete-list">
-        <form class="delete-form" method="post" enctype="multipart/form-data">
+        {% for passer in channelPassers %}
+        <form class="delete-form" id="delete-form-{{ passer.id }}" method="post">
             {% csrf_token %}
-            {% for passer in channelPassers %}
             <div class="delete-block">
                 <div>{{ passer.level }}기 {{ passer.passer_name }}</div>
                 <div>
                     <input type="hidden" name="passerId" value="{{ passer.id }}">
-                    <input type="submit" value="삭제" />
+                    <input type="button" onclick="onclickDeleteJoin('{{ passer.id }}')" value="삭제" />
                 </div>
             </div>
-            {% endfor %}
         </form>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
