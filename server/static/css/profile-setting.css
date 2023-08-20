@@ -46,11 +46,20 @@
 }
 .setting-grid-2 {
   display: flex;
-  flex-direction: center;
+  justify-content: center;
   align-items: center;
   padding: 0 1rem 0 0;
 }
+
+.setting-grid-2.staff {
+  padding: 0 0.5rem 0 0;
+}
+
 .setting-edit-table td {
+  padding: 1rem 1.5rem;
+}
+
+.setting-edit-table.staff td {
   padding: 1rem 1.5rem;
 }
 .edit-password {
@@ -66,6 +75,9 @@
   width: 100%;
   height: 3rem;
   border-radius: 1rem;
+}
+.setting-grid-2 input.phone-num-edit {
+  min-width: 100%;
 }
 .setting-grid-2 input:focus {
   border: 2px solid var(--carrot-light);
@@ -95,6 +107,12 @@
   border: 2px solid var(--carrot-color);
   width: 10rem;
 }
+.setting-grid-2.staff .left-td {
+  width: 10rem;
+  min-width: 10rem;
+}
+
+
 
 .setting-profile-image {
   border: 2px solid var(--font-color);
@@ -103,7 +121,19 @@
   border-radius: 50%;
   margin-top: 3rem;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* overflow: hidden; */
 }
+
+.setting-profile-image > img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .setting-profile-image::after {
   content: '';
   display: block;
@@ -289,6 +319,11 @@
 
 
 /* 운영진프로필 */
+.staff-setting-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
 
 .staff-profile-setting {
   display: flex;
@@ -473,6 +508,10 @@
   margin-left: 0.3rem;
 }
 
+.passer-list-container.staff {
+  overflow-y: scroll;
+}
+
 .passer-gen .passer-form {
   display: flex;
   flex-direction: column;
@@ -646,4 +685,125 @@
 .delete-block div:last-child > input:hover {
   background-color: rgb(255, 62, 62);
 }
+
+
+/* 운영진 프로필 반응형 */
+@media screen and (max-width: 1320px) {
+  .staff-setting-container {
+    flex-direction: column;
+  }
+  .passer-gen.staff {
+    height: 50%;
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 0.3rem;
+    padding: 0.6rem 1.5rem;
+    overflow: hidden;
+  }
+  .passer-list-container.staff {
+    height: 50%;
+    width: 100%;
+    margin-left: 0;
+    margin-top: 0.3rem;
+  }
+
+  .passer-gen.staff {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .passer-gen.staff .profile-setting-form {
+    transform: scale(0.8);
+  }
+  .passer-gen.staff .setting-profile-image {
+    margin-top: 0;
+    height: 10rem;
+    min-height: 10rem;
+    width: 10rem;
+    min-width: 10rem;
+  }
+  .passer-gen.staff .setting-profile-image::after {
+    display: none;
+  }
+
+  .passer-gen.pass > *,
+  .passer-list-container.pass > * {
+    transform: scale(0.8);
+  }
+
+  .setting-grid-2.staff {
+    padding-top: 16rem;
+  }
+}
+
+.staff-container-left-mob {
+  display: none;
+  width: 8rem;
+  height: 100%;
+  background-color: var(--body-bgclr);
+  padding: var(--section-padding) 0 var(--section-padding) var(--section-padding);
+}
+
+@media screen and (max-width: 768px) {
+  .staff-container {
+    height: calc(100vh - 6rem - 4.4rem);
+  }
+
+  .staff-container-left-mob {
+    display: block;
+  }
+
+  .staff-container-left {
+    display: none;
+  }
+  .staff-container-right {
+    width: calc(100% - 8rem);
+  }
+  .passer-gen.staff .profile-setting-form {
+    transform: scale(0.6);
+  }
+  .passer-gen.pass > *,
+  .passer-list-container.pass > * {
+    transform: scale(0.6);
+  }
+  .nameCannotChange {
+    margin-bottom: 0.6rem;
+  }
+
+  /* .setting-grid-2.staff .left-td {
+    width: 8rem;
+    min-width: 8rem
+  } */
+}
+
+.staff-container-left-mob .staff-menu {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 0.8rem;
+  background-color: var(--section-bgclr);
+}
+
+.staff-menu-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.staff-menu-icon i {
+  font-size: 2rem;
+  color: var(--font-color);
+  margin-bottom: 0.4rem;
+}
+
+.staff-menu-icon span {
+  color: var(--font-color);
+  font-size: 0.8rem;
+}
+
+
 

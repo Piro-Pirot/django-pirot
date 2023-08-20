@@ -74,7 +74,7 @@
   height: 2.2rem;
   padding: 0.1rem;
   
-  aspect-ratio: 1/1; /*가로세로 비율 조정*/
+  aspect-ratio: 1/1; /*가로세로 비율 조정*/ /*와우!*/
   object-fit: cover; /*사진이 찌그러지지 않게*/
 }
 
@@ -93,8 +93,8 @@
 .middle-section #middleCloseOpen {
   font-size: 1.5rem;
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0.5rem;
+  right: 0.6rem;
   cursor: pointer;
   color: var(--font-color);
   z-index: 10000;
