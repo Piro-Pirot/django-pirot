@@ -58,6 +58,16 @@ main{
     color: black;
     background-color: var(--carrot-color);
 }
+.boss-container {
+    padding-top: 6rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+.error-main-container {
+    height: 100%;
+}
 
 /* 반응형 */
 @media screen and (max-width:768px) {

@@ -54,6 +54,46 @@
                         <a href="/staff/join_delete/{{ channel.id }}"><button type="button">회원 삭제</button></a>
                     </div>
                 </div>
+                <div class="staff-container-left-mob">
+                    <div class="staff-menu">
+                        <a href="/staff/setting/{{ channel.id }}">
+                            <div class="staff-menu-icon">
+                                <i class="ri-account-circle-line"></i>
+                                <span>프로필 설정</span>
+                            </div>
+                        </a>
+                        <a href="/staff/passer_create/level/{{ channel.id }}">
+                            <div class="staff-menu-icon">
+                                <i class="ri-pass-valid-line"></i>
+                                <span>합격자 등록</span>
+                            </div>
+                        </a>
+                        <a href="/staff/code_create/{{ channel.id }}">
+                            <div class="staff-menu-icon">
+                                <i class="ri-barcode-box-line"></i>
+                                <span>참여코드 생성</span>
+                            </div>
+                        </a>
+                        <a href="/staff/channel/setting/{{ channel.id }}">
+                            <div class="staff-menu-icon">
+                                <i class="ri-settings-6-line"></i>
+                                <span>동아리 설정</span>
+                            </div>
+                        </a>
+                        <a href="/staff/staff_authority/{{ channel.id }}">
+                            <div class="staff-menu-icon">
+                                <i class="ri-user-star-line"></i>
+                                <span>운영진 권한</span>
+                            </div>
+                        </a>
+                        <a href="/staff/join_delete/{{ channel.id }}">
+                            <div class="staff-menu-icon">
+                                <i class="ri-close-circle-line"></i>
+                                <span>회원 삭제</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
                 <div class="staff-container-right">
                     {% block content %}
                     {% endblock %}    
@@ -147,6 +187,7 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
     <script>
         let curUserTheme = '{{ request.user.theme }}'
+        let curUserNotice = '{{ request.user.notice }}'
     </script>
     {% block extra %}
     {% endblock %}
