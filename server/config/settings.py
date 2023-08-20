@@ -30,6 +30,16 @@ MYSQL_PASSWD=env('MYSQL_PASSWD')
 MYSQL_HOST=env('MYSQL_HOST')
 MYSQL_PORT=env('MYSQL_PORT')
 
+EMAIL_BACKEND=env('EMAIL_BACKEND')
+EMAIL_HOST=env('EMAIL_HOST')
+EMAIL_PORT=env('EMAIL_PORT')
+EMAIL_HOST_USER=env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=env('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS=env('EMAIL_USE_TLS')
+DEFAULT_FROM_EMAIL=env('DEFAULT_FROM_EMAIL')
+EMAIL_MANAGER1=env('EMAIL_MANAGER1')
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -57,6 +67,7 @@ INSTALLED_APPS = [
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'markdownx',
         ]
 
 MIDDLEWARE = [
@@ -181,6 +192,22 @@ URL=env('URL')
 URI=env('URI')
 SMS_SENDER=env('SMS_SENDER')
 SECRET_KEY=env('SECRET_KEY')
+
+MARKDOWNX_MARKDOWN_EXTENSIONS = [
+    'markdown.extensions.codehilite',
+    'markdown.extensions.fenced_code',
+    'markdown.extensions.extra',
+    'markdown.extensions.toc'
+]
+
+MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
+    'markdown.extensions.codehilite': {
+        'linenums': False,
+        'use_pygments': True,
+        'noclasses': True,
+    }
+}
+
 
 # LOGGING = {
 #         'version': 1,

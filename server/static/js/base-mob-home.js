@@ -80,11 +80,6 @@ selectButton.addEventListener("click", () => {
 if (matchMedia("screen and (max-width: 768px)").matches) {
   const middleSection = document.querySelector(".middle-section");
 
-  // 세로 아이콘바 가리기
-  document.querySelector('.icon-bar').classList.add('hide-element');
-  // 가로 아이콘바 보이기
-  document.querySelector('.mob-icons').classList.remove('hide-element');
-
   // middle만 꽉차게
   middleSection.style.width = '100%';
 

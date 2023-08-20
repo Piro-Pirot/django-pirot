@@ -120,12 +120,18 @@ if (matchMedia("screen and (min-width: 1200px)").matches) {
       chatContainer.style.width = 'calc(100% - 1rem)';
       chatSection.style.width = 'calc(100vw - 0.5rem)';
       middleChannelSpan.classList.add('hide-element');
+      middleChannelSpan.style.display = 'none';
       middleChannelIcon.classList.add('hide-element');
+      middleChannelIcon.style.display = 'none';
       middleSearchBox.classList.add('hide-element');
+      middleSearchBox.style.display = 'none';
       searchIcon.classList.add('hide-element');
+      searchIcon.style.display = 'none';
       middleContent.classList.add('hide-element');
+      middleContent.style.display = 'none';
       try {
         createRoom.classList.add('hide-element');
+        createRoom.style.display = 'none';
       } catch {
         console.log('not found');
       }
@@ -144,12 +150,18 @@ if (matchMedia("screen and (min-width: 1200px)").matches) {
       }
       middleSection.style.width = '20rem';
       middleChannelSpan.classList.remove('hide-element');
+      middleChannelSpan.style.display = 'block';
       middleChannelIcon.classList.remove('hide-element');
+      middleChannelIcon.style.display = 'block';
       middleSearchBox.classList.remove('hide-element');
+      middleSearchBox.style.display = 'flex';
       searchIcon.classList.remove('hide-element');
+      searchIcon.style.display = 'block';
       middleContent.classList.remove('hide-element');
+      middleContent.style.display = 'block';
       try {
         createRoom.classList.remove('hide-element');
+        createRoom.style.display = 'block';
       } catch {
         console.log('not found!');
       }
@@ -195,6 +207,12 @@ if (matchMedia("(min-width: 768px) and (max-width: 1200px)").matches) {
   try {
     roomList.classList.add('hide-element');
     createRoom.classList.add('hide-element');
+    const roomListEl = Array.from(roomList.getElementsByTagName('li'));
+    for (let i = 0; i < roomListEl.length; i++) {
+      roomListEl[i].style.display = 'none';
+    };
+    boardInputContainer.style.display = 'none';
+    boardOpenButton.style.visibility = "visible"
   } catch {
     console.log('not found!!!');
   }
@@ -215,6 +233,10 @@ if (matchMedia("(min-width: 768px) and (max-width: 1200px)").matches) {
       searchIcon.className = '';
       middleContent.classList.add('hide-element');
       try {
+        const roomListEl = Array.from(roomList.getElementsByTagName('li'));
+        for (let i = 0; i < roomListEl.length; i++) {
+          roomListEl[i].style.display = 'none';
+        };
         roomList.classList.add('hide-element');
         createRoom.classList.add('hide-element');
       } catch {
@@ -242,6 +264,10 @@ if (matchMedia("(min-width: 768px) and (max-width: 1200px)").matches) {
       try {
         roomList.classList.remove('hide-element');
         createRoom.classList.remove('hide-element');
+        const roomListEl = Array.from(roomList.getElementsByTagName('li'));
+        for (let i = 0; i < roomListEl.length; i++) {
+          roomListEl[i].style.display = 'block';
+        };
       } catch {
         console.log('not found!!!!!');
       }

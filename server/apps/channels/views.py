@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render, redirect
 from .models import *
 import random
@@ -6,6 +7,7 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .searchHangul import *
+from django.core.mail import EmailMessage
 
 def index(request):
     myJoinInfo = ''
@@ -89,6 +91,7 @@ def passer_create(request, channelID):
     level = request.GET.get("level")
     channel = Channel.objects.get(id=channelID)
     passers = Passer.objects.filter(channel=channel, level=level)
+    all_passers = Passer.objects.filter(channel=channel)
 
     # 운영진 여부
     current_user = request.user
@@ -99,10 +102,18 @@ def passer_create(request, channelID):
         return render(request, 'error.html', {'errorMsg': errorMsg})
     
     if request.method == "POST":
+        inputName = request.POST['name']
+        inputPhone = request.POST['phone']
+
+        # 같은 기수에서 같은 이름, 같은 전화번호인 passer가 이미 존재하면 에러페이지로
+        if all_passers.filter(passer_name=inputName, passer_phone=inputPhone).exists:
+            errorMsg = '동일한 정보의 합격자가 이미 존재합니다.'
+            return render(request, 'error.html', {'errorMsg': errorMsg})
+
         if 'save' in request.POST:
             Passer.objects.create(
-                passer_name = request.POST["name"],
-                passer_phone = request.POST["phone"],
+                passer_name = inputName,
+                passer_phone = inputPhone,
                 level = level,
                 channel = channel,
             )
@@ -112,8 +123,8 @@ def passer_create(request, channelID):
 
         elif 'keepgoing' in request.POST:
             Passer.objects.create(
-                passer_name = request.POST["name"],
-                passer_phone = request.POST["phone"],
+                passer_name = inputName,
+                passer_phone = inputPhone,
                 level = level,
                 channel = channel,
             )
@@ -206,8 +217,11 @@ def staff_authority(request, channelID):
         errorMsg = '잘못된 접근입니다.'
         return render(request, 'error.html', {'errorMsg': errorMsg})
 
-    
-    thislevelPassers = Passer.objects.filter(channel=channel, level=channel.this_level)
+    # 현재 기수를 설정하지 않은 경우에는 전체 회원을 불러오기
+    if channel.this_level:
+        thislevelPassers = Passer.objects.filter(channel=channel, level=channel.this_level)
+    else:
+        thislevelPassers = Passer.objects.filter(channel=channel)
 
     # 원래 저장 상태 불러오기
 
@@ -224,6 +238,7 @@ def staff_authority(request, channelID):
                         channel = channel
                     )
                     newStaff.save()
+
         url = '/staff/staff_authority/%s' % (channelID)
 
         return redirect(url)
@@ -360,6 +375,30 @@ def channel_create(request):
             user=request.user,
             channel = new_channel
         ).save()
+
+        # 채널 개설 요청 메일
+
+        email = EmailMessage(
+            f'[Pirot_{channel_name}] 🥕새로운 채널 개설 요청이 왔어요!🐇',
+            f'''
+            <p style="font-size: 1rem; font-weight: 500;">새로운 채널 개설 요청입니다.</p>
+            <table style="font-size: 1rem;">
+            <tr>
+            <td style="vertical-align: initial; padding: 1rem;">👀 채널 이름</td>
+            <td style="white-space: pre-wrap; vertical-align: initial; padding: 1rem;">{channel_name}</td>
+            </tr>
+            <tr>
+            <td style="vertical-align: initial; padding: 1rem;">💌 채널 이용 목적</td>
+            <td style="white-space: pre-wrap; vertical-align: initial; padding: 1rem;">{channel_desc}<tr>
+            </td>
+            </table>
+            <p>허용하시려면 pirot web 페이지에서 admin 계정으로 관리가 필요합니다.</p>
+            ''',
+            to=[getattr(settings, 'EMAIL_MANAGER1')],
+        )
+        email.content_subtype = "html"
+        if not email.send():
+            print('error!')
 
         return render(request, template_name='users/channelCreateDone.html')
     else:

@@ -32,6 +32,24 @@ var check = $("input[type='checkbox']");
 check.click(function(){
 	$(".onoff").toggle();
 });
+
+var staffCheckedAll = document.querySelectorAll('.onoff');
+staffCheckedAll.forEach(staffChecked => {
+  staffChecked.addEventListener('click', () => {
+    var count = 0;
+    for (var i=0; i<staffCheckedAll.length; i++) {
+      if (staffCheckedAll[i].checked == true) {
+        count++;
+      }
+    }
+    if (count == 0) {
+      alert("운영진은 최소 1인 이상 선택되어야 합니다.")
+      staffChecked.checked = true;
+    }
+  });
+})
+
+
 </script>
 <style>
 /* The switch - the box around the slider */
