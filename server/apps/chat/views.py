@@ -431,6 +431,16 @@ def setting_blindroom_profile(request):
         # 익명채팅방 이름 수정
         room_id = request.POST['roomId']
         channel_id = request.POST['channelId']
+        
+        # is_checked 키가 존재하지 않을 경우, '0'을 디폴트 값으로
+        is_checked = request.POST.get('is_checked', '0')
+        if is_checked == '1':
+            # 체크된 경우
+            pass
+        else:
+            # 체크되지 않은 경우 처리
+            pass
+        
         Member = BlindRoomMember.objects.get(user=request.user, room=room_id)
         fixed_nickname = request.POST.get('nickname')
         # fixed_profile_img = request.FILES.get('upload_blind_img')
