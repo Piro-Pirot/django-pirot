@@ -424,12 +424,22 @@ def enter_room(request, channelId, roomId, type):
 
 def setting_blindroom_profile(request):
     if request.method == 'POST':
+        for key, value in request.POST.items():
+            print('Key: %s' % (key) ) 
+            print('Value %s' % (value) )
         # 익명채팅방 이름 수정
         room_id = request.POST['roomId']
         channel_id = request.POST['channelId']
         Member = BlindRoomMember.objects.get(user=request.user, room=room_id)
         fixed_nickname = request.POST.get('nickname')
-        fixed_profile_img = request.FILES['upload_blind_img']
+        fixed_profile_img = request.FILES.get('upload_blind_img')
+        
+        # if 'upload_blind_img' in request.FILES:
+        #     fixed_profile_img = request.FILES.get('upload_blind_img')
+        # else:
+        #     print("사진이 request.FILES에 존재하지 않음")
+        # fixed_profile_img = request.POST.get('upload_blind_img')
+        
         Member.nickname = fixed_nickname
         Member.profile_img = fixed_profile_img
         Member.save()
