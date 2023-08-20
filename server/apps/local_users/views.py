@@ -17,6 +17,9 @@ from django.conf import settings
 import hashlib
 import hmac
 import base64
+import re
+
+from django.contrib.auth.hashers import check_password
 
 def main(request):
     return render(request, "index.html")
@@ -45,6 +48,11 @@ def signup(request):
             return render(request, 'error.html', {'errorMsg': '아이디가 중복되었습니다.'})
         if password1 != password2:
             return render(request, 'error.html', {'errorMsg': '비밀번호가 다릅니다.'})
+        
+        # 비밀번호 제약 조건 확인
+        PASSWORD_VALIDATION = r'/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/'
+        if not re.match(PASSWORD_VALIDATION, password1):
+            return render(request, 'error.html', {'errorMsg': '비밀번호는 8자-16자, 특수문자[!@#$%^*+=-] 1개 이상, 숫자를 포함하여야 합니다.'})
         
         new_user = User.objects.create_user(
             username = username,
@@ -77,11 +85,7 @@ def login(request):
             }
             return render(request, template_name='index.html', context=context)
     else:
-        form = AuthenticationForm()
-        context = {
-            'form': form,
-        }
-        return render(request, template_name='users/login.html', context=context)
+        return redirect('/')
 
 
 def logout(request):
