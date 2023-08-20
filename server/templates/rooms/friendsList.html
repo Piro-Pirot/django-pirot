@@ -1,7 +1,7 @@
 <div class="friend-list-me">
     <div class="friend-list-me-container">
         <div class="friend-list-me-profile-img">
-            <img src="{{ myPassInfo.join_set.first.user.profile_img.url }}" alt="">
+            <img src="/media/{{ myPassInfo.join_set.first.user.profile_img }}" alt="">
         </div>
         <label for="">{{ myPassInfo }}</label>
         <div class="more-icon">
@@ -22,7 +22,12 @@
     <li id="{{ favorites.id }}" class="btn-friend-container friend-container">
         <div class="btn-friend">
             <div class="btn-friend-profile-img">
-                <img src="{{ favorites.join_set.first.user.profile_img.url }}" alt="">
+                {% if favorites.join_set is None %}
+                <!-- 가입되지 않아 프로필 이미지가 없는 경우 -->
+                    <img src="/media/default_profile/default_profile.png" alt="">
+                {% else %}
+                    <img src="/media/{{ favorites.join_set.first.user.profile_img }}" alt="">
+                {% endif %}
             </div>
             <label class="fname-label {{ favorites.passer_name }}">{{ favorites }}</label>
             <i id="star" class="ri-star-fill active"></i>
@@ -30,17 +35,17 @@
                 <i id="more" class="ri-more-fill"></i>
             </div>
             <div class="more-form">
+                {% if favorites.join_set is None %}
+                <!-- 가입하지 않은 사용자라면 Ajax POST 방식으로 전화번호를 가져옴 -->
+                <input id="bookmark" type="button" value="즐겨찾기 해제" class="b{{ favorites.id }}"></input>
+                <input type="button" value="1:1 채팅하기" class="no-user-btn"></input>
+                {% else %}
                 <!-- 가입된 사용자라면 -->
-                {% if favorites.join_set.first.user %}
                 <form action="/room/create_room/{{ channel.id }}/{{ favorites.join_set.first.user.id }}/" method="post">
                     {% csrf_token %}
                     <input id="bookmark" type="button" value="즐겨찾기 해제" class="b{{ favorites.id }}"></input>
                     <input type="submit" value="1:1 채팅하기"></input>
                 </form>
-                {% else %}
-                <!-- 가입하지 않은 사용자라면 Ajax POST 방식으로 전화번호를 가져옴 -->
-                <input id="bookmark" type="button" value="즐겨찾기 해제" class="b{{ favorites.id }}"></input>
-                <input type="button" value="1:1 채팅하기" class="no-user-btn"></input>
                 {% endif %}
             </div>
         </div>
@@ -50,7 +55,12 @@
     <li id="{{ friend.id }}" class="btn-friend-container friend-container">
         <div class="btn-friend">
             <div class="btn-friend-profile-img">
-                <img src="{{ friend.join_set.first.user.profile_img }}" alt="">
+                {% if friend.join_set is None %}
+                <!-- 가입되지 않아 프로필 이미지가 없는 경우 -->
+                    <img src="/media/default_profile/default_profile.png" alt="">
+                {% else %}
+                    <img src="/media/{{ friend.join_set.first.user.profile_img }}" alt="">
+                {% endif %}
             </div>
             <label class="fname-label {{ friend.passer_name }}">{{ friend }}</label>
             <i id="star" class="ri-star-fill"></i>

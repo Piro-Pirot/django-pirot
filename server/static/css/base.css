@@ -646,9 +646,9 @@ background-color: var(--carrot-super-light);
     display: none;
   }
   /* middle 접기 */
-  .middle-section {
+  /* .middle-section {
     display: none;
-  }
+  } */
   /* board 접기 */
   .board-container {
     width: 3rem;
