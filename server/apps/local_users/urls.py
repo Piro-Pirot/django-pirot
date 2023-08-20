@@ -10,5 +10,9 @@ urlpatterns = [
     path('setting/<int:channelID>/', profile_setting),
     path('signup/send_sms/', sms_sender, name='send_sms'),
     path('signup/authcheck/', sms_check, name='sms_check'),
-    path('preferences/', preferences)
+    path('preferences/', preferences),
+
+    path('update_phone_ajax/', update_phone_ajax),
+    path('update_pw_ajax/', update_pw_ajax),
+    path('lost_pw/', lost_pw),
 ]

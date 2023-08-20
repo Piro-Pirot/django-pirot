@@ -1,4 +1,6 @@
 import json
+import random
+import string
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import SignupForm
@@ -20,6 +22,7 @@ import base64
 import re
 
 from django.contrib.auth.hashers import check_password
+from django.core.mail import EmailMessage
 
 def main(request):
     return render(request, "index.html")
@@ -50,7 +53,7 @@ def signup(request):
             return render(request, 'error.html', {'errorMsg': '비밀번호가 다릅니다.'})
         
         # 비밀번호 제약 조건 확인
-        PASSWORD_VALIDATION = r'/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/'
+        PASSWORD_VALIDATION = r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$'
         if not re.match(PASSWORD_VALIDATION, password1):
             return render(request, 'error.html', {'errorMsg': '비밀번호는 8자-16자, 특수문자[!@#$%^*+=-] 1개 이상, 숫자를 포함하여야 합니다.'})
         
@@ -256,3 +259,94 @@ def preferences(request):
             curUserObj.save()
 
         return redirect(f'/room/{channel_id}/main/')
+    
+def update_phone_ajax(request):
+    if request.method == 'POST':
+        req = json.loads(request.body)
+        new_phone = req['new_phone']
+
+        # 전화번호 제약 조건 확인
+        PHONE_VALIDATION = r'/?([0-9]{3})-?([0-9]{4})-?([0-9]{4})'
+        if not re.match(PHONE_VALIDATION, new_phone):
+            return JsonResponse({'result': False})
+        else:
+            # 입력 값이 정확할 때
+            request.user.phone_number = new_phone
+            request.user.save()
+
+            # Passer 정보 모두 수정
+            my_passer_info = Passer.objects.filter(passer_name=request.user.name)
+            for info in my_passer_info:
+                info.passer_phone = new_phone
+                info.save()
+
+            return JsonResponse({'result': True})
+    
+
+def update_pw_ajax(request):
+    if request.method == 'POST':
+        req = json.loads(request.body)
+        old_pw = req['old_pw']
+        new_pw = req['new_pw']
+
+        # 비밀번호 제약 조건 확인
+        PASSWORD_VALIDATION = r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$'
+        if not check_password(old_pw, request.user.password):
+            print('password not matched!')
+            return JsonResponse({'result': False})
+        elif not re.match(PASSWORD_VALIDATION, new_pw):
+            print('password not matched!')
+            return JsonResponse({'result': False})
+        else:
+            # 입력 값이 정확할 때
+            request.user.set_password(new_pw)
+            request.user.save()
+            auth.login(request, request.user, backend='django.contrib.auth.backends.ModelBackend')
+
+            return JsonResponse({'result': True})
+
+
+def lost_pw(request):
+    if request.method == 'POST':
+        lost_email = request.POST['lost-pw-email']
+        lost_id = request.POST['lost-id']
+
+        # 이메일 정규식
+        EMAIL_VALIDATION = r'^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$'
+        if not re.match(EMAIL_VALIDATION, lost_email):
+            return render(request, 'error.html', {'errorMsg': '입력하신 이메일의 형식이 잘못되었습니다.'})
+        
+        alphabet_list = string.ascii_letters
+        digits_list = string.digits
+        punctuation_list = string.punctuation
+
+        new_tem_password = random.sample(alphabet_list, 8) + random.sample(digits_list, 5) + random.sample(punctuation_list, 3)
+        random.shuffle(new_tem_password)
+        new_tem_password = ''.join(new_tem_password)
+        
+        try:
+            lost_user = User.objects.get(username=lost_id)
+            lost_user.set_password(new_tem_password)
+            lost_user.save()
+        except User.DoesNotExist:
+            return render(request, 'error.html', {'errorMsg': '입력하신 아이디에 해당하는 회원 정보가 존재하지 않습니다.'})
+
+        
+        email = EmailMessage(
+            f'[Pirot] 🥕새로운 비밀번호입니다!🐇',
+            f'''
+            <p style="font-size: 1rem; font-weight: 500;">비밀번호가 갱신되었습니다.</p>
+            <p>🔐 {lost_id}님의 새로운 비밀번호는 아래와 같습니다.</p>
+            <p style="font-size: 1rem;">{new_tem_password}</p>
+            <p>보안을 위해 회원님의 비밀번호를 꼭 재설정하세요.</p>
+            <a href='https://hello.pirot.p-e.kr'>
+            <p style="font-size: 1rem;">Pirot에서 다시 로그인하기</p>
+            </a>
+            ''',
+            to=[lost_email],
+        )
+        email.content_subtype = "html"
+        if not email.send():
+            print('error!')
+
+        return redirect('/')

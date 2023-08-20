@@ -90,6 +90,11 @@
 .setting-grid-2 .left-td {
   min-width: 12rem;
 }
+.setting-grid-2 #lost-password {
+  background-color: transparent;
+  border: 2px solid var(--carrot-color);
+  width: 10rem;
+}
 
 .setting-profile-image {
   border: 2px solid var(--font-color);

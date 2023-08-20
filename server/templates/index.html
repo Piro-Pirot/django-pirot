@@ -732,7 +732,15 @@
         </form>
       </div>
       <div class="signup-sentence">
-        <p>피롯이 처음이신가요?<a href="/user/signup/"> &nbsp회원가입</a></p>
+        <p>
+          <a href="/user/signup/" id="a-signup">회원가입</a>
+          <form action="/user/lost_pw/" method="post" id="form-lost-pw">
+              {% csrf_token %}
+              <input type="hidden" name="lost-pw-email" id="lost-pw-email">
+              <input type="hidden" name="lost-id" id="lost-id">
+              <span id="lost-password">비밀번호 분실</span>
+          </form>
+        </p>
       </div>
     </div>
   </dialog>

@@ -100,3 +100,19 @@ try {
 } catch {
   console.log('screeeeeeen');
 }
+
+// 비밀번호 분실
+const btnLostPw = document.getElementById('lost-password');
+const formLostPw = document.getElementById('form-lost-pw');
+const emailHidden = document.getElementById('lost-pw-email');
+const idHidden = document.getElementById('lost-id');
+btnLostPw.addEventListener('click', () => {
+    const lostPwId = prompt('비밀번호를 재설정합니다.\n회원님의 아이디를 입력하세요.');
+    idHidden.value = lostPwId;
+    const lostPwEmail = prompt('비밀번호를 재설정합니다.\n재설정된 비밀번호를 받을 이메일을 작성하세요.');
+    emailHidden.value = lostPwEmail;
+
+    if (lostPwId !== null && lostPwEmail !== null) {
+      formLostPw.submit();
+    }
+});

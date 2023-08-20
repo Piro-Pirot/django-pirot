@@ -390,7 +390,7 @@ def channel_create(request):
             <td style="vertical-align: initial; padding: 1rem;">💌 채널 이용 목적</td>
             <td style="white-space: pre-wrap; vertical-align: initial; padding: 1rem;">{channel_desc}<tr>
             </td>
-            </table style="font-size: 1rem;">
+            </table>
             <p>허용하시려면 pirot web 페이지에서 admin 계정으로 관리가 필요합니다.</p>
             ''',
             to=[getattr(settings, 'EMAIL_MANAGER1')],

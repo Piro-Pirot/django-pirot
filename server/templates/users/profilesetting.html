@@ -35,7 +35,6 @@
             </form>
         </div>
         <div class="setting-grid-2">
-            <form action="/user/update_setting/" method="post">
             <table class="setting-edit-table">
                 <tr>
                     <td class="left-td"><label for="">아이디</label></td>
@@ -43,23 +42,22 @@
                 </tr>
                 <tr>
                     <td class="left-td"><label for="phone-num">전화번호</label></td>
-                    <td><input type="text" name="phone-num" disabled class="setting-phone-num" value="{{ user.phone_number }}"></td>
+                    <td><input type="text" name="phone-num" disabled class="setting-phone-num" value="{{ user.phone_number }}" oninput="autoHyphenPhone(this)" maxlength="13"></td>
                     <td><button type="button" id="edit-phone_num">수정</button></td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="edit-password">비밀번호 변경</td>
-                    <td><button type="submit">변경</button></td>
+                    <td class="edit-password" colspan="2">비밀번호 변경</td>
+                    <td><button type="submit" class="btn-edit-password">변경</button></td>
                 </tr>
                 <tr>
                     <td class="left-td"><label for="origin-pw">기존 비밀번호</label></td>
-                    <td colspan="2"><input type="text" name="origin-pw"></td>
+                    <td colspan="2"><input type="password" name="origin-pw" class="origin-pw"></td>
                 </tr>
                 <tr>
                     <td class="left-td"><label for="new-pw">새로운 비밀번호</label></td>
-                    <td colspan="2"><input type="text" name="new-pw"></td>
+                    <td colspan="2"><input type="password" name="new-pw" class="new-pw"></td>
                 </tr>
             </table>
-            </form>
         </div>
     </div>
 </div>
