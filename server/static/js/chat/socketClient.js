@@ -19,9 +19,9 @@ socket.on('display_message', async (data) => {
     let offsetH = 0;
     if(data['year'] == lastYear && data['month'] == lastMonth && data['day'] == lastDate && data['hour'] == lastHour && data['min'] == lastMin && data['user__name'] == lastSender && lastBubbleType == CHAT) {
         // 마지막 말풍선과 시간이 같고 보낸 사람이 같고 마지막 말풍선이 CHAT일 때 마지막 말풍선의 시간을 지움
-        offsetH = displayMessage(data, false);
+        offsetH = await displayMessage(data, false);
     } else {
-        offsetH = displayMessage(data, true);
+        offsetH = await displayMessage(data, true);
         lastHour = data['hour'];
         lastMin = data['min'];
         lastSender = data['user__name'];
@@ -58,6 +58,7 @@ function onClickSendMessage(user, id) {
 
     if (codeInput.classList.contains("active")) {
         var codeSnippet = editor.getValue();
+        // codeSnippet = `\`\`\`${codeSnippet}\`\`\``;
 
         if(codeSnippet.replace(/\n|\r|\s*/g, '') === '') return;
 
@@ -119,7 +120,6 @@ function onClickSendMessage(user, id) {
         // 아무것도 안 썼을 때 예외 처리
         // 개행문자 모두 제거
         if(msg.replace(/\n|\r|\s*/g, '') === '') return;
-        msg = msg.replace(/\n/, '<br>');
         console.log(msg);
 
         msgBox.focus();
@@ -181,7 +181,7 @@ function onClickSendMessage(user, id) {
 }
 
 // 말풍선 표시
-function displayMessage(bubbleData, newTimeFlag) {
+async function displayMessage(bubbleData, newTimeFlag) {
     console.log(bubbleData);
     // 내가 방금 보낸 말풍선 표시
 
@@ -254,18 +254,33 @@ function displayMessage(bubbleData, newTimeFlag) {
         bubbleContent.innerHTML = bubbleData['content'];
 
         // 파일을 첨부했다면
+
+        const loadFile = (fileUrl) => {
+            const myImage = new Image();
+            myImage.src = fileUrl;
+            return new Promise((resolve)=>{
+                myImage.onload = () => resolve(myImage)
+                console.log('here');
+            })
+        }
+        
+        const loadingFile = async (fileUrl) => {
+            await loadFile(fileUrl);
+        }
+
         console.log(bubbleData['file']);
         let bubbleFileContainer = '';
         let bubbleFileContent = '';
         if(!!bubbleData['file']) {
             bubbleFileContent = document.createElement('img');
-            bubbleFileContent.setAttribute('src', bubbleData['file']);
-            bubbleFileContent.classList.add('bubble-content');
+            await bubbleFileContent.setAttribute('src', bubbleData['file']);
+            await bubbleFileContent.classList.add('bubble-content');
 
             bubbleFileContent.style.cursor = 'pointer';
-            bubbleFileContent.addEventListener('click', () => {
+            await bubbleFileContent.addEventListener('click', () => {
                 open(bubbleData['file'], '_blank');
             });
+            await loadingFile(bubbleData['file']);
         }
 
         let bubbleTime = document.createElement('label');
