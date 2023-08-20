@@ -482,6 +482,15 @@
     display: none;
 }
 
+.bubble-content {
+    display: flex;
+}
+
+.highlight {
+    padding: 1rem;
+    border-radius: 0.8rem;
+}
+
 
 @media screen and (max-width: 768px) {
     #chat-member-add:active {

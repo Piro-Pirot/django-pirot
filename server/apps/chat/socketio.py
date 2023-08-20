@@ -3,7 +3,12 @@ import json
 import os
 from bs4 import BeautifulSoup
 import markdown
+from markdown.extensions.codehilite import CodeHiliteExtension
 from pygments.styles import get_style_by_name
+from pygments import highlight
+from pygments.lexers import PythonLexer
+from pygments.formatters import HtmlFormatter
+
 
 import socketio
 from asgiref.sync import sync_to_async
@@ -108,12 +113,12 @@ async def send_message(sid, data):
 
     data['msg'] = str(BeautifulSoup(data['msg']))
 
-    extension_configs = {
-        'pygments_style': 'solarized-light'
-    }
-
     # 마크다운
-    data['msg'] = markdown.markdown(data['msg'], extensions=['fenced_code', 'codehilite'])
+    data['msg'] = markdown.markdown(data['msg'], extensions=[CodeHiliteExtension()], extension_configs={
+    'codehilite': {
+        'pygments_style': 'default'
+    }
+})
 
     if room.room_type == BLIND_ROOM:
         #익명채팅방
@@ -128,6 +133,30 @@ async def send_message(sid, data):
             newBubble = bubble_serializer(newBubble, False, '')
 
 
+    await sio.emit('display_message', newBubble, to=roomId)
+    print('massage was saved')
+
+
+@sio.on('sendCodeSnippet')
+async def sendCodeSnippet(sid, data):
+    roomId = int(data['roomId'])
+    room = await sync_to_async(Room.objects.get)(id=roomId)
+    user = await sync_to_async(User.objects.get)(username=data['user'])
+
+    # 마크다운
+    data['msg'] = highlight(data['code'], PythonLexer(), HtmlFormatter(style="friendly"))
+    
+    if room.room_type == BLIND_ROOM:
+        #익명채팅방
+        newBubble = await bubble.save_blind_msg(room, data)
+        newBubble = bubble_serializer(newBubble, True, '')
+    else:
+        newBubble = await bubble.save_msg(room, data)
+        # newBubble['user_profile_img'] = user.profile_img
+        try:
+            newBubble = bubble_serializer(newBubble, False, user.profile_img)
+        except:
+            newBubble = bubble_serializer(newBubble, False, '')
 
     await sio.emit('display_message', newBubble, to=roomId)
     print('massage was saved')
