@@ -27,9 +27,13 @@
             <div class="bottom-icons">
                 <i id="settings" class="ri-settings-3-line icon"></i>
                 {% if request.user.profile_img %}
-                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/">
+                        <img src="{{ request.user.profile_img.url }}" alt="프로필">
+                    </a>
                 {% else %}
-                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img src="{{ channel.default_image.url }}" alt="프로필"></a>
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/">
+                        <img src="{{ channel.default_image.url }}" alt="프로필">
+                    </a>
                 {% endif %}
             </div>
         </section>
@@ -53,9 +57,13 @@
             <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line mob-room-icon"></i></a>
             {% endif %}
             {% if request.user.profile_img %}
-                <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img class="mob-profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+                <a class="profile-icon" href="/user/setting/{{ channel.id }}/">
+                    <img class="mob-profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필">
+                </a>
             {% else %}
-                <a class="profile-icon" href="/user/setting/{{ channel.id }}/"><img class="mob-profile-icon" src="{{ channel.default_image.url }}" alt="프로필"></a>
+                <a class="profile-icon" href="/user/setting/{{ channel.id }}/">
+                    <img class="mob-profile-icon" src="{{ channel.default_image.url }}" alt="프로필">
+                </a>
             {% endif %}
         </section>
     </div>
@@ -120,6 +128,7 @@
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     <script>
         let curUserTheme = '{{ request.user.theme }}'
+        let curUserNotice = '{{ request.user.notice }}'
     </script>
     {% block extra %}
     {% endblock %}

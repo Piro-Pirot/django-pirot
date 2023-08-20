@@ -21,8 +21,9 @@
 </div>
 
 <script>
-    document.querySelector('.input-level').addEventListener('input', (this) => {
-        this.value = this.value.replace('\D', '');
+    const inputLevel = document.querySelector('.input-level');
+    inputLevel.addEventListener('input', () => {
+        inputLevel.value = inputLevel.value.replace(/[^0-9]/g, '');
     });
 </script>
 

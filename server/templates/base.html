@@ -13,6 +13,7 @@
     href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css"
     type="text/css"
     />
+    <!-- <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.23.0/min/vs/loader.js"></script> -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600&display=swap');
     </style>
@@ -168,6 +169,7 @@
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     <script>
         let curUserTheme = '{{ request.user.theme }}'
+        let curUserNotice = '{{ request.user.notice }}'
         CHAT = 0
         NOTICE = 1
         let roomListRoomId = {{ room.id }};
