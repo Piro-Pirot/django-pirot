@@ -195,6 +195,12 @@ if (matchMedia("(min-width: 768px) and (max-width: 1200px)").matches) {
   try {
     roomList.classList.add('hide-element');
     createRoom.classList.add('hide-element');
+    const roomListEl = Array.from(roomList.getElementsByTagName('li'));
+    for (let i = 0; i < roomListEl.length; i++) {
+      roomListEl[i].style.display = 'none';
+    };
+    boardInputContainer.style.display = 'none';
+    boardOpenButton.style.visibility = "visible"
   } catch {
     console.log('not found!!!');
   }
@@ -215,6 +221,10 @@ if (matchMedia("(min-width: 768px) and (max-width: 1200px)").matches) {
       searchIcon.className = '';
       middleContent.classList.add('hide-element');
       try {
+        const roomListEl = Array.from(roomList.getElementsByTagName('li'));
+        for (let i = 0; i < roomListEl.length; i++) {
+          roomListEl[i].style.display = 'none';
+        };
         roomList.classList.add('hide-element');
         createRoom.classList.add('hide-element');
       } catch {
@@ -242,6 +252,10 @@ if (matchMedia("(min-width: 768px) and (max-width: 1200px)").matches) {
       try {
         roomList.classList.remove('hide-element');
         createRoom.classList.remove('hide-element');
+        const roomListEl = Array.from(roomList.getElementsByTagName('li'));
+        for (let i = 0; i < roomListEl.length; i++) {
+          roomListEl[i].style.display = 'block';
+        };
       } catch {
         console.log('not found!!!!!');
       }

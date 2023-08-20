@@ -533,10 +533,61 @@ background-color: var(--carrot-super-light);
   background-color: var(--carrot-dark);
 }
 
-@media (min-width: 768px) and (max-width: 933px) {
+.input-desc {
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+@media (min-width: 1200px) {
+  #middleCloseOpen {
+    transform: rotateY('180deg');
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  /* 아이콘 바 세로로 */
+  .icon-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 4rem;
+    background-color: var(--iconBar-bgclr);
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  .mob-icons {
+    display: none;
+  }
+  .middle-section {
+    display: block;
+    width: 3rem;
+    transition: 0.3s;
+  }
+  .chat-conversation-container {
+    transition: 0.3s;
+    width: calc(100% - 1rem);
+  }
+  .chat-section {
+    transition: 0.3s;
+    width: calc(100vw);
+  }
+  .select-btn > span,
+  .select-btn > i,
+  .search-box,
+  #search-btn,
+  .middle-section-content,
+  .btn-room-create,
+  .btn-room-list:nth-child() {
+    display: none;
+  }
+  #middleCloseOpen {
+    transform: rotateY('180deg');
+  }
 }
 @media screen and (max-width: 768px) {
   .mob-icons {
+    display: block;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -584,5 +635,28 @@ background-color: var(--carrot-super-light);
   }
   .chat-name-content .chat-name-name {
     font-size: 1rem;
+  }
+
+  /* 아이콘 바 가로로 */
+  .icon-bar {
+    display: none;
+  }
+  /* middle 접기 */
+  .middle-section {
+    display: none;
+  }
+  /* board 접기 */
+  .board-container {
+    width: 3rem;
+    transition: 0.3s;
+  }
+  .board-container:nth-child() {
+    display: none;
+  }
+  .post-input-container {
+    display: none;
+  }
+  .boardOpen {
+    visibility: visible;
   }
 }

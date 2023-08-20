@@ -9,14 +9,22 @@
     <form class="gen-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}    
         <div>
-            <input type="text" name="level" placeholder="기수를 입력하세요" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required/>
+            <input type="text" name="level" class='input-level' placeholder="기수를 입력하세요" required/>
             <input type="submit" value="정보 입력" />
         </div>
     </form>
+    <div class="level-desc">기수에는 숫자만 입력하세요.</div>
 </div>
 
 <div class="passer-list-container">
 
 </div>
+
+<script>
+    const inputLevel = document.querySelector('.input-level');
+    inputLevel.addEventListener('input', () => {
+        inputLevel.value = inputLevel.value.replace(/[^0-9]/g, '');
+    });
+</script>
 
 {% endblock %}
