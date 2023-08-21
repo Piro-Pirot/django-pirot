@@ -632,6 +632,11 @@
     color: var(--carrot-color);
 }
 
+#form-setting {
+    width: 100%;
+    text-align-last: center;
+}
+
 @media screen and (max-width: 768px) {
     #chat-member-add:active {
         color: var(--carrot-color);
