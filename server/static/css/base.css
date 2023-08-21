@@ -576,20 +576,20 @@ background-color: var(--carrot-super-light);
   .mob-icons {
     display: none;
   }
-  .middle-section {
+  /* .middle-section {
     display: block;
     width: 3rem;
     transition: 0.3s;
-  }
-  .chat-conversation-container {
+  } */
+  /* .chat-conversation-container {
     transition: 0.3s;
     width: calc(100% - 1rem);
-  }
-  .chat-section {
+  } */
+  /* .chat-section {
     transition: 0.3s;
     width: calc(100vw);
-  }
-  .select-btn > span,
+  } */
+  /* .select-btn > span,
   .select-btn > i,
   .search-box,
   #search-btn,
@@ -597,10 +597,10 @@ background-color: var(--carrot-super-light);
   .btn-room-create,
   .btn-room-list:nth-child() {
     display: none;
-  }
-  #middleCloseOpen {
+  } */
+  /* #middleCloseOpen {
     transform: rotateY('180deg');
-  }
+  } */
 }
 @media screen and (max-width: 768px) {
   .mob-icons {
@@ -616,7 +616,7 @@ background-color: var(--carrot-super-light);
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    background-color: var(--body-bgclr);
+    background-color: var(--iconBar-bgclr);
   }
   .mob-icons .mob-friend-icon,
   .mob-icons .mob-room-icon,
