@@ -105,6 +105,7 @@
 
             <input type="hidden" name="roomId" id="" value="{{ room.id }}">
             <input type="hidden" name="channelId" id="" value="{{ channel.id }}">
+            <input type="hidden" name="is_checked" id="is_checked_input" value="">
             <!-- <button type='submit'>수정 완료</button> -->
             {% endif %}
 
@@ -114,7 +115,7 @@
                 </div>
                 <div id="chat-lock-toggle" class="checkbox-wrapper-22 alarm-toggle">
                     <label class="switch" for="checkbox444">
-                        <input type="checkbox" id="checkbox444" />
+                        <input type="checkbox" id="checkbox444" onclick="is_checked()"/>
                         <div class="slider round"></div>
                     </label>
                 </div>
@@ -242,6 +243,13 @@
         } else{
             document.getElementById('blind_profile').src = "";
         } 
+    }
+
+    function is_checked(){
+        const checkbox = document.getElementById('checkbox444');
+        const is_checked = checkbox.checked;
+        // 체크여부를 hidden input에 저장
+        document.getElementById('is_checked_input').value = is_checked ? '1' : '0';
     }
 
 </script>

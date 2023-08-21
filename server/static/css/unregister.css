@@ -1,16 +1,21 @@
-.unregister-container h1 {
-    font-size: 2rem;
+h1 {
+    font-size: 1.7rem;
+    margin-bottom: 1rem;
 }
-
-.unregister-container div {
-    font-size: 1rem;
+.unregister-title {
+    margin-bottom: 1rem;
+>>>>>>> origin
 }
 
 .unregister-container {
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    margin-top: 2rem;
+   
+}
+.unregister-main-container {
+    text-align: center;
 }
 
 .unregister-title {
@@ -40,4 +45,40 @@ button {
     0 1px 1px rgba(0,0,0,0.15),
     0 2px 2px rgba(0,0,0,0.15),
     0 2px 2px rgba(0,0,0,0.15);
+}
+button:hover {
+    background-color: var(--carrot-color);
+}
+
+table {
+    margin-top: 1rem;
+}
+
+table input {
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    height: 2.5rem;
+    border-radius: 1rem;
+    background-color: rgba(255, 140, 0, 0.04);
+    border: none;
+    width: 100%;
+
+}
+
+table td{
+    padding: 0 0.5rem 0.8rem 0.5rem;
+}
+
+#userID, #userPW {
+    outline: none;
+}
+#userID:focus, #userPW:focus {
+    border: 2px solid var(--carrot-light);
+    border-radius: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 1.3rem;
+    }
 }
