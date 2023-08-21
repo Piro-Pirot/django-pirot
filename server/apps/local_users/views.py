@@ -18,7 +18,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 import hashlib
 import hmac
-import base64
+import base64, imghdr, os
+from datetime import datetime
 import re
 
 from django.contrib.auth.hashers import check_password
@@ -107,13 +108,33 @@ def profile_setting(request, channelID):
 
     channelPasser = Passer.objects.filter(channel=channel, passer_name=current_user.name, passer_phone=current_user.phone_number).get()
 
+    # 업로드 이미지 파일명 변경
     if request.method == 'POST':
-        if 'delete' in request.POST:
-            current_user.profile_img.delete()
-            current_user.profile_img = channelDefaultImg # 채널의 default_img로 표시되도록
-        elif 'change' in request.POST:
+        if 'change' in request.POST:
             if request.FILES.get('profile_img'):
-                current_user.profile_img = request.FILES['profile_img']
+                inputImg = request.FILES['profile_img']
+
+                today = datetime.today().strftime("%Y%m%d")
+
+                # 디렉토리가 없으면 만들기
+                if not os.path.isdir(f'media/{today}/'):
+                    os.makedirs(f'media/{today}/')
+
+                file_list = os.listdir(f'media/{today}')
+
+                # 파일 쓰기
+                with open(f'media/{today}/upload{len(file_list)}', 'wb') as output_file:
+                    output_file.write(inputImg.read())
+
+                filename = f'media/{today}/upload{len(file_list)}'
+
+                img_type = imghdr.what(f'media/{today}/upload{len(file_list)}')
+
+                if img_type != None:
+                    os.rename(filename, f'{filename}.{img_type}')
+                    inputImg = f'/{today}/upload{len(file_list)}.{img_type}'
+                    current_user.profile_img = inputImg
+
         elif 'level' in request.POST:
             channelPasser.level = request.POST.get('level')
         current_user.save()
@@ -354,26 +375,27 @@ def lost_pw(request):
 # 회원 탈퇴   
 def unregister(request):
     msg = ''
-    # count = 0
-    # channelPassers = Passer.objects.filter(channel__id=channelId)
 
     # 즉시 회원 탈퇴가 불가능한 경우
     # 멤버가 본인 하나뿐인 경우 -> 채널 자동 삭제 후 탈퇴
-    # 해당 회원이 속한 모든 채널을 탐색
-    # myJoins = Join.objects.filter(user=request.user)
-    # for myJoin in myJoins:
-    #     myJoin
-    # for passer in channelPassers:
-    #     if Join.objects.filter(passer=passer):
-    #         count += 1
-    # if count == 1:
-    #     return render(request, 'onlyOneJoinError.html')
+    # 해당 회원이 속한 모든 채널을 탐색 -> 하나라도 조건을 만족하면 에러
+    channels = Channel.objects.all()
+    for channel in channels:
+        count = 0
+        channelPassers = channel.passer_set.all()
+        for channelPasser in channelPassers:
+            if channelPasser.join_set.all().exists():
+                count += 1
+        if count == 1:
+            if channelPasser.join_set.filter(user=request.user).exists():
+                return render(request, 'users/onlyOneJoinError.html', {'channel':channel}) # 에러 페이지
 
-    # 운영진이 본인 하나뿐인 경우 -> 운영진 위임 권유
-    # channelStaffs = Staff.objects.filter(channel=channel)
-    # if channelStaffs.count() == 1:
-    #     if channelStaffs.get(user=request.user):
-    #             return render(request, 'onlyOneStaffError.html') # 에러 페이지
+    # 운영진이 본인 하나뿐인 경우 -> 해당 채널 운영진 위임 권유 (한번에 하나의 채널만 반환)
+    for channel in channels:
+        channelStaffs = Staff.objects.filter(channel=channel)
+        if channelStaffs.count() == 1:
+            if channelStaffs.filter(user=request.user).exists():
+                return render(request, 'users/onlyOneStaffError.html', {'channel':channel}) # 에러 페이지
 
 
     if request.method == 'POST':
