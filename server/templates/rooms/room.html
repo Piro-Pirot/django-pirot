@@ -19,6 +19,26 @@
                 <i id="chat-member-add" class="ri-add-line"></i>
                 {% endif %}
                 <i id="chat-setting" class="ri-settings-3-line"></i>
+                {% if room.room_type != 2 %}
+                <!-- 개인채팅방이 아닐 때만 채팅방 정보 수정 가능 -->
+                {% if room.room_type == 1 %}
+                    <!-- 익명채팅방일 때 -->
+                    {% for b_member in room.blindroommember_set.all %}
+                        {% if b_member.user == user and b_member.is_room_owner == True %}
+                        <!-- 내가 이 방을 만든 사람이라면 채팅방 정보 수정 버튼 볼 수 있음 -->
+                        <i id="room-owner-setting" class="ri-chat-settings-line"></i>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <!-- 일반채팅방일 때 -->
+                    {% for member in room.roommember_set.all %}
+                        {% if member.user == user and member.is_room_owner == True %}
+                        <!-- 내가 이 방을 만든 사람이라면 채팅방 정보 수정 버튼 볼 수 있음 -->
+                        <i id="room-owner-setting" class="ri-chat-settings-line"></i>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -62,6 +82,33 @@
     </div>
 </div>
 
+<!-- 채팅방 개설자 설정 모달 -->
+<dialog class="modal modal-room-setting">
+    <i id="close-btn" class="ri-close-fill"></i>
+    <div class="modal-content">
+        <form action="/room/update_room_settings/{{ channel.id }}/{{ room.id }}/" method="post" enctype="multipart/form-data" accept="image/*">
+            {% csrf_token %}
+            <div class="room-detail-container">
+                <h1 class="modal-title">채팅방 설정</h1>
+                <label for="room-new-img" class="label-room-img">
+                    {% if room.room_img is None %}
+                    <!-- 채팅방 이미지가 없으면 기본 이미지 -->
+                    <img src="/media/default_image/default_image.png" alt="" class="room-img">
+                    {% else %}
+                    <img src="{{ room.room_img.url }}" alt="" class="room-img">
+                    {% endif %}
+                </label>
+                <input type="file" name="room-new-img" id="room-new-img" onchange="readURL(this)">
+                <div class="room-name-container">
+                    <input type="text" name='room-new-name' class="edit-room-name" value="{{ room.room_name }}" disabled>
+                    <i class="ri-edit-line"></i>
+                </div>
+                <button id="settings-save">저장</button>
+            </div>
+        </form>
+    </div>
+</dialog>
+
 <!--파일 업로드 모달-->
 <!-- <dialog class="modal upload-file-modal">
     <i id="close-btn" class="ri-close-fill"></i>
@@ -78,7 +125,7 @@
     <i id="close-btn" class="ri-close-fill"></i>
     <div class="modal-content">
         <div class="title">
-            채팅방 설정
+            채팅방 프로필 설정
         </div>
 
         <!-- 채팅방 프로필 사진 & 닉네임 수정(익명채팅방)-->
@@ -155,7 +202,11 @@
                 <li id="{{ notMember.id }}">
                     <div class="btn-friend">
                         <div class="btn-friend-profile-img">
-                            <img src="{{ notMember.join_set.first.user.profile_img }}" alt="">
+                            {% if join_info.user.profile_img is None %}
+                            <img src="/media/default_img/default_image.png" alt="">
+                            {% else %}
+                            <img src="{{ notMember.join_set.first.user.profile_img.url }}" alt="">
+                            {% endif %}
                         </div>
                         <label for="">{{ notMember }}</label>
                         <div class="checkbox-wrapper-30 checkbox">
@@ -206,6 +257,31 @@
     chatSettingButton.onclick = () => {
         chatSettingModal.showModal();
         chatSettingModal.style.opacity = '1';
+        
+        //익명채팅방 닉네임 input 항상 텍스트의 끝에 focus 되게 하기
+        function setCaretToEnd(input) {
+            input.focus();
+            input.setSelectionRange(input.value.length, input.value.length);
+        };
+
+        const nicknameInput = document.getElementById("nickname");
+
+        nicknameInput.addEventListener("focus", function() {
+            setCaretToEnd(nicknameInput);
+        });
+
+        function readURL(input) {
+            // input.files : 사용자가 선택한 파일들의 목록(파일을 선택하지 않았다면 비어있음)
+            if(input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('blind_profile').src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else{
+                document.getElementById('blind_profile').src = "";
+            } 
+        }
     };
 
     const chatSettingCloseButton = document.querySelector(".chat-settings-modal #close-btn");
@@ -223,30 +299,6 @@
 
     // board의 scrollHeight 증가시켜서 더 밑으로 스크롤 할 수 있게 하기
 
-    //익명채팅방 닉네임 input 항상 텍스트의 끝에 focus 되게 하기
-    function setCaretToEnd(input) {
-            input.focus();
-            input.setSelectionRange(input.value.length, input.value.length);
-        };
-
-    var nicknameInput = document.getElementById("nickname");
-
-    nicknameInput.addEventListener("focus", function() {
-        setCaretToEnd(nicknameInput);
-    });
-
-    function readURL(input) {
-        // input.files : 사용자가 선택한 파일들의 목록(파일을 선택하지 않았다면 비어있음)
-        if(input.files && input.files[0]){
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('blind_profile').src = e.target.result;
-            };
-            reader.readAsDataURL(input.files[0]);
-        } else{
-            document.getElementById('blind_profile').src = "";
-        } 
-    }
 
 </script>
 

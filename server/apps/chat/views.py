@@ -136,7 +136,8 @@ def create_group_room(request, channelId):
                 user = request.user,
                 room = new_room,
                 nickname = f'{fake_korean_first()} {fake_korean_second()}',
-                profile_img = default_img
+                profile_img = default_img,
+                is_room_owner = True
             )
             new_member_user.save()
             BlindBubble.objects.create(
@@ -151,7 +152,8 @@ def create_group_room(request, channelId):
         else:
             RoomMember.objects.create(
                 user = request.user,
-                room = new_room
+                room = new_room,
+                is_room_owner = True
             ).save()
             Bubble.objects.create(
                 user = request.user,
@@ -453,7 +455,25 @@ def setting_blindroom_profile(request):
         
         return redirect(f"/room/{channel_id}/{room_id}/main/")
     return render(request, 'error.html', {'errorMsg': '잘못된 접근입니다.'})
+
+
+# 채팅방 개설자가 채팅방 정보 수정
+def update_room_settings(request, channel_id, room_id):
+    if request.method == 'POST':
+        new_img = request.FILES['room-new-img']
+        new_name = request.POST['room-new-name']
+        
+        cur_room = Room.objects.get(id=room_id)
+        cur_room.room_img = new_img
+        cur_room.room_name = new_name
+        cur_room.save()
+
+        return redirect(f'/room/{channel_id}/{room_id}/main/')
     
+    return render(request, 'error.html', {'errorMsg': '잘못된 접근입니다.'})
+
+
+
 
 # 채팅방 검색
 def search_rooms_ajax(request):

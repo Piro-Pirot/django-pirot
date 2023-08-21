@@ -7,22 +7,14 @@ roomAddModal.style.opacity = '0';
 roomCreateButton.addEventListener("click", () => {
   roomAddModal.showModal();
   roomAddModal.style.opacity = "1";
-});
 
-// 모달 닫기
-const roomModalCloseButton = document.querySelector(".room-add-modal #close-btn");
-roomModalCloseButton.addEventListener("click", () => {
-  if (roomAddModal.open) {
-    roomAddModal.close();
-    roomAddModal.style.opacity = '0';
-  }
 
-  // 친구 검색 Ajax
-  const searchFriendsRequest = async (channelId, inputValue) => {
+  // 채팅방 생성 친구 검색 Ajax
+  const searchNewFriendRequest = async (channelId, inputValue) => {
     let cookie = document.cookie;
     let csrfToken = cookie.substring(cookie.indexOf('=') + 1);
 
-    const url = '/staff/search_friends_ajax/';
+    const url = '/room/search_new_chat_friend_ajax/';
     const res = await fetch(url, {
       method: 'POST',
       headers: {
@@ -37,29 +29,47 @@ roomModalCloseButton.addEventListener("click", () => {
       // 비어있는지 확인
       if (resultList !== null) {
         resultList = JSON.parse(resultList);
-        searchFriendsResponse(resultList);
+        searchNewFriendResponse(resultList);
       }
     }
   }
 
-  const searchFriendsResponse = (resultList) => {
+  const searchNewFriendResponse = (resultList) => {
     // 공통
-    let friendList = Array.from(document.querySelector('.btn-friend-list').getElementsByTagName('li'));
+    console.log(resultList);
+    let inviteFriendList = Array.from(document.querySelector('.invite-ul').getElementsByTagName('li'));
+    console.log(inviteFriendList);
 
-    friendList.forEach(friend => {
+    inviteFriendList.forEach(invite => {
       // 찾지 못했다면 hidden 클래스를 추가해 가림
-      if (resultList.indexOf(Number(friend.id)) === -1) {
-        friend.classList.add('friend-hidden');
+      if (resultList.indexOf(Number(invite.id)) === -1) {
+        invite.classList.add('invite-new-hidden');
       } else {
-        friend.className = 'btn-friend-container friend-container';
+        invite.classList.remove('invite-new-hidden');
       }
     });
   }
 
-  const searchFriendsInput = document.getElementById('search-input');
-  searchFriendsInput.addEventListener('input', () => {
-    searchFriendsRequest(curChannelId, searchFriendsInput.value);
+  const searchNewFriendInput = document.getElementById('input-new-chat');
+  searchNewFriendInput.addEventListener('input', () => {
+    searchNewFriendRequest(curChannelId, searchNewFriendInput.value);
   });
+
+  // focus 해제되었을 때 전부 보이기
+  // searchNewFriendInput.addEventListener('focusout', () => {
+  //   searchNewFriendInput.value = '';
+  //   searchNewFriendRequest(curChannelId, searchNewFriendInput.value);
+  // });
+
+});
+
+// 모달 닫기
+const roomModalCloseButton = document.querySelector(".room-add-modal #close-btn");
+roomModalCloseButton.addEventListener("click", () => {
+  if (roomAddModal.open) {
+    roomAddModal.close();
+    roomAddModal.style.opacity = '0';
+  }
 });
 
 //Esc 누르면 모달 opacity 초기화
