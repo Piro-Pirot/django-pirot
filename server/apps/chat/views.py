@@ -347,9 +347,9 @@ def enter_room(request, channelId, roomId, type):
 
         # 채팅방 잠금인 방
         my_locked = Lock.objects.filter(user=request.user)
-        print("내 Lock object들 : ", my_locked)
+        print("내 Lock object들(enter room) : ", my_locked)
         my_locked_rooms = my_locked.values_list('room_id', flat=True)
-        print('내 Locked rooms : ', my_locked_rooms)
+        print('내 Locked rooms(enter room) : ', my_locked_rooms)
 
         # 채팅 방 참여자가 아닌 채널 구성원들
         not_members = []
@@ -435,29 +435,37 @@ def setting_blindroom_profile(request):
             print('Key: %s' % (key) ) 
             print('Value %s' % (value) )
         # 익명채팅방 이름 수정
-        room_id = request.POST['roomId']
+        roomId = request.POST['roomId']
         channel_id = request.POST['channelId']
-        curRoom = Room.objects.get(id=room_id)
+        curRoom = Room.objects.get(id=roomId)
         my_locked = Lock.objects.filter(user=request.user)
         my_locked_rooms = my_locked.values_list('room_id', flat=True)
         
         # is_checked 키가 존재하지 않을 경우, '0'을 디폴트 값으로
         is_checked = request.POST.get('is_checked', '0')
         # chat_textarea = request.POST.get('chat_textarea')
-        if is_checked == '1':
+        print("is_checked : ", is_checked)
+        
+        if is_checked =='1':
             # 체크된 경우
-            if room_id in my_locked_rooms:
+            if int(roomId) in my_locked_rooms:
+                print("이미 Lock에 존재해 있어서 또 만들 필요가 없음")
                 pass
             else:
-                Lock.objects.create(user = request.user,room_id = curRoom).save()
+                Lock.objects.create(user = request.user, room_id = curRoom).save()
+                print("Lock에 새로 추가됨")
         elif is_checked =='0':
             # 체크되지 않은 경우 처리
-            if room_id in my_locked_rooms:
-                Lock.objects.get(user=request.user, room_id=curRoom).delete()
+            if int(roomId) in my_locked_rooms:
+                Lock.objects.get(user = request.user, room_id = curRoom).delete()
+                print("내 Lock object들(삭제하고 났으니까 사라져야함) : ", my_locked)   
             else:
+                print("체크되지 않은 상태, 삭제할 Lock이 없음")
                 pass
+        else:
+            print("is_checked 값이 0도 1도 아님")
             
-        Member = BlindRoomMember.objects.get(user=request.user, room=room_id)
+        Member = BlindRoomMember.objects.get(user=request.user, room=roomId)
         fixed_nickname = request.POST.get('nickname')
         
         
@@ -496,7 +504,7 @@ def setting_blindroom_profile(request):
         Member.nickname = fixed_nickname
         Member.save()
         
-        return redirect(f"/room/{channel_id}/{room_id}/main/")
+        return redirect(f"/room/{channel_id}/{roomId}/main/")
     return render(request, 'error.html', {'errorMsg': '잘못된 접근입니다.'})
 
 
