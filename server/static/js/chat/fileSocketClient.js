@@ -1,13 +1,26 @@
 document.querySelector('#upload-file').addEventListener('change', function() {
-    const reader = new FileReader();
-    reader.onload = async function() {
-        const base64 = this.result.replace(/.*base64,/, '');
-        await socket.emit('send_file', {'msg': '', 'file': base64, 'user': curUsername, 'roomId': curRoomId});
-    };
-    reader.readAsDataURL(this.files[0]);
+   const reader = new FileReader();
+   const file = this.files[0];
+   const fileSize = file.size;
+   if(fileSize >= 600000) {
+      alert('파일은 0.5MB 이하만 전송 가능합니다.');
+   } else {
+      reader.onload = async function() {
+         const base64 = this.result.replace(/.*base64,/, '');
+         await socket.emit('send_file', {'msg': '', 'file': base64, 'user': curUsername, 'roomId': curRoomId});
+      };
+      reader.readAsDataURL(this.files[0]);
+   }
 
 }, false);
 
+// document.querySelector('#upload-file').addEventListener('change', async function() {
+//    const reader = new FileReader();
+//    const file = this.files[0];
+//    const data = await fetch(reader.readAsDataURL(file))
+//    const blob = await data.blob();
+//    await socket.emit('send_file', {'msg': '', 'file': blob, 'user': curUsername, 'roomId': curRoomId});
+// })
 /*
 Dropzone.autoDiscover = false;
 const dropzone = new Dropzone("form.dropzone", { 

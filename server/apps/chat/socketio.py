@@ -185,6 +185,7 @@ async def send_file(sid, data):
     room = await sync_to_async(Room.objects.get)(id=room_id)
     user = await sync_to_async(User.objects.get)(username=data['user'])
     print('saving file...')
+    print(data['file'])
     buffer = base64.b64decode(data['file'])
     print(buffer)
     today = datetime.today().strftime("%Y%m%d")
@@ -194,33 +195,27 @@ async def send_file(sid, data):
         os.makedirs(f'media/{today}/')
     
     file_list = os.listdir(f'media/{today}')
+
+    filename = f'media/{today}/upload{len(file_list)}.png'
     # 파일 쓰기
-    with open(f'media/{today}/upload{len(file_list)}', 'wb') as output_file:
+    with open(filename, 'wb') as output_file:
         output_file.write(buffer)
-    
-    filename = f'media/{today}/upload{len(file_list)}'
 
-    img_type = imghdr.what(f'media/{today}/upload{len(file_list)}')
-    
-    if img_type != None:
-        os.rename(filename, f'{filename}.{img_type}')
-        data['file'] = f'/{today}/upload{len(file_list)}.{img_type}'
-        print(data)
+    data['file'] = f'/{today}/upload{len(file_list)}.png'
+    print(data)
 
-        if room.room_type == BLIND_ROOM:
-            #익명채팅방
-            newBubble = await bubble.save_blind_msg(room, data)
-            newBubble = bubble_serializer(newBubble, True, '')
-        else:
-            newBubble = await bubble.save_msg(room, data)
-            if bool(user.profile_img):
-                newBubble = bubble_serializer(newBubble, False, user.profile_img.url)
-            else:
-                newBubble = bubble_serializer(newBubble, False, '')
-        
-        await sio.emit('display_message', newBubble, to=room_id)
+    if room.room_type == BLIND_ROOM:
+        #익명채팅방
+        newBubble = await bubble.save_blind_msg(room, data)
+        newBubble = bubble_serializer(newBubble, True, '')
     else:
-        os.remove(filename)
+        newBubble = await bubble.save_msg(room, data)
+        if bool(user.profile_img):
+            newBubble = bubble_serializer(newBubble, False, user.profile_img.url)
+        else:
+            newBubble = bubble_serializer(newBubble, False, '')
+    
+    await sio.emit('display_message', newBubble, to=room_id)
 
 
 @sio.event
