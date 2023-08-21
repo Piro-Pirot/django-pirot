@@ -207,16 +207,27 @@ window.addEventListener("resize", () => {
 
 //페이지 리로드 시 middle section 열고 닫기 유무 고정
 window.onload = () => {
-  if (window.innerWidth <= 1000) {
-      midClose();
-      boardClose();
-      if (window.innerWidth <= 768) {
-        chatSection.style.width = '100vw';
-      }
+  if (window.innerWidth > 1000) {
+    midOpen();
+    boardOpen();
+  }
+  else if (window.innerWidth > 768) {
+    midClose();
+    boardClose();
   }
   else {
-      midOpen();
-      boardOpen();
+    middleSection.style.width = '20rem';
+
+    middleSearchBox.style.display = 'flex';
+    middleContent.style.display = 'block';
+    try {
+    const createRoom = document.querySelector('.btn-room-create');
+    createRoom.style.display = 'block';
+    } catch {
+    console.log('친구리스트에는 채팅방 추가 버튼이 없어요~');
+    }
+    chatSection.style.width = '100vw';
+    boardClose();
   };
 };
 
