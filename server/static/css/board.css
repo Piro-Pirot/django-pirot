@@ -12,6 +12,7 @@
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   color: var(--alt-fontclr);
+  word-break: break-word;
 }
 
 .post-container > div:last-child {

@@ -186,7 +186,18 @@
     height: 2.5rem;
     border: 1px solid var(--font-color);
     border-radius: 50%;
-    margin-right: 0.8rem;
+    margin-right: 1rem;
+    object-fit: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.1rem;
+}
+.room-profile-img > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .room-name {
@@ -477,7 +488,9 @@
 }
 
 .chat-name-icons > #chat-search-btn,
-.chat-name-icons > #chat-member-add {
+.chat-name-icons > #chat-member-add,
+.chat-name-icons > #chat-setting,
+.chat-name-icons > #room-owner-setting {
     font-size: 1.7rem;
     margin-left: 2rem;
     cursor: pointer;
@@ -485,6 +498,11 @@
 
 .chat-name-icons > #chat-member-add {
     font-size: 2.5rem;
+}
+
+.chat-name-icons > #chat-setting,
+.chat-name-icons > #room-owner-setting {
+    font-size: 2rem;
 }
 
 .chat-name-icons > i:last-child {
@@ -511,6 +529,7 @@
 
 .bubble-content {
     /* display: flex; */
+    word-break: break-word;
 }
 
 .highlight {
@@ -532,4 +551,48 @@
     #chat-setting:active {
         color: var(--carrot-color);
     }
+}
+
+/* 채팅방 개설자 설정 모달 */
+.room-detail-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.room-detail-container .modal-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+.room-detail-container img {
+    border: 1px solid var(--alt-fontclr);
+    border-radius: 50%;
+    width: 15rem;
+    height: 15rem;
+    padding: 0.1rem;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    cursor: pointer;
+}
+.room-detail-container #room-new-img {
+    width: 0;
+    height: 0;
+}
+.room-name-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+.room-name-container input {
+    width: 8rem;
+    margin: 0 1rem;
+    text-align: center;
+}
+.room-name-container .ri-edit-line {
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+}
+.room-name-container .ri-edit-line:hover {
+    color: var(--carrot-color);
 }
