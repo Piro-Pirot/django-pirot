@@ -1,0 +1,955 @@
+/* 일반회원 프로필 */
+
+.setting-section {
+  width: 100%;
+}
+
+.setting-header-container {
+  width: 100%;
+  height: 6rem;
+  padding: var(--section-padding) var(--section-padding) 0 var(--section-padding);
+  background-color: var(--body-bgclr);
+}
+
+.setting-header {
+  width: 100%;
+  height: 100%;
+  background-color: var(--section-bgclr);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.4rem;
+  border-radius:  0.8rem;
+}
+
+.setting-boss-container {
+  width: 100%;
+  height: calc(100% - 6rem);
+  background-color: var(--body-bgclr);
+  padding: var(--section-padding);
+}
+
+/* 회원정보수정 관련 css 수정 */
+.setting-section-container {
+  width: 100%;
+  height: 100%;
+  padding-top: 2.5rem;
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.setting-grid-1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.setting-grid-2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem 0 0;
+}
+
+.setting-grid-2.staff {
+  padding: 0 0.5rem 0 0;
+}
+
+.setting-edit-table td {
+  padding: 1rem 1.5rem;
+}
+
+.setting-exit-table {
+ margin: 2rem;
+ display: flex;
+ justify-content: space-evenly;
+}
+
+.main-button {
+  margin-right: 2rem;
+}
+.unregister-button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  margin-left: 2rem;
+}
+
+.unregister-button > a {
+  color: var(--alt-fontclr);
+}
+
+.unregister-button .staff {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.unregister-button:hover {
+  padding: 0.5rem;
+  border-radius: 1rem;
+  background-color: var(--icon-hover);
+  transition: 0.1s ease-in-out;
+}
+
+.main-button-img {
+  width: 8rem;
+}
+
+.setting-edit-table.staff td {
+  padding: 1rem 1.5rem;
+}
+.edit-password {
+  padding-top: 5rem !important;
+}
+.setting-grid-2 input {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 1rem;
+  background-color: var(--carrot-super-light);
+  border: 2px solid var(--section-bgclr);
+  outline: none;
+  width: 100%;
+  height: 3rem;
+  border-radius: 1rem;
+  color: var(--alt-fontclr);
+  caret: var(--alt-fontclr);
+}
+.setting-grid-2 input.phone-num-edit {
+  min-width: 100%;
+}
+.setting-grid-2 input:focus {
+  border: 2px solid var(--carrot-light);
+}
+.setting-grid-2 input::placeholder {
+  color: var(--placeholder);
+}
+.setting-grid-2 button {
+  font-size: 1rem;
+  background-color: var(--carrot-color);
+  cursor: pointer;
+  transition: 0.3s;
+  outline: none;
+  border: none;
+  border-radius: 1rem;
+  width: 4rem;
+  height: 2.5rem;
+  color: var(--alt-fontclr);
+}
+.setting-grid-2 button:hover {
+  background-color: var(--carrot-dark);
+}
+.setting-grid-2 .left-td {
+  min-width: 12rem;
+}
+.setting-grid-2 #lost-password {
+  background-color: transparent;
+  border: 2px solid var(--carrot-color);
+  width: 10rem;
+}
+.setting-grid-2.staff .left-td {
+  width: 10.5rem;
+  min-width: 10rem;
+}
+
+
+
+.setting-profile-image {
+  border: 2px solid var(--font-color);
+  width: 16rem;
+  height: 16rem;
+  border-radius: 50%;
+  margin-top: 3rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* overflow: hidden; */
+}
+
+.setting-profile-image > img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.setting-profile-image::after {
+  content: '';
+  display: block;
+  width: 17rem;
+  height: 1px;
+  background-color: var(--font-color);
+  position: absolute;
+  bottom: -6rem;
+  left: -0.8rem;
+}
+
+.setting-profile-image.no-line::after {
+  display: none;
+}
+
+.setting-profile-image i {
+  position: absolute;
+  bottom: 0;
+  right: -2rem;
+  font-size: 1.7rem;
+  padding: 0.4rem;
+  border-radius: 50%;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.setting-profile-image i:hover {
+  background-color: var(--icon-hover);
+}
+
+.setting-profile-name {
+  font-size: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+/* .setting-profile-name::after {
+  content: '';
+  display: block;
+  width: 17rem;
+  height: 1px;
+  background-color: var(--font-color);
+  position: absolute;
+  bottom: -1rem;
+  left: -4rem;
+} */
+
+.nameCannotChange {
+  color: rgba(128, 128, 128, 0.383);
+  margin-bottom: 2rem;
+}
+
+.profile-setting-form {
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.2s;
+}
+
+.profile-setting-form.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.profile-setting-form input[type=file]::file-selector-button {
+  border: 1px solid var(--carrot-color);
+  border-radius: 1rem;
+  background-color: white;
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.profile-setting-form input[type=file]::file-selector-button:hover {
+  background-color: #d8d8d8;
+}
+
+.profile-setting-form input[type=submit] {
+  border: 0;
+  border-radius: 1rem;
+  background-color: var(--carrot-color);
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+  color: var(--alt-fontclr);
+}
+
+.profile-setting-form input[type=submit]:hover {
+  background-color: var(--carrot-dark);
+}
+
+.profile-setting-form input[type=text] {
+  border: 1px solid var(--carrot-color);
+  border-radius: 1rem;
+  background-color: white;
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  width: 4rem;
+}
+
+.profile-setting-form button[type=submit] {
+  border: 0;
+  border-radius: 1rem;
+  background-color: var(--carrot-color);
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+  color: var(--alt-fontclr);
+}
+
+
+/* -----운영진 설정----- */
+
+.staff-setting {
+  width: 100%;
+  background-color: var(--section-bgclr);
+}
+
+.staff-container {
+  width: 100%;
+  height: calc(100vh - 6rem);
+  display: flex;
+}
+
+.staff-container-left {
+  background-color: var(--body-bgclr);
+  padding: var(--section-padding) 0 var(--section-padding) var(--section-padding);
+  width: 20rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* position: relative; */
+}
+
+/* .staff-container-left::after {
+  content: '';
+  display: block;
+  width: 3px;
+  height: 4rem;
+  border-radius: 1rem;
+  background-color: var(--carrot-light);
+  position: absolute;
+  right: 0;
+} */
+
+.staff-container-left .staff-menu {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 0.8rem;
+  background-color: var(--section-bgclr);
+}
+
+.staff-menu a {
+  width: 80%;  
+}
+
+.staff-menu button {
+  border: 0;
+  outline: 0;
+  font-size: 1.4rem;
+  width: 100%;
+  padding: 1rem 0;
+  background-color: var(--section-bgclr);
+  color: var(--font-color);
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 0.8rem;
+  position: relative;
+}
+
+.staff-menu button:hover {
+  background-color: var(--carrot-super-light);
+}
+
+.staff-container-right {
+  width: calc(100% - 20rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--body-bgclr);
+  padding: 0.6rem;
+}
+
+
+
+/* 운영진프로필 */
+.staff-setting-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.staff-profile-setting {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
+  width: 100%;
+  height: 100%;
+}
+
+.code-create {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.staff-setting-title {
+  font-size: 2rem;
+}
+
+
+
+/* 코드생성 */
+.code-create {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
+  width: 100%;
+  height: 100%;
+}
+
+.code-create #code {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20rem;
+  height: 7rem;
+  margin: 4rem 0;
+  padding: 1rem 2rem;
+  background-color: var(--carrot-super-light);
+  border-radius: 1rem;
+  font-size: 4rem;
+  letter-spacing: 0.7rem;
+}
+
+.code-create form input[type=submit] {
+  background-color: var(--carrot-color);
+  border: 0;
+  outline: 0;
+  border-radius: 1.5rem;
+  transition: 0.2s;
+  color: white;
+  height: 2.8rem;
+  width: 6rem;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.code-create form input[type=submit]:hover {
+  background-color: var(--carrot-dark);
+}
+
+
+/* 동아리 기본 설정 */
+
+.default-profile,
+.staff-authority,
+.member-delete {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
+  width: 100%;
+  height: 100%;
+}
+
+.gen-form {
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.gen-form > div {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.gen-form > div i {
+  font-size: 1.2rem;
+  position: absolute;
+  right: -2.5rem;
+  color: var(--font-color);
+
+}
+
+.gen-form .gen-form-info {
+  position: absolute;
+  right: -15rem;
+  font-size: 0.8rem;
+  color: var(--font-color);
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.2s;
+  text-align: center;
+  background-color: var(--carrot-super-light);
+  border-radius: 0.8rem;
+  padding: 0.2rem;
+  line-height: 1rem;
+}
+
+.gen-form .gen-form-info.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.gen-form input[type=text] {
+  color: var(--font-color);
+  background-color: var(--carrot-super-light);
+  border: 2px solid var(--carrot-color);
+  border-radius: 0.8rem 0 0 0.8rem;
+  height: 2.5rem;
+  width: 10rem;
+  text-align: center;
+  font-size: 1.2rem;
+  outline: 0;
+  transition: 0.1s;
+}
+
+.gen-form input[type=text]::placeholder {
+  color: var(--placeholder);
+  font-size: 1rem;
+}
+
+.gen-form input[type=text]:focus {
+  border: 2px solid var(--carrot-color);
+}
+
+.gen-form input[type=submit] {
+  border: 0;
+  height: 2.5rem;
+  background-color: var(--carrot-color);
+  border-radius: 0 0.8rem 0.8rem 0;
+  font-size: 1rem;
+  transition: 0.2s;
+  color: var(--alt-fontclr);
+  cursor: pointer;
+}
+.gen-form input[type=submit]:hover {
+  background-color: var(--carrot-dark);
+}
+
+#channelDelete {
+  border: 0;
+  outline: 0;
+  font-size: 1rem;
+  padding: 0.3rem;
+  background-color: rgb(255, 93, 93);
+  border-radius: 0.6rem;
+  color: white;
+  cursor: pointer;
+}
+
+#channelDelete:hover {
+  background-color: rgb(255, 77, 77);
+}
+
+
+/* 합격자 명단 추가 */
+
+.passer-gen,
+.passer-list-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--section-bgclr);
+  width: calc(50% - 0.3rem);
+  height: 100%;
+  border-radius: 0.8rem;
+}
+
+.passer-gen {
+  margin-right: 0.3rem;
+}
+
+.passer-list-container {
+  margin-left: 0.3rem;
+}
+
+.passer-list-container.staff {
+  overflow-y: scroll;
+}
+
+.passer-gen .passer-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.passer-form > input[type=text] {
+  border: 2px solid var(--section-bgclr);
+  padding: 0.4rem 0.6rem;
+  background-color: var(--carrot-super-light);
+  border-radius: 1rem;
+  font-size: 1.2rem;
+  transition: 0.2s;
+  outline: 0;
+  margin-bottom: 1.5rem;
+}
+
+.passer-form > input[type=text]:focus {
+  border: 2px solid var(--carrot-color);
+}
+
+.passer-form > div {
+  margin-top: 1rem;
+  text-align: center;
+}
+.passer-form > div > input {
+  border: 0;
+  border-radius: 0.8rem;
+  font-size: 1rem;
+  padding: 0.3rem 0.5rem;
+  color: var(--send-fontclr);
+  cursor: pointer;
+}
+
+.passer-form > div > input:first-child {
+  background-color: var(--carrot-light);
+  transition: 0.2s;
+  margin-right: 0.8rem;
+}
+
+.passer-form > div > input:first-child:hover {
+  background-color: var(--carrot-light-dark);
+}
+
+.passer-form > div > input:last-child {
+  background-color: var(--carrot-color);
+  transition: 0.2s;
+}
+
+.passer-form > div > input:last-child:hover {
+  background-color: var(--carrot-dark);
+}
+
+.passer-list {
+  background-color: pink;
+  height: 25rem;
+  width: 18rem;
+  border: 1px solid var(--carrot-light);
+  background-color: var(--section-bgclr);
+  border-radius: 0.8rem;
+  margin-top: 2rem;
+  overflow-y: scroll;
+  padding: 0.6rem 0;
+}
+
+.passer-block {
+  display: flex;
+  padding: 0.5rem 0.3rem;
+  width: 100%;
+}
+
+.passer-block .passer-name,
+.passer-block .passer-phone {
+  text-align: center;
+}
+
+.passer-block .passer-name {
+  width: 40%
+}
+
+.passer-block .passer-phone {
+  width: 60%
+}
+
+
+
+/* 운영진 권한 설정 */
+
+.authority-container {
+  background-color: var(--section-bgclr);
+  width: 25rem;
+  height: 25rem;
+  border: 1px solid var(--carrot-color);
+  border-radius: 0.8rem;
+  padding: 0.6rem 0;
+  margin-top: 2rem;
+  overflow-y: scroll;
+}
+
+.authority-passer-div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0.7rem;
+}
+
+.authority-passer-div > div:first-child {
+  width: 30%;
+  text-align: center;
+}
+.authority-passer-div > div:nth-child(2) {
+  width: 50%;
+  text-align: center;
+}
+.authority-passer-div > div:last-child {
+  width: 20%
+}
+
+.staff-authority form {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+/* 회원삭제 */
+
+.member-delete-list {
+  background-color: var(--section-bgclr);
+  width: 20rem;
+  height: 25rem;
+  border: 1px solid var(--carrot-color);
+  border-radius: 0.8rem;
+  padding: 0.6rem 1rem;
+  margin-top: 2rem;
+  overflow-y: scroll;
+}
+
+.delete-block {
+  display: flex;
+  background-color: var(--section-bgclr);
+  align-items: center;
+  padding: 0.8rem 0;
+  width: 100%;
+  transition: 0.1s;
+  border-radius: 0.8rem;
+}
+
+.delete-block:hover {
+  background-color: var(--carrot-super-light);
+}
+
+.delete-block div:first-child {
+  width: 60%;
+  text-align: center;
+}
+
+.delete-block div:last-child {
+  width: 40%;
+  text-align: center;
+}
+.delete-block div:last-child > input {
+  outline: 0;
+  border: 0;
+  background-color: rgb(255, 101, 101);
+  color: white;
+  border-radius: 0.8rem;
+  padding: 0.2rem 0.4rem;
+}
+
+.delete-block div:last-child > input:hover {
+  background-color: rgb(255, 62, 62);
+}
+
+
+/* 운영진 프로필 반응형 */
+@media screen and (max-width: 1320px) {
+  .staff-setting-container {
+    flex-direction: column;
+  }
+  .passer-gen.staff {
+    height: 50%;
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 0.3rem;
+    padding: 0.6rem 1.5rem;
+    overflow: hidden;
+  }
+  .passer-list-container.staff {
+    height: 50%;
+    width: 100%;
+    margin-left: 0;
+    margin-top: 0.3rem;
+  }
+
+  .passer-gen.staff {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .passer-gen.staff .profile-setting-form {
+    transform: scale(0.8);
+  }
+  .passer-gen.staff .setting-profile-image {
+    margin-top: 0;
+    height: 10rem;
+    min-height: 10rem;
+    width: 10rem;
+    min-width: 10rem;
+  }
+  .passer-gen.staff .setting-profile-image::after {
+    display: none;
+  }
+
+  .passer-gen.pass > *,
+  .passer-list-container.pass > * {
+    transform: scale(0.8);
+  }
+
+  .setting-grid-2.staff {
+    padding-top: 16rem;
+  }
+}
+
+.staff-container-left-mob {
+  display: none;
+  width: 8rem;
+  height: 100%;
+  background-color: var(--body-bgclr);
+  padding: var(--section-padding) 0 var(--section-padding) var(--section-padding);
+}
+
+@media screen and (max-width: 768px) {
+  .staff-container {
+    height: calc(100vh - 6rem - 4rem);
+  }
+
+  .staff-container-left-mob {
+    display: block;
+  }
+
+  .staff-container-left {
+    display: none;
+  }
+  .staff-container-right {
+    width: calc(100% - 8rem);
+  }
+  .passer-gen.staff .profile-setting-form {
+    transform: scale(0.6);
+  }
+  .passer-gen.pass > *,
+  .passer-list-container.pass > * {
+    transform: scale(0.6);
+  }
+  .nameCannotChange {
+    margin-bottom: 0.6rem;
+  }
+
+  /* .setting-grid-2.staff .left-td {
+    width: 8rem;
+    min-width: 8rem
+  } */
+}
+
+.staff-container-left-mob .staff-menu {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 0.8rem;
+  background-color: var(--section-bgclr);
+}
+
+.staff-menu-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: 0.2s;
+  padding: 0.3rem 0;
+  border-radius: 0.8rem;
+}
+
+.staff-menu-icon:hover {
+  background-color: var(--icon-hover);
+}
+
+.staff-menu-icon i {
+  font-size: 2rem;
+  color: var(--font-color);
+  margin-bottom: 0.4rem;
+}
+
+.staff-menu-icon span {
+  color: var(--font-color);
+  font-size: 0.8rem;
+}
+
+@media screen and (max-width: 525px) {
+  .setting-header {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+
+  .passer-gen.staff {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .setting-profile-name {
+    margin: 1rem 0;
+  }
+
+  .profile-setting-form > div {
+    display: flex;
+    transform: scale(0.9);
+  }
+
+  .passer-gen > h2,
+  .passer-gen > div {
+    text-align: center;
+  }
+
+  .gen-form > div {
+    flex-direction: column;
+  }
+
+  .gen-form input[type=text], 
+  .gen-form input[type=submit] {
+    border-radius: 0.8rem;
+  }
+
+  .gen-form input[type=submit] {
+    margin-top: 1rem;
+  }
+
+  .code-create > h2 {
+    font-size: 1.8rem;
+  }
+
+  .code-create > div#code {
+    transform: scale(0.7);
+  }
+
+  .setting-profile-image {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  .authority-container {
+    width: 14rem;
+  }
+  .authority-passer-div {
+    flex-direction: column;
+
+  }
+  .authority-passer-div > div:first-child,
+  .authority-passer-div > div:nth-child(2),
+  .authority-passer-div > div:last-child {
+    width: 100%;
+  }
+
+  .member-delete-list {
+    width: 14rem;
+  }
+}
+
+
+

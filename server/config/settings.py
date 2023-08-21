@@ -47,7 +47,7 @@ EMAIL_MANAGER1=env('EMAIL_MANAGER1')
 SECRET_KEY = 'django-insecure-j@xy26^y4!oqyf@7q=1y7cdd=!8+$v_q1ohhx6+ibayr7a66@y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -114,7 +114,7 @@ DATABASES = {
             'HOST': MYSQL_HOST,
             'PORT': MYSQL_PORT,
             'OPTIONS': {
-                    'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1;",
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1;",
                 }
             }
         }
@@ -157,17 +157,21 @@ USE_TZ = False  # False 로 설정해야 DB에 변경 된 TIME_ZONE 이 반영 �
 
 STATIC_URL = "/static/"
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "server/static")]
-if DEBUG == True:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'server/static')
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
 
-# if DEBUG == True:
-#     # STATIC_ROOT = os.path.join(BASE_DIR, 'server/static')
-#     STATICFILES_DIRS = [os.path.join(BASE_DIR, "server/static")]
-# else:
-#     STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, "server/static")]
+#if DEBUG == True:
+#    STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
+#else:
+#    STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "server/static")]
+STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
+
+#if DEBUG == True:
+#    # STATIC_ROOT = os.path.join(BASE_DIR, 'server/static')
+#    STATICFILES_DIRS = [os.path.join(BASE_DIR, "server/static")]
+#else:
+#    STATIC_ROOT = os.path.join(BASE_DIR, 'server/staticfiles')
 
 MEDIA_URL = '/media/'
 
@@ -194,36 +198,37 @@ SMS_SENDER=env('SMS_SENDER')
 SECRET_KEY=env('SECRET_KEY')
 
 MARKDOWNX_MARKDOWN_EXTENSIONS = [
-    'markdown.extensions.codehilite',
-    'markdown.extensions.fenced_code',
-    'markdown.extensions.extra',
-    'markdown.extensions.toc'
-]
+        'markdown.extensions.codehilite',
+        'markdown.extensions.fenced_code',
+        'markdown.extensions.extra',
+        'markdown.extensions.toc'
+        ]
 
 MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
-    'markdown.extensions.codehilite': {
-        'linenums': False,
-        'use_pygments': True,
-        'noclasses': True,
-    }
-}
+        'markdown.extensions.codehilite': {
+            'linenums': False,
+            'use_pygments': True,
+            'noclasses': True,
+            }
+        }
 
+CSRF_TRUSTED_ORIGINS = ["https://hello.pirot.p-e.kr"]
 
-# LOGGING = {
-#         'version': 1,
-#         'disable_existing_loggers': False,
-#         'handlers': {
-#             'file': {
-#                 'level': 'DEBUG',  # 필요한 로깅 레벨 설정
-#                 'class': 'logging.FileHandler',
-#                 'filename': '/home/ywonchae1/django.log',  # 로그 파일 경로 설정
-#                 },
-#             },
-#         'loggers': {
-#             'django': {
-#                 'handlers': ['file'],
-#                 'level': 'DEBUG',  # 필요한 로깅 레벨 설정
-#                 'propagate': True,
-#                 },
-#             },
-#         }
+LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'DEBUG',  # 필요한 로깅 레벨 설정
+                'class': 'logging.FileHandler',
+                'filename': '/home/ubuntu/django.log',  # 로그 파일 경로 설정
+                },
+            },
+        'loggers': {
+            'django': {
+                'handlers': ['file'],
+                'level': 'DEBUG',  # 필요한 로깅 레벨 설정
+                'propagate': True,
+                },
+            },
+        }

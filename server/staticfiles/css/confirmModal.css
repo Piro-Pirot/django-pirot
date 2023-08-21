@@ -1,0 +1,62 @@
+/* confirm modal */
+.confirm-modal::backdrop {
+    background: gray;
+    opacity: 0.4;
+}
+.confirm-modal {
+    position: absolute;
+    top: 0;
+    right: 50%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 30rem;
+    height: 9rem;
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.15), 
+    0 2px 2px rgba(0,0,0,0.15), 
+    0 4px 4px rgba(0,0,0,0.15), 
+    0 8px 8px rgba(0,0,0,0.15);
+    background-color: white;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateY(20%);
+    transition: 0.1s;
+    display: none;
+}
+.confirm-modal.on {
+    transform: translateY(0);
+    opacity: 1;
+    transition: all 0.3s;
+}
+.confirm-modal .confirm-modal-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.confirm-modal-container .confirm-modal-content {
+    margin-bottom: 2rem;
+    font-size: 1.3rem;
+}
+.confirm-modal-container .btn-container {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+}
+.confirm-modal-container .btn-confirm-modal,
+.confirm-modal-container .btn-cancel-modal {
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: white;
+    font-size: 0.9rem;
+    border: 0.1rem solid var(--carrot-color);
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: 0.1s;
+}
+.confirm-modal-container .btn-confirm-modal:hover,
+.confirm-modal-container .btn-cancel-modal:hover {
+    color: white;
+    background-color: var(--carrot-color);
+}

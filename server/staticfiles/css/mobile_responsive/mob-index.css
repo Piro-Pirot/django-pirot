@@ -1,0 +1,231 @@
+.mobile-boss-container {
+  font-family: 'GowunBatang-Regular';
+  width: 100vw;
+  padding-top: 7rem;
+  display: none;
+}
+
+.slide-menu {
+  position: absolute;
+  height: 100vh;
+  top: 0;
+  right: -10rem;
+  width: 10rem;
+  z-index: 999999;
+  background-color: #fba405;
+  transition: 0.3s;
+  padding-top: 0.7rem;
+}
+
+.slide-menu i {
+  font-size: 3rem;
+  color: white;
+  cursor: pointer;
+}
+
+.slide-menu .slide-menu-items {
+  padding-left: 0.9rem;
+  margin-top: 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.slide-menu-items div,
+.slide-menu-items a {
+  display: block;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+}
+
+#burgerMenu {
+  visibility: hidden;
+}
+#burgerMenuIcon {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.mobile-boss-container nav {
+  width: 100%;
+  height: 4rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: 1px solid #face83;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  background-color: rgb(255, 255, 255);
+  box-sizing: border-box;
+  z-index: 999;
+}
+
+.mob-logo img {
+  width: 7rem;
+}
+
+/* 모바일 메인 섹션 */
+.mob-main-section {
+  width: 100%;
+  font-size: 3rem;
+  line-height: 4.8rem;
+  position: relative;
+  padding: 0 0.8rem;
+}
+
+.mob-main-section .mob-title1.mbtm {
+  margin-bottom: 1rem;
+}
+
+.mob-title1 {
+  margin-left: 1rem;
+}
+
+.mob-main-section .mob-title2 {
+  text-align: right;
+}
+
+.mob-title2 {
+  margin-right: 1rem;
+}
+
+.mob-title2 > span {
+  color: #fba405;
+}
+
+.mob-title2.flex {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.mob-title2 > img {
+  width: 3rem;
+  margin-right: 1rem;
+}
+
+
+/* 모바일 소개 섹션 */
+.intro-bubble {
+  --r: 25px; /* the radius */
+  --t: 30px; /* the size of the tail */
+  
+  max-width: 300px;
+  padding: calc(2*var(--r)/3);
+  -webkit-mask: 
+    radial-gradient(var(--t) at var(--_d) 0,#0000 98%,#000 102%) 
+      var(--_d) 100%/calc(100% - var(--r)) var(--t) no-repeat,
+    conic-gradient(at var(--r) var(--r),#000 75%,#0000 0) 
+      calc(var(--r)/-2) calc(var(--r)/-2) padding-box, 
+    radial-gradient(50% 50%,#000 98%,#0000 101%) 
+      0 0/var(--r) var(--r) space padding-box;
+  background: linear-gradient(135deg, #fba405,hsl(43, 87%, 82%)) border-box;
+  color: #fff;
+}
+.left {
+  --_d: 0%;
+  border-left: var(--t) solid #0000;
+  margin-right: var(--t);
+  place-self: start;
+}
+.right {
+  --_d: 100%;
+  border-right: var(--t) solid #0000;
+  margin-left: var(--t);
+  place-self: end;
+}
+
+.mob-intro-section {
+  display: grid;
+  place-content: center;
+  gap: 20px;
+  font-family: system-ui, sans-serif;
+  font-size: 20px;
+  padding: 8rem 0 5rem;
+}
+
+
+/* 모바일 ui 섹션 */
+.mob-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5rem 0.8rem;
+}
+
+.mob-section.carrot {
+  background-color: #face8331;
+}
+
+.section-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section-title .main-title {
+  font-size: 2.8rem;
+  margin-bottom: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section-title .desc-title {
+  font-size: 1.3rem;
+  color: var(--subtitle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.desc-title div {
+  margin-bottom: 1rem;
+}
+
+.section-image {
+  width: 80%;
+  margin-top: 1rem;
+}
+
+
+/* 마크다운 섹션 */
+.main-title div:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+/* 모바일 푸터 */
+.mob-footer {
+  width: 100%;
+  height: 10rem;
+  margin-top: 2rem;
+  border-top: 1px solid #fba405;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgb(250, 250, 250);
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+}
+.footer-content span {
+  line-height: 2rem;
+}
+
+.footer-logo-img {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
+.footer-logo-img img {
+  width: 5rem;
+}
+

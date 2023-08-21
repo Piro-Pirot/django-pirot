@@ -1,0 +1,24 @@
+div.mob-container {
+  display: none;
+  width: 100vw;
+  height: 100vh;
+}
+
+.mob-container .warning {
+  padding: 0.5rem 1rem;
+  border: 1px solid black;
+  text-align: center;
+  line-height: 1.3rem;
+}
+
+@media screen and (max-width: 450px) {
+  div.container {
+    display: none;
+  }
+
+  div.mob-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
