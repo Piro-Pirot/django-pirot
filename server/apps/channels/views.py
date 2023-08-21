@@ -34,9 +34,9 @@ def profile_staff(request, channelID):
         
 
     # 테스트 단계에서 프로필 없는 사람들을 위해 예외 처리
-    if not current_user.profile_img:
-        current_user.profile_img = channelDefaultImg
-        current_user.save()
+    # if not current_user.profile_img:
+    #     current_user.profile_img = channelDefaultImg
+    #     current_user.save()
 
     if request.method == 'POST':
         if 'delete' in request.POST:
@@ -187,17 +187,22 @@ def default_profile(request, channelID):
         return render(request, 'error.html', {'errorMsg': errorMsg})
 
     if request.method == "POST":
-        if request.FILES.get("default_image"):
-            channel.default_image = request.FILES["default_image"]
-            channel.save()
+        if request.POST.get("channelDelete"):
+            channel.delete()
 
-        if request.POST.get("this_level"):
-            channel.this_level = request.POST["this_level"]
-            channel.save()
-        
-        url = '/staff/channel/setting/%s' % (channelID)
+            return redirect("/")
+        else:
+            if request.FILES.get("default_image"):
+                channel.default_image = request.FILES["default_image"]
+                channel.save()
 
-        return redirect(url)
+            if request.POST.get("this_level"):
+                channel.this_level = request.POST["this_level"]
+                channel.save()
+            
+            url = '/staff/channel/setting/%s' % (channelID)
+
+            return redirect(url)
     
     return render(request, 'staff/default_profile.html', {"channel":channel})
 
