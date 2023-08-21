@@ -48,10 +48,3 @@ searchRoomsInput.addEventListener('input', () => {
 //   searchRoomsInput.value = '';
 //   searchRoomsRequest(curChannelId, searchRoomsInput.value);
 // });
-
-
-
-
-
-
-

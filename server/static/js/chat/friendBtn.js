@@ -1,27 +1,27 @@
 
 //내프로필 호버 했을 떄 더보기 버튼 뜨기
-const meContainer = document.querySelector(".friend-list-me-container");
-const meMoreButton = meContainer.querySelector("#more");
-const meMoreForm = document.querySelector(".friend-list-me-container .more-form");
-meContainer.addEventListener("mouseover", () => {
-  meMoreButton.style.opacity = "1";
-});
-meContainer.addEventListener("mouseleave", () => {
-  meMoreButton.style.opacity = "0";
-});
-meMoreButton.addEventListener("click", () => {
-  meMoreForm.classList.toggle("active");
-  meContainer.classList.toggle("colored");
-});
-window.addEventListener("click", (event) => {
-  if(meMoreForm.classList.contains("active")) {
-    if (!meContainer.contains(event.target)) {
-      meMoreButton.style.opacity = "0";
-      meMoreForm.classList.toggle("active");
-      meContainer.classList.toggle("colored");
-    };
-  }
-});
+// const meContainer = document.querySelector(".friend-list-me-container");
+// const meMoreButton = meContainer.querySelector("#more");
+// const meMoreForm = document.querySelector(".friend-list-me-container .more-form");
+// meContainer.addEventListener("mouseover", () => {
+//   meMoreButton.style.opacity = "1";
+// });
+// meContainer.addEventListener("mouseleave", () => {
+//   meMoreButton.style.opacity = "0";
+// });
+// meMoreButton.addEventListener("click", () => {
+//   meMoreForm.classList.toggle("active");
+//   meContainer.classList.toggle("colored");
+// });
+// window.addEventListener("click", (event) => {
+//   if(meMoreForm.classList.contains("active")) {
+//     if (!meContainer.contains(event.target)) {
+//       meMoreButton.style.opacity = "0";
+//       meMoreForm.classList.toggle("active");
+//       meContainer.classList.toggle("colored");
+//     };
+//   }
+// });
 
 
 // 친구들 정보 리스트
