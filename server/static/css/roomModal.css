@@ -543,11 +543,9 @@ dialog {
   margin-top: 2rem;
 }
 
-.blind-profile-img img{
+.blind-profile-img{
+  border: 1px solid var(--alt-fontclr);
   border-radius: 50%;
-  padding: 0.1rem;
-  aspect-ratio: 1/1; /*가로세로 비율 조정*/
-  object-fit: cover; /*사진이 찌그러지지 않게*/
   width: 7rem;
   height: 7rem;
   margin-right: 2rem;
@@ -563,15 +561,16 @@ dialog {
   aspect-ratio: 1/1;
   object-fit: cover;
 }
-#blindProfileImg {
+#upload_blind_img {
   position: absolute;
   visibility: hidden;
 }
-#blindChangeProfileBtn {
+
+/* #blindChangeProfileBtn {
   position: absolute;
-  /* display: none; */
+  display: none;
   bottom: 0;
-}
+} */
 
 
 .blind-name {

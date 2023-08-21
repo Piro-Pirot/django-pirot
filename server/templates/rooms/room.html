@@ -82,17 +82,23 @@
         </div>
 
         <!-- 채팅방 프로필 사진 & 닉네임 수정(익명채팅방)-->
-        <form action="/room/setting_blindroom/" method="post" id="form-setting" enctype="multipart/form-data">
+        <form action="/room/setting_blindroom/" method="post" id="form-setting" enctype="multipart/form-data" style="text-align: center;">
             {% if room.room_type == 1 %}
             {% csrf_token %}
             <div class="blind-profile-setting">
-                <div class="blind-profile-img">
+                <!-- <div class="blind-profile-img">
                     <img id="blind_profile" src="{{ my_blind_info.profile_img.url }}" alt="" />
                     <div id="imageIcon2">
                         <label for="upload_blind_img" class="attach-label2"><i class="ri-image-2-fill"></i></label>
                         <input type="file" name="upload_blind_img" id="upload_blind_img" onchange="readURL(this)" style="display: none" accept="image/*">
                     </div>
-                </div>
+                </div> -->
+                <label for="upload_blind_img">
+                    <div class="blind-profile-img">
+                        <img id="blind_profile" src="{{ my_blind_info.profile_img.url }}">
+                    </div>
+                </label>
+                <input type="file" name="upload_blind_img" id="upload_blind_img" onchange="readURL(this)" accept="image/*">
                 <div class="blind-name">
                 {% with target_room_id=room.id %}
                     <p>닉네임</p>
@@ -231,18 +237,33 @@
         setCaretToEnd(nicknameInput);
     });
 
-    function readURL(input) {
-        // input.files : 사용자가 선택한 파일들의 목록(파일을 선택하지 않았다면 비어있음)
-        if(input.files && input.files[0]){
+    // function readURL(input) {
+    //     // input.files : 사용자가 선택한 파일들의 목록(파일을 선택하지 않았다면 비어있음)
+    //     if(input.files && input.files[0]){
+    //         const reader = new FileReader();
+    //         reader.onload = function(e) {
+    //             document.getElementById('blind_profile').src = e.target.result;
+    //         };
+    //         reader.readAsDataURL(input.files[0]);
+    //     } else{
+    //         document.getElementById('blind_profile').src = "";
+    //     } 
+    // };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const blindProfileImgFile = document.getElementById('upload_blind_img');
+        blindProfileImgFile.addEventListener('change', (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                document.getElementById('blind_profile').src = e.target.result;
+                const imgPreview = document.getElementById('blind_profile');
+                imgPreview.src = e.target.result;
             };
-            reader.readAsDataURL(input.files[0]);
-        } else{
-            document.getElementById('blind_profile').src = "";
-        } 
-    }
+            reader.readAsDataURL(selectedFile);
+        }
+        });
+    });
 
 </script>
 
