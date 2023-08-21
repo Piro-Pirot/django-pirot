@@ -61,12 +61,33 @@
   padding: 1rem 1.5rem;
 }
 
-.setting-exit-table .main-button {
-  padding: 1rem 4rem 1rem 1rem;
+.setting-exit-table {
+ margin: 2rem;
+ display: flex;
+ justify-content: space-evenly;
 }
 
-.setting-exit-table .unregister-button {
-  padding: 1rem 1rem 1rem 4rem;
+.main-button {
+  margin-right: 2rem;
+}
+.unregister-button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  margin-left: 2rem;
+}
+
+.unregister-button .staff {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.unregister-button:hover {
+  padding: 0.5rem;
+  border-radius: 1rem;
+  background-color: var(--icon-hover);
+  transition: 0.1s ease-in-out;
 }
 
 .main-button-img {
@@ -125,7 +146,7 @@
   width: 10rem;
 }
 .setting-grid-2.staff .left-td {
-  width: 10rem;
+  width: 10.5rem;
   min-width: 10rem;
 }
 
@@ -244,6 +265,25 @@
   background-color: var(--carrot-dark);
 }
 
+.profile-setting-form input[type=text] {
+  border: 1px solid var(--carrot-color);
+  border-radius: 1rem;
+  background-color: white;
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  width: 4rem;
+}
+
+.profile-setting-form button[type=submit] {
+  border: 0;
+  border-radius: 1rem;
+  background-color: var(--carrot-color);
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+  color: var(--alt-fontclr);
+}
 
 
 /* -----운영진 설정----- */

@@ -5,6 +5,8 @@ from .models import *
 from server.apps.bubbles.models import *
 from server.apps.channels.models import *
 from server.apps.posts.models import *
+import imghdr
+import base64
 
 from .fakeKorean import *
 
@@ -432,15 +434,46 @@ def setting_blindroom_profile(request):
         # 익명채팅방 이름 수정
         room_id = request.POST['roomId']
         channel_id = request.POST['channelId']
+        
+        # is_checked 키가 존재하지 않을 경우, '0'을 디폴트 값으로
+        is_checked = request.POST.get('is_checked', '0')
+        if is_checked == '1':
+            # 체크된 경우
+            pass
+        else:
+            # 체크되지 않은 경우 처리
+            pass
+        
         Member = BlindRoomMember.objects.get(user=request.user, room=room_id)
         fixed_nickname = request.POST.get('nickname')
-        # fixed_profile_img = request.FILES.get('upload_blind_img')
         
+        
+        # 익명채팅방 프로필 이미지 저장
         if 'upload_blind_img' in request.FILES:
             fixed_profile_img = request.FILES.get('upload_blind_img')
             print('fixed_profile_img : ', fixed_profile_img)
-            Member.profile_img = fixed_profile_img
-            print("member.profile_img : ", Member.profile_img)
+            
+            today = datetime.today().strftime("%Y%m%d")
+
+            # 디렉토리가 없으면 만들기
+            if not os.path.isdir(f'media/{today}/'):
+                os.makedirs(f'media/{today}/')
+            
+            file_list = os.listdir(f'media/{today}')
+            # 파일 쓰기
+            with open(f'media/{today}/blind_img_upload{len(file_list)}', 'wb') as output_file:
+                output_file.write(fixed_profile_img.read())
+            
+            filename = f'media/{today}/blind_img_upload{len(file_list)}'
+
+            img_type = imghdr.what(f'media/{today}/blind_img_upload{len(file_list)}')
+            
+            if img_type != None:
+                os.rename(filename, f'{filename}.{img_type}')
+                fixed_profile_img = f'/{today}/blind_img_upload{len(file_list)}.{img_type}'
+                Member.profile_img = fixed_profile_img
+                print("member.profile_img : ", Member.profile_img)
+            
         else:
             print("사진이 request.FILES에 존재하지 않음")
             pass

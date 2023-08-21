@@ -21,11 +21,10 @@
             <form class="profile-setting-form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div>
-                    {% if user.profile_img %}
-                        <input type="submit" name="delete" value="사진 삭제" />
-                    {% endif %}
-                        <input type="file" name="profile_img" accept=".jpg, .png" />
-                        <input type="submit" name="change" value="사진 변경" />
+                    <input type="file" name="profile_img" accept=".jpg, .png" />
+                    <input type="submit" name="change" value="사진 변경" />
+                    <input type="text" name="level" value="{{ level }}" placeholder="기수 입력" required/>
+                    <button type="submit">기수 설정</button>
                 </div>
             </form>
         </div>
@@ -56,12 +55,10 @@
                         <td colspan="2"><input type="text" name="new-pw"></td>
                     </tr>
                 </table>
-                <table class="setting-exit-table staff">
-                    <tr>
-                        <td class="main-button"><a href="/"><img class="main-button-img" src="{% static 'image/pirot_logo_long.png' %}"></a></td>
-                        <td class="unregister-button"><a href="/user/unregister/"><i class="ri-logout-box-r-line"></i>회원 탈퇴하기</a></td>
-                    </tr>
-                </table>
+                <div class="setting-exit-table staff">
+                        <div class="main-button"><a href="/"><img class="main-button-img" src="{% static 'image/pirot_logo_long.png' %}"></a></div>
+                        <div class="unregister-button"><a href="/user/unregister/"><i class="ri-logout-box-r-line"></i>회원 탈퇴하기</a></div>
+                </div>
             </form>
         </div>
     </div>
