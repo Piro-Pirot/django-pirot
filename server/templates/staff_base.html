@@ -168,7 +168,7 @@
                     <div class="checkbox-wrapper-22 alarm-toggle">
                         <label class="switch" for="checkbox2">
                             <input name="alarm" value="1" type="checkbox" id="checkbox2" {% if request.user.notice == 1 %}checked{% endif %}/>
-                            <div class="slider round"></div>
+                            <div onclick="onClickAlarm()" class="slider round"></div>
                         </label>
                     </div>
                 </div>
@@ -197,6 +197,7 @@
     <script src="{% static 'js/theme.js' %}"></script>
     <script src="{% static 'js/joinDelete.js' %}"></script>
     <script src="{% static 'js/channelDelete.js' %}"></script>
+    <script src="{% static 'js/alarm.js' %}"></script>
 </body>
 </body>
 </html>
