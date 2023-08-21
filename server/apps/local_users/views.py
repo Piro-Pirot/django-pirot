@@ -354,26 +354,27 @@ def lost_pw(request):
 # 회원 탈퇴   
 def unregister(request):
     msg = ''
-    # count = 0
-    # channelPassers = Passer.objects.filter(channel__id=channelId)
 
     # 즉시 회원 탈퇴가 불가능한 경우
     # 멤버가 본인 하나뿐인 경우 -> 채널 자동 삭제 후 탈퇴
-    # 해당 회원이 속한 모든 채널을 탐색
-    # myJoins = Join.objects.filter(user=request.user)
-    # for myJoin in myJoins:
-    #     myJoin
-    # for passer in channelPassers:
-    #     if Join.objects.filter(passer=passer):
-    #         count += 1
-    # if count == 1:
-    #     return render(request, 'onlyOneJoinError.html')
+    # 해당 회원이 속한 모든 채널을 탐색 -> 하나라도 조건을 만족하면 에러
+    channels = Channel.objects.all()
+    for channel in channels:
+        count = 0
+        channelPassers = channel.passer_set.all()
+        for channelPasser in channelPassers:
+            if channelPasser.join_set.all().exists():
+                count += 1
+        if count == 1:
+            if channelPasser.join_set.filter(user=request.user).exists():
+                return render(request, 'onlyOneJoinError.html', {'channel':channel}) # 에러 페이지
 
-    # 운영진이 본인 하나뿐인 경우 -> 운영진 위임 권유
-    # channelStaffs = Staff.objects.filter(channel=channel)
-    # if channelStaffs.count() == 1:
-    #     if channelStaffs.get(user=request.user):
-    #             return render(request, 'onlyOneStaffError.html') # 에러 페이지
+    # 운영진이 본인 하나뿐인 경우 -> 해당 채널 운영진 위임 권유 (한번에 하나의 채널만 반환)
+    for channel in channels:
+        channelStaffs = Staff.objects.filter(channel=channel)
+        if channelStaffs.count() == 1:
+            if channelStaffs.filter(user=request.user).exists():
+                return render(request, 'onlyOneStaffError.html', {'channel':channel}) # 에러 페이지
 
 
     if request.method == 'POST':
