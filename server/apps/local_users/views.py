@@ -367,14 +367,14 @@ def unregister(request):
                 count += 1
         if count == 1:
             if channelPasser.join_set.filter(user=request.user).exists():
-                return render(request, 'onlyOneJoinError.html', {'channel':channel}) # 에러 페이지
+                return render(request, 'users/onlyOneJoinError.html', {'channel':channel}) # 에러 페이지
 
     # 운영진이 본인 하나뿐인 경우 -> 해당 채널 운영진 위임 권유 (한번에 하나의 채널만 반환)
     for channel in channels:
         channelStaffs = Staff.objects.filter(channel=channel)
         if channelStaffs.count() == 1:
             if channelStaffs.filter(user=request.user).exists():
-                return render(request, 'onlyOneStaffError.html', {'channel':channel}) # 에러 페이지
+                return render(request, 'users/onlyOneStaffError.html', {'channel':channel}) # 에러 페이지
 
 
     if request.method == 'POST':
