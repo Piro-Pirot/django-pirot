@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .searchHangul import *
 from django.core.mail import EmailMessage
+import base64, imghdr, os
+from datetime import datetime
 
 def index(request):
     myJoinInfo = ''
@@ -35,11 +37,31 @@ def profile_staff(request, channelID):
     level = channelPasser.level
 
     if request.method == 'POST':
-        if 'delete' in request.POST:
-            current_user.profile_img.delete()
-        elif 'change' in request.POST:
+        if 'change' in request.POST:
             if request.FILES.get('profile_img'):
-                current_user.profile_img = request.FILES.get('profile_img')
+                inputImg = request.FILES['profile_img']
+
+                today = datetime.today().strftime("%Y%m%d")
+
+                # 디렉토리가 없으면 만들기
+                if not os.path.isdir(f'media/{today}/'):
+                    os.makedirs(f'media/{today}/')
+
+                file_list = os.listdir(f'media/{today}')
+
+                # 파일 쓰기
+                with open(f'media/{today}/upload{len(file_list)}', 'wb') as output_file:
+                    output_file.write(inputImg.read())
+
+                filename = f'media/{today}/upload{len(file_list)}'
+
+                img_type = imghdr.what(f'media/{today}/upload{len(file_list)}')
+
+                if img_type != None:
+                    os.rename(filename, f'{filename}.{img_type}')
+                    inputImg = f'/{today}/upload{len(file_list)}.{img_type}'
+                    current_user.profile_img = inputImg
+
         elif 'level' in request.POST:
             channelPasser.level = request.POST.get('level')
         current_user.save()
