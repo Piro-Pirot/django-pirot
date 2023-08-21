@@ -386,8 +386,9 @@ def unregister(request):
         for channelPasser in channelPassers:
             if channelPasser.join_set.all().exists():
                 count += 1
-        if count == 1:
-            if channelPasser.join_set.filter(user=request.user).exists():
+                lastJoiner = channelPasser
+        if count == 1: # 채널에 join이 1명일 때
+            if lastJoiner.join_set.filter(user=request.user).exists():
                 return render(request, 'users/onlyOneJoinError.html', {'channel':channel}) # 에러 페이지
 
     # 운영진이 본인 하나뿐인 경우 -> 해당 채널 운영진 위임 권유 (한번에 하나의 채널만 반환)
