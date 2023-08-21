@@ -696,22 +696,17 @@ background-color: var(--carrot-super-light);
   .icon-bar {
     display: none;
   }
-  /* middle 접기 */
-  /* .middle-section {
-    display: none;
-  } */
-  /* board 접기 */
-  /* .board-container {
-    width: 3rem;
-    transition: 0.3s;
-  }
-  .board-container:nth-child() {
+}
+
+
+/* baseHome 모바일 반응형 */
+@media screen and (max-width: 768px) {
+  .container.home .chat-section {
     display: none;
   }
-  .post-input-container {
-    display: none;
+
+  .container.home .middle-section {
+    left: 0;
+    width: 100vw;
   }
-  .boardOpen {
-    visibility: visible;
-  } */
 }
