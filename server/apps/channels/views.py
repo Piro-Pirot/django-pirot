@@ -22,7 +22,6 @@ def index(request):
 # 운영진 : 운영진 페이지
 def profile_staff(request, channelID):
     channel = Channel.objects.get(id=channelID) # 임시!! 위에 모델 임포트도 지우기 나중에
-    channelDefaultImg = channel.default_image
 
     # 운영진 여부
     current_user = request.user
@@ -32,11 +31,8 @@ def profile_staff(request, channelID):
         errorMsg = '잘못된 접근입니다.'
         return render(request, 'error.html', {'errorMsg': errorMsg})
         
-
-    # 테스트 단계에서 프로필 없는 사람들을 위해 예외 처리
-    # if not current_user.profile_img:
-    #     current_user.profile_img = channelDefaultImg
-    #     current_user.save()
+    channelPasser = Passer.objects.filter(channel=channel, passer_name=current_user.name, passer_phone=current_user.phone_number).get()
+    level = channelPasser.level
 
     if request.method == 'POST':
         if 'delete' in request.POST:
@@ -44,14 +40,16 @@ def profile_staff(request, channelID):
         elif 'change' in request.POST:
             if request.FILES.get('profile_img'):
                 current_user.profile_img = request.FILES.get('profile_img')
+        elif 'level' in request.POST:
+            channelPasser.level = request.POST.get('level')
         current_user.save()
+        channelPasser.save()
 
         url = '/staff/setting/%s' % (channelID)
 
         return redirect(url) # 프로필 설정 페이지에 머무름
     
-    channelPasser = Passer.objects.filter(channel=channel, passer_name=current_user.name, passer_phone=current_user.phone_number).get()
-    level = channelPasser.level
+    
 
     context = {
         'user':current_user,
@@ -428,3 +426,12 @@ def channel_code(request):
             return render(request, template_name='error.html', context={'errorMsg': '회원님의 참여 코드와 일치하는 소속된 채널이 없습니다.'})
     else:
         return render(request, template_name='users/channelCode.html')
+
+
+# def autoChannelDelete(request, channelId):
+#     channel = Channel.objects.get(id=channelId)
+
+#     if request.method == 'POST':
+#         channel.delete()
+
+#         return 

@@ -20,6 +20,18 @@
                 {% endif %}
                 <i id="chat-setting" class="ri-settings-3-line"></i>
             </div>
+            <input id="chat-name-search-mob" type="text">
+            <div class="chat-name-icons-burger">
+                <i class="ri-menu-line" id="chatBurger"></i>
+            </div>
+            <div id="chatBurgerList" class="chat-name-icons-list">
+                <i id="chat-search-btn-mob" class="fa-solid fa-magnifying-glass"></i>
+                {% if room.room_type != 2 %}
+                <i id="chat-member-add-mob" class="ri-add-line"></i>
+                {% endif %}
+                <i id="chat-setting-mob" class="ri-settings-3-line"></i>
+            </div>
+
         </div>
     </div>
 </div>
@@ -47,7 +59,10 @@
                         <i class="ri-code-line"></i>
                     </div>
                 </div>
-                <button type="button" class='btn-send' onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
+                <button type="button" class='btn-send' onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">
+                    <span>SEND</span>
+                    <i class="ri-send-plane-fill"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -87,17 +102,23 @@
         </div>
 
         <!-- 채팅방 프로필 사진 & 닉네임 수정(익명채팅방)-->
-        <form action="/room/setting_blindroom/" method="post" id="form-setting" enctype="multipart/form-data">
+        <form action="/room/setting_blindroom/" method="post" id="form-setting" enctype="multipart/form-data" style="text-align: center;">
             {% if room.room_type == 1 %}
             {% csrf_token %}
             <div class="blind-profile-setting">
-                <div class="blind-profile-img">
+                <!-- <div class="blind-profile-img">
                     <img id="blind_profile" src="{{ my_blind_info.profile_img.url }}" alt="" />
                     <div id="imageIcon2">
                         <label for="upload_blind_img" class="attach-label2"><i class="ri-image-2-fill"></i></label>
                         <input type="file" name="upload_blind_img" id="upload_blind_img" onchange="readURL(this)" style="display: none" accept="image/*">
                     </div>
-                </div>
+                </div> -->
+                <label for="upload_blind_img">
+                    <div class="blind-profile-img">
+                        <img id="blind_profile" src="{{ my_blind_info.profile_img.url }}">
+                    </div>
+                </label>
+                <input type="file" name="upload_blind_img" id="upload_blind_img" onchange="readURL(this)" accept="image/*">
                 <div class="blind-name">
                 {% with target_room_id=room.id %}
                     <p>닉네임</p>
@@ -213,11 +234,14 @@
 
     //채팅방 설정 버튼
     const chatSettingButton = document.getElementById("chat-setting");
+    const chatSettingButtonMob = document.getElementById("chat-setting-mob");
     const chatSettingModal = document.querySelector(".chat-settings-modal");
     chatSettingButton.onclick = () => {
         chatSettingModal.showModal();
         chatSettingModal.style.opacity = '1';
     };
+
+
 
     const chatSettingCloseButton = document.querySelector(".chat-settings-modal #close-btn");
     chatSettingCloseButton.onclick = () => {
@@ -241,23 +265,47 @@
         };
 
     var nicknameInput = document.getElementById("nickname");
-
-    nicknameInput.addEventListener("focus", function() {
+    
+    try {
+        nicknameInput.addEventListener("focus", function() {
         setCaretToEnd(nicknameInput);
     });
+    } catch {
+        console.log("익명채팅방에서만 이름 변경이 가능해요");
+    };
 
-    function readURL(input) {
-        // input.files : 사용자가 선택한 파일들의 목록(파일을 선택하지 않았다면 비어있음)
-        if(input.files && input.files[0]){
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('blind_profile').src = e.target.result;
-            };
-            reader.readAsDataURL(input.files[0]);
-        } else{
-            document.getElementById('blind_profile').src = "";
-        } 
-    }
+
+    // function readURL(input) {
+    //     // input.files : 사용자가 선택한 파일들의 목록(파일을 선택하지 않았다면 비어있음)
+    //     if(input.files && input.files[0]){
+    //         const reader = new FileReader();
+    //         reader.onload = function(e) {
+    //             document.getElementById('blind_profile').src = e.target.result;
+    //         };
+    //         reader.readAsDataURL(input.files[0]);
+    //     } else{
+    //         document.getElementById('blind_profile').src = "";
+    //     } 
+    // };
+    document.addEventListener('DOMContentLoaded', function() {
+        try{
+            const blindProfileImgFile = document.getElementById('upload_blind_img');
+            blindProfileImgFile.addEventListener('change', (event) => {
+            const selectedFile = event.target.files[0];
+            if (selectedFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgPreview = document.getElementById('blind_profile');
+                    imgPreview.src = e.target.result;
+                };
+                reader.readAsDataURL(selectedFile);
+            }
+        });
+        } catch {
+            console.log("익명채팅방!")
+        };
+    });
+
 
     const checkbox = document.getElementById('checkbox444');
     checkbox.addEventListener("click", function(){

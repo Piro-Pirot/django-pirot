@@ -21,11 +21,10 @@
             <form class="profile-setting-form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div>
-                    {% if user.profile_img %}
-                        <input type="submit" name="delete" value="사진 삭제" />
-                    {% endif %}
-                        <input type="file" name="profile_img" accept=".jpg, .png" />
-                        <input type="submit" name="change" value="사진 변경" />
+                    <input type="file" name="profile_img" accept=".jpg, .png" />
+                    <input type="submit" name="change" value="사진 변경" />
+                    <input type="text" name="level" value="{{ level }}" placeholder="기수 입력" required/>
+                    <button type="submit">기수 설정</button>
                 </div>
             </form>
         </div>

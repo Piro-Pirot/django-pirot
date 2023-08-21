@@ -1,9 +1,15 @@
 const settingsButton = document.querySelector("#settings");
+const mobSettingsButton = document.getElementById("mob-settings");
 const settingsModal = document.querySelector(".settings-modal");
 
 settingsModal.style.opacity = '0';
 settingsButton.style.cursor = 'pointer';
 settingsButton.addEventListener("click", () => {
+  settingsModal.showModal();
+  settingsModal.style.opacity = '1';
+});
+
+mobSettingsButton.addEventListener("click", () => {
   settingsModal.showModal();
   settingsModal.style.opacity = '1';
 });
