@@ -105,10 +105,7 @@ def profile_setting(request, channelID):
         url = '/staff/setting/%s' % (channelID)
         return redirect(url)
 
-    # 테스트 단계에서 프로필 없는 사람들을 위해 예외 처리
-    # if not current_user.profile_img:
-    #     current_user.profile_img = channelDefaultImg
-    #     current_user.save()
+    channelPasser = Passer.objects.filter(channel=channel, passer_name=current_user.name, passer_phone=current_user.phone_number).get()
 
     if request.method == 'POST':
         if 'delete' in request.POST:
@@ -117,7 +114,10 @@ def profile_setting(request, channelID):
         elif 'change' in request.POST:
             if request.FILES.get('profile_img'):
                 current_user.profile_img = request.FILES['profile_img']
+        elif 'level' in request.POST:
+            channelPasser.level = request.POST.get('level')
         current_user.save()
+        channelPasser.save()
 
         url = '/user/setting/%s' % (channelID)
 
@@ -354,6 +354,27 @@ def lost_pw(request):
 # 회원 탈퇴   
 def unregister(request):
     msg = ''
+    count = 0
+    channelPassers = Passer.objects.filter(channel__id=channelId)
+
+    # 즉시 회원 탈퇴가 불가능한 경우
+    # 멤버가 본인 하나뿐인 경우 -> 채널 자동 삭제 후 탈퇴
+    # 해당 회원이 속한 모든 채널을 탐색
+    # myJoins = Join.objects.filter(user=request.user)
+    # for myJoin in myJoins:
+    #     myJoin
+    # for passer in channelPassers:
+    #     if Join.objects.filter(passer=passer):
+    #         count += 1
+    # if count == 1:
+    #     return render(request, 'onlyOneJoinError.html')
+
+    # 운영진이 본인 하나뿐인 경우 -> 운영진 위임 권유
+    channelStaffs = Staff.objects.filter(channel=channel)
+    if channelStaffs.count() == 1:
+        if channelStaffs.get(user=request.user):
+                return render(request, 'onlyOneStaffError.html') # 에러 페이지
+
 
     if request.method == 'POST':
         inputID = request.POST.get('userID')
