@@ -43,6 +43,8 @@ try {
 
   // 채팅방 초대 Ajax
   const inviteRequest = async(inviteList, roomId, channelId) => {
+    let cookie = document.cookie;
+    let csrfToken = cookie.substring(cookie.indexOf('=') + 1);
     const url = '/room/invite_member_ajax/';
     const res = await fetch(url, {
       method: 'POST',

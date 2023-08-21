@@ -106,9 +106,9 @@ def profile_setting(request, channelID):
         return redirect(url)
 
     # 테스트 단계에서 프로필 없는 사람들을 위해 예외 처리
-    if not current_user.profile_img:
-        current_user.profile_img = channelDefaultImg
-        current_user.save()
+    # if not current_user.profile_img:
+    #     current_user.profile_img = channelDefaultImg
+    #     current_user.save()
 
     if request.method == 'POST':
         if 'delete' in request.POST:
@@ -350,3 +350,26 @@ def lost_pw(request):
             print('error!')
 
         return redirect('/')
+
+# 회원 탈퇴   
+def unregister(request):
+    msg = ''
+
+    if request.method == 'POST':
+        inputID = request.POST.get('userID')
+        inputPW = request.POST.get('userPW')
+
+        if inputID == request.user.username and check_password(inputPW, request.user.password):
+            request.user.delete()
+
+            return redirect('/user/byebye/')
+        else:
+            msg = '정보가 일치하지 않습니다.'
+
+            return render(request, 'users/unregister.html', {'username': request.user.name, 'msg':msg})
+
+    return render(request, 'users/unregister.html', {'username': request.user.name, 'msg':msg})
+
+# 회원 탈퇴 완료
+def byebye(request):
+    return render(request, 'users/byebye.html')
