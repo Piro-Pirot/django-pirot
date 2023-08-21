@@ -12,6 +12,72 @@ roomIcon.addEventListener("click", () => {
 
 
 
+//middle section 검색창 구현
+let searchButton = document.getElementById("search-btn");
+let channelName = document.getElementById("channel-name");
+let searchInput = document.getElementById("search-input");
+
+searchInput.style.visibility = "hidden";
+searchInput.style.opacity = "0";
+
+searchButton.onclick = () => {
+  if (searchInput.style.visibility === "hidden") {
+    channelName.style.visibility = "hidden";
+    channelName.style.opacity = "0";
+    searchInput.style.visibility = "visible";
+    searchInput.style.opacity = "1";
+    searchInput.focus();
+  }
+  else if (searchInput.style.visibility === "visible") {
+    channelName.style.visibility = "visible";
+    channelName.style.opacity = "1";
+    searchInput.style.visibility = "hidden";
+    searchInput.style.opacity = "0";
+  }
+};
+
+let searchBox = document.getElementById("search");
+window.addEventListener("click", (event) => {
+  if (!searchBox.contains(event.target)) {
+    channelName.style.visibility = "visible";
+    channelName.style.opacity = "1";
+    searchInput.style.visibility = "hidden";
+    searchInput.style.opacity = "0"
+  };
+});
+
+
+/* select option 새로고침 되어도 유지 */
+
+
+
+//channel이름 selector 구현
+let selectedChannel = document.querySelector(".select-btn span");
+let selectButton = document.querySelector(".select-btn");
+let channelOptionsList = document.querySelector(".select-options");
+let channelOptions = document.querySelectorAll(".select-options li");
+
+
+channelOptions.forEach(option => {
+  option.addEventListener("click", () => {
+    selectedChannel.innerHTML = option.innerHTML;
+    channelOptionsList.classList.toggle("active");
+    window.open(`/room/${option.id}/main`, '_self');
+  });
+  if (option.id == curChannelId) {
+    selectedChannel.innerText = option.innerText;
+  }
+});
+
+selectButton.addEventListener("click", () => {
+  channelOptionsList.classList.toggle("active");
+  selectButton.classList.toggle("color-stay");
+})
+
+
+
+
+
 
 
 
