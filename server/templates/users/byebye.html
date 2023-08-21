@@ -4,13 +4,19 @@
 <!-- 회원 탈퇴 완료 페이지 -->
 
 {% block content %}
-<div class="unregister-container">
-    <div class="unregister-title">
-        <h1>회원 탈퇴가 완료되었습니다.</h1>
-        <h1>그동안 피롯을 이용해주셔서 감사합니다.</h1>
-    </div>
-    <div class="unregister-main-button">
-        <a href="/">홈으로 돌아가기</a>
-    </div>
+<!-- 모바일 반응형 -->
+<div class="mobile-boss-container">
+    <main>
+        <div class="unregister-container">
+            <div class="unregister-title">
+                <h1>회원 탈퇴가 완료되었습니다.</h1>
+                <h1>그동안 피롯을 이용해주셔서<br><br>
+                    감사합니다 🥕</h1>
+            </div>
+            <div class="unregister-main-button">
+                <a href="/">홈으로 돌아가기</a>
+            </div>
+        </div>
+    </main>
 </div>
 {% endblock %}
