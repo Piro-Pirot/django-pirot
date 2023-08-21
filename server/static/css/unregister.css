@@ -32,6 +32,10 @@ form label {
     font-size: 1rem;
 }
 
+.unregister-msg {
+    margin-top: 2rem
+}
+
 button {
     border-radius: 1rem;
     border: none;
