@@ -143,11 +143,44 @@ a:hover, a:active {
 
 
 /* 마크다운.. 부탁해요 ^..^ */
-h1 {
-  font-size: large;
+
+.bubble-content h1, .bubble-content h2,
+.bubble-content h3, .bubble-content h4,
+.bubble-content h5, .bubble-content h6 {
   font-weight: bold;
 }
-h2 {
-  font-size: medium;
-  font-weight: bold;
+
+.bubble-content h1 {
+  font-size: 36px;
+}
+.bubble-content h2 {
+  font-size: 28px;
+}
+.bubble-content h3 {
+  font-size: 22px;
+}
+.bubble-content h4 {
+  font-size: 20px;
+}
+.bubble-content h5 {
+  font-size: 18px;
+}
+.bubble-content h6 {
+  font-size: 16px;
+}
+
+
+.bubble-content ul {
+  list-style: inside;
+}
+.bubble-content ol {
+  list-style: decimal;
+  margin-left: 1rem;
+}
+.codehilite {
+  padding: 0.6rem 1rem;
+}
+.bubble-content table {
+  border-collapse: separate;
+  
 }

@@ -322,17 +322,10 @@ def enter_room(request, channelId, roomId, type):
     curRoom = Room.objects.get(id=roomId)
     title = curRoom.room_name
     curChannel = Channel.objects.get(id=channelId)
-    
-    # 익명채팅방 닉네임 정보
-    blindroom_nicknames = dict()
-    blindroom_profile_img = dict()
 
     if type == 'main' or type == 'friends':
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
         myBlindRooms = BlindRoomMember.objects.filter(user=request.user, room__channel=curChannel)
-        
-        # 디버깅
-        print(blindroom_nicknames)
         
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
         myRooms = RoomMember.objects.filter(user=request.user, room__channel=curChannel)
@@ -351,6 +344,12 @@ def enter_room(request, channelId, roomId, type):
             print("my_blind_info : ",my_blind_info.profile_img)
         else:
             roomMembers = RoomMember.objects.filter(room=curRoom)
+
+        # 채팅방 잠금인 방
+        my_locked = Lock.objects.filter(user=request.user)
+        print("내 Lock object들(enter room) : ", my_locked)
+        my_locked_rooms = my_locked.values_list('room_id', flat=True)
+        print('내 Locked rooms(enter room) : ', my_locked_rooms)
 
         # 채팅 방 참여자가 아닌 채널 구성원들
         not_members = []
@@ -420,7 +419,8 @@ def enter_room(request, channelId, roomId, type):
                     'urlType': type,
                     'myChannels': myChannels,
                     'channel_join_list': channel_join_list,
-                    'my_blind_info': my_blind_info
+                    'my_blind_info': my_blind_info,
+                    'my_locked_rooms' : my_locked_rooms
                 }
             )
         
@@ -435,58 +435,78 @@ def setting_blindroom_profile(request):
             print('Key: %s' % (key) ) 
             print('Value %s' % (value) )
         # 익명채팅방 이름 수정
-        room_id = request.POST['roomId']
+        roomId = request.POST['roomId']
         channel_id = request.POST['channelId']
+        curRoom = Room.objects.get(id=roomId)
+        my_locked = Lock.objects.filter(user=request.user)
+        my_locked_rooms = my_locked.values_list('room_id', flat=True)
         
         # is_checked 키가 존재하지 않을 경우, '0'을 디폴트 값으로
         is_checked = request.POST.get('is_checked', '0')
-        if is_checked == '1':
+        # chat_textarea = request.POST.get('chat_textarea')
+        print("is_checked : ", is_checked)
+        
+        if is_checked =='1':
             # 체크된 경우
-            pass
-        else:
+            if int(roomId) in my_locked_rooms:
+                print("이미 Lock에 존재해 있어서 또 만들 필요가 없음")
+                pass
+            else:
+                Lock.objects.create(user = request.user, room_id = curRoom).save()
+                print("Lock에 새로 추가됨")
+        elif is_checked =='0':
             # 체크되지 않은 경우 처리
-            pass
-        
-        Member = BlindRoomMember.objects.get(user=request.user, room=room_id)
-        fixed_nickname = request.POST.get('nickname')
-        
-        
-        # 익명채팅방 프로필 이미지 저장
-        if 'upload_blind_img' in request.FILES:
-            fixed_profile_img = request.FILES.get('upload_blind_img')
-            print('fixed_profile_img : ', fixed_profile_img)
-            
-            today = datetime.today().strftime("%Y%m%d")
-
-            # 디렉토리가 없으면 만들기
-            if not os.path.isdir(f'media/{today}/'):
-                os.makedirs(f'media/{today}/')
-            
-            file_list = os.listdir(f'media/{today}')
-            # 파일 쓰기
-            with open(f'media/{today}/blind_img_upload{len(file_list)}', 'wb') as output_file:
-                output_file.write(fixed_profile_img.read())
-            
-            filename = f'media/{today}/blind_img_upload{len(file_list)}'
-
-            img_type = imghdr.what(f'media/{today}/blind_img_upload{len(file_list)}')
-            
-            if img_type != None:
-                os.rename(filename, f'{filename}.{img_type}')
-                fixed_profile_img = f'/{today}/blind_img_upload{len(file_list)}.{img_type}'
-                Member.profile_img = fixed_profile_img
-                print("member.profile_img : ", Member.profile_img)
-            
+            if int(roomId) in my_locked_rooms:
+                Lock.objects.get(user = request.user, room_id = curRoom).delete()
+                print("내 Lock object들(삭제하고 났으니까 사라져야함) : ", my_locked)   
+            else:
+                print("체크되지 않은 상태, 삭제할 Lock이 없음")
+                pass
         else:
-            print("사진이 request.FILES에 존재하지 않음")
-            pass
+            print("is_checked 값이 0도 1도 아님")
             
-        # fixed_profile_img = request.POST.get('upload_blind_img')
         
-        Member.nickname = fixed_nickname
-        Member.save()
+        if curRoom.room_type == BLIND_ROOM:    
+            Member = BlindRoomMember.objects.get(user=request.user, room=roomId)
+            fixed_nickname = request.POST.get('nickname')
+            
+            
+            # 익명채팅방 프로필 이미지 저장
+            if 'upload_blind_img' in request.FILES:
+                fixed_profile_img = request.FILES.get('upload_blind_img')
+                print('fixed_profile_img : ', fixed_profile_img)
+                
+                today = datetime.today().strftime("%Y%m%d")
+
+                # 디렉토리가 없으면 만들기
+                if not os.path.isdir(f'media/{today}/'):
+                    os.makedirs(f'media/{today}/')
+                
+                file_list = os.listdir(f'media/{today}')
+                # 파일 쓰기
+                with open(f'media/{today}/blind_img_upload{len(file_list)}', 'wb') as output_file:
+                    output_file.write(fixed_profile_img.read())
+                
+                filename = f'media/{today}/blind_img_upload{len(file_list)}'
+
+                img_type = imghdr.what(f'media/{today}/blind_img_upload{len(file_list)}')
+                
+                if img_type != None:
+                    os.rename(filename, f'{filename}.{img_type}')
+                    fixed_profile_img = f'/{today}/blind_img_upload{len(file_list)}.{img_type}'
+                    Member.profile_img = fixed_profile_img
+                    print("member.profile_img : ", Member.profile_img)
+                
+            else:
+                print("사진이 request.FILES에 존재하지 않음")
+                pass
+                
+            # fixed_profile_img = request.POST.get('upload_blind_img')
+            
+            Member.nickname = fixed_nickname
+            Member.save()
         
-        return redirect(f"/room/{channel_id}/{room_id}/main/")
+        return redirect(f"/room/{channel_id}/{roomId}/main/")
     return render(request, 'error.html', {'errorMsg': '잘못된 접근입니다.'})
 
 
