@@ -14,7 +14,7 @@
 
 </head>
 <body>
-    <div class="container">
+    <div class="container home">
         <section class="icon-bar">
             <div class="top-icons">
                 {% if urlType == 'friends' %}
@@ -146,7 +146,7 @@
                     <div class="checkbox-wrapper-22 alarm-toggle">
                         <label class="switch" for="checkbox2">
                             <input name="alarm" value="1" type="checkbox" id="checkbox2" {% if request.user.notice == 1 %}checked{% endif %}/>
-                            <div class="slider round"></div>
+                            <div onclick="onClickAlarm()" class="slider round"></div>
                         </label>
                     </div>
                 </div>
@@ -174,6 +174,7 @@
     <script src="{% static 'js/base-mob-home.js' %}"></script>
     <script src="{% static 'js/settingsModal.js' %}"></script>
     <script src="{% static 'js/theme.js' %}"></script>
+    <script src="{% static 'js/alarm.js' %}"></script>
     {% if urlType == 'main' %}
         <script src="{% static 'js/roomModal.js' %}"></script>
         <script src="{% static 'js/searchRooms.js' %}"></script>

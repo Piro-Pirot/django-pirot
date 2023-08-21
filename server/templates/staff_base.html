@@ -115,6 +115,7 @@
             <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line mob-friend-icon"></i></a>
             <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line mob-room-icon"></i></a>
             {% endif %}
+            <i id="mob-settings" class="ri-settings-3-line"></i>
             {% if request.user.profile_img %}
                 <a class="profile-icon" href="/user/setting/{{ channel.id }}/">
                     <img class="mob-profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필">
@@ -168,7 +169,7 @@
                     <div class="checkbox-wrapper-22 alarm-toggle">
                         <label class="switch" for="checkbox2">
                             <input name="alarm" value="1" type="checkbox" id="checkbox2" {% if request.user.notice == 1 %}checked{% endif %}/>
-                            <div class="slider round"></div>
+                            <div onclick="onClickAlarm()" class="slider round"></div>
                         </label>
                     </div>
                 </div>
@@ -194,5 +195,8 @@
     <script src="{% static 'js/iconBar.js' %}"></script>
     <script src="{% static 'js/settingsModal.js' %}"></script>
     <script src="{% static 'js/theme.js' %}"></script>
+    <script src="{% static 'js/joinDelete.js' %}"></script>
+    <script src="{% static 'js/channelDelete.js' %}"></script>
+    <script src="{% static 'js/alarm.js' %}"></script>
 </body>
 </html>
