@@ -213,8 +213,29 @@ def default_profile(request, channelID):
             return redirect("/")
         else:
             if request.FILES.get("default_image"):
-                channel.default_image = request.FILES["default_image"]
-                channel.save()
+                inputImg = request.FILES["default_image"]
+                
+                today = datetime.today().strftime("%Y%m%d")
+
+                # 디렉토리가 없으면 만들기
+                if not os.path.isdir(f'media/{today}/'):
+                    os.makedirs(f'media/{today}/')
+
+                file_list = os.listdir(f'media/{today}')
+
+                # 파일 쓰기
+                with open(f'media/{today}/upload{len(file_list)}', 'wb') as output_file:
+                    output_file.write(inputImg.read())
+
+                filename = f'media/{today}/upload{len(file_list)}'
+
+                img_type = imghdr.what(f'media/{today}/upload{len(file_list)}')
+
+                if img_type != None:
+                    os.rename(filename, f'{filename}.{img_type}')
+                    inputImg = f'/{today}/upload{len(file_list)}.{img_type}'
+                    channel.default_image = inputImg
+                    channel.save()
 
             if request.POST.get("this_level"):
                 channel.this_level = request.POST["this_level"]
