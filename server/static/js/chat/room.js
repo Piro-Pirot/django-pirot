@@ -247,53 +247,112 @@ codeSnippet.onclick = () => {
     textInput.classList.toggle("inactive");
 };
 
-// 채팅방 개설한 사람이 볼 수 있는 채팅방 설정
-const btnRoomSetting = document.getElementById('room-owner-setting');
-const modalRoomSetting = document.querySelector('.modal-room-setting');
-btnRoomSetting.onclick = () => {
-    modalRoomSetting.showModal();
-    modalRoomSetting.style.opacity = '1';
-}
+try {
+    // 채팅방 개설한 사람이 볼 수 있는 채팅방 설정
+    const btnRoomSetting = document.getElementById('room-owner-setting');
+    const modalRoomSetting = document.querySelector('.modal-room-setting');
+    btnRoomSetting.onclick = () => {
+        modalRoomSetting.showModal();
+        modalRoomSetting.style.opacity = '1';
+    }
 
-const closeSettingButton = document.querySelector(".modal-room-setting #close-btn");
-closeSettingButton.addEventListener("click", () => {
-    modalRoomSetting.close();
-    modalRoomSetting.style.opacity = '0';
-});
-
-// Esc 누르면 모달의 opacity를 0으로 초기화 시킴
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
+    const closeSettingButton = document.querySelector(".modal-room-setting #close-btn");
+    closeSettingButton.addEventListener("click", () => {
+        modalRoomSetting.close();
         modalRoomSetting.style.opacity = '0';
-    }
-});
+    });
 
-/* 이름 편집 */
-const btnEditRoomName = document.querySelector('.room-name-container .ri-edit-line');
-const inputRoomName = document.querySelector('.edit-room-name');
-btnEditRoomName.onclick = () => {
-    if (inputRoomName.disabled == true) {
-        inputRoomName.disabled = false;
-        inputRoomName.focus();
-        inputRoomName.select();
-    } else {
-        inputRoomName.disabled = true;
+    // Esc 누르면 모달의 opacity를 0으로 초기화 시킴
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            modalRoomSetting.style.opacity = '0';
+        }
+    });
+
+    /* 이름 편집 */
+    const btnEditRoomName = document.querySelector('.room-name-container .ri-edit-line');
+    const inputRoomName = document.querySelector('.edit-room-name');
+    btnEditRoomName.onclick = () => {
+        if (inputRoomName.disabled == true) {
+            inputRoomName.disabled = false;
+            inputRoomName.focus();
+            inputRoomName.select();
+        } else {
+            inputRoomName.disabled = true;
+        }
     }
+
+    /* 사진 미리보기 */
+    const inputImg = document.querySelector('.room-img');
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                inputImg.src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            inputImg.src = "";
+        }
+    }
+} catch {
+    console.log('채팅방 개설자가 아닙니다.');
 }
 
-/* 사진 미리보기 */
-const inputImg = document.querySelector('.room-img');
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            inputImg.src = e.target.result;
-        };
-        reader.readAsDataURL(input.files[0]);
-    } else {
-        inputImg.src = "";
+// 모바일 채팅방 개설자 설정
+try {
+    
+    // 채팅방 개설한 사람이 볼 수 있는 채팅방 설정
+    const btnRoomSetting = document.getElementById('room-owner-setting-mob');
+    const modalRoomSetting = document.querySelector('.modal-room-setting');
+    btnRoomSetting.onclick = () => {
+        modalRoomSetting.showModal();
+        modalRoomSetting.style.opacity = '1';
     }
+
+    const closeSettingButton = document.querySelector(".modal-room-setting #close-btn");
+    closeSettingButton.addEventListener("click", () => {
+        modalRoomSetting.close();
+        modalRoomSetting.style.opacity = '0';
+    });
+
+    // Esc 누르면 모달의 opacity를 0으로 초기화 시킴
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            modalRoomSetting.style.opacity = '0';
+        }
+    });
+
+    /* 이름 편집 */
+    const btnEditRoomName = document.querySelector('.room-name-container .ri-edit-line');
+    const inputRoomName = document.querySelector('.edit-room-name');
+    btnEditRoomName.onclick = () => {
+        if (inputRoomName.disabled == true) {
+            inputRoomName.disabled = false;
+            inputRoomName.focus();
+            inputRoomName.select();
+        } else {
+            inputRoomName.disabled = true;
+        }
+    }
+
+    /* 사진 미리보기 */
+    const inputImg = document.querySelector('.room-img');
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                inputImg.src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            inputImg.src = "";
+        }
+    }
+} catch {
+    console.log('모바일이 아닙니다.');
 }
+
 // 채팅방 내 아이콘 버거 메뉴화
 const chatBurgerButton = document.getElementById("chatBurger");
 chatBurgerButton.className = "ri-menu-line";

@@ -51,7 +51,10 @@ let lastMonth = 0;
 let lastDate = 0;
 
 function isSameWithNext(thisBubble, nextBubble) {
-    if((thisBubble['hour'] == nextBubble['hour']
+    if((thisBubble['year'] == nextBubble['year']
+    && thisBubble['month'] == nextBubble['month']
+    && thisBubble['day'] == nextBubble['day']
+    && thisBubble['hour'] == nextBubble['hour']
     && thisBubble['min'] == nextBubble['min']
     && thisBubble['user__username'] == nextBubble['user__username']
     && nextBubble['is_notice'] == CHAT)) {
@@ -62,7 +65,10 @@ function isSameWithNext(thisBubble, nextBubble) {
 }
 
 function isSameWithPrev(prevBubble, thisBubble) {
-    if(prevBubble['hour'] == thisBubble['hour']
+    if(prevBubble['year'] == thisBubble['year']
+    && prevBubble['month'] == thisBubble['month']
+    && prevBubble['day'] == thisBubble['day']
+    && prevBubble['hour'] == thisBubble['hour']
     && prevBubble['min'] == thisBubble['min']
     && prevBubble['user__username'] == thisBubble['user__username']
     && prevBubble['is_notice'] == CHAT) {
@@ -84,6 +90,9 @@ const loadBubblesResponse = async (ajaxBubbles) => {
     lastYear = firstBubble['year'];
     lastMonth = firstBubble['month'];
     lastDate = firstBubble['day'];
+
+    console.log('ewfewf1!!!!!!!!!!!', lastHour)
+
     try {
         const secondBubble = ajaxBubbles[1];
         // 만들 대상, 시간 표시 여부, 프로필 표시 여부
@@ -257,7 +266,7 @@ async function createBubble(bubbleData, timeFlag, profileFlag) {
             bubbleTime.innerText = `${bubbleData['hour']}:${bubbleData['min']}`;
 
             if(bubbleData['user__username'] === curUsername) {
-                //나의 말풍선일 때
+                // 나의 말풍선일 때
                 bubbleContentContainer.appendChild(bubbleTime);
                 if(!!bubbleData['file']) {
                     bubbleContentContainer.appendChild(bubbleFileContent);

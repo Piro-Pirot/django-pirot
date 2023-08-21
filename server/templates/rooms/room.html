@@ -50,6 +50,19 @@
                 <i id="chat-member-add-mob" class="ri-add-line"></i>
                 {% endif %}
                 <i id="chat-setting-mob" class="ri-settings-3-line"></i>
+                {% if room.room_type == 1 %}
+                    {% for b_member in room.blindroommember_set.all %}
+                        {% if b_member.user == user %}
+                        <i id="room-owner-setting-mob" class="ri-chat-settings-line"></i>
+                        {% endif %}
+                    {% endfor %}
+                {% elif room.room_type == 0 %}
+                    {% for b_member in room.blindroommember_set.all %}
+                        {% if b_member.user == user %}
+                        <i id="room-owner-setting-mob" class="ri-chat-settings-line"></i>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             </div>
 
         </div>
