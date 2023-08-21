@@ -150,8 +150,8 @@
 
         <!-- 채팅방 프로필 사진 & 닉네임 수정(익명채팅방)-->
         <form action="/room/setting_blindroom/" method="post" id="form-setting" enctype="multipart/form-data" style="text-align: center;">
-            {% if room.room_type == 1 %}
             {% csrf_token %}
+            {% if room.room_type == 1 %}
             <div class="blind-profile-setting">
                 <!-- <div class="blind-profile-img">
                     <img id="blind_profile" src="{{ my_blind_info.profile_img.url }}" alt="" />
@@ -176,12 +176,12 @@
                 
             </div>
 
-            <input type="hidden" name="roomId" id="" value="{{ room.id }}">
-            <input type="hidden" name="channelId" id="" value="{{ channel.id }}">
             
             {% comment %} <input type="hidden" name="chat_textarea" id="chat_textarea" value=""> {% endcomment %}
             <!-- <button type='submit'>수정 완료</button> -->
             {% endif %}
+            <input type="hidden" name="roomId" id="" value="{{ room.id }}">
+            <input type="hidden" name="channelId" id="" value="{{ channel.id }}">
 
             <div class="alarm-select">
                 <div class="alarm-title">

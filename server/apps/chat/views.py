@@ -465,44 +465,46 @@ def setting_blindroom_profile(request):
         else:
             print("is_checked 값이 0도 1도 아님")
             
-        Member = BlindRoomMember.objects.get(user=request.user, room=roomId)
-        fixed_nickname = request.POST.get('nickname')
         
-        
-        # 익명채팅방 프로필 이미지 저장
-        if 'upload_blind_img' in request.FILES:
-            fixed_profile_img = request.FILES.get('upload_blind_img')
-            print('fixed_profile_img : ', fixed_profile_img)
+        if curRoom.room_type == BLIND_ROOM:    
+            Member = BlindRoomMember.objects.get(user=request.user, room=roomId)
+            fixed_nickname = request.POST.get('nickname')
             
-            today = datetime.today().strftime("%Y%m%d")
+            
+            # 익명채팅방 프로필 이미지 저장
+            if 'upload_blind_img' in request.FILES:
+                fixed_profile_img = request.FILES.get('upload_blind_img')
+                print('fixed_profile_img : ', fixed_profile_img)
+                
+                today = datetime.today().strftime("%Y%m%d")
 
-            # 디렉토리가 없으면 만들기
-            if not os.path.isdir(f'media/{today}/'):
-                os.makedirs(f'media/{today}/')
-            
-            file_list = os.listdir(f'media/{today}')
-            # 파일 쓰기
-            with open(f'media/{today}/blind_img_upload{len(file_list)}', 'wb') as output_file:
-                output_file.write(fixed_profile_img.read())
-            
-            filename = f'media/{today}/blind_img_upload{len(file_list)}'
+                # 디렉토리가 없으면 만들기
+                if not os.path.isdir(f'media/{today}/'):
+                    os.makedirs(f'media/{today}/')
+                
+                file_list = os.listdir(f'media/{today}')
+                # 파일 쓰기
+                with open(f'media/{today}/blind_img_upload{len(file_list)}', 'wb') as output_file:
+                    output_file.write(fixed_profile_img.read())
+                
+                filename = f'media/{today}/blind_img_upload{len(file_list)}'
 
-            img_type = imghdr.what(f'media/{today}/blind_img_upload{len(file_list)}')
+                img_type = imghdr.what(f'media/{today}/blind_img_upload{len(file_list)}')
+                
+                if img_type != None:
+                    os.rename(filename, f'{filename}.{img_type}')
+                    fixed_profile_img = f'/{today}/blind_img_upload{len(file_list)}.{img_type}'
+                    Member.profile_img = fixed_profile_img
+                    print("member.profile_img : ", Member.profile_img)
+                
+            else:
+                print("사진이 request.FILES에 존재하지 않음")
+                pass
+                
+            # fixed_profile_img = request.POST.get('upload_blind_img')
             
-            if img_type != None:
-                os.rename(filename, f'{filename}.{img_type}')
-                fixed_profile_img = f'/{today}/blind_img_upload{len(file_list)}.{img_type}'
-                Member.profile_img = fixed_profile_img
-                print("member.profile_img : ", Member.profile_img)
-            
-        else:
-            print("사진이 request.FILES에 존재하지 않음")
-            pass
-            
-        # fixed_profile_img = request.POST.get('upload_blind_img')
-        
-        Member.nickname = fixed_nickname
-        Member.save()
+            Member.nickname = fixed_nickname
+            Member.save()
         
         return redirect(f"/room/{channel_id}/{roomId}/main/")
     return render(request, 'error.html', {'errorMsg': '잘못된 접근입니다.'})
