@@ -30,7 +30,7 @@ const loadBubbles = async(roomId, page) => {
 
         if(ajaxBubbles !== null) {
             ajaxBubbles = JSON.parse(ajaxBubbles);
-            loadBubblesResponse(ajaxBubbles);
+            await loadBubblesResponse(ajaxBubbles);
         }
 
         // 처음에는 스크롤 맨 아래로
@@ -53,8 +53,9 @@ let lastDate = 0;
 function isSameWithNext(thisBubble, nextBubble) {
     if((thisBubble['hour'] == nextBubble['hour']
     && thisBubble['min'] == nextBubble['min']
-    && thisBubble['user__username'] == nextBubble['user__username'])) {
-        // 다음 말풍선과 시간이 같고 보낸 사람이 같으면 시간과 프로필을 표시하지 않음
+    && thisBubble['user__username'] == nextBubble['user__username']
+    && nextBubble['is_notice'] == CHAT)) {
+        // 다음 말풍선과 시간이 같고 보낸 사람이 같고 다음 말풍선이 CHAT이라면 시간과 프로필을 표시하지 않음
         return false;
     }
     return true;
@@ -72,17 +73,9 @@ function isSameWithPrev(prevBubble, thisBubble) {
 }
 
 // 말풍선을 위에서 아래로 쌓았었는데 아래에서 위로 쌓아야 함.
-const loadBubblesResponse = (ajaxBubbles) => {
-    let timeFlag = true;
-    // 첫 번째 말풍선은 프로필을 항상 표시
+const loadBubblesResponse = async (ajaxBubbles) => {
+    // 첫 번째 말풍선은 프로필을 항상 표시 -> 뒤집어졌으니까 무조건 시간 표시
     const firstBubble = ajaxBubbles[0];
-    try {
-        const secondBubble = ajaxBubbles[1];
-        createBubble(firstBubble, isSameWithNext(firstBubble, secondBubble), true);
-    } catch {
-        createBubble(firstBubble, true, true);
-        console.log('hello');
-    }
     lastHour = firstBubble['hour'];
     lastMin = firstBubble['min'];
     lastSender = firstBubble['user__username'];
@@ -91,29 +84,39 @@ const loadBubblesResponse = (ajaxBubbles) => {
     lastYear = firstBubble['year'];
     lastMonth = firstBubble['month'];
     lastDate = firstBubble['day'];
+    try {
+        const secondBubble = ajaxBubbles[1];
+        // 만들 대상, 시간 표시 여부, 프로필 표시 여부
+        await createBubble(firstBubble, true, isSameWithNext(firstBubble, secondBubble));
+    } catch {
+        // 다음 bubble이 없다는 것은 개설시 생성되는 noti bubble임
+        await createBubble(firstBubble, false, false);
+        // 더이상 반복을 돌 필요가 없음
+        return 0;
+    }
     
-    for(let i = 1; i < ajaxBubbles.length - 1; i++) {
+    // 두 번째 말풍선부터는 첫 번째 말풍선(이전 말풍선)과 세 번째 말풍선(다음 말풍선)과 비교가 필요
+    // 마지막 말풍선이 noti이기 때문에 length - 2까지만 반복을 돌아야 함
+    for(let i = 1; i < ajaxBubbles.length - 2; i++) {
         const prevBubble = ajaxBubbles[i-1];
         const thisBubble = ajaxBubbles[i];
         const nextBubble = ajaxBubbles[i+1];
 
-        createBubble(ajaxBubbles[i], isSameWithNext(thisBubble, nextBubble), isSameWithPrev(prevBubble, thisBubble));
+        await createBubble(ajaxBubbles[i], isSameWithPrev(prevBubble, thisBubble), isSameWithNext(thisBubble, nextBubble));
     }
-    // 마지막 말풍선은 시간을 항상 표시
-    try {
-        const secondLastBubble = ajaxBubbles[ajaxBubbles.length - 2];
-        const lastBubble = ajaxBubbles[ajaxBubbles.length - 1];
-        lastHour = lastBubble['hour'];
-        lastMin = lastBubble['min'];
-        lastSender = lastBubble['user__username'];
-        lastBubbleType = lastBubble['is_notice'];
 
-        lastYear = lastBubble['year'];
-        lastMonth = lastBubble['month'];
-        lastDate = lastBubble['day'];
-        createBubble(lastBubble, true, isSameWithPrev(secondLastBubble, lastBubble));
-    } catch {
-        console.log('theres no next bubble');
+    if(ajaxBubbles.length < 3) {
+        // 마지막에서 두 번째 말풍선이 없는 경우
+        // 마지막 말풍선은 언제나 noti, bubble이 1개 뿐이라면 첫 번째 말풍선을 다룰 때 이미 처리 했음
+        const lastBubble = ajaxBubbles[ajaxBubbles.length - 1];
+        await createBubble(lastBubble, false, false);
+    } else {
+        // 마지막 말풍선은 시간을 항상 표시 -> noti가 아닌 마지막 말풍선(마지막에서 두 번째)은 무조건 프로필 표시
+        const secondLastBubble = ajaxBubbles[ajaxBubbles.length - 2];
+        const thirdLastBubble = ajaxBubbles[ajaxBubbles.length - 3];
+        await createBubble(secondLastBubble, isSameWithPrev(secondLastBubble, thirdLastBubble), true);
+        const lastBubble = ajaxBubbles[ajaxBubbles.length - 1];
+        await createBubble(lastBubble, false, false);
     }
 }
 
@@ -148,7 +151,7 @@ inputBox.addEventListener('keypress', (event) => {
 })
 
 // 말풍선을 만드는 코드
-function createBubble(bubbleData, timeFlag, profileFlag) {
+async function createBubble(bubbleData, timeFlag, profileFlag) {
     console.log(bubbleData);
 
     console.log(bubbleData['content']);
@@ -218,18 +221,33 @@ function createBubble(bubbleData, timeFlag, profileFlag) {
         bubbleContent.innerHTML = bubbleData['content'];
 
         // 파일을 첨부했다면
+
+        const loadFile = (fileUrl) => {
+            const myImage = new Image();
+            myImage.src = fileUrl;
+            return new Promise((resolve)=>{
+                myImage.onload = () => resolve(myImage)
+                console.log('here');
+            })
+        }
+        
+        const loadingFile = async (fileUrl) => {
+            await loadFile(fileUrl);
+        }
+
         console.log(bubbleData['file']);
         let bubbleFileContainer = '';
         let bubbleFileContent = '';
         if(!!bubbleData['file']) {
             bubbleFileContent = document.createElement('img');
-            bubbleFileContent.setAttribute('src', bubbleData['file']);
-            bubbleFileContent.classList.add('bubble-content');
+            await bubbleFileContent.setAttribute('src', bubbleData['file']);
+            await bubbleFileContent.classList.add('bubble-content');
             
             bubbleFileContent.style.cursor = 'pointer';
-            bubbleFileContent.addEventListener('click', () => {
+            await bubbleFileContent.addEventListener('click', () => {
                 open(bubbleData['file'], '_blank');
             });
+            await loadingFile(bubbleData['file']);
         }
 
         // 작성 시간

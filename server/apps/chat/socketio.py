@@ -1,6 +1,7 @@
 import base64
 import json
 import os
+import re
 from bs4 import BeautifulSoup
 import markdown
 from markdown.extensions.codehilite import CodeHiliteExtension
@@ -111,14 +112,25 @@ async def send_message(sid, data):
     room = await sync_to_async(Room.objects.get)(id=roomId)
     user = await sync_to_async(User.objects.get)(username=data['user'])
 
-    data['msg'] = str(BeautifulSoup(data['msg']))
+    # data['msg'] = str(BeautifulSoup(data['msg']))
+    print('this is msg...!!!!', data['msg'])
+    print('this is markdown msg...!!!', markdown.markdown(str(data['msg'])))
 
     # 마크다운
-    data['msg'] = markdown.markdown(data['msg'], extensions=[CodeHiliteExtension()], extension_configs={
-    'codehilite': {
-        'pygments_style': 'default'
+    configs = {
+        'markdown.extensions.codehilite': {
+            # 'linenums': True,
+            'pygments_style': 'solarized-light',
+            'wrapcode': True
+        }
     }
-})
+    data['msg'] = markdown.markdown(data['msg'], extensions=['markdown.extensions.fenced_code', 'markdown.extensions.codehilite'], extension_configs=configs)
+    print(data['msg'])
+    # data['msg'] = data['msg'].replace(r'\n', '<br/>')
+    # data['msg'] = data['msg'].replace('\n', '<br/>')
+    data['msg'] = markdown.markdown(data['msg'], extensions=['markdown.extensions.nl2br'])
+    # data['msg'] = re.sub(r'\n', '<br/>', data['msg'])
+    print(data['msg'])
 
     if room.room_type == BLIND_ROOM:
         #익명채팅방
@@ -143,8 +155,13 @@ async def sendCodeSnippet(sid, data):
     room = await sync_to_async(Room.objects.get)(id=roomId)
     user = await sync_to_async(User.objects.get)(username=data['user'])
 
+    print(data['code'])
+    # data['code'] = f"```js\n{data['code']}\n```"
+
     # 마크다운
     data['msg'] = highlight(data['code'], PythonLexer(), HtmlFormatter(style="friendly"))
+
+    print(data['msg'])
     
     if room.room_type == BLIND_ROOM:
         #익명채팅방
@@ -196,10 +213,10 @@ async def send_file(sid, data):
             newBubble = bubble_serializer(newBubble, True, '')
         else:
             newBubble = await bubble.save_msg(room, data)
-            if user.profile_img == None:
-                newBubble = bubble_serializer(newBubble, False, '')
-            else:
+            if bool(user.profile_img):
                 newBubble = bubble_serializer(newBubble, False, user.profile_img.url)
+            else:
+                newBubble = bubble_serializer(newBubble, False, '')
         
         await sio.emit('display_message', newBubble, to=room_id)
     else:

@@ -1,0 +1,30 @@
+{% extends 'startBase.html' %}
+{% load static %}
+
+<!-- 회원 탈퇴 페이지 -->
+
+{% block content %}
+<div class="unregister-container">
+    <div class="unregister-title">
+        <h1>{{ username }}님, 떠나신다니 아쉬워요 😥</h1>
+        <div>탈퇴를 위한 회원 정보를 정확히 입력해주세요</div>
+    </div>
+    <div class="unregister-main-container">
+        <form method="post">
+            {% csrf_token %}
+            <div class="userID-div">
+                <label for="userID">아이디</label>
+                <input type="text" name="userID" required>
+            </div>
+            <div class="userPW-div">
+                <label for="userPW">비밀번호</label>
+                <input type="text" name="userPW" required>
+            </div>
+            <button type="submit">탈퇴하기</button>
+        </form>
+    </div>
+    <div class="unregister-msg">
+        {{ msg }}
+    </div>
+</div>
+{% endblock %}

@@ -34,9 +34,9 @@ def profile_staff(request, channelID):
         
 
     # 테스트 단계에서 프로필 없는 사람들을 위해 예외 처리
-    if not current_user.profile_img:
-        current_user.profile_img = channelDefaultImg
-        current_user.save()
+    # if not current_user.profile_img:
+    #     current_user.profile_img = channelDefaultImg
+    #     current_user.save()
 
     if request.method == 'POST':
         if 'delete' in request.POST:
@@ -106,7 +106,7 @@ def passer_create(request, channelID):
         inputPhone = request.POST['phone']
 
         # 같은 기수에서 같은 이름, 같은 전화번호인 passer가 이미 존재하면 에러페이지로
-        if all_passers.filter(passer_name=inputName, passer_phone=inputPhone).exists:
+        if all_passers.filter(passer_name=inputName, passer_phone=inputPhone).exists():
             errorMsg = '동일한 정보의 합격자가 이미 존재합니다.'
             return render(request, 'error.html', {'errorMsg': errorMsg})
 
@@ -187,17 +187,22 @@ def default_profile(request, channelID):
         return render(request, 'error.html', {'errorMsg': errorMsg})
 
     if request.method == "POST":
-        if request.FILES.get("default_image"):
-            channel.default_image = request.FILES["default_image"]
-            channel.save()
+        if request.POST.get("channelDelete"):
+            channel.delete()
 
-        if request.POST.get("this_level"):
-            channel.this_level = request.POST["this_level"]
-            channel.save()
-        
-        url = '/staff/channel/setting/%s' % (channelID)
+            return redirect("/")
+        else:
+            if request.FILES.get("default_image"):
+                channel.default_image = request.FILES["default_image"]
+                channel.save()
 
-        return redirect(url)
+            if request.POST.get("this_level"):
+                channel.this_level = request.POST["this_level"]
+                channel.save()
+            
+            url = '/staff/channel/setting/%s' % (channelID)
+
+            return redirect(url)
     
     return render(request, 'staff/default_profile.html', {"channel":channel})
 
@@ -263,6 +268,7 @@ def join_delete(request, channelID):
     if request.method == "POST":
         passerId = request.POST.get('passerId')
         passer = Passer.objects.get(id=passerId)
+
         try:
             join = Join.objects.get(passer=passer)
             join.delete() # 동아리 회원이면 회원 삭제
@@ -275,7 +281,6 @@ def join_delete(request, channelID):
         return redirect(url)
 
     return render(request, 'staff/join_delete.html', {"channel":channel, "channelPassers":channelPassers}) # 회원 실명, 기수 참조 가능
-
 
 
 # 즐겨찾기

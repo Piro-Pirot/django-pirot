@@ -47,6 +47,7 @@
 }
 .setting-grid-2 {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0 1rem 0 0;
@@ -58,6 +59,18 @@
 
 .setting-edit-table td {
   padding: 1rem 1.5rem;
+}
+
+.setting-exit-table .main-button {
+  padding: 1rem 4rem 1rem 1rem;
+}
+
+.setting-exit-table .unregister-button {
+  padding: 1rem 1rem 1rem 4rem;
+}
+
+.main-button-img {
+  width: 8rem;
 }
 
 .setting-edit-table.staff td {
