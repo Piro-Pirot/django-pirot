@@ -77,12 +77,12 @@ def login(request):
         if form.is_valid():
             user = form.get_user()
             auth.login(request, user)
-            # 현재 로그인 사용자의 소속 채널
-            myJoinInfo = Join.objects.filter(user__name=request.user.name).first()
-            if not myJoinInfo == None:
-                return redirect(f'/room/{myJoinInfo.passer.channel.id}/main/')
-            else:
+            # 현재 로그인 사용자의 소속 정보 첫 번째
+            myJoinInfo = request.user.join.first()
+            if myJoinInfo == None:
                 return redirect('/')
+            else:
+                return redirect(f'/room/{myJoinInfo.passer.channel.id}/main/')
         else:
             return render(request, 'error.html', { 'errorMsg': '일치하는 로그인 정보가 없습니다.' })
     else:
