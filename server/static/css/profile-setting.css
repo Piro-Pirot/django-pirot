@@ -265,6 +265,25 @@
   background-color: var(--carrot-dark);
 }
 
+.profile-setting-form input[type=text] {
+  border: 1px solid var(--carrot-color);
+  border-radius: 1rem;
+  background-color: white;
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  width: 4rem;
+}
+
+.profile-setting-form button[type=submit] {
+  border: 0;
+  border-radius: 1rem;
+  background-color: var(--carrot-color);
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+  color: var(--alt-fontclr);
+}
 
 
 /* -----운영진 설정----- */
