@@ -4,18 +4,6 @@ from django.db import models
 from server.apps.local_users.models import User
 
 # Create your models here.
-    
-def upload_to_func(instance, filename):
-    prefix = datetime.today().strftime("%Y%m%d")
-    # 디렉토리가 없으면 만들기
-    if not os.path.isdir(f'media/{prefix}/'):
-        os.makedirs(f'media/{prefix}/')
-    
-    file_list = os.listdir(f"media/{prefix}")
-
-    file_name = f'{prefix}/upload{len(file_list)}'
-    extension = os.path.splitext(filename)[-1].lower()
-    return f'{file_name}{extension}'
 
 # 채널
 class Channel(models.Model):
@@ -30,7 +18,17 @@ class Channel(models.Model):
     channel_ok = models.IntegerField(choices=IS_APPROVE, default=0)
     channel_code = models.CharField(max_length=64, null=True, blank=True)
     # 개발자가 제공하는 기본 이미지를 지정
-    
+    def upload_to_func(instance, filename):
+        prefix = datetime.today().strftime("%Y%m%d")
+        # 디렉토리가 없으면 만들기
+        if not os.path.isdir(f'media/{prefix}/'):
+            os.makedirs(f'media/{prefix}/')
+        
+        file_list = os.listdir(f"media/{prefix}")
+
+        file_name = f'{prefix}/upload{len(file_list)}'
+        extension = os.path.splitext(filename)[-1].lower()
+        return f'{file_name}{extension}'
     default_image = models.ImageField(upload_to=upload_to_func, default='default_profile/default_profile.png', blank=True)
     this_level = models.IntegerField(default=0, null=True, blank=True)
 

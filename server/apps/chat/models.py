@@ -6,17 +6,6 @@ from server.apps.local_users.models import User
 from datetime import datetime, timezone
 import os
 
-def upload_to_func(instance, filename):
-    prefix = datetime.today().strftime("%Y%m%d")
-    # 디렉토리가 없으면 만들기
-    if not os.path.isdir(f'media/{prefix}/'):
-        os.makedirs(f'media/{prefix}/')
-    
-    file_list = os.listdir(f"media/{prefix}")
-
-    file_name = f'{prefix}/upload{len(file_list)}'
-    extension = os.path.splitext(filename)[-1].lower()
-    return f'{file_name}{extension}'
 
 # 채팅 방
 class Room(models.Model):
@@ -30,6 +19,18 @@ class Room(models.Model):
     ]
     room_name = models.CharField(max_length=64)
     room_type = models.IntegerField(choices=ROOM_TYPE, default=0)
+    
+    def upload_to_func(instance, filename):
+        prefix = datetime.today().strftime("%Y%m%d")
+        # 디렉토리가 없으면 만들기
+        if not os.path.isdir(f'media/{prefix}/'):
+            os.makedirs(f'media/{prefix}/')
+        
+        file_list = os.listdir(f"media/{prefix}")
+
+        file_name = f'{prefix}/upload{len(file_list)}'
+        extension = os.path.splitext(filename)[-1].lower()
+        return f'{file_name}{extension}'
     
     room_img = models.ImageField(upload_to=upload_to_func, default='default_profile/default_profile.png', blank=True)
 
