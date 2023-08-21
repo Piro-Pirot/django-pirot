@@ -193,89 +193,110 @@ function controlScrollboard() {
 
 
 // 게시판 창 열고 닫기
-if (matchMedia("(min-width: 768px)").matches) {
-    const boardCloseButton = document.getElementById("widthControl");
-    const chatContainer = document.querySelector(".chat-conversation-container");
-    const boardContainer = document.querySelector(".board-container");
+// if (matchMedia("(min-width: 768px)").matches) {
+const boardCloseButton = document.getElementById("widthControl");
+const chatContainer = document.querySelector(".chat-conversation-container");
+const boardContainer = document.querySelector(".board-container");
 
-    const boardHeader = boardContainer.querySelector(".board-header");
-    const boardContents = boardContainer.querySelector(".board").childNodes;
-    const boardInput = boardContainer.querySelector(".post-input")
-    const boardInputContainer = boardContainer.querySelector(".post-input-container");
-    const boardOpenButton = document.getElementById("boardOpen");
+const boardHeader = boardContainer.querySelector(".board-header");
+const boardContents = boardContainer.querySelector(".board").childNodes;
+const boardInput = boardContainer.querySelector(".post-input")
+const boardInputContainer = boardContainer.querySelector(".post-input-container");
+const boardOpenButton = document.getElementById("boardOpen");
 
-    chatContainer.style.transition = '0.3s';
-    boardContainer.style.transition = '0.3s';
+chatContainer.style.transition = '0.3s';
+boardContainer.style.transition = '0.3s';
 
-    boardCloseButton.onclick = boardClose;
-    function boardClose() {
-        boardContainer.style.width = '3rem';
-        chatContainer.style.width = 'calc(100% - 3rem)';
-        boardHeader.innerText = '';
-        for (let i = 0; i < boardContents.length; i++) {
-            if (boardContents[i].nodeName.toLowerCase() == 'div') {
-                boardContents[i].style.display = 'none';
-            };
+boardCloseButton.onclick = boardClose;
+function boardClose() {
+    boardContainer.style.width = '3rem';
+    chatContainer.style.width = 'calc(100% - 3rem)';
+    boardHeader.innerText = '';
+    for (let i = 0; i < boardContents.length; i++) {
+        if (boardContents[i].nodeName.toLowerCase() == 'div') {
+            boardContents[i].style.display = 'none';
         };
-        boardInputContainer.style.display = 'none';
-        boardOpenButton.style.visibility = "visible";
     };
-
-    boardOpenButton.onclick = boardOpen;
-    function boardOpen() {
-        boardContainer.style.width = '18rem';
-        chatContainer.style.width = 'calc(100% - 18rem)';
-        boardHeader.innerText = 'Board';
-        for (let i = 0; i < boardContents.length; i++) {
-            if (boardContents[i].nodeName.toLowerCase() == 'div') {
-                boardContents[i].style.display = 'block';
-            };
-        };
-        boardInputContainer.style.display = 'block';
-        boardOpenButton.style.visibility = "hidden";
-    };
+    boardInputContainer.style.display = 'none';
+    boardOpenButton.style.visibility = "visible";
 }
 
-if (matchMedia("(max-width: 768px)").matches) {
-    const boardCloseButton = document.getElementById("widthControl");
-    const chatContainer = document.querySelector(".chat-conversation-container");
-    const boardContainer = document.querySelector(".board-container");
-
-    const boardHeader = boardContainer.querySelector(".board-header");
-    const boardContents = boardContainer.querySelector(".board").childNodes;
-    const boardInput = boardContainer.querySelector(".post-input")
-    const boardInputContainer = boardContainer.querySelector(".post-input-container");
-    const boardOpenButton = document.getElementById("boardOpen");
-
-    chatContainer.style.transition = '0.3s';
-    boardContainer.style.transition = '0.3s';
-
-    function boardClose() {
-        boardContainer.style.width = '3rem';
-        chatContainer.style.width = '100%';
-        boardHeader.innerText = '';
-        document.querySelector('.btn-send').innerText = 'SEND';
-        for (let i = 0; i < boardContents.length; i++) {
-            if (boardContents[i].nodeName.toLowerCase() == 'div') {
-                boardContents[i].style.display = 'none';
-            };
+boardOpenButton.onclick = boardOpen;
+function boardOpen() {
+    boardContainer.style.width = '18rem';
+    chatContainer.style.width = 'calc(100% - 18rem)';
+    boardHeader.innerText = 'Board';
+    for (let i = 0; i < boardContents.length; i++) {
+        if (boardContents[i].nodeName.toLowerCase() == 'div') {
+            boardContents[i].style.display = 'block';
         };
-        boardInputContainer.style.display = 'none';
-        boardOpenButton.style.visibility = "visible";
     };
-    boardCloseButton.onclick = boardClose;
-    function boardOpen() {
-        boardContainer.style.width = '50%';
-        chatContainer.style.width = '50%';
-        boardHeader.innerText = 'Board';
-        document.querySelector('.btn-send').innerText = '';
-        for (let i = 0; i < boardContents.length; i++) {
-            if (boardContents[i].nodeName.toLowerCase() == 'div') {
-                boardContents[i].style.display = 'block';
-            };
-        };
-        boardInputContainer.style.display = 'block';
-        boardOpenButton.style.visibility = "hidden";
+    boardInputContainer.style.display = 'block';
+    boardOpenButton.style.visibility = "hidden";
+};
+
+//창 줄여졌을 때 게시판 자동으로 닫히기
+window.addEventListener("resize", () => {
+    if (window.innerWidth <= 1000) {
+        boardClose();
+    }
+    else {
+        boardOpen();
     };
-    boardOpenButton.onclick = boardOpen;
-}
+});
+
+//페이지 리로드 됐을 떄 창 크기가 1000px 이하면 접혀있는 상태 유지
+// window.onload = () => {
+//     if (window.innerWidth <= 1000) {
+//         boardClose();
+//     }
+//     else {
+//         boardOpen();
+//     };
+// };
+
+
+
+// if (matchMedia("(max-width: 768px)").matches) {
+//     const boardCloseButton = document.getElementById("widthControl");
+//     const chatContainer = document.querySelector(".chat-conversation-container");
+//     const boardContainer = document.querySelector(".board-container");
+
+//     const boardHeader = boardContainer.querySelector(".board-header");
+//     const boardContents = boardContainer.querySelector(".board").childNodes;
+//     const boardInput = boardContainer.querySelector(".post-input")
+//     const boardInputContainer = boardContainer.querySelector(".post-input-container");
+//     const boardOpenButton = document.getElementById("boardOpen");
+
+//     chatContainer.style.transition = '0.3s';
+//     boardContainer.style.transition = '0.3s';
+
+//     function boardClose() {
+//         boardContainer.style.width = '3rem';
+//         chatContainer.style.width = '100%';
+//         boardHeader.innerText = '';
+//         document.querySelector('.btn-send').innerText = 'SEND';
+//         for (let i = 0; i < boardContents.length; i++) {
+//             if (boardContents[i].nodeName.toLowerCase() == 'div') {
+//                 boardContents[i].style.display = 'none';
+//             };
+//         };
+//         boardInputContainer.style.display = 'none';
+//         boardOpenButton.style.visibility = "visible";
+//     };
+//     boardCloseButton.onclick = boardClose;
+//     function boardOpen() {
+//         boardContainer.style.width = '40%';
+//         chatContainer.style.width = '60%';
+//         boardHeader.innerText = 'Board';
+//         document.querySelector('.btn-send').innerText = '';
+//         for (let i = 0; i < boardContents.length; i++) {
+//             if (boardContents[i].nodeName.toLowerCase() == 'div') {
+//                 boardContents[i].style.display = 'block';
+//             };
+//         };
+//         boardInputContainer.style.display = 'block';
+//         boardOpenButton.style.visibility = "hidden";
+//     };
+//     boardOpenButton.onclick = boardOpen;
+// }

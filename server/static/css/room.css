@@ -434,6 +434,7 @@
     justify-content: space-between;
     align-items: center;
     width: calc(100% - 1rem);
+    position: relative;
 }
 
 .chat-name-content .chat-name-name {
@@ -525,6 +526,49 @@
     }
 }
 
+
+.chat-name-icons-burger {
+    display: none;
+    font-size: 2.2rem;
+    margin-right: 2rem;
+    border-radius: 0.8rem;
+    transition: 0.2s;
+}
+.chat-name-icons-burger > i {
+    cursor: pointer;
+    color: var(--font-color);
+}
+
+#chatBurgerList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.1s;
+    position: absolute;
+    right: 1.5rem;
+    top: 4rem;
+    background-color: #e2e2e2;
+    border-radius: 1rem;
+    padding: 0.5rem 0;
+    z-index: 99;
+}
+
+#chatBurgerList > i {
+    font-size: 2.2rem;
+    margin: 0.5rem;
+    transition: 0.1s;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#chatBurgerList > i:hover {
+    background-color: #cacaca;
+}
+#chatBurgerList > i:first-child {
+    font-size: 1.8rem;
+    padding: 0.3rem;
+}
+
 @media screen and (max-width: 768px) {
     #chat-member-add:active {
         color: var(--carrot-color);
@@ -532,4 +576,52 @@
     #chat-setting:active {
         color: var(--carrot-color);
     }
+
+    .chat-name-content .chat-name-icons {
+        display: none;
+    }
+    .chat-name-icons-burger {
+        display: block;
+    }
+}
+
+.btn-send > i {
+    display: none;
+    color: var(--alt-fontclr);
+}
+
+@media screen and (max-width: 525px) {
+    .btn-send span {
+        display: none;
+    }
+    .btn-send > i {
+        display: block;
+    }
+}
+
+#chat-name-search-mob {
+    outline: none;
+    width: 14rem;
+    height: 2.5rem;
+    border: 2px solid var(--section-bgclr);
+    background-color: var(--carrot-light);
+    border-radius: 2rem;
+    transition: 0.2s;
+    visibility: hidden;
+    opacity: 0;
+    caret-color: var(--alt-color);
+    position: absolute;
+    left: 1rem;
+    color: var(--alt-fontclr);
+    caret: var(--alt-fontclr);
+    padding: 0.2rem 0.8rem;
+}
+
+#chat-name-search-mob:focus {
+    border: 2px solid var(--carrot-color);
+}
+
+#chat-name-search-mob.live {
+    visibility: visible;
+    opacity: 1;
 }
