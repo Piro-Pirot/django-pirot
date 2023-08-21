@@ -1,0 +1,17 @@
+{% extends 'users/unregisterBase.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="unregister-container">
+    <div class="unregister-title">
+        <h1>현재 {{ channel.channel_name }} 채널에 운영진이<br/>{{ request.user.name }}님뿐입니다.</h1>
+    </div>
+    <div class="unregister-main-container">
+       <div>운영진은 반드시 한 명 이상 필요합니다❗</div>
+        <div>탈퇴 전에 <strong>본인을 제외한 한 명 이상의 운영진</strong>을 설정해주세요.</div> 
+    </div>
+    <a href="/staff/staff_authority/{{ channel.id }}/">운영진 설정하러 가기</a>
+</div>
+
+{% endblock %}

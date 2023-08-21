@@ -1,0 +1,18 @@
+{% extends 'users/unregisterBase.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="unregister-container">
+    <div class="unregister-title">
+        <div>현재 {{ channel.channel_name }} 채널에 회원이 {{ request.user.name }}님뿐입니다.</div>
+    </div>
+    <div class="unregister-main-container">
+        <h1>탈퇴를 진행하기 전에 {{ channel.channel_name }} 채널을 삭제하거나<br/>
+             회원을 추가해주세요.</h1>
+        <div>그동안 고생하셨습니다 🥕</div>
+    </div>
+    <a href="/staff/channel/setting/{{ channel.id }}/">채널 관리하러 가기</a>
+</div>
+
+{% endblock %}
