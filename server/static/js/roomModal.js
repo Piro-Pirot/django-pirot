@@ -1,4 +1,4 @@
-const roomAddModal= document.querySelector(".room-add-modal");
+const roomAddModal = document.querySelector(".room-add-modal");
 const roomCreateButton = document.querySelector(".btn-room-create");
 
 
@@ -65,7 +65,7 @@ searchNewFriendInput.addEventListener('input', () => {
 // 모달 닫기
 const roomModalCloseButton = document.querySelector(".room-add-modal #close-btn");
 roomModalCloseButton.addEventListener("click", () => {
-  if(roomAddModal.open) {
+  if (roomAddModal.open) {
     roomAddModal.close();
     roomAddModal.style.opacity = '0';
   }
