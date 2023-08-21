@@ -6,7 +6,17 @@
             <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
                 <div class="btn-room room-{{ room.room.id }}">
                     <div class="room-profile-img">
-                        <!-- img -->
+                        {% for dir_member in room.room.roommember_set.all %}
+                        <!-- 개인채팅방 상대 가져오기 -->
+                        {% if dir_member.user != user %}
+                        {% if dir_member.user.profile_img is None %}
+                        <!-- 개인채팅방 상대의 프로필 정보가 없으면 기본으로 -->
+                        <img src="/media/default_profile/default_profile.png" alt="">
+                        {% else %}
+                        <img src="{{ dir_member.user.profile_img.url }}" alt="">
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
                     </div>
                     {% for member in room.room.roommember_set.all %}
                     {% if member.user != user %}
@@ -28,7 +38,17 @@
             <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
                 <div class="btn-room room-{{ room.room.id }}">
                     <div class="room-profile-img">
-                        <!-- img -->
+                        {% if room.room.room_img is None %}
+                        <!-- 채팅 방의 프로필 정보가 없으면 -->
+                            {% if room.room.channel.default_image is None %}
+                            <!-- 채널의 기본 프로필도 없으면 기본 이미지로 -->
+                            <img src="/media/default_profile/default_profile.png" alt="">
+                            {% else %}
+                            <img src="{{ room.room.channel.default_image.url }}" alt="">
+                            {% endif %}
+                        {% else %}
+                        <img src="{{ room.room.room_img.url }}" alt="">
+                        {% endif %}
                     </div>
                     <div class="room-name">{{ room.room.room_name }}</div>
                     <!-- 미완성의 레드닷... -->
@@ -45,7 +65,17 @@
         <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
             <div class="btn-room room-{{ room.room.id }}">
                 <div class="room-profile-img">
-                    <!-- img -->
+                    {% if room.room.room_img is None %}
+                    <!-- 채팅 방의 프로필 정보가 없으면 -->
+                        {% if room.room.channel.default_image is None %}
+                        <!-- 채널의 기본 프로필도 없으면 기본 이미지로 -->
+                        <img src="/media/default_profile/default_profile.png" alt="">
+                        {% else %}
+                        <img src="{{ room.room.channel.default_image.url }}" alt="">
+                        {% endif %}
+                    {% else %}
+                    <img src="{{ room.room.room_img.url }}" alt="">
+                    {% endif %}
                 </div>
                 <div class="room-name">{{ room.room.room_name }}</div>
                 <!-- 미완성의 레드닷... -->
@@ -73,7 +103,11 @@
                 <li id="{{ join_info.passer.id }}">
                     <div class="btn-friend">
                         <div class="btn-friend-profile-img">
-                            <img src="{{ join_info.user.profile_img }}" alt="">
+                            {% if join_info.user.profile_img is None %}
+                            <img src="/media/default_img/default_image.png" alt="">
+                            {% else %}
+                            <img src="{{ join_info.user.profile_img.url }}" alt="">
+                            {% endif %}
                         </div>
                         <label for="">{{ join_info.passer }}</label>
                         <div class="checkbox-wrapper-30 checkbox">
