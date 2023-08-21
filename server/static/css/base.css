@@ -591,16 +591,18 @@ background-color: var(--carrot-super-light);
 }
 @media screen and (max-width: 768px) {
   .mob-icons {
-    display: block;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    height: 4rem;
+    background-color: var(--iconBar-bgclr);
+    border-top: 1px solid var(--alt-fontclr);
   }
   .mob-icons .mob-icon-bar {
+    width: 100%;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    padding: 1rem;
     background-color: var(--body-bgclr);
   }
   .mob-icons .mob-friend-icon,
@@ -609,6 +611,7 @@ background-color: var(--carrot-super-light);
   .mob-icons #mob-settings {
     font-size: 2rem;
     cursor: pointer;
+    color: var(--alt-fontclr);
   }
   .mob-icons .mob-friend-icon:active,
   .mob-icons .mob-room-icon:active,
@@ -616,7 +619,42 @@ background-color: var(--carrot-super-light);
   .mob-icons #mob-settings:active {
     color: var(--carrot-color);
   }
+
+  .container {
+    height: calc(100vh - 4rem);
+    position: relative;
+  }
+
+  .chat-container,
+  .board-container {
+    height: calc(100vh - 4rem - 6rem);
+  }
+
+  .middle-section-content {
+    height: calc(100% - 12rem);
+  }
+
   .middle-section {
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    bottom: 0;
+    left: -20rem;
+    transition: 0.2s;
+  }
+
+  .middle-section.open {
+    left: 0;
+  }
+
+  #middleCloseOpen {
+    display: none;
+  }
+
+  .chat-section {
+    width: 100vw;
+  }
+  /* .middle-section {
     height: calc(100vh - 10rem);
     width: 100%;
     padding-top: 2rem;
@@ -639,7 +677,7 @@ background-color: var(--carrot-super-light);
   }
   .chat-name-content .chat-name-name {
     font-size: 1rem;
-  }
+  } */
 
   /* 아이콘 바 가로로 */
   .icon-bar {
@@ -650,7 +688,7 @@ background-color: var(--carrot-super-light);
     display: none;
   } */
   /* board 접기 */
-  .board-container {
+  /* .board-container {
     width: 3rem;
     transition: 0.3s;
   }
@@ -662,5 +700,5 @@ background-color: var(--carrot-super-light);
   }
   .boardOpen {
     visibility: visible;
-  }
+  } */
 }
