@@ -1,14 +1,31 @@
-h1 {
-    font-size: 1.7rem;
+.unregister-container h1 {
+    font-size: 2rem;
+}
+
+.unregister-container div {
+    font-size: 1rem;
 }
 
 .unregister-container {
+    text-align: center;
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
 }
 
-form div {
-    font-size: 1.3rem;
+.unregister-title {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+form label {
+    font-size: 1rem;
 }
 
 button {
@@ -19,7 +36,6 @@ button {
     padding: 0 2rem;    
     height: 2.5rem;
     cursor: pointer;
-    color: white;
     box-shadow: 0 1px 1px rgba(0,0,0,0.15),
     0 1px 1px rgba(0,0,0,0.15),
     0 2px 2px rgba(0,0,0,0.15),
