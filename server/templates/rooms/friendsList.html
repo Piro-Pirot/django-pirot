@@ -68,7 +68,7 @@
                 <i id="more" class="ri-more-fill"></i>
             </div>
             <div class="more-form">
-                {% if favorites.join_set.first.user is None %}
+                {% if friend.join_set.first.user is None %}
                 <!-- 가입하지 않은 사용자라면 Ajax POST 방식으로 전화번호를 가져옴 -->
                 <input id="bookmark" type="button" value="즐겨찾기" class="b{{ friend.id }}"></input>
                 <input type="button" value="1:1 채팅하기" class="no-user-btn"></input>

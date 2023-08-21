@@ -287,7 +287,15 @@ async function displayMessage(bubbleData, newTimeFlag) {
         bubbleTime.classList.add('bubble-time');
         bubbleTime.innerText = `${bubbleData['hour']}:${bubbleData['min']}`;
 
-        if(bubbleData['user'] === curUsername) {
+        // 1분이 지났고 내 채팅이 아닐 때 사진 이름 표시
+        if(newTimeFlag && bubbleData['user'] !== curUsername) {
+            if(!!bubbleData['file']) {
+                bubbleContentContainer.appendChild(bubbleFileContent);
+            } else {
+                bubbleContentContainer.appendChild(bubbleContent);
+            }
+            bubbleContentContainer.appendChild(bubbleTime);
+        } else {
             //나의 말풍선일 때
             bubbleContentContainer.appendChild(bubbleTime);
             if(!!bubbleData['file']) {
@@ -295,13 +303,6 @@ async function displayMessage(bubbleData, newTimeFlag) {
             } else {
                 bubbleContentContainer.appendChild(bubbleContent);
             }
-        } else {
-            if(!!bubbleData['file']) {
-                bubbleContentContainer.appendChild(bubbleFileContent);
-            } else {
-                bubbleContentContainer.appendChild(bubbleContent);
-            }
-            bubbleContentContainer.appendChild(bubbleTime);
         }
 
         bubbleContainer.appendChild(bubbleContentContainer);
