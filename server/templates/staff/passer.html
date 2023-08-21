@@ -9,7 +9,7 @@
     <form class="passer-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="text" name="name" placeholder="이름을 입력하세요." required/>
-        <input type="text" name="phone" placeholder="전화번호를 입력하세요." oninput="autoHyphen(this)" required/>
+        <input type="text" name="phone" placeholder="전화번호를 입력하세요." oninput="autoHyphen(this)" maxlength="13" required/>
         <div>
             <input type="submit" name="keepgoing" value="저장 및 계속 추가" />
             <input type="submit" name="save" value="저장 완료" />

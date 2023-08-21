@@ -77,6 +77,10 @@
   margin-left: 2rem;
 }
 
+.unregister-button > a {
+  color: var(--alt-fontclr);
+}
+
 .unregister-button .staff {
   display: flex;
   align-items: center;
@@ -265,6 +269,25 @@
   background-color: var(--carrot-dark);
 }
 
+.profile-setting-form input[type=text] {
+  border: 1px solid var(--carrot-color);
+  border-radius: 1rem;
+  background-color: white;
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  width: 4rem;
+}
+
+.profile-setting-form button[type=submit] {
+  border: 0;
+  border-radius: 1rem;
+  background-color: var(--carrot-color);
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+  color: var(--alt-fontclr);
+}
 
 
 /* -----운영진 설정----- */
@@ -333,17 +356,6 @@
 .staff-menu button:hover {
   background-color: var(--carrot-super-light);
 }
-
-/* .staff-menu button.bottom-line::after {
-  content: '';
-  display: block;
-  width: 10rem;
-  height: 1px;
-  background-color: var(--carrot-super-light);
-  position: absolute;
-  bottom: -1.2rem;
-  left: 2.5rem;
-} */
 
 .staff-container-right {
   width: calc(100% - 20rem);
@@ -523,6 +535,21 @@
   background-color: var(--carrot-dark);
 }
 
+#channelDelete {
+  border: 0;
+  outline: 0;
+  font-size: 1rem;
+  padding: 0.3rem;
+  background-color: rgb(255, 93, 93);
+  border-radius: 0.6rem;
+  color: white;
+  cursor: pointer;
+}
+
+#channelDelete:hover {
+  background-color: rgb(255, 77, 77);
+}
+
 
 /* 합격자 명단 추가 */
 
@@ -671,6 +698,9 @@
 
 .staff-authority form {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 
@@ -785,7 +815,7 @@
 
 @media screen and (max-width: 768px) {
   .staff-container {
-    height: calc(100vh - 6rem - 4.4rem);
+    height: calc(100vh - 6rem - 4rem);
   }
 
   .staff-container-left-mob {
@@ -848,6 +878,77 @@
 .staff-menu-icon span {
   color: var(--font-color);
   font-size: 0.8rem;
+}
+
+@media screen and (max-width: 525px) {
+  .setting-header {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+
+  .passer-gen.staff {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .setting-profile-name {
+    margin: 1rem 0;
+  }
+
+  .profile-setting-form > div {
+    display: flex;
+    transform: scale(0.9);
+  }
+
+  .passer-gen > h2,
+  .passer-gen > div {
+    text-align: center;
+  }
+
+  .gen-form > div {
+    flex-direction: column;
+  }
+
+  .gen-form input[type=text], 
+  .gen-form input[type=submit] {
+    border-radius: 0.8rem;
+  }
+
+  .gen-form input[type=submit] {
+    margin-top: 1rem;
+  }
+
+  .code-create > h2 {
+    font-size: 1.8rem;
+  }
+
+  .code-create > div#code {
+    transform: scale(0.7);
+  }
+
+  .setting-profile-image {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  .authority-container {
+    width: 14rem;
+  }
+  .authority-passer-div {
+    flex-direction: column;
+
+  }
+  .authority-passer-div > div:first-child,
+  .authority-passer-div > div:nth-child(2),
+  .authority-passer-div > div:last-child {
+    width: 100%;
+  }
+
+  .member-delete-list {
+    width: 14rem;
+  }
 }
 
 
