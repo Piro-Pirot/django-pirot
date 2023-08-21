@@ -320,17 +320,10 @@ def enter_room(request, channelId, roomId, type):
     curRoom = Room.objects.get(id=roomId)
     title = curRoom.room_name
     curChannel = Channel.objects.get(id=channelId)
-    
-    # 익명채팅방 닉네임 정보
-    blindroom_nicknames = dict()
-    blindroom_profile_img = dict()
 
     if type == 'main' or type == 'friends':
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
         myBlindRooms = BlindRoomMember.objects.filter(user=request.user, room__channel=curChannel)
-        
-        # 디버깅
-        print(blindroom_nicknames)
         
         # 현재 로그인 사용자가 참여하고 있는 채팅 방
         myRooms = RoomMember.objects.filter(user=request.user, room__channel=curChannel)
@@ -348,6 +341,10 @@ def enter_room(request, channelId, roomId, type):
             print("my_blind_info : ",my_blind_info.profile_img)
         else:
             roomMembers = RoomMember.objects.filter(room=curRoom)
+
+        # 채팅방 잠금인 방
+        my_locked_rooms = Lock.objects.filter(user=request.user)
+        print("my_locked_rooms : ", my_locked_rooms)
 
         # 채팅 방 참여자가 아닌 채널 구성원들
         not_members = []
@@ -417,7 +414,8 @@ def enter_room(request, channelId, roomId, type):
                     'urlType': type,
                     'myChannels': myChannels,
                     'channel_join_list': channel_join_list,
-                    'my_blind_info': my_blind_info
+                    'my_blind_info': my_blind_info,
+                    'my_locked_rooms' : my_locked_rooms
                 }
             )
         
@@ -437,9 +435,13 @@ def setting_blindroom_profile(request):
         
         # is_checked 키가 존재하지 않을 경우, '0'을 디폴트 값으로
         is_checked = request.POST.get('is_checked', '0')
+        # chat_textarea = request.POST.get('chat_textarea')
         if is_checked == '1':
             # 체크된 경우
-            pass
+            Lock.objects.create(
+                user = request.user,
+                room_id = room_id
+            ).save()
         else:
             # 체크되지 않은 경우 처리
             pass
