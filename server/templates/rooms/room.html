@@ -20,6 +20,18 @@
                 {% endif %}
                 <i id="chat-setting" class="ri-settings-3-line"></i>
             </div>
+            <input id="chat-name-search-mob" type="text">
+            <div class="chat-name-icons-burger">
+                <i class="ri-menu-line" id="chatBurger"></i>
+            </div>
+            <div id="chatBurgerList" class="chat-name-icons-list">
+                <i id="chat-search-btn-mob" class="fa-solid fa-magnifying-glass"></i>
+                {% if room.room_type != 2 %}
+                <i id="chat-member-add-mob" class="ri-add-line"></i>
+                {% endif %}
+                <i id="chat-setting-mob" class="ri-settings-3-line"></i>
+            </div>
+
         </div>
     </div>
 </div>
@@ -42,7 +54,10 @@
                         <i class="ri-code-line"></i>
                     </div>
                 </div>
-                <button type="button" class='btn-send' onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
+                <button type="button" class='btn-send' onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">
+                    <span>SEND</span>
+                    <i class="ri-send-plane-fill"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -204,11 +219,14 @@
 
     //채팅방 설정 버튼
     const chatSettingButton = document.getElementById("chat-setting");
+    const chatSettingButtonMob = document.getElementById("chat-setting-mob");
     const chatSettingModal = document.querySelector(".chat-settings-modal");
     chatSettingButton.onclick = () => {
         chatSettingModal.showModal();
         chatSettingModal.style.opacity = '1';
     };
+
+
 
     const chatSettingCloseButton = document.querySelector(".chat-settings-modal #close-btn");
     chatSettingCloseButton.onclick = () => {
@@ -232,10 +250,15 @@
         };
 
     var nicknameInput = document.getElementById("nickname");
-
-    nicknameInput.addEventListener("focus", function() {
+    
+    try {
+        nicknameInput.addEventListener("focus", function() {
         setCaretToEnd(nicknameInput);
     });
+    } catch {
+        console.log("익명채팅방에서만 이름 변경이 가능해요");
+    };
+
 
     // function readURL(input) {
     //     // input.files : 사용자가 선택한 파일들의 목록(파일을 선택하지 않았다면 비어있음)
@@ -249,21 +272,25 @@
     //         document.getElementById('blind_profile').src = "";
     //     } 
     // };
-
     document.addEventListener('DOMContentLoaded', function() {
-        const blindProfileImgFile = document.getElementById('upload_blind_img');
-        blindProfileImgFile.addEventListener('change', (event) => {
-        const selectedFile = event.target.files[0];
-        if (selectedFile) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imgPreview = document.getElementById('blind_profile');
-                imgPreview.src = e.target.result;
-            };
-            reader.readAsDataURL(selectedFile);
-        }
+        try{
+            const blindProfileImgFile = document.getElementById('upload_blind_img');
+            blindProfileImgFile.addEventListener('change', (event) => {
+            const selectedFile = event.target.files[0];
+            if (selectedFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgPreview = document.getElementById('blind_profile');
+                    imgPreview.src = e.target.result;
+                };
+                reader.readAsDataURL(selectedFile);
+            }
         });
+        } catch {
+            console.log("익명채팅방!")
+        };
     });
+
 
 </script>
 

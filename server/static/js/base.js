@@ -210,6 +210,9 @@ window.onload = () => {
   if (window.innerWidth <= 1000) {
       midClose();
       boardClose();
+      if (window.innerWidth <= 768) {
+        chatSection.style.width = '100vw';
+      }
   }
   else {
       midOpen();

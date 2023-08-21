@@ -829,5 +829,11 @@
   font-size: 0.8rem;
 }
 
+@media screen and (max-width: 525px) {
+  .setting-header {
+    font-size: 2rem;
+  }
+}
+
 
 
