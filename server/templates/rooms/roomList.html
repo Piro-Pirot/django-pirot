@@ -65,16 +65,16 @@
         <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
             <div class="btn-room room-{{ room.room.id }}">
                 <div class="room-profile-img">
-                    {% if room.room.room_img is None %}
-                    <!-- 채팅 방의 프로필 정보가 없으면 -->
-                        {% if room.room.channel.default_image is None %}
-                        <!-- 채널의 기본 프로필도 없으면 기본 이미지로 -->
-                        <img src="/media/default_profile/default_profile.png" alt="">
-                        {% else %}
-                        <img src="{{ room.room.channel.default_image.url }}" alt="">
-                        {% endif %}
-                    {% else %}
+                    {% if room.room.room_img %}
+                    <!-- 채팅 방의 프로필 정보가 있으면 -->
                     <img src="{{ room.room.room_img.url }}" alt="">
+                    {% else %}
+                        {% if room.room.channel.default_image %}
+                        <!-- 채널의 기본 프로필도 있으면 채널 기본 이미지로 -->
+                        <img src="{{ room.room.channel.default_image.url }}" alt="">
+                        {% else %}
+                        <img src="/media/default_profile/default_profile.png" alt="">
+                        {% endif %}
                     {% endif %}
                 </div>
                 <div class="room-name">{{ room.room.room_name }}</div>
@@ -103,10 +103,10 @@
                 <li id="{{ join_info.passer.id }}">
                     <div class="btn-friend">
                         <div class="btn-friend-profile-img">
-                            {% if join_info.user.profile_img is None %}
-                            <img src="/media/default_img/default_image.png" alt="">
-                            {% else %}
+                            {% if join_info.user.profile_img %}
                             <img src="{{ join_info.user.profile_img.url }}" alt="">
+                            {% else %}
+                            <img src="/media/default_img/default_image.png" alt="">
                             {% endif %}
                         </div>
                         <label for="">{{ join_info.passer }}</label>

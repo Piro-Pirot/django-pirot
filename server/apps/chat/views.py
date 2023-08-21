@@ -275,6 +275,8 @@ def main_room(request, channelId, type):
                     # 즐겨찾기 대상은 친구 리스트에서 제거
                     myFriends = myFriends.exclude(id=bookmark_info.bookmarked_user.id)
 
+        print(my_favorites)
+
         # 현재 로그인 사용자의 소속 채널
         myJoinInfo = Join.objects.filter(user=request.user)
         for joinInfo in myJoinInfo:

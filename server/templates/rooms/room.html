@@ -124,11 +124,11 @@
             <div class="room-detail-container">
                 <h1 class="modal-title">채팅방 설정</h1>
                 <label for="room-new-img" class="label-room-img">
-                    {% if room.room_img is None %}
+                    {% if room.room_img %}
+                    <img src="{{ room.room_img.url }}" alt="" class="room-img">
+                    {% else %}
                     <!-- 채팅방 이미지가 없으면 기본 이미지 -->
                     <img src="/media/default_image/default_image.png" alt="" class="room-img">
-                    {% else %}
-                    <img src="{{ room.room_img.url }}" alt="" class="room-img">
                     {% endif %}
                 </label>
                 <input type="file" name="room-new-img" id="room-new-img" onchange="readURL(this)">
@@ -251,10 +251,10 @@
                 <li id="{{ notMember.id }}">
                     <div class="btn-friend">
                         <div class="btn-friend-profile-img">
-                            {% if join_info.user.profile_img is None %}
-                            <img src="/media/default_img/default_image.png" alt="">
-                            {% else %}
+                            {% if notMember.join_set.first.user.profile_img %}
                             <img src="{{ notMember.join_set.first.user.profile_img.url }}" alt="">
+                            {% else %}
+                            <img src="/media/default_img/default_image.png" alt="">
                             {% endif %}
                         </div>
                         <label for="">{{ notMember }}</label>
