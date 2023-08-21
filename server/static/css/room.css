@@ -510,7 +510,7 @@
 }
 
 .bubble-content {
-    display: flex;
+    /* display: flex; */
 }
 
 .highlight {

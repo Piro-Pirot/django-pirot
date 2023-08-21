@@ -82,21 +82,21 @@
         </div>
 
         <!-- 채팅방 프로필 사진 & 닉네임 수정(익명채팅방)-->
-        {% if room.room_type == 1 %}
-        <form action="/room/setting_blindroom/" method="post" id="form-setting">
+        <form action="/room/setting_blindroom/" method="post" id="form-setting" enctype="multipart/form-data">
+            {% if room.room_type == 1 %}
             {% csrf_token %}
             <div class="blind-profile-setting">
-                <label for="blindProfileImg">
-                    <div class="blind-profile-img">
-                        <img id="blindImage" src="">
+                <div class="blind-profile-img">
+                    <img id="blind_profile" src="{{ my_blind_info.profile_img.url }}" alt="" />
+                    <div id="imageIcon2">
+                        <label for="upload_blind_img" class="attach-label2"><i class="ri-image-2-fill"></i></label>
+                        <input type="file" name="upload_blind_img" id="upload_blind_img" onchange="readURL(this)" style="display: none" accept="image/*">
                     </div>
-                </label>
-                <input type="file" id="blindProfileImg">
-
+                </div>
                 <div class="blind-name">
                 {% with target_room_id=room.id %}
                     <p>닉네임</p>
-                    <input id="nickname" type='text' name="nickname" value="{{ blindroom_nicknames|get_key:target_room_id }}">
+                    <input id="nickname" type='text' name="nickname" value="{{ my_blind_info.nickname }}">
                     <i class="ri-edit-line"></i>
                 {% endwith %}
                 </div>
@@ -106,21 +106,21 @@
             <input type="hidden" name="roomId" id="" value="{{ room.id }}">
             <input type="hidden" name="channelId" id="" value="{{ channel.id }}">
             <!-- <button type='submit'>수정 완료</button> -->
-        </form>
-        {% endif %}
+            {% endif %}
 
-        <div class="alarm-select">
-            <div class="alarm-title">
-                채팅방 잠금
+            <div class="alarm-select">
+                <div class="alarm-title">
+                    채팅방 잠금
+                </div>
+                <div id="chat-lock-toggle" class="checkbox-wrapper-22 alarm-toggle">
+                    <label class="switch" for="checkbox444">
+                        <input type="checkbox" id="checkbox444" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
             </div>
-            <div id="chat-lock-toggle" class="checkbox-wrapper-22 alarm-toggle">
-                <label class="switch" for="checkbox444">
-                    <input type="checkbox" id="checkbox444" />
-                    <div class="slider round"></div>
-                </label>
-            </div>
-        </div>
-        <input id="settings-save" type="button" value="저장하기">
+            <button id="settings-save" type="submit">저장하기</button>
+        </form>
 
         <form action="/room/exit_room/" method="post" id="form-exit">
             {% csrf_token %}
@@ -231,22 +231,18 @@
         setCaretToEnd(nicknameInput);
     });
 
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const blindProfileImgFile = document.getElementById('blindProfileImg');
-        blindProfileImgFile.addEventListener('change', (event) => {
-        const selectedFile = event.target.files[0];
-        if (selectedFile) {
+    function readURL(input) {
+        // input.files : 사용자가 선택한 파일들의 목록(파일을 선택하지 않았다면 비어있음)
+        if(input.files && input.files[0]){
             const reader = new FileReader();
             reader.onload = function(e) {
-                const imgPreview = document.getElementById('blindImage');
-                imgPreview.src = e.target.result;
+                document.getElementById('blind_profile').src = e.target.result;
             };
-            reader.readAsDataURL(selectedFile);
-        }
-        });
-    });
-
+            reader.readAsDataURL(input.files[0]);
+        } else{
+            document.getElementById('blind_profile').src = "";
+        } 
+    }
 
 </script>
 
