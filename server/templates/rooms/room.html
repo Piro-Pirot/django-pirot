@@ -31,10 +31,11 @@
         <div class="conversation"></div>
         <div class="chat-input">
             <div class="chat-input-container">
-                {% if room in my_locked_rooms %}
-                <textarea class="input" id="chat_input_textarea" disabled></textarea>
+                <!-- 채팅방 잠금일때 입력안되도록 -->
+                {% if room.id in my_locked_rooms %}
+                    <textarea class="input" id="chat_input_textarea" readonly>현재 채팅방 잠금 상태입니다.</textarea>
                 {% else %}
-                <textarea class="input" id="chat_input_textarea"></textarea>
+                    <textarea class="input" id="chat_input_textarea"></textarea>
                 {% endif %}
                 <div class="code-input" id="editor-container"></div>
                 <div class="chat-icons">                
@@ -119,16 +120,16 @@
                     채팅방 잠금
                 </div>
                 <div id="chat-lock-toggle" class="checkbox-wrapper-22 alarm-toggle">
-                    {% if room in my_locked_rooms %}
-                    <label class="switch" for="checkbox444">
-                        <input type="checkbox" id="checkbox444" checked/>
-                        <div class="slider round"></div>
-                    </label>
+                    {% if room.id in my_locked_rooms %}
+                        <label class="switch" for="checkbox444">
+                            <input type="checkbox" id="checkbox444" checked/>
+                            <div class="slider round"></div>
+                        </label>
                     {% else %}
-                    <label class="switch" for="checkbox444">
-                        <input type="checkbox" id="checkbox444"/>
-                        <div class="slider round"></div>
-                    </label>
+                        <label class="switch" for="checkbox444">
+                            <input type="checkbox" id="checkbox444"/>
+                            <div class="slider round"></div>
+                        </label>
                     {% endif %}
                 </div>
             </div>

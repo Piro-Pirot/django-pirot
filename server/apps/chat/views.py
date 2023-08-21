@@ -343,8 +343,10 @@ def enter_room(request, channelId, roomId, type):
             roomMembers = RoomMember.objects.filter(room=curRoom)
 
         # 채팅방 잠금인 방
-        my_locked_rooms = Lock.objects.filter(user=request.user)
-        print("my_locked_rooms : ", my_locked_rooms)
+        my_locked = Lock.objects.filter(user=request.user)
+        print("내 Lock object들 : ", my_locked)
+        my_locked_rooms = my_locked.values_list('room_id', flat=True)
+        print('내 Locked rooms : ', my_locked_rooms)
 
         # 채팅 방 참여자가 아닌 채널 구성원들
         not_members = []
@@ -433,20 +435,25 @@ def setting_blindroom_profile(request):
         room_id = request.POST['roomId']
         channel_id = request.POST['channelId']
         curRoom = Room.objects.get(id=room_id)
+        my_locked = Lock.objects.filter(user=request.user)
+        my_locked_rooms = my_locked.values_list('room_id', flat=True)
         
         # is_checked 키가 존재하지 않을 경우, '0'을 디폴트 값으로
         is_checked = request.POST.get('is_checked', '0')
         # chat_textarea = request.POST.get('chat_textarea')
         if is_checked == '1':
             # 체크된 경우
-            Lock.objects.create(
-                user = request.user,
-                room_id = curRoom
-            ).save()
-        else:
+            if room_id in my_locked_rooms:
+                pass
+            else:
+                Lock.objects.create(user = request.user,room_id = curRoom).save()
+        elif is_checked =='0':
             # 체크되지 않은 경우 처리
-            pass
-        
+            if room_id in my_locked_rooms:
+                Lock.objects.get(user=request.user, room_id=curRoom).delete()
+            else:
+                pass
+            
         Member = BlindRoomMember.objects.get(user=request.user, room=room_id)
         fixed_nickname = request.POST.get('nickname')
         

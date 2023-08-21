@@ -101,21 +101,3 @@ codeSnippet.onclick = () => {
   codeInput.classList.toggle("active");
   textInput.classList.toggle("inactive");
 };
-
-const checkbox = document.getElementById('checkbox444');
-checkbox.addEventListener("click", () => {
-  console.log("체크박스 체크여부 : ", checkbox.checked);
-  if(checkbox.checked){
-    //textarea 잠금은 여기서 하는게 아니라 태그 상에서 if문으로 해서, default로 바로 지정을 해줘야할 듯
-    chat_textarea.disabled = true;
-    document.getElementById('is_checked').value = '1';
-    console.log("is_checked : ", document.getElementById('is_checked').value);
-  } else{
-    chat_textarea.disabled = false;
-    document.getElementById('is_checked').value = '0';
-    console.log("is_checked : ", document.getElementById('is_checked').value);
-  }
-  // 체크여부를 hidden input에 저장
-  // document.getElementById('is_checked_input').value = is_checked ? '1' : '0';
-  //document.getElementById('chat_textarea').value = chat_textarea.disabled ? true : false;
-});
