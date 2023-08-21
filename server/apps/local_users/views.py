@@ -230,16 +230,16 @@ def sms_sender(request):
 def sms_check(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        # user = User.objects.filter(phone_number=data['hypen_phone_num'])
+        user = User.objects.filter(phone_number=data['hypen_phone_num'])
         # 아이디 중복검사하기!
-        # if len(user) == 1:
-        #     return JsonResponse({'is_auth': False})
-        # else:
-        verification = SMS_Auth.objects.get(phone_num=data['phone_num'])
-        if verification.auth_num == data['auth_num']:
-            return JsonResponse({'is_auth': True})
+        if len(user) == 1:
+            return JsonResponse({'is_auth': False})
         else:
-            return JsonResponse({'is_auth' : False})
+            verification = SMS_Auth.objects.get(phone_num=data['phone_num'])
+            if verification.auth_num == data['auth_num']:
+                return JsonResponse({'is_auth': True})
+            else:
+                return JsonResponse({'is_auth' : False})
         
             
 
