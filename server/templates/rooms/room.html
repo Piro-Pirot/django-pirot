@@ -258,6 +258,21 @@
         } 
     }
 
+    const checkbox = document.getElementById('checkbox444');
+    checkbox.addEventListener("click", function(){
+        let is_checked = document.getElementById('is_checked');
+        console.log("체크박스 체크여부 : ", checkbox.checked);
+        if(checkbox.checked){
+            document.getElementById('is_checked').value = '1';
+            console.log("is_checked : ", document.getElementById('is_checked').value);
+        } else{
+            document.getElementById('is_checked').value = '0';
+            console.log("is_checked : ", document.getElementById('is_checked').value);
+        }
+        // document.getElementById('is_checked_input').value = is_checked ? '1' : '0';
+        //document.getElementById('chat_textarea').value = chat_textarea.disabled ? true : false;
+    });
+
 </script>
 
 <script src="{% static 'js/chat/socketClient.js' %}"></script>
