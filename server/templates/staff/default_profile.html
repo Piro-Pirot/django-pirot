@@ -20,11 +20,11 @@
                 <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="this_level" placeholder="현재 기수를 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
             {% endif %}
             <input type="submit" value="기수 입력" />
-            <i id="genInfo" class="ri-information-line"></i>
+            <!-- <i id="genInfo" class="ri-information-line"></i>
             <div class="gen-form-info">
                 <span>설정하신 현재 기수의 합격자와</span> <br>
                 <span>운영진 권한을 관리할 수 있습니다.</span>
-            </div>
+            </div> -->
         </div>
     </form>
     <form class="profile-setting-form" method="post" enctype="multipart/form-data">
@@ -37,7 +37,7 @@
     <form class="delete-channel-form" id="delete-channel-form" method="post">
         {% csrf_token %}
         <input type="hidden" name="channelDelete" value="true">
-        <input type="button" onclick="onclickDeleteChannel()" value="채널 삭제" />
+        <input type="button" onclick="onclickDeleteChannel()" value="채널 삭제" id="channelDelete"/>
     </form>
 </div>
 

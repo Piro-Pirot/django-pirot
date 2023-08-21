@@ -77,6 +77,10 @@
   margin-left: 2rem;
 }
 
+.unregister-button > a {
+  color: var(--alt-fontclr);
+}
+
 .unregister-button .staff {
   display: flex;
   align-items: center;
@@ -353,17 +357,6 @@
   background-color: var(--carrot-super-light);
 }
 
-/* .staff-menu button.bottom-line::after {
-  content: '';
-  display: block;
-  width: 10rem;
-  height: 1px;
-  background-color: var(--carrot-super-light);
-  position: absolute;
-  bottom: -1.2rem;
-  left: 2.5rem;
-} */
-
 .staff-container-right {
   width: calc(100% - 20rem);
   display: flex;
@@ -540,6 +533,21 @@
 }
 .gen-form input[type=submit]:hover {
   background-color: var(--carrot-dark);
+}
+
+#channelDelete {
+  border: 0;
+  outline: 0;
+  font-size: 1rem;
+  padding: 0.3rem;
+  background-color: rgb(255, 93, 93);
+  border-radius: 0.6rem;
+  color: white;
+  cursor: pointer;
+}
+
+#channelDelete:hover {
+  background-color: rgb(255, 77, 77);
 }
 
 
