@@ -138,7 +138,8 @@ def create_group_room(request, channelId):
                 user = request.user,
                 room = new_room,
                 nickname = f'{fake_korean_first()} {fake_korean_second()}',
-                profile_img = default_img
+                profile_img = default_img,
+                is_room_owner = True
             )
             new_member_user.save()
             BlindBubble.objects.create(
@@ -153,7 +154,8 @@ def create_group_room(request, channelId):
         else:
             RoomMember.objects.create(
                 user = request.user,
-                room = new_room
+                room = new_room,
+                is_room_owner = True
             ).save()
             Bubble.objects.create(
                 user = request.user,
@@ -178,7 +180,7 @@ def exit_room(request):
             BlindRoomMember.objects.get(user=request.user, room=cur_room).delete()
             # 채팅 방에 아무도 없으면 채팅 방 삭제
             try:
-                BlindRoomMember.objects.filter(room=cur_room).first()
+                BlindRoomMember.objects.get(room=cur_room)
             except BlindRoomMember.DoesNotExist:
                 cur_room.delete()
         else:
@@ -339,8 +341,9 @@ def enter_room(request, channelId, roomId, type):
         myPassInfo = Passer.objects.filter(passer_name=request.user.name, channel=curChannel).last()
         # 현재 로그인 사용자의 채널 구성원들
         myFriends = Passer.objects.filter(channel=curChannel).exclude(id=myPassInfo.id).order_by('-level', 'passer_name')
+
         my_blind_info = ''
-        
+
         if curRoom.room_type == BLIND_ROOM:
             #익명채팅방
             roomMembers = BlindRoomMember.objects.filter(room=curRoom)
@@ -485,7 +488,25 @@ def setting_blindroom_profile(request):
         
         return redirect(f"/room/{channel_id}/{room_id}/main/")
     return render(request, 'error.html', {'errorMsg': '잘못된 접근입니다.'})
+
+
+# 채팅방 개설자가 채팅방 정보 수정
+def update_room_settings(request, channel_id, room_id):
+    if request.method == 'POST':
+        new_img = request.FILES['room-new-img']
+        new_name = request.POST['room-new-name']
+        
+        cur_room = Room.objects.get(id=room_id)
+        cur_room.room_img = new_img
+        cur_room.room_name = new_name
+        cur_room.save()
+
+        return redirect(f'/room/{channel_id}/{room_id}/main/')
     
+    return render(request, 'error.html', {'errorMsg': '잘못된 접근입니다.'})
+
+
+
 
 # 채팅방 검색
 def search_rooms_ajax(request):
