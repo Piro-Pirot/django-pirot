@@ -17,20 +17,20 @@ socket.on('display_message', async (data) => {
     data = JSON.parse(data);
     console.log(data);
     let offsetH = 0;
-    if(data['year'] == lastYear && data['month'] == lastMonth && data['day'] == lastDate && data['hour'] == lastHour && data['min'] == lastMin && data['user__name'] == lastSender && lastBubbleType == CHAT) {
+    if(data['year'] == lastYear && data['month'] == lastMonth && data['day'] == lastDate && data['hour'] == lastHour && data['min'] == lastMin && data['user'] == lastSender && lastBubbleType == CHAT) {
         // 마지막 말풍선과 시간이 같고 보낸 사람이 같고 마지막 말풍선이 CHAT일 때 마지막 말풍선의 시간을 지움
         offsetH = await displayMessage(data, false);
     } else {
         offsetH = await displayMessage(data, true);
-        lastHour = data['hour'];
-        lastMin = data['min'];
-        lastSender = data['user__name'];
-        lastBubbleType = data['is_notice'];
-
-        lastYear = data['year'];
-        lastMonth = data['month'];
-        lastDate = data['day'];
     }
+    lastHour = data['hour'];
+    lastMin = data['min'];
+    lastSender = data['user'];
+    lastBubbleType = data['is_notice'];
+    
+    lastYear = data['year'];
+    lastMonth = data['month'];
+    lastDate = data['day'];
     console.log('offsetH is ...', offsetH);
     // console.log('conv height is...', conversationSection.scrollHeight);
     // console.log('conv top is...', conversationSection.scrollTop);
@@ -196,9 +196,11 @@ async function displayMessage(bubbleData, newTimeFlag) {
         bubbleDiv.appendChild(bubbleContainer);
     } else {
         // 1분이 지나지 않았다면 직전 말풍선의 시간을 제거
-        if(!newTimeFlag) {
+        if(!newTimeFlag && lastSender === bubbleData['user']) {
             try {
-                let lastTimeTag = document.querySelector('.conversation');
+                // 마지막에서 두 번째 요소를 가져옴 (페이지 리로딩 시 처음 쌓은 말풍선)
+                let lastTimeTag = document.querySelector('.conversation').childNodes;
+                lastTimeTag = lastTimeTag[lastTimeTag.length - 1];
                 lastTimeTag.lastElementChild.querySelector('.bubble-time').remove();
             } catch {
                 console.log('first message');
@@ -287,8 +289,8 @@ async function displayMessage(bubbleData, newTimeFlag) {
         bubbleTime.classList.add('bubble-time');
         bubbleTime.innerText = `${bubbleData['hour']}:${bubbleData['min']}`;
 
-        // 1분이 지났고 내 채팅이 아닐 때 사진 이름 표시
-        if(newTimeFlag && bubbleData['user'] !== curUsername) {
+        // 남의 채팅일 때
+        if(bubbleData['user'] !== curUsername) {
             if(!!bubbleData['file']) {
                 bubbleContentContainer.appendChild(bubbleFileContent);
             } else {
