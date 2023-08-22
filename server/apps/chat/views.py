@@ -1,4 +1,4 @@
-import json, datetime
+import json
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from .models import *
@@ -15,6 +15,7 @@ from django.db.models import Q, F
 from bs4 import BeautifulSoup
 
 from server.apps.channels.searchHangul import *
+from datetime import datetime
 
 # Create your views here.
 
@@ -477,8 +478,8 @@ def setting_blindroom_profile(request):
             if 'upload_blind_img' in request.FILES:
                 fixed_profile_img = request.FILES.get('upload_blind_img')
                 print('fixed_profile_img : ', fixed_profile_img)
-                
-                today = datetime.today().strftime("%Y%m%d")
+
+                today = datetime.today().strftime('%Y%m%d')
 
                 # 디렉토리가 없으면 만들기
                 if not os.path.isdir(f'media/{today}/'):
