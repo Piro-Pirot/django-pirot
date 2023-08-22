@@ -184,3 +184,15 @@ a:hover, a:active {
   border-collapse: separate;
   
 }
+
+.main-section-demo > img,
+.ui-section-demo > img,
+.md-section-small-demo > img,
+.md-section-demo-small > img  {
+  border-radius: 0.5rem;
+}
+
+.ui-section-demo > img,
+.md-section-small-demo > img {
+  width: 100%;
+}

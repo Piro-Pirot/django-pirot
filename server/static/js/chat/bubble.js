@@ -1,4 +1,6 @@
 /* 전송 시 스크롤 제어 */
+let totalH = 0;
+
 conversationSection = document.querySelector('.conversation');
 
 function controlScroll() {
@@ -9,6 +11,10 @@ function calcScroll() {
     // 전체 스크롤 크기 == 내 현재 위치이면 맨 아래에 위치
     return conversationSection.scrollHeight - conversationSection.scrollTop;
 }
+
+conversationSection.addEventListener('scroll', () => {
+    console.log(conversationSection.scrollTop);
+})
 
 // 말풍선 데이터를 Ajax 방식으로 받아오기
 // 장고 쿼리셋 -> json -> html -> 자바스크립트 딕셔너리 과정이 너무 복잡해서
@@ -49,6 +55,7 @@ let lastBubbleType = CHAT;
 let lastYear = 0;
 let lastMonth = 0;
 let lastDate = 0;
+
 
 function isSameWithNext(thisBubble, nextBubble) {
     if((thisBubble['year'] == nextBubble['year']
@@ -232,19 +239,25 @@ async function createBubble(bubbleData, timeFlag, profileFlag) {
         // 파일을 첨부했다면
 
         const loadFile = (fileUrl) => {
-            const myImage = new Image();
-            myImage.src = fileUrl;
             return new Promise((resolve)=>{
-                myImage.onload = () => resolve(myImage)
+                const myImage = new Image();
+                myImage.onload = () => resolve(myImage.height)
                 console.log('here');
+                myImage.src = fileUrl;
             })
         }
-        
-        const loadingFile = async (fileUrl) => {
-            await loadFile(fileUrl);
+        async function loadingFile(imageUrl) {
+            console.log('height', await loadFile(imageUrl));
+            totalH = await loadFile(imageUrl);
         }
+        
+        // const loadingFile = async (fileUrl) => {
+        //     await loadFile(fileUrl);
+        // }
 
         console.log(bubbleData['file']);
+        console.log('height...', conversationSection.scrollHeight);
+
         let bubbleFileContainer = '';
         let bubbleFileContent = '';
         if(!!bubbleData['file']) {
@@ -282,7 +295,11 @@ async function createBubble(bubbleData, timeFlag, profileFlag) {
                 bubbleContentContainer.appendChild(bubbleTime);
             }
         } else {
-            bubbleContentContainer.appendChild(bubbleContent);
+            if(!!bubbleData['file']) {
+                bubbleContentContainer.appendChild(bubbleFileContent);
+            } else {
+                bubbleContentContainer.appendChild(bubbleContent);
+            }
         }
 
         bubbleContainer.appendChild(bubbleContentContainer);
