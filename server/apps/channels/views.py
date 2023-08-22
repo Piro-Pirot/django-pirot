@@ -251,7 +251,7 @@ def default_profile(request, channelID):
 # 운영진 권한 설정
 def staff_authority(request, channelID):
     channel = Channel.objects.get(id=channelID)
-    thisjoins = Join.objects.filter(passer__channel=channel) # 얘를 쓴 이유가 처음에 뭐였을까? 아.. User 모델이 여기에만 연결되어 있음(고유성)
+    thisjoins = Join.objects.filter(passer__channel=channel)
     staffs = Staff.objects.filter(channel=channel)
     staffPassers = staffs.only('user')
     staffPassers = list(staffPassers.values_list('user__username', flat=True))
@@ -264,10 +264,7 @@ def staff_authority(request, channelID):
         return render(request, 'error.html', {'errorMsg': errorMsg})
 
     # 현재 기수를 설정하지 않은 경우에는 전체 회원을 불러오기
-    if channel.this_level:
-        thislevelPassers = Passer.objects.filter(channel=channel, level=channel.this_level)
-    else:
-        thislevelPassers = Passer.objects.filter(channel=channel)
+    thisPassers = Passer.objects.filter(channel=channel)
 
     # 원래 저장 상태 불러오기
 
@@ -276,7 +273,7 @@ def staff_authority(request, channelID):
             staffs.delete() # 아무것도 선택하지 않는 경우는 안 됨
             for checked in request.POST.getlist('checked'):
                 name, phone = checked.split(' ')
-                passerObj = thislevelPassers.get(passer_name=name, passer_phone=phone)
+                passerObj = thisPassers.get(passer_name=name, passer_phone=phone)
                 userObj = thisjoins.get(passer=passerObj).user
                 if staffs.filter(user=userObj).count() == 0:
                     newStaff = Staff.objects.create(
@@ -290,7 +287,7 @@ def staff_authority(request, channelID):
         return redirect(url)
 
 
-    return render(request, 'staff/staff_authority.html', {"channel":channel, "staffs":staffPassers, "thisjoins":thisjoins, "thislevelPassers":thislevelPassers})
+    return render(request, 'staff/staff_authority.html', {"channel":channel, "staffs":staffPassers, "thisjoins":thisjoins})
 
 
 # 회원 삭제
