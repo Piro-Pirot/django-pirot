@@ -251,11 +251,13 @@
                 <li id="{{ notMember.id }}">
                     <div class="btn-friend">
                         <div class="btn-friend-profile-img">
-                            {% if notMember.join_set.first.user.profile_img %}
-                            <img src="{{ notMember.join_set.first.user.profile_img.url }}" alt="">
+                            {% with notMember.join_set.all|first as notMemberJoin %}
+                            {% if notMemberJoin.user.profile_img %}
+                            <img src="{{ notMemberJoin.user.profile_img.url }}" alt="">
                             {% else %}
                             <img src="/media/default_img/default_image.png" alt="">
                             {% endif %}
+                            {% endwith %}
                         </div>
                         <label for="">{{ notMember }}</label>
                         <div class="checkbox-wrapper-30 checkbox">

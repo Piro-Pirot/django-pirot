@@ -32,25 +32,27 @@
       <div class="nav-right">
         <!-- 로그인이 된 경우 -->
         {% if user.is_authenticated %} 
-          <!-- 그 중 가입된 첫 번째 채널이 없는 경우 -->
-          {% if myJoinInfo.first == None %}
-          <div id="start" class="nav-right-item login-btn">
-            <a href="/staff/channel/">
-              <input type="button" value="시작하기">
-            </a>
-          </div>
+          {% if myJoinInfo.all|first %}
           <!-- 첫 번째 채널이 있는 경우 -->
-          {% else %}
           <div id="start" class="nav-right-item login-btn">
             <a href="/staff/channel/">
               <input type="button" value="새 채널 참여하기">
             </a>
           </div>
-          <a href="/room/{{ myJoinInfo.first.passer.channel.id }}/friends/">
+          {% with myJoinInfo.all|first as myJoinInfoFirst %}
+          <a href="/room/{{ myJoinInfoFirst.passer.channel.id }}/friends/">
             <div id="enter" class="nav-right-item login-btn">
               채팅방 들어가기
             </div>
           </a>
+          {% endwith %}
+          {% else %}
+          <!-- 그 중 가입된 첫 번째 채널이 없는 경우 -->
+          <div id="start" class="nav-right-item login-btn">
+            <a href="/staff/channel/">
+              <input type="button" value="시작하기">
+            </a>
+          </div>
           {% endif %}
         <!-- 로그인이 안 된 경우 -->
         {% else %}
@@ -441,11 +443,13 @@
         <i id="slideClose" class="ri-close-line"></i>
         <div class="slide-menu-items">
           {% if user.is_authenticated %} 
-            {% if myJoinInfo.first == None %}
-            <a href="/staff/channel/"><div>시작하기</div></a>
-            {% else %}
+            {% if myJoinInfo.all|first %}
             <a href="/staff/channel/"><div>새 채널 참여하기</div></a>
-            <a href="/room/{{ myJoinInfo.first.passer.channel.id }}/friends/"><div>채팅방 들어가기</div></a>
+            {% with myJoinInfo.all|first as myJoinInfoFirst %}
+            <a href="/room/{{ myJoinInfoFirst.passer.channel.id }}/friends/"><div>채팅방 들어가기</div></a>
+            {% endwith %}
+            {% else %}
+            <a href="/staff/channel/"><div>시작하기</div></a>
             {% endif %}
           {% else %}
           <div id="mobile-login">로그인</div>
