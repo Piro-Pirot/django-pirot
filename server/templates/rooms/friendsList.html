@@ -54,7 +54,7 @@
             <div class="btn-friend-profile-img">
                 {% with friend.join_set.all|first as friendJoin %}
                 {% if friendJoin.user %}
-                <img src="/media/{{ friend.join_setJoin.profile_img }}" alt="">
+                <img src="/media/{{ friendJoin.profile_img }}" alt="">
                 {% else %}
                 <!-- 가입되지 않아 프로필 이미지가 없는 경우 -->
                 <img src="/media/default_profile/default_profile.png" alt="">
