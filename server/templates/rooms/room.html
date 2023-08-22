@@ -119,7 +119,7 @@
 <dialog class="modal modal-room-setting">
     <i id="close-btn" class="ri-close-fill"></i>
     <div class="modal-content">
-        <form action="/room/update_room_settings/{{ channel.id }}/{{ room.id }}/" method="post" enctype="multipart/form-data" accept="image/*">
+        <form action="/room/update_room_settings/{{ channel.id }}/{{ room.id }}/" method="post" enctype="multipart/form-data" accept="image/*" class='form-edit-room'>
             {% csrf_token %}
             <div class="room-detail-container">
                 <h1 class="modal-title">채팅방 설정</h1>
@@ -133,7 +133,7 @@
                 </label>
                 <input type="file" name="room-new-img" id="room-new-img" onchange="readURL(this)">
                 <div class="room-name-container">
-                    <input type="text" name='room-new-name' class="edit-room-name" value="{{ room.room_name }}" disabled>
+                    <input type="text" name='room-new-name' class="edit-room-name" value="{{ room.room_name }}">
                     <i class="ri-edit-line"></i>
                 </div>
                 <button id="settings-save">저장</button>
@@ -251,11 +251,13 @@
                 <li id="{{ notMember.id }}">
                     <div class="btn-friend">
                         <div class="btn-friend-profile-img">
-                            {% if notMember.join_set.first.user.profile_img %}
-                            <img src="{{ notMember.join_set.first.user.profile_img.url }}" alt="">
+                            {% with notMember.join_set.all|first as notMemberJoin %}
+                            {% if notMemberJoin.user.profile_img %}
+                            <img src="{{ notMemberJoin.user.profile_img.url }}" alt="">
                             {% else %}
                             <img src="/media/default_img/default_image.png" alt="">
                             {% endif %}
+                            {% endwith %}
                         </div>
                         <label for="">{{ notMember }}</label>
                         <div class="checkbox-wrapper-30 checkbox">

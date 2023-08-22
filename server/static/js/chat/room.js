@@ -273,13 +273,8 @@ try {
     const btnEditRoomName = document.querySelector('.room-name-container .ri-edit-line');
     const inputRoomName = document.querySelector('.edit-room-name');
     btnEditRoomName.onclick = () => {
-        if (inputRoomName.disabled == true) {
-            inputRoomName.disabled = false;
-            inputRoomName.focus();
-            inputRoomName.select();
-        } else {
-            inputRoomName.disabled = true;
-        }
+        inputRoomName.focus();
+        inputRoomName.select();
     }
 
     /* 사진 미리보기 */
