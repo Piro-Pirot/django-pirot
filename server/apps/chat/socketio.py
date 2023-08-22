@@ -124,7 +124,7 @@ async def send_message(sid, data):
             'wrapcode': True
         }
     }
-    data['msg'] = markdown.markdown(data['msg'], extensions=['markdown.extensions.fenced_code', 'markdown.extensions.codehilite'], extension_configs=configs)
+    data['msg'] = markdown.markdown(data['msg'], extensions=['pymdownx.emoji', 'markdown.extensions.fenced_code', 'markdown.extensions.codehilite'], extension_configs=configs)
     print(data['msg'])
     # data['msg'] = data['msg'].replace(r'\n', '<br/>')
     # data['msg'] = data['msg'].replace('\n', '<br/>')
