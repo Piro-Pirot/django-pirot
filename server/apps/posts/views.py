@@ -1,130 +1,155 @@
-from django.shortcuts import render
-from .models import Post, Happy, Sad
-import json
+import json, datetime
+from bs4 import BeautifulSoup
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.utils import timezone
+from django.shortcuts import redirect, render
+from asgiref.sync import sync_to_async
+from .models import Post, Happy, Sad, User, Room
 
-# 새 게시글 버튼 누르면 작성 창 등장 -> url : /create
-# 작성 버튼 누르면 게시글 CREATE
-# request : room_id, text
-# def post_create(request):
-    # req = json.loads(request.body)
-    # room_id = req['room_id']
-    # text = req['text']
-    # user_id = request.user.id # 현재 로그인한 유저의 id
+#DB에 게시글 저장
+async def save_post(room, data):
+    curUserObj = await sync_to_async(User.objects.get)(username=data['user'])
 
-    # if text:
-    #     post = Post.objects.create(
-    #         user_id = user_id,
-    #         rood_id = room_id,
-    #         content = text,
-    #         created_at = timezone.now(),
-    #     )
-    #     post.save()
+    newPost = await sync_to_async(Post.objects.create)(
+        content = data['postInput'],
+        user = curUserObj,
+        room = room,
+    )
+    await sync_to_async(newPost.save)()
 
-    #     return JsonResponse({'post':post})
+    HappyCount = await sync_to_async(Happy.objects.filter(post__id=newPost.id).count)()
+    SadCount = await sync_to_async(Sad.objects.filter(post__id=newPost.id).count)()
 
+    return newPost, HappyCount, SadCount
 
-# 삭제 버튼 누르면 게시글 DELETE
-# '삭제되었습니다!' alert로 띄우고 자동 reload되면 게시글이 사라지는 걸로 구상
-# request : post_id
-# @csrf_exempt
-# def delete_ajax(request):
-#     req = json.loads(request.body)
-#     post_id = req['post_id']
-#     post =  Post.objects.get(id=post_id)
-#     post.delete()
+# DB에 기뻐요 객체 저장
+# 예외 처리 : 이미 이 포스트 id와 ''현재''user id 가진 happy 객체가 있으면 객체 삭제.
+async def save_happy(data):
+    curUserObj = await sync_to_async(User.objects.get)(username=data['user']) # admin, minseo같은
+    curPostObj = await sync_to_async(Post.objects.get)(id=data['postId'])
+    curHappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId'], user = curUserObj).count)()
+    curSadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId'], user = curUserObj).count)()
 
-#     return JsonResponse()
+    if (curHappyCount == 1 and curSadCount == 0):
+        
+        happyObj = await sync_to_async(Happy.objects.get)(post__id=data['postId'], user = curUserObj)
+        await sync_to_async(happyObj.delete)()
 
+        HappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId']).count)()
+        SadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId']).count)()
+        return HappyCount, SadCount, curHappyCount, curSadCount
 
-# 기뻐요 버튼
-@csrf_exempt
-def happy_ajax(request):
-    req = json.loads(request.body)
-    user_id = request.user.id
-    post_id =req['post_id']
-    post = Post.objects.get(id=post_id)
+    elif (curHappyCount == 0 and curSadCount == 1):
+        
+        sadObj = await sync_to_async(Sad.objects.get)(post__id=data['postId'], user = curUserObj)
+        await sync_to_async(sadObj.delete)()
 
-    try:
-        # happy가 이미 눌러져 있는 경우
-        happy = Happy.objects.get(id=post_id)
-    except Happy.DoesNotExist:
-        # 아직 happy를 누르지 않은 경우
-        happy = None
+        newHappy = await sync_to_async(Happy.objects.create)(
+            post = curPostObj,
+            user = curUserObj,
+            )
+        await sync_to_async(newHappy.save)()
 
-    try:
-        # sad가 이미 눌러져 있는 경우
-        sad = Sad.objects.get(id=post_id)
-    except Sad.DoesNotExist:
-        # 아직 sad를 누르지 않은 경우
-        sad = None
+        HappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId']).count)()
+        SadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId']).count)()
+        curHappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId'], user = curUserObj).count)()
+
+        return HappyCount, SadCount, curHappyCount, curSadCount
     
-    if sad:
-        sad.delete()
-        happy = Happy.objects.create(
-                post_id = post,
-                user_id = user_id,
-            )
-        happy.save()
     else:
-        if happy:
-            happy.delete()
-        else:
-            happy = Happy.objects.create(
-                post_id = post,
-                user_id = user_id,
+        newHappy = await sync_to_async(Happy.objects.create)(
+            post = curPostObj,
+            user = curUserObj,
             )
-            happy.save()
+        await sync_to_async(newHappy.save)()
 
-    # 이 경우에는 버튼에 표시될 총 개수만 필요할 것 같아서 일단 이렇게 처리!
-    happy_count = Happy.objects.filter(id=post_id).count()
-    sad_count = Sad.objects.filter(id=post_id).count()
+        HappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId']).count)()
+        SadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId']).count)()
+        curHappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId'], user = curUserObj).count)()
 
-    return JsonResponse({"happy_count":happy_count, "sad_count":sad_count})
+        return HappyCount, SadCount, curHappyCount, curSadCount
 
 
-# 슬퍼요 버튼
-@csrf_exempt
-def sad_ajax(request):
-    req = json.loads(request.body)
-    user_id = request.user.id
-    post_id =req['post_id']
-    post = Post.objects.get(id=post_id)
-
-    try:
-        # happy가 이미 눌러져 있는 경우
-        happy = Happy.objects.get(id=post_id)
-    except Happy.DoesNotExist:
-        # 아직 happy를 누르지 않은 경우
-        happy = None
-
-    try:
-        # sad가 이미 눌러져 있는 경우
-        sad = Sad.objects.get(id=post_id)
-    except Sad.DoesNotExist:
-        # 아직 sad를 누르지 않은 경우
-        sad = None
+async def save_sad(data):
+    curUserObj = await sync_to_async(User.objects.get)(username=data['user']) # admin, minseo같은
+    curPostObj = await sync_to_async(Post.objects.get)(id=data['postId'])
+    curHappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId'], user = curUserObj).count)()
+    curSadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId'], user = curUserObj).count)()
     
-    if happy:
-        happy.delete()
-        sad = Sad.objects.create(
-                post_id = post,
-                user_id = user_id,
+    if (curSadCount == 1 and curHappyCount == 0):
+        
+        sadObj = await sync_to_async(Sad.objects.get)(post__id=data['postId'], user = curUserObj)
+        await sync_to_async(sadObj.delete)()
+
+        HappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId']).count)()
+        SadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId']).count)()
+        return HappyCount, SadCount, curHappyCount, curSadCount
+
+    elif (curSadCount == 0 and curHappyCount == 1):
+        
+        happyObj = await sync_to_async(Happy.objects.get)(post__id=data['postId'], user = curUserObj)
+        await sync_to_async(happyObj.delete)()
+
+        newSad = await sync_to_async(Sad.objects.create)(
+            post = curPostObj,
+            user = curUserObj,
             )
-        sad.save()
+        await sync_to_async(newSad.save)()
+
+        HappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId']).count)()
+        SadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId']).count)()
+        curSadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId'], user = curUserObj).count)()
+
+        return HappyCount, SadCount, curHappyCount, curSadCount
+    
     else:
-        if sad:
-            sad.delete()
-        else:
-            sad = Sad.objects.create(
-                post_id = post,
-                user_id = user_id,
+        newSad = await sync_to_async(Sad.objects.create)(
+            post = curPostObj,
+            user = curUserObj,
             )
-            sad.save()
+        await sync_to_async(newSad.save)()
 
-    happy_count = Happy.objects.filter(id=post_id).count()
-    sad_count = Sad.objects.filter(id=post_id).count()
+        HappyCount = await sync_to_async(Happy.objects.filter(post__id=data['postId']).count)()
+        SadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId']).count)()
+        curSadCount = await sync_to_async(Sad.objects.filter(post__id=data['postId'], user = curUserObj).count)()
 
-    return JsonResponse({"happy_count":happy_count, "sad_count":sad_count})
+        return HappyCount, SadCount, curHappyCount, curSadCount
+    
+
+# 게시글 Delete
+async def delete_post(room, data):
+
+    postObj = await sync_to_async(Post.objects.get)(id=data['postId'])
+    await sync_to_async(postObj.delete)()
+
+    return None
+
+
+def load_posts(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        req = json.loads(request.body)
+        room_id = req['roomId']
+        curUsername = req['curUsername']
+
+        curRoom = Room.objects.get(id=room_id)
+
+        posts = Post.objects.filter(room=curRoom).values(
+            'id', 'content', 'room', 'created_at', 'user__username'
+        )
+        for post in posts:
+            happyCount = Happy.objects.filter(post__id=post['id']).count()
+            sadCount = Sad.objects.filter(post__id=post['id']).count()
+            curhappyCount = Happy.objects.filter(post__id=post['id'], user__username = curUsername).count()
+            cursadCount = Sad.objects.filter(post__id=post['id'], user__username = curUsername).count()
+            post['happyCount'] = happyCount
+            post['sadCount'] = sadCount
+            post['content'] = str(post['content'])
+            post['curhappyCount'] = curhappyCount
+            post['cursadCount'] = cursadCount
+
+        # datetime 객체를 처리 못하는 에러 핸들링
+        def json_default(value):
+            if isinstance(value, datetime.datetime):
+                return value.strftime('%Y-%m-%d')
+
+        posts = list(posts)
+        return JsonResponse({'result': json.dumps(posts, default=json_default)}) 

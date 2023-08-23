@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block content %}
 
@@ -14,50 +15,394 @@
             <div class="chat-name-icons">
                 <input id="chat-name-search" type="text">
                 <i id="chat-search-btn" class="fa-solid fa-magnifying-glass"></i>
-                <i class="ri-settings-3-line"></i>
+                {% if room.room_type != 2 %}
+                <i id="chat-member-add" class="ri-add-line"></i>
+                {% endif %}
+                <i id="chat-setting" class="ri-settings-3-line"></i>
+                {% if room.room_type != 2 %}
+                <!-- 개인채팅방이 아닐 때만 채팅방 정보 수정 가능 -->
+                {% if room.room_type == 1 %}
+                    <!-- 익명채팅방일 때 -->
+                    {% for b_member in room.blindroommember_set.all %}
+                        {% if b_member.user == user and b_member.is_room_owner == True %}
+                        <!-- 내가 이 방을 만든 사람이라면 채팅방 정보 수정 버튼 볼 수 있음 -->
+                        <i id="room-owner-setting" class="ri-chat-settings-line"></i>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <!-- 일반채팅방일 때 -->
+                    {% for member in room.roommember_set.all %}
+                        {% if member.user == user and member.is_room_owner == True %}
+                        <!-- 내가 이 방을 만든 사람이라면 채팅방 정보 수정 버튼 볼 수 있음 -->
+                        <i id="room-owner-setting" class="ri-chat-settings-line"></i>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% endif %}
             </div>
+            <input id="chat-name-search-mob" type="text">
+            <div class="chat-name-icons-burger">
+                <i class="ri-menu-line" id="chatBurger"></i>
+            </div>
+            <div id="chatBurgerList" class="chat-name-icons-list">
+                <i id="chat-search-btn-mob" class="fa-solid fa-magnifying-glass"></i>
+                {% if room.room_type != 2 %}
+                <i id="chat-member-add-mob" class="ri-add-line"></i>
+                {% endif %}
+                <i id="chat-setting-mob" class="ri-settings-3-line"></i>
+                {% if room.room_type == 1 %}
+                    {% for b_member in room.blindroommember_set.all %}
+                        {% if b_member.user == user %}
+                        <i id="room-owner-setting-mob" class="ri-chat-settings-line"></i>
+                        {% endif %}
+                    {% endfor %}
+                {% elif room.room_type == 0 %}
+                    {% for b_member in room.blindroommember_set.all %}
+                        {% if b_member.user == user %}
+                        <i id="room-owner-setting-mob" class="ri-chat-settings-line"></i>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+
         </div>
     </div>
 </div>
 <div class="chat-container">
     <div class="chat-conversation-container">
+        <div class="board-header">
+            Chat
+        </div>
         <div class="conversation"></div>
         <div class="chat-input">
-            <input type="text" class="input" onkeypress="if(event.keyCode==13) {onClickSendMessage('{{ user }}', '{{ room.id }}');}">
-            <button type="button" onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">SEND</button>
+            <div class="chat-input-container">
+                <!-- 채팅방 잠금일때 입력안되도록 -->
+                {% if room.id in my_locked_rooms %}
+                    <textarea class="input" id="chat_input_textarea" readonly>현재 채팅방 잠금 상태입니다.</textarea>
+                {% else %}
+                    <textarea class="input" id="chat_input_textarea"></textarea>
+                {% endif %}
+                <div class="code-input" id="editor-container"></div>
+                <div class="chat-icons">                
+                    <div id="imageIcon">
+                        <label for="upload-file" class="attach-label"><i class="ri-image-2-fill"></i></label>
+                        <input type="file" name="upload-file" id="upload-file" accept="image/*">
+                    </div>
+                    <div id="codeIcon">
+                        <i class="ri-code-line"></i>
+                    </div>
+                </div>
+                <button type="button" class='btn-send' onclick="onClickSendMessage('{{ user }}', '{{ room.id }}')">
+                    <span>SEND</span>
+                    <i class="ri-send-plane-fill"></i>
+                </button>
+            </div>
         </div>
     </div>
-    <div class="board"></div>
+    <div class="board-container">
+        <div class="board-header">
+            Board
+        </div>
+        <i id="boardOpen" class="ri-arrow-left-double-line"></i>
+        <div class="board"></div>
+        <div class="post-input">
+            <div class="post-input-container">
+                <textarea class="post" rows="3"></textarea>
+                <i id="widthControl" class="ri-arrow-right-double-line"></i>
+                <button type="button" onclick="onClickSendPost('{{ user }}', '{{ room.id }}')">작성</button>
+            </div>
+        </div>
+    </div>
 </div>
 
+<!-- 채팅방 개설자 설정 모달 -->
+<dialog class="modal modal-room-setting">
+    <i id="close-btn" class="ri-close-fill"></i>
+    <div class="modal-content">
+        <form action="/room/update_room_settings/{{ channel.id }}/{{ room.id }}/" method="post" enctype="multipart/form-data" accept="image/*" class='form-edit-room'>
+            {% csrf_token %}
+            <div class="room-detail-container">
+                <h1 class="modal-title">채팅방 설정</h1>
+                <label for="room-new-img" class="label-room-img">
+                    {% if room.room_img %}
+                    <img src="{{ room.room_img.url }}" alt="" class="room-img">
+                    {% else %}
+                    <!-- 채팅방 이미지가 없으면 기본 이미지 -->
+                    <img src="/media/default_image/default_image.png" alt="" class="room-img">
+                    {% endif %}
+                </label>
+                <input type="file" name="room-new-img" id="room-new-img" onchange="readURL(this)">
+                <div class="room-name-container">
+                    <input type="text" name='room-new-name' class="edit-room-name" value="{{ room.room_name }}">
+                    <i class="ri-edit-line"></i>
+                </div>
+                <button id="settings-save">저장</button>
+            </div>
+        </form>
+    </div>
+</dialog>
+
+<!--파일 업로드 모달-->
+<!-- <dialog class="modal upload-file-modal">
+    <i id="close-btn" class="ri-close-fill"></i>
+    <div class="modal-content">
+        <form action="/bubbles/upload_files/" method="post" class="dropzone" id="myDropzone">
+            {% csrf_token %}
+        </form>
+        <button class="btn-send-files">SEND</button>
+    </div>
+</dialog> -->
+
+<!-- 채팅방 설정 모달 -->
+<dialog class="modal chat-settings-modal">
+    <i id="close-btn" class="ri-close-fill"></i>
+    <div class="modal-content">
+        <div class="title">
+            채팅방 프로필 설정
+        </div>
+
+        <!-- 채팅방 프로필 사진 & 닉네임 수정(익명채팅방)-->
+        <form action="/room/setting_blindroom/" method="post" id="form-setting" enctype="multipart/form-data" style="text-align: center;">
+            {% csrf_token %}
+            {% if room.room_type == 1 %}
+            <div class="blind-profile-setting">
+                <!-- <div class="blind-profile-img">
+                    <img id="blind_profile" src="{{ my_blind_info.profile_img.url }}" alt="" />
+                    <div id="imageIcon2">
+                        <label for="upload_blind_img" class="attach-label2"><i class="ri-image-2-fill"></i></label>
+                        <input type="file" name="upload_blind_img" id="upload_blind_img" onchange="readURL(this)" style="display: none" accept="image/*">
+                    </div>
+                </div> -->
+                <label for="upload_blind_img">
+                    <div class="blind-profile-img">
+                        <img id="blind_profile" src="{{ my_blind_info.profile_img.url }}">
+                    </div>
+                </label>
+                <input type="file" name="upload_blind_img" id="upload_blind_img" onchange="readURL(this)" accept="image/*">
+                <div class="blind-name">
+                {% with target_room_id=room.id %}
+                    <p>닉네임</p>
+                    <input id="nickname" type='text' name="nickname" value="{{ my_blind_info.nickname }}">
+                    <i class="ri-edit-line"></i>
+                {% endwith %}
+                </div>
+                
+            </div>
+
+            
+            {% comment %} <input type="hidden" name="chat_textarea" id="chat_textarea" value=""> {% endcomment %}
+            <!-- <button type='submit'>수정 완료</button> -->
+            {% endif %}
+            <input type="hidden" name="roomId" id="" value="{{ room.id }}">
+            <input type="hidden" name="channelId" id="" value="{{ channel.id }}">
+
+            <div class="alarm-select">
+                <div class="alarm-title">
+                    채팅방 잠금
+                </div>
+                <div id="chat-lock-toggle" class="checkbox-wrapper-22 alarm-toggle">
+                    {% if room.id in my_locked_rooms %}
+                        <label class="switch" for="checkbox444">
+                            <input type="checkbox" id="checkbox444" checked/>
+                            <div class="slider round"></div>
+                        </label>
+                    {% else %}
+                        <label class="switch" for="checkbox444">
+                            <input type="checkbox" id="checkbox444"/>
+                            <div class="slider round"></div>
+                        </label>
+                    {% endif %}
+                </div>
+            </div>
+            <input type="hidden" name="is_checked" id="is_checked" value="">
+            <button id="settings-save" type="submit">저장하기</button>
+        </form>
+
+        <form action="/room/exit_room/" method="post" id="form-exit">
+            {% csrf_token %}
+            <input type="hidden" name="channelId" id="" value="{{ channel.id }}">
+            <input type="hidden" name="roomId" id="" value="{{ room.id }}">
+            {% if room.room_type == 1 %}
+            <button class="btn-exit" type="button" onclick="confirmExit('{{ user }}', '{{ my_blind_info.nickname }}', '{{ room.id }}');">
+            {% else %}
+            <button class="btn-exit" type="button" onclick="confirmExit('{{ user }}', '{{ user.name }}', '{{ room.id }}');">
+            {% endif %}
+                <i class="ri-logout-box-r-line"></i>
+                <span>채팅방 나가기</span>
+            </button>
+        </form>
+    </div>
+</dialog>
+
+<!--채팅방 초대 모달-->
+
+<form action="" id="form-invite-member">
+<dialog class="modal invite-member-modal">
+    <i id="close-btn" class="ri-close-fill"></i>
+    <div class="modal-content room-add-invite">
+        <!-- <i id="close-btn" class="ri-close-fill"></i> -->
+        <div class="title">
+            채팅방 초대하기
+        </div>
+        <input type="text" id="input-new-friend" placeholder="이름을 검색하세요">
+        <div class="invite-list">
+            <ul class="invite-friend-ul">
+                {% for notMember in notMembers %}
+                <li id="{{ notMember.id }}">
+                    <div class="btn-friend">
+                        <div class="btn-friend-profile-img">
+                            {% with notMember.join_set.all|first as notMemberJoin %}
+                            {% if notMemberJoin.user.profile_img %}
+                            <img src="{{ notMemberJoin.user.profile_img.url }}" alt="">
+                            {% else %}
+                            <img src="/media/default_img/default_image.png" alt="">
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+                        <label for="">{{ notMember }}</label>
+                        <div class="checkbox-wrapper-30 checkbox">
+                            <span class="checkbox">
+                                <input class="checkbox-invite" name="{{ notMember.id }}" type="checkbox" />
+                                <svg>
+                                    <use xlink:href="#checkbox-30" class="checkbox"></use>
+                                </svg>
+                            </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+                                <symbol id="checkbox-30" viewBox="0 0 22 22">
+                                    <path fill="none" stroke="currentColor" d="M5.5,11.3L9,14.8L20.2,3.3l0,0c-0.5-1-1.5-1.8-2.7-1.8h-13c-1.7,0-3,1.3-3,3v13c0,1.7,1.3,3,3,3h13 c1.7,0,3-1.3,3-3v-13c0-0.4-0.1-0.8-0.3-1.2"/>
+                                </symbol>
+                            </svg>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <input class="btn-invite-member" type="button" value="초대" onclick="inviteSocket()">
+    </div>
+</dialog>
+</form>
 
 {% endblock %}
 
 {% block extra %}
 
-<script>
-    let bubbleList = [];
-    if(`{{ jsonBubbles | safe}}` !== '') {
-        let jsonBubbles = {{jsonBubbles | safe}};
-        
-        jsonBubbles.forEach(element => {
-            bubbleList.push(element);
-        });
-    }
-    
+<script>    
     // js에서 필요한 정보
-    let curUsername = '{{ user }}';
-    let curUserId = '{{ user.id }}';
+    let curUsername = '{{ user }}'; // admin
+    let curUserRealName = '{{ user.name }}'; // admin
+    let curUserId = '{{ user.id }}'; // object(1)
     let curChannelId = {{ channel.id }};
     let curRoomId = {{ room.id }};
     let curRoomType = {{ room.room_type }};
 
     // 말풍선을 담을 곳
-    let converations = document.querySelector('.conversation');
+    let conversations = document.querySelector('.conversation');
+
+    // 게시글을 담을 곳
+    let posts = document.querySelector('.board');
+
+    //채팅방 설정 버튼
+    const chatSettingButton = document.getElementById("chat-setting");
+    const chatSettingButtonMob = document.getElementById("chat-setting-mob");
+    const chatSettingModal = document.querySelector(".chat-settings-modal");
+    chatSettingButton.onclick = () => {
+        chatSettingModal.showModal();
+        chatSettingModal.style.opacity = '1';
+    };
+
+
+
+    const chatSettingCloseButton = document.querySelector(".chat-settings-modal #close-btn");
+    chatSettingCloseButton.onclick = () => {
+        chatSettingModal.close();
+        chatSettingModal.style.opacity = '0';
+    };
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+        chatSettingModal.close();
+        chatSettingModal.style.opacity = '0';
+        };
+    });
+
+    // board의 scrollHeight 증가시켜서 더 밑으로 스크롤 할 수 있게 하기
+
+    //익명채팅방 닉네임 input 항상 텍스트의 끝에 focus 되게 하기
+    function setCaretToEnd(input) {
+            input.focus();
+            input.setSelectionRange(input.value.length, input.value.length);
+        };
+
+    var nicknameInput = document.getElementById("nickname");
+    
+    try {
+        nicknameInput.addEventListener("focus", function() {
+        setCaretToEnd(nicknameInput);
+    });
+    } catch {
+        console.log("익명채팅방에서만 이름 변경이 가능해요");
+    };
+
+
+    // function readURL(input) {
+    //     // input.files : 사용자가 선택한 파일들의 목록(파일을 선택하지 않았다면 비어있음)
+    //     if(input.files && input.files[0]){
+    //         const reader = new FileReader();
+    //         reader.onload = function(e) {
+    //             document.getElementById('blind_profile').src = e.target.result;
+    //         };
+    //         reader.readAsDataURL(input.files[0]);
+    //     } else{
+    //         document.getElementById('blind_profile').src = "";
+    //     } 
+    // };
+    document.addEventListener('DOMContentLoaded', function() {
+        try{
+            const blindProfileImgFile = document.getElementById('upload_blind_img');
+            blindProfileImgFile.addEventListener('change', (event) => {
+            const selectedFile = event.target.files[0];
+            if (selectedFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgPreview = document.getElementById('blind_profile');
+                    imgPreview.src = e.target.result;
+                };
+                reader.readAsDataURL(selectedFile);
+            }
+        });
+        } catch {
+            console.log("익명채팅방!")
+        };
+    });
+
+
+    const checkbox = document.getElementById('checkbox444');
+    checkbox.addEventListener("click", function(){
+        let is_checked = document.getElementById('is_checked');
+        console.log("체크박스 체크여부 : ", checkbox.checked);
+        if(checkbox.checked){
+            document.getElementById('is_checked').value = '1';
+            console.log("is_checked : ", document.getElementById('is_checked').value);
+        } else{
+            document.getElementById('is_checked').value = '0';
+            console.log("is_checked : ", document.getElementById('is_checked').value);
+        }
+        // document.getElementById('is_checked_input').value = is_checked ? '1' : '0';
+        //document.getElementById('chat_textarea').value = chat_textarea.disabled ? true : false;
+    });
+
 </script>
 
+<script src="{% static 'js/chat/socketClient.js' %}"></script>
 <script src="{% static 'js/chat/room.js' %}"></script>
 <script src="{% static 'js/chat/bubble.js' %}"></script>
-<script src="{% static 'js/chat/socketClient.js' %}"></script>
+<script src="{% static 'js/chat/post.js' %}"></script>
+
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<script src="{% static 'js/chat/fileSocketClient.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.23.0/min/vs/loader.js"></script>
+<script src="{% static 'js/chat/codeSnippet.js' %}"></script>
+
 
 {% endblock %}

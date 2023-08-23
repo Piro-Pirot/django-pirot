@@ -1,0 +1,77 @@
+.post-container {
+  padding: 0.5rem 2rem;
+  background-color: var(--section-bgclr);
+}
+
+.post-time {
+  font-size: 0.7rem;
+}
+
+.post-content {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--alt-fontclr);
+  word-break: break-word;
+}
+
+.post-container > div:last-child {
+  background-color: var(--carrot-light);
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+}
+
+.post-container > div:last-child > div:last-child {
+  margin-top: 5px;
+  position: relative;
+}
+
+.post-container button {
+  outline: 0;
+  border: 0;
+}
+
+.post-container button span {
+  margin-left: 2px;
+}
+
+.post-container button.happy,
+.post-container button.sad {
+  border-radius: 1rem;
+  margin-right: 10px;
+  background-color: white;
+  transition: 0.2s;
+  cursor: pointer;
+  border: 2px solid var(--carrot-light)
+}
+
+.post-container button.happy:hover {
+  background-color: rgb(205, 253, 204);
+}
+
+.post-container button.sad:hover {
+  background-color: rgb(255, 212, 212);
+}
+
+.post-container button.delete {
+  background-color: transparent;
+  border-radius: 50%;
+  width:18px;
+  height: 18px;
+  position: absolute;
+  right: -0.9rem;
+  bottom: -0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.post-container button.delete:hover {
+  background-color: var(--carrot-super-light);
+}
+
+.post-container button.checked {
+  border-color: var(--carrot-color);
+  background-color: var(--carrot-super-light);
+}

@@ -9,11 +9,11 @@
     <h1>개설하세요</h1>
   </div>
   <div class="channel-create-form">
-    <form action="/user/channel/create/" method="post">
+    <form action="/staff/channel/create/" method="post">
       {% csrf_token %}
       <div class="channel-create-name">
         <label for="">채널 이름</label>
-        <input type="text" placeholder="채널을 개설할 동아리의 이름을 입력해주세요">
+        <input name='channel-create-name' type="text" placeholder="동아리의 이름을 입력해주세요">
       </div>
       <div class="channel-create-desc">
         <label for="">채널 설명</label>

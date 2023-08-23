@@ -4,13 +4,27 @@
 <!-- 합격자 명단 추가 기수 입력 페이지 -->
 
 {% block content %}
-<h2>기수 입력</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input name="level" placeholder="기수를 입력하세요." required/>
-    <input type="submit" value="합격자 정보 입력" />
+<div class="passer-gen pass">
+    <h2 class="staff-setting-title"> 합격자 기수 입력</h2>
+    <form class="gen-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}    
+        <div>
+            <input type="text" name="level" class='input-level' placeholder="기수를 입력하세요" required/>
+            <input type="submit" value="정보 입력" />
+        </div>
+    </form>
+    <div class="level-desc">기수에는 숫자만 입력하세요.</div>
+</div>
 
-{% for passer in passers %}
-<div>{{ passer.passer_name }}</div>
-{% endfor %}
+<div class="passer-list-container pass">
+
+</div>
+
+<script>
+    const inputLevel = document.querySelector('.input-level');
+    inputLevel.addEventListener('input', () => {
+        inputLevel.value = inputLevel.value.replace(/[^0-9]/g, '');
+    });
+</script>
+
 {% endblock %}

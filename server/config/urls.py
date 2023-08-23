@@ -25,10 +25,14 @@ from django.views.static import serve
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', server.apps.channels.views.index),
+    path('bubbles/', include('server.apps.bubbles.urls')),
     path('room/', include('server.apps.chat.urls')),
+    path('posts/', include('server.apps.posts.urls')),
     path('user/', include('server.apps.local_users.urls')),
     path('staff/', include('server.apps.channels.urls')),
 
     url(r'^media/(?P<path>.*)$', serve, {'document_root':settings.MEDIA_ROOT}),
     url(r'^static/(?P<path>.*)$', serve, {'document_root':settings.STATIC_ROOT}),
+
+    path('markdownx/', include('markdownx.urls')),
 ]

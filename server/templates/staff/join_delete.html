@@ -4,17 +4,21 @@
 <!-- 합격자 삭제 -->
 
 {% block content %}
-
-<h2>회원 삭제</h2>
-
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div>
-        {% for join in joins %}
-        <div>{{ join.passer.passer_name }}</div>
-        <input type="submit" value="삭제" />
+<div class="member-delete">
+    <h2 class="staff-setting-title">회원 삭제</h2>
+    <div class="member-delete-list">
+        {% for passer in channelPassers %}
+        <form class="delete-form" id="delete-form-{{ passer.id }}" method="post">
+            {% csrf_token %}
+            <div class="delete-block">
+                <div>{{ passer.level }}기 {{ passer.passer_name }}</div>
+                <div>
+                    <input type="hidden" name="passerId" value="{{ passer.id }}">
+                    <input type="button" onclick="onclickDeleteJoin('{{ passer.id }}')" value="삭제" />
+                </div>
+            </div>
+        </form>
         {% endfor %}
     </div>
-    
-
+</div>
 {% endblock %}

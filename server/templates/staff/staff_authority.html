@@ -4,8 +4,112 @@
 <!-- 운영진 권한 설정 페이지 -->
 
 {% block content %}
-<h2>운영진 권한</h2>
-    {% for join in joins %}
-        <div>{{ join.passer.passer_name }}</div>
-    {% endfor %}
+<div class="staff-authority">
+  <h2 class="staff-setting-title">19기 운영진 권한</h2>
+  <form method="post">
+      {% csrf_token %}
+      <div class="authority-container">
+          {% for thisjoin in thisjoins %}
+          <div class="authority-passer-div">
+              <div>{{ thisjoin.passer }}</div>
+              <div>{{ thisjoin.passer.passer_phone }}</div>
+              <div>              
+                <label class="switch">
+                  <input class="onoff" value="{{ thisjoin.passer.passer_name }} {{ thisjoin.passer.passer_phone }}" name="checked" type="checkbox" {% if thisjoin.user.username in staffs %}checked{% endif %}>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+      <input id="settings-save" type="submit" value="저장하기">
+  </form>
+</div>
+{% endblock %}
+{% block extra %}
+<script>
+var check = $("input[type='checkbox']");
+check.click(function(){
+	$(".onoff").toggle();
+});
+
+var staffCheckedAll = document.querySelectorAll('.onoff');
+staffCheckedAll.forEach(staffChecked => {
+  staffChecked.addEventListener('click', () => {
+    var count = 0;
+    for (var i=0; i<staffCheckedAll.length; i++) {
+      if (staffCheckedAll[i].checked == true) {
+        count++;
+      }
+    }
+    if (count == 0) {
+      alert("운영진은 최소 1인 이상 선택되어야 합니다.")
+      staffChecked.checked = true;
+    }
+  });
+})
+
+
+</script>
+<style>
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  vertical-align:middle;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: rgb(78, 209, 78);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px rgb(78, 209, 78);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
 {% endblock %}

@@ -1,28 +1,58 @@
 <ol class="btn-room-list">
     {% for room in myRooms %}
-        {% if room.room.room_name == '__direct' %}
-        <li class="btn-room-container">
+        {% if room.room.room_type == 2 %}
+        <!-- 개인채팅방 -->
+        <li id="{{ room.room.id }}" class="btn-room-container">
             <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
                 <div class="btn-room room-{{ room.room.id }}">
-                    <div class="room-red-dot dot-{{ room.room.id }}">32</div>
+                    <div class="room-profile-img">
+                        {% for dir_member in room.room.roommember_set.all %}
+                        <!-- 개인채팅방 상대 가져오기 -->
+                        {% if dir_member.user != user %}
+                        {% if dir_member.user.profile_img is None %}
+                        <!-- 개인채팅방 상대의 프로필 정보가 없으면 기본으로 -->
+                        <img src="/media/default_profile/default_profile.png" alt="">
+                        {% else %}
+                        <img src="{{ dir_member.user.profile_img.url }}" alt="">
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                    </div>
                     {% for member in room.room.roommember_set.all %}
                     {% if member.user != user %}
                         {% for joinInfo in member.user.join.all %}
                             {% if joinInfo.passer.channel == channel %}
-                                <label for="">{{ joinInfo.passer }}</label>
+                                <div class="room-name">{{ joinInfo.passer }}</div>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
                     {% endfor %}
+                    <!-- 미완성의 레드닷... -->
+                    <!-- <div class="room-red-dot dot-{{ room.room.id }}">4</div> -->
                 </div>
             </a>
         </li>
         {% else %}
-        <li class="btn-room-container">
+        <!-- 단체채팅방 -->
+        <li id="{{ room.room.id }}" class="btn-room-container group">
             <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
                 <div class="btn-room room-{{ room.room.id }}">
-                    <div class="room-red-dot dot-{{ room.room.id }}">32</div>
-                    <label for="">{{ room.room.room_name }}</label>
+                    <div class="room-profile-img">
+                        {% if room.room.room_img is None %}
+                        <!-- 채팅 방의 프로필 정보가 없으면 -->
+                            {% if room.room.channel.default_image is None %}
+                            <!-- 채널의 기본 프로필도 없으면 기본 이미지로 -->
+                            <img src="/media/default_profile/default_profile.png" alt="">
+                            {% else %}
+                            <img src="{{ room.room.channel.default_image.url }}" alt="">
+                            {% endif %}
+                        {% else %}
+                        <img src="{{ room.room.room_img.url }}" alt="">
+                        {% endif %}
+                    </div>
+                    <div class="room-name">{{ room.room.room_name }}</div>
+                    <!-- 미완성의 레드닷... -->
+                    <!-- <div class="room-red-dot dot-{{ room.room.id }}">24</div> -->
                 </div>
             </a>
         </li>
@@ -30,79 +60,94 @@
     {% endfor %}
 
     {% for room in myBlindRooms %}
-    <li class="btn-room-container">
+    <!-- 익명채팅방 -->
+    <li id="{{ room.room.id }}" class="btn-room-container blind">
         <a href="/room/{{ channel.id }}/{{ room.room.id }}/main/">
             <div class="btn-room room-{{ room.room.id }}">
-                <div class="room-red-dot dot-{{ room.room.id }}">32</div>
-                <label for="">{{ room.room.room_name }}</label>
+                <div class="room-profile-img">
+                    {% if room.room.room_img %}
+                    <!-- 채팅 방의 프로필 정보가 있으면 -->
+                    <img src="{{ room.room.room_img.url }}" alt="">
+                    {% else %}
+                        {% if room.room.channel.default_image %}
+                        <!-- 채널의 기본 프로필도 있으면 채널 기본 이미지로 -->
+                        <img src="{{ room.room.channel.default_image.url }}" alt="">
+                        {% else %}
+                        <img src="/media/default_profile/default_profile.png" alt="">
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="room-name">{{ room.room.room_name }}</div>
+                <!-- 미완성의 레드닷... -->
+                <!-- <div class="room-red-dot dot-{{ room.room.id }}">32</div> -->
             </div>
         </a>
     </li>
     {% endfor %}
 </ol>
 
-<div class="btn-room-container">
-    <div class="btn-room-create">
-        <label for="">채팅방 추가</label>
-    </div>
-</div>
-
 <dialog class="modal room-add-modal">
+    <form action="/room/create_group_room/{{ channel.id }}/" method="post">
+    {% csrf_token %}
     <i id="close-btn" class="ri-close-fill"></i>
     <div class="modal-content room-add-invite">
         <!-- <i id="close-btn" class="ri-close-fill"></i> -->
         <div class="title">
-            대화 상대 초대
+            새로운 채팅방 만들기
         </div>
-        <input type="text" placeholder="초대할 이름을 입력하세요">
+        <input type="text" id="input-new-chat" placeholder="이름을 검색하세요">
         <div class="invite-list">
-            <ul>
-                {% for friend in myFriends %}
-                <li>
-                    <a href="">
-                        <div class="btn-friend">
-                            <div class="btn-friend-profile-img">
-                                <img src="{{ friend.join_set.first.user.profile_img }}" alt="">
-                            </div>
-                            <label for="">{{ friend }}</label>
-                            <div class="checkbox-wrapper-30 checkbox">
-                                <span class="checkbox">
-                                    <input type="checkbox" />
-                                    <svg>
-                                        <use xlink:href="#checkbox-30" class="checkbox"></use>
-                                    </svg>
-                                </span>
-                                <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-                                    <symbol id="checkbox-30" viewBox="0 0 22 22">
-                                        <path fill="none" stroke="currentColor" d="M5.5,11.3L9,14.8L20.2,3.3l0,0c-0.5-1-1.5-1.8-2.7-1.8h-13c-1.7,0-3,1.3-3,3v13c0,1.7,1.3,3,3,3h13 c1.7,0,3-1.3,3-3v-13c0-0.4-0.1-0.8-0.3-1.2"/>
-                                    </symbol>
-                                </svg>
-                            </div>
+            <ul class="invite-ul">
+                {% for join_info in channel_join_list %}
+                {% if join_info.user != user %}
+                <li id="{{ join_info.passer.id }}">
+                    <div class="btn-friend">
+                        <div class="btn-friend-profile-img">
+                            {% if join_info.user.profile_img %}
+                            <img src="{{ join_info.user.profile_img.url }}" alt="">
+                            {% else %}
+                            <img src="/media/default_img/default_image.png" alt="">
+                            {% endif %}
                         </div>
-                    </a>
+                        <label for="">{{ join_info.passer }}</label>
+                        <div class="checkbox-wrapper-30 checkbox">
+                            <span class="checkbox">
+                                <input name="{{ join_info.passer.id }}" type="checkbox" />
+                                <svg>
+                                    <use xlink:href="#checkbox-30" class="checkbox"></use>
+                                </svg>
+                            </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+                                <symbol id="checkbox-30" viewBox="0 0 22 22">
+                                    <path fill="none" stroke="currentColor" d="M5.5,11.3L9,14.8L20.2,3.3l0,0c-0.5-1-1.5-1.8-2.7-1.8h-13c-1.7,0-3,1.3-3,3v13c0,1.7,1.3,3,3,3h13 c1.7,0,3-1.3,3-3v-13c0-0.4-0.1-0.8-0.3-1.2"/>
+                                </symbol>
+                            </svg>
+                        </div>
+                    </div>
                 </li>
+                {% endif %}
                 {% endfor %}
             </ul>
         </div>
-        <input type="button" value="초대">
+        <input class="btn-invite-member" type="button" value="초대">
     </div>
 
     <div class="modal-content room-add-name">
         <i id="back-btn" class="ri-arrow-left-s-line"></i>
         <div class="title">
-            채팅방 이름 설정
+            새로운 채팅방 이름 설정
         </div>
-        <input type="text" placeholder="채팅방 이름을 입력하세요">
+        <input required name="group_name" type="text" placeholder="채팅방 이름을 입력하세요">
         <div class="anonymous-toggle">
             <p>익명채팅방</p>
             <div class="checkbox-wrapper-22">
                 <label class="switch" for="checkbox">
-                    <input type="checkbox" id="checkbox" />
+                    <input name="group_type" type="checkbox" id="checkbox" />
                     <div class="slider round"></div>
                 </label>
             </div>
         </div>
-        <input type="button" value="채팅방 개설">
+        <input class="btn-create-group" type="submit" value="채팅방 개설">
     </div>
-
+    </form>
 </dialog>

@@ -1,56 +1,201 @@
 @import 'reset.css';
+@import 'solarized-light.css';
 
 :root {
-  --carrot-color: #fba405;
-  --carrot-light: #face83;
-  --carrot-dark: #fb9005;
-  --light-gray: #f0f0f0;
-  --subtitle: #a3a3a3;
-  --shadow: 0 1px 1px rgba(0,0,0,0.15),
-  0 1px 1px rgba(0,0,0,0.15),
-  0 3px 3px rgba(0,0,0,0.15),
-  0 5px 5px rgba(0,0,0,0.15);
-  --input-background: #face8326;
-  --placeholder: rgba(174, 174, 174, 0.668);
+	--carrot-color: #fba405;
+	--carrot-light: #face83;
+	--carrot-dark: #fb9005;
+	--light-gray: #f0f0f0;
+	--subtitle: #a3a3a3;
+	--shadow: 0 1px 1px rgba(0,0,0,0.15),
+	0 1px 1px rgba(0,0,0,0.15),
+	0 3px 3px rgba(0,0,0,0.15),
+	0 5px 5px rgba(0,0,0,0.15);
+	--input-background: #face8326;
+	--placeholder: rgba(174, 174, 174, 0.668);
+	--chat-input-height: 5.65rem;
+	--section-padding: 0.6rem;
+	--section-header-height: 2rem;
+
+	/* 기본 컬러 테마 */
+	--font-color: black;
+	--alt-fontclr: black;
+	--send-fontclr: rgba(255, 255, 255, 0.986);
+	--carrot-color: #fba405;
+	--carrot-dark: #fb9005;
+	--carrot-light: #face83;
+	--carrot-light-dark: #fec767;
+	--carrot-super-light: #face8331;
+	--carrot-super-light-dark: #face8389;
+	--light-gray: #f0f0f0;
+	--subtitle: #a3a3a3;
+	--section-bgclr: rgba(255, 255, 255, 0.986);
+	--body-bgclr: #e3e3e3;
+	--opp-bubble-bgclr: rgba(255, 255, 255, 0.986);
+	--opp-bubble-bdclr: var(--carrot-dark);
+	--chat-input: rgba(255, 255, 255, 0.986);
+	--icon-hover: rgba(128, 128, 128, 0.189);
+	--modal-bgclr: rgba(255, 255, 255, 0.986); 
+	--iconBar-bgclr: #f0f0f0; 
+	--orange-stick: var(--carrot-color);
+	--placeholder: rgba(174, 174, 174, 0.668);
+
 }
 
+
+/* 다크모드테마 */
+.dark-mode {
+	--font-color: white;
+	--alt-fontclr: white;
+	--send-fontclr: black;
+	--carrot-color: #fba505ca;
+	--carrot-dark: #fb9005;
+	--carrot-light: #face839e;
+	--carrot-light-dark: #fec767;
+	--carrot-super-light: #face8375;
+	--carrot-super-light-dark: #face839e;
+	--light-gray: #f0f0f0;
+	--subtitle: #a3a3a3;
+	--section-bgclr: rgb(42, 45, 46);
+	--body-bgclr: rgb(30, 30, 30);
+	--opp-bubble-bgclr: rgb(74, 74, 74);
+	--opp-bubble-bdclr: rgb(74, 74, 74);
+	--chat-input: #2f3032;
+	--icon-hover: rgb(109, 109, 109);
+	--modal-bgclr: rgb(35, 35, 35);
+	--iconBar-bgclr: var(--body-bgclr);
+	--orange-stick: var(--carrot-color);
+	--placeholder: rgb(237, 237, 237);
+}
+
+
+/* 블랙앤화이트모드테마 */
+.bw-mode {
+	--font-color: black;
+	--alt-fontclr: white;
+	--send-fontclr: white;
+	--carrot-color: #222222;
+	--carrot-dark: rgb(60, 60, 60);
+	--carrot-light: rgb(72, 72, 72);
+	--carrot-light-dark: rgb(56, 56, 56);
+	--carrot-super-light: rgba(173, 173, 173, 0.546);
+	--carrot-super-light-dark: rgba(173, 173, 173, 0.885);
+	--light-gray: #f0f0f0;
+	--subtitle: #a3a3a3;
+	--section-bgclr: #FFFFFF;
+	--body-bgclr: #222222;
+	--opp-bubble-bgclr: white;
+	--opp-bubble-bdclr: var(--carrot-dark);
+	--chat-input: #ffffff;
+	--icon-hover: rgb(109, 109, 109);
+	--modal-bgclr: rgb(52, 52, 52);
+	--iconBar-bgclr: var(--body-bgclr);
+	--orange-stick: #808080;
+	--placeholder: rgb(237, 237, 237);
+}
+
+
 @font-face {
-  font-family: 'GowunBatang-Regular';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
+	font-family: 'GowunBatang-Regular';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body {
+	color: var(--font-color);
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 a {
-  color: black;
-  text-decoration: none;
-  outline: none
+	color: black;
+	text-decoration: none;
+	outline: none
 }
 
 a:hover, a:active {
-  text-decoration: none;
-  color: black;
-  background-color: transparent;
+	text-decoration: none;
+	color: black;
+	background-color: transparent;
 }
 
+
 ::-webkit-scrollbar {
-  /* 스크롤바 전체 영역 */
-    width: 12px;
-    height: 4px;
+	/* 스크롤바 전체 영역 */
+	width: 5px;
+	height: 4px;
 }
 ::-webkit-scrollbar-track {
-    /* 스크롤이 움직이는 영역  */
-    background-color: transparent;
-    margin: 1rem;
-    padding: 1rem;
-    margin-top: 6rem;
+	/* 스크롤이 움직이는 영역  */
+	background-color: transparent;
+	margin: 1rem;
+	padding: 1rem;
+	/* margin-top: 6rem; */
 }
 ::-webkit-scrollbar-thumb {
-    /*  스크롤  */
-    background-color: var(--carrot-dark);
-    border-radius: 30px;
+	/*  스크롤  */
+	background-color: var(--carrot-dark);
+	border-radius: 30px;
+}
+
+
+/* 마크다운.. 부탁해요 ^..^ */
+
+.bubble-content h1, .bubble-content h2,
+.bubble-content h3, .bubble-content h4,
+.bubble-content h5, .bubble-content h6 {
+	font-weight: bold;
+}
+
+.bubble-content h1 {
+	font-size: 36px;
+}
+.bubble-content h2 {
+	font-size: 28px;
+}
+.bubble-content h3 {
+	font-size: 22px;
+}
+.bubble-content h4 {
+	font-size: 20px;
+}
+.bubble-content h5 {
+	font-size: 18px;
+}
+.bubble-content h6 {
+	font-size: 16px;
+}
+
+
+.bubble-content ul {
+	list-style: inside;
+}
+.bubble-content ol {
+	list-style: decimal;
+	margin-left: 1rem;
+}
+.codehilite {
+	padding: 0.6rem 1rem;
+}
+.bubble-content table {
+	border-collapse: separate;
+
+}
+
+.main-section-demo > img,
+.ui-section-demo > img,
+.md-section-small-demo > img,
+.md-section-demo-small > img,
+.md-section2 > img,
+.mob-section > img {
+	border-radius: 0.5rem;
+}
+
+.main-section-demo > img,
+.ui-section-demo > img,
+.md-section-small-demo > img {
+	width: 100%;
 }

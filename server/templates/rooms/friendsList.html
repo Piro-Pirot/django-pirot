@@ -1,41 +1,102 @@
 <div class="friend-list-me">
     <div class="friend-list-me-container">
         <div class="friend-list-me-profile-img">
-            <img src="{{ myPassInfo.join_set.first.user.profile_img }}" alt="">
+            {% with myPassInfo.join_set.all|first as myPassInfoJoin %}
+            <img src="/media/{{ myPassInfoJoin.user.profile_img }}" alt="">
+            {% endwith %}
         </div>
         <label for="">{{ myPassInfo }}</label>
-        <div class="more-icon">
-            <i id="more" class="ri-more-fill"></i>
-        </div>
-        <div class="more-form">
-            <form action="/room/create_room/{{ channel.id }}/{{ myPassInfo.join_set.first.user.id }}/" method="post">
-                {% csrf_token %}
-                <input class="me" type="submit" value="1:1 채팅하기"></input>
-            </form>
-        </div>
     </div>
 </div>
 
+
 <ol class="btn-friend-list">
-    {% for friend in myFriends %}
-    <li class="btn-friend-container friend-container">
+    {% for favorites in myFavorites %}
+    <li id="{{ favorites.id }}" class="btn-friend-container friend-container">
         <div class="btn-friend">
             <div class="btn-friend-profile-img">
-                <img src="{{ friend.join_set.first.user.profile_img }}" alt="">
+                {% with favorites.join_set.all|first as favorites_join %}
+                {% if favorites_join.user %}
+                <img src="/media/{{ favorites_join.user.profile_img }}" alt="">
+                {% else %}
+                <!-- 가입되지 않아 프로필 이미지가 없는 경우 -->
+                <img src="/media/default_profile/default_profile.png" alt="">
+                {% endif %}
+                {% endwith %}
             </div>
-            <label for="">{{ friend }}</label>
+            <label class="fname-label {{ favorites.passer_name }}">{{ favorites }}</label>
+            <i id="star" class="ri-star-fill active"></i>
+            <div class="more-icon">
+                <i id="more" class="ri-more-fill"></i>
+            </div>
+            <div class="more-form">
+                {% with favorites.join_set.all|first as favorites_join %}
+                {% if favorites_join.user %}
+                <!-- 가입된 사용자라면 -->
+                <form action="/room/create_room/{{ channel.id }}/{{ favorites_join.user.id }}/" method="post">
+                    {% csrf_token %}
+                    <input id="bookmark" type="button" value="즐겨찾기 해제" class="b{{ favorites.id }}"></input>
+                    <input type="submit" value="1:1 채팅하기"></input>
+                </form>
+                {% else %}
+                <!-- 가입하지 않은 사용자라면 Ajax POST 방식으로 전화번호를 가져옴 -->
+                <input id="bookmark" type="button" value="즐겨찾기 해제" class="b{{ favorites.id }}"></input>
+                <input type="button" value="1:1 채팅하기" class="no-user-btn"></input>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+    {% for friend in myFriends %}
+    <li id="{{ friend.id }}" class="btn-friend-container friend-container">
+        <div class="btn-friend">
+            <div class="btn-friend-profile-img">
+                {% with friend.join_set.all|first as friendJoin %}
+                {% if friendJoin.user %}
+                <img src="/media/{{ friendJoin.user.profile_img }}" alt="">
+                {% else %}
+                <!-- 가입되지 않아 프로필 이미지가 없는 경우 -->
+                <img src="/media/default_profile/default_profile.png" alt="">
+                {% endif %}
+                {% endwith %}
+            </div>
+            <label class="fname-label {{ friend.passer_name }}">{{ friend }}</label>
             <i id="star" class="ri-star-fill"></i>
             <div class="more-icon">
                 <i id="more" class="ri-more-fill"></i>
             </div>
             <div class="more-form">
-                <form action="/room/create_room/{{ channel.id }}/{{ friend.join_set.first.user.id }}/" method="post">
+                {% with friend.join_set.all|first as friendJoin %}
+                {% if friendJoin.user %}
+                <form action="/room/create_room/{{ channel.id }}/{{ friendJoin.user.id }}/" method="post">
                     {% csrf_token %}
-                    <input id="bookmark" type="button" value="즐겨찾기"></input>
-                    <input type="submit" value="1:1 채팅하기"></input>
+                    <input id="bookmark" type="button" value="즐겨찾기" class="b{{ friend.id }}"></input>
+                    <input type="submit"value="1:1 채팅하기"></input>
                 </form>
+                {% else %}
+                <!-- 가입하지 않은 사용자라면 Ajax POST 방식으로 전화번호를 가져옴 -->
+                <input id="bookmark" type="button" value="즐겨찾기" class="b{{ friend.id }}"></input>
+                <input type="button" value="1:1 채팅하기" class="no-user-btn"></input>
+                {% endif %}
+                {% endwith %}
             </div>
         </div>
     </li>
     {% endfor %}
 </ol>
+
+<dialog class="modal no-user-modal">
+    <i id="close-btn" class="ri-close-fill"></i>
+    <div class="modal-content">
+        <h1 class="title">이 곳에 제목을 입력하세요</h1>
+        <h2 class="title-desc">
+            <span class='no-user-pirot'>Pirot</span>에 아직 가입하기 전이에요. 😢
+        </h2>
+        <input type="text" disabled class="no-user-phone">
+        <div class="no-user-desc">
+            <p class="no-user-desc1">이 곳에 내용을 입력하세요</p>
+            <p class="no-user-desc2">이 곳에 내용을 입력하세요</p>
+        </div>
+    </div>
+</dialog>

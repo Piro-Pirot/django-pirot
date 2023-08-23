@@ -1,0 +1,231 @@
+/* sign-up */
+.signup-content {
+    display: flex;
+    justify-content: center;
+}
+.assgin-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2.5rem 5rem;
+    width: 46rem;
+    font-family: 'GowunBatang-Regular';
+}
+.assgin-container .signup-slogan {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+.signup-slogan h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 2rem;
+    text-align: center;
+}
+
+.signup-slogan h1.mob {
+    display: none;
+}
+
+.signup-slogan .signup-title {
+    font-size: 2.5rem;
+    color: var(--carrot-color);
+}
+.signup-begin {
+    display: block;
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+.assgin-container label {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+}
+.assgin-container .signup-input {
+    padding: 1rem 0;
+    margin: 0 1rem;
+}
+.assgin-container .signup-input-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+.assgin-container .btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.assgin-container table {
+    width: 100%;
+    table-layout:fixed;word-break:break-all;
+    height:auto;
+}
+
+/* .form-group > label {
+display: block;
+width: 200px;
+text-align: center;
+margin-bottom: 1rem;
+} */
+
+/* input,
+button{
+    border:none;
+}
+
+input:focus,
+input:active,
+button:focus,
+button:active {
+outline: none;
+box-shadow: none;
+} */
+
+#username,
+#password1,
+#password2,
+#phone_number,
+#input_authnum,
+#name {
+    border: none;
+    outline: none;
+}
+
+.assgin-container td {
+    padding: 0 0.5rem 0.8rem 0.5rem;
+    margin: 0 auto;
+}
+
+.assgin-container input {
+    height: 2.5rem;
+    font-size: 1rem;
+    background-color: rgba(255, 140, 0, 0.04);
+    border-radius: 1rem;
+    padding: 0 1rem;
+    width: 100%;
+    /* transition: .2s; */
+    border: none;
+}
+
+/* 
+table input:focus {
+border: none;
+box-shadow: none;
+border: 2px solid var(--carrot-light);  
+} */
+#username:focus,
+#password1:focus,
+#password2:focus,
+#phone_number:focus,
+#input_authnum:focus,
+#name:focus {
+    border: 2px solid var(--carrot-light);
+    border-radius: 1rem;
+}
+
+.input_sms_hidden {
+    display: none;
+}
+
+.assgin-container button {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: none;
+    background-color: var(--carrot-light);
+    padding: 0 2rem;
+    height: 2.5rem;
+    cursor: pointer;
+}
+
+
+#signup_button {
+    padding: 0 2rem;
+    border: none;
+    border-radius: 1rem;
+    background-color: var(--carrot-light);
+    margin-top: 3rem;
+    font-size: 1rem;
+}
+
+.time-limit-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+}
+
+#time_limit {
+    font-size: 1rem;
+    margin-top: 0.4rem;
+}
+
+.auth-btn-active {
+    background-color: var(--carrot-color);
+    border: none;
+    outline: 0;
+    color: white;
+}
+
+.assgin-header {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+}
+
+/* username validator */
+.username-validator,
+.password1-validator,
+.password2-validator {
+    position: relative;
+    width: 100%;
+}
+.username-validator .username-check,
+.password1-validator .password1-check,
+.password2-validator .password2-check {
+    position: absolute;
+    top: 0.8rem;
+    right: 1rem;
+    color: var(--carrot-color);
+}
+.username-validator .check-hidden,
+.password1-validator .check-hidden,
+.password2-validator .check-hidden {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .assgin-container {
+        padding: 3rem 3rem;
+        width: 100%;
+    }
+
+    .assgin-container td {
+        font-size: 1rem;
+    }
+
+    .assgin-container input {
+        font-size: 1rem;
+    }
+
+    .assgin-container button {
+        padding: 0.5rem 1rem;
+        font-size: 0.5rem;
+    }
+
+    #time_limit {
+        font-size: 0.8rem;
+    }
+
+    .signup-slogan h1.lap {
+        display: none;
+    }
+    .signup-slogan h1.mob {
+        display: block;
+    }
+}

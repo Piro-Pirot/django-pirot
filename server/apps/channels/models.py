@@ -1,3 +1,5 @@
+import datetime
+import os
 from django.db import models
 from server.apps.local_users.models import User
 
@@ -5,12 +7,30 @@ from server.apps.local_users.models import User
 
 # 채널
 class Channel(models.Model):
+    NO = 0
+    YES = 1
+    IS_APPROVE = [
+         (NO, 'NO'),
+         (YES, 'YES')
+    ]
     channel_name = models.CharField(max_length=64)
     channel_desc = models.TextField()
-    channel_ok = models.IntegerField(default=0)
+    channel_ok = models.IntegerField(choices=IS_APPROVE, default=0)
     channel_code = models.CharField(max_length=64, null=True, blank=True)
     # 개발자가 제공하는 기본 이미지를 지정
-    default_image = models.ImageField(upload_to='default_profile/%Y%m%d', default='default_profile/default_profile.png', blank=True)
+    def upload_to_func(instance, filename):
+        prefix = datetime.today().strftime("%Y%m%d")
+        # 디렉토리가 없으면 만들기
+        if not os.path.isdir(f'media/{prefix}/'):
+            os.makedirs(f'media/{prefix}/')
+        
+        file_list = os.listdir(f"media/{prefix}")
+
+        file_name = f'{prefix}/upload{len(file_list)}'
+        extension = os.path.splitext(filename)[-1].lower()
+        return f'{file_name}{extension}'
+    default_image = models.ImageField(upload_to=upload_to_func, default='default_profile/default_profile.png', blank=True)
+    this_level = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
          return f'[{self.channel_name}] {self.id}'
@@ -40,3 +60,12 @@ class Staff(models.Model):
 
     def __str__(self):
          return f'[{self.channel}] {self.user}'
+
+
+# 회원 즐겨찾기
+class Bookmark(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmark_user', null=True)
+    bookmarked_user = models.ForeignKey(Passer, on_delete=models.CASCADE, related_name='bookmarked_user', null=True)
+    
+    def __str__(self):
+       return f'[{self.user}] {self.bookmarked_user}'

@@ -8,10 +8,13 @@
     <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+    </style>
 
 </head>
 <body>
-    <div class="container">
+    <div class="container home">
         <section class="icon-bar">
             <div class="top-icons">
                 {% if urlType == 'friends' %}
@@ -25,9 +28,13 @@
             <div class="bottom-icons">
                 <i id="settings" class="ri-settings-3-line icon"></i>
                 {% if request.user.profile_img %}
-                    <a class="profile-icon" href="/user/setting/{{ channel.id }}"><img src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/">
+                        <img src="{{ request.user.profile_img.url }}" alt="프로필">
+                    </a>
                 {% else %}
-                    <a class="profile-icon" href="/user/setting/{{ channel.id }}"><img src="{{ channel.default_image.url }}" alt="프로필"></a>
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/">
+                        <img src="{{ channel.default_image.url }}" alt="프로필">
+                    </a>
                 {% endif %}
             </div>
         </section>
@@ -56,39 +63,124 @@
                     {% include 'rooms/friendsList.html' %}
                 {% endif %}
             </div>
+            {% if urlType == 'main' %}
+            <div class="btn-room-create">
+                <div class="btn-room-create-container">
+                    <i class="ri-chat-new-line"></i>
+                </div>
+            </div>
+            {% endif %}
         </section>
         <section class="chat-section">
+            <div class="grayblock">
+                <div class="whiteblock"></div>
+            </div>
             {% block content %}
             {% endblock %}
         </section>
     </div>
-    <dialog class="modal settings-modal">
-        <div class="modal-content">
-            <i id="close-btn" class="ri-close-fill"></i>
-            <a href="/user/logout/">로그아웃!!!!</a>
-        </div>
-    </dialog>
 
+    <div class="mob-icons hide-element">
+        <section class="mob-icon-bar">
+            {% if urlType == 'friends' %}
+            <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-fill mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line mob-room-icon"></i></a>
+            {% elif urlType == 'main' %}
+            <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-fill mob-room-icon"></i></a>
+            {% endif %}
+            <i id="mob-settings" class="ri-settings-3-line"></i>
+            {% if request.user.profile_img %}
+                <a class="profile-icon" href="/user/setting/{{ channel.id }}/">
+                    <img class="mob-profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필">
+                </a>
+            {% else %}
+                <a class="profile-icon" href="/user/setting/{{ channel.id }}/">
+                    <img class="mob-profile-icon" src="{{ channel.default_image.url }}" alt="프로필">
+                </a>
+            {% endif %}
+        </section>
+    </div>
+
+    <!-- 모바일 반응형 'mob' -->
+    <!-- <div class="mob-container">
+        <div class="warning">
+            본 웹서비스는 쾌적한 사용환경을 위해
+            <br> 모바일 화면을 지원하지 않습니다
+        </div>
+    </div> -->
+        
+
+
+    <form action="/user/preferences/" method="post">
+        {% csrf_token %}
+        <dialog class="modal settings-modal">
+            <i id="close-btn" class="ri-close-fill"></i>
+            <div class="modal-content">
+                <div class="title">
+                    전체 설정
+                </div>
+                <div class="theme-select">
+                    <div class="theme-title">
+                        테마설정
+                    </div>
+                    <div class="theme-modes">
+                        <div class="checkbox-wrapper-13">
+                            <input name="theme" value="lightMode" id="lightMode" type="checkbox" {% if request.user.theme == 'lightMode' %}checked{% endif %}>
+                            <label for="lightMode">라이트</label>
+                        </div>
+                        <div class="checkbox-wrapper-13">
+                            <input name="theme" value="darkMode" id="darkMode" type="checkbox" {% if request.user.theme == 'darkMode' %}checked{% endif %}>
+                            <label for="darkMode">다크</label>
+                        </div>
+                        <div class="checkbox-wrapper-13">
+                            <input name="theme" value="bwMode" id="bwMode" type="checkbox" {% if request.user.theme == 'bwMode' %}checked{% endif %}>
+                            <label for="bwMode">B&W</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="alarm-select">
+                    <div class="alarm-title">
+                        알람 설정
+                    </div>
+                    <div class="checkbox-wrapper-22 alarm-toggle">
+                        <label class="switch" for="checkbox2">
+                            <input name="alarm" value="1" type="checkbox" id="checkbox2" {% if request.user.notice == 1 %}checked{% endif %}/>
+                            <div onclick="onClickAlarm()" class="slider round"></div>
+                        </label>
+                    </div>
+                </div>
+                <input type="hidden" name="channelId" id="" value="{{ channel.id }}">
+                <input type="hidden" name="userObj" id="" value="{{ request.user }}">
+                <input id="settings-save" type="submit" value="저장하기">
+                <a href="/user/logout/" id="settings-logout">
+                    <i class="ri-logout-box-r-line"></i>
+                    로그아웃
+                </a>
+            </div>
+        </dialog>
+    </form>
+    <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
+    
+    <script>
+        let curChannelId = {{ channel.id }};
+        let curUserTheme = '{{ request.user.theme }}'
+        let curUserNotice = '{{ request.user.notice }}'
+    </script>
+    
     {% block extra %}
     {% endblock %}
 
-    <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
-
-    <script>
-        // js에서 필요한 정보
-        let curChannelId = {{ channel.id }};
-        // let curRoomId = {{ room.id }};
-        // let curRoomType = {{ room.type }};
-        console.log(curChannelId);
-    </script>
-
-    <script src="{% static 'js/base.js' %}"></script>
+    <script src="{% static 'js/base-mob-home.js' %}"></script>
     <script src="{% static 'js/settingsModal.js' %}"></script>
+    <script src="{% static 'js/theme.js' %}"></script>
+    <script src="{% static 'js/alarm.js' %}"></script>
     {% if urlType == 'main' %}
-        <script src="{% static 'js/chat/roomBtn.js' %}"></script>
         <script src="{% static 'js/roomModal.js' %}"></script>
+        <script src="{% static 'js/searchRooms.js' %}"></script>
     {% elif urlType == 'friends' %}
         <script src="{% static 'js/chat/friendBtn.js' %}"></script>
+        <script src="{% static 'js/searchFriends.js' %}"></script>
     {% endif %}
 </body>
 </html>

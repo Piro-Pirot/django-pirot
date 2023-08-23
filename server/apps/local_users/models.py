@@ -5,20 +5,16 @@ from django.contrib.auth.models import AbstractUser
 
 # 카카오 소셜 로그인 사용자
 class User(AbstractUser):
-    phone_number = models.CharField(max_length=20)
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
     name = models.CharField(max_length=20)
-    profile_img = models.ImageField(null=True, blank=True, upload_to="posts/%Y%m%d")
+    profile_img = models.ImageField(null=True, blank=True, upload_to="posts/%Y%m%d", default='default_profile/default_profile.png')
     notice = models.IntegerField(default=0)
-    theme = models.CharField(max_length=16, default='#ffffff')
+    theme = models.CharField(max_length=16, default='lightMode')
     
     def __str__(self):
           return self.username
 
-
-# 회원 즐겨찾기
-class Bookmark(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
-    bookmarked_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmarked_user')
-    
-    def __str__(self):
-       return f'[{self.user}] {self.bookmarked_user}'
+#  sms 인증
+class SMS_Auth(models.Model):
+    phone_num = models.CharField(verbose_name='휴대폰 번호', max_length=20) # 첫번째 매개변수 : (사용자 인터페이스에 표시되는) 필드의 이름
+    auth_num = models.CharField(verbose_name='인증번호',  max_length=10, null=True)

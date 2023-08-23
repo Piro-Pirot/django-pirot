@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pirot: 당신의 동아리를 위한 완벽한 커뮤니케이션</title>
+  <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/start.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/unregister.css' %}"> 
+  <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- 모바일 반응형 -->
+  <div class="mobile-boss-container">
+    <nav>
+      <div class="mob-logo">
+        <a href="/"><img src="{% static 'image/pirot_logo_long.png' %}" alt="피롯로고"></a>
+      </div>
+    </nav>
+    <main>
+        <!-- 회원 탈퇴 페이지 -->
+        <div class="unregister-container">
+            <div class="unregister-title">
+                <h1>{{ username }}님, 떠나신다니 아쉬워요 😥</h1>
+                <div>탈퇴를 위한 회원 정보를 정확히 입력해주세요</div>
+            </div>
+            <div class="unregister-main-container">
+                <form method="post">
+                    {% csrf_token %}
+                    <table>
+                        <tr>
+                            <div class="userID-div">
+                                <td><label for="userID">아이디</label></td>
+                                <td><input type="text" id="userID" name="userID" required></td>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="userPW-div">
+                                <td><label for="userPW">비밀번호</label></td>
+                                <td><input type="text" id="userPW" name="userPW" required></td>
+                            </div>                            
+                        </tr>
+                    </table>
+                    <button type="submit">탈퇴하기</button>            
+                </form>
+            </div>
+            <div class="unregister-msg">
+                {{ msg }}
+            </div>
+        </div>
+    </main>
+  </div>
+  {% comment %} <script src="{% static 'js/index.js' %}"></script> {% endcomment %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+
+</html>

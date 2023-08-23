@@ -1,16 +1,60 @@
 {% extends 'staff_base.html' %}
 {% load static %}
 
-<!-- 동아리 기본 프로필 -->
+<!-- 동아리 기본 설정 (채널 기본프로필 이미지 + 현재 기수 설정)-->
 
 {% block content %}
-<h2>동아리 기본 설정</h2>
-<img src="{{ channel.default_image.url }}" alt="채널기본프로필이미지" style="width:10rem;">
-<!-- 이미지 너무 커져서 임의로 style 설정!! -->
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div>
-        <input type="file" name="default_image" accept=".jpg, .png" />
-        <input type="submit" value="사진 변경" />
+<div class="default-profile">
+    <h2 class="staff-setting-title">동아리 기본 설정</h2>
+    <div class="setting-profile-image no-line">
+        <!-- 이미지 너무 커져서 임의로 style 설정!! -->
+        <img src="{{ channel.default_image.url }}" alt="채널기본프로필이미지">
+        <i class="ri-image-edit-fill profileEdit"></i>
     </div>
+    <form class="gen-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            {% if channel.this_level %}
+                <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="this_level" value="{{ channel.this_level }}" placeholder="현재 기수 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+            {% else %}
+                <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="this_level" placeholder="현재 기수를 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+            {% endif %}
+            <input type="submit" value="기수 입력" />
+            <!-- <i id="genInfo" class="ri-information-line"></i>
+            <div class="gen-form-info">
+                <span>설정하신 현재 기수의 합격자와</span> <br>
+                <span>운영진 권한을 관리할 수 있습니다.</span>
+            </div> -->
+        </div>
+    </form>
+    <form class="profile-setting-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <input type="file" name="default_image" accept=".jpg, .png" />
+            <input type="submit" value="사진 변경" />
+        </div>
+    </form>
+    <form class="delete-channel-form" id="delete-channel-form" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="channelDelete" value="true">
+        <input type="button" onclick="onclickDeleteChannel()" value="채널 삭제" id="channelDelete"/>
+    </form>
+</div>
+
+<script>
+    // const genInfo = document.getElementById("genInfo");
+    // const genInfoDiv = document.querySelector(".gen-form-info");
+    // genInfo.addEventListener("mouseover", () => {
+    //     genInfoDiv.classList.add("active");
+    // });
+    // genInfo.addEventListener("mouseout", () => {
+    //     genInfoDiv.classList.remove("active");
+    // });
+
+    const profileEditButton = document.querySelector(".profileEdit");
+    const profileEditForm = document.querySelector(".profile-setting-form");
+    profileEditButton.onclick = () => {
+        profileEditForm.classList.toggle("active");
+    };
+</script>
 {% endblock %}

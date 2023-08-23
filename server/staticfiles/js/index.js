@@ -31,23 +31,21 @@ window.onload = function() {
   }, 0)
 };
 
-const loginButton = document.querySelector("#login");
+
 const loginModal = document.querySelector("#loginModal");
-const signupButton = document.querySelector("#signup");
+const signupLogoutButton = document.querySelector("#signupAndLogout");
 const signupModal = document.querySelector("#signupModal");
 const closeButtons = document.querySelectorAll("#close-btn");
 
-// 로그인버튼 누르면 모달창 팝업 --> 이 코드는 index.html코드 하단으로 이동하였음
-// loginModal.style.opacity = '0';
-// loginButton.addEventListener("click", () => {
-//   loginModal.showModal();
-//   loginModal.style.opacity = '1';
-// });
-
 // 회원가입 버튼 누르면 모달창 팝업
-signupButton.addEventListener("click", () => {
-  signupModal.showModal();
-  signupModal.style.opacity = '1';
+signupLogoutButton.addEventListener("click", () => {
+  if (signupLogoutButton.innerText === '회원가입') {
+    signupModal.showModal();
+    signupModal.style.opacity = '1';
+  }
+  else if (signupLogoutButton.innerText === '로그아웃') {
+    location.href = '/user/logout/';
+  };
 });
 
 // X 버튼 누르면 모달창 나가짐
@@ -73,15 +71,48 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-const serviceButton = document.querySelector("#service");
+
+//내브바 메뉴 누르면 맞는 섹션으로 자동 스크롤
+const serviceButton = document.getElementById("service");
 serviceButton.addEventListener("click", () => {
   let firstSectionTop = sections[0].offsetTop;
   window.scrollTo({top: firstSectionTop, behavior: 'smooth'});
 });
 
-const creatorButton = document.querySelector("#creator");
+const creatorButton = document.getElementById("creator");
 creatorButton.addEventListener("click", () => {
-  let firstSectionTop = sections[0].offsetTop;
-  window.scrollTo({top: firstSectionTop, behavior: 'smooth'});
-}); //나중에 '만든사람 section' 머지되면 firstSectionTop 대체 필요
+  let lastSectionTop = sections[5].offsetTop;
+  window.scrollTo({top: lastSectionTop, behavior: 'smooth'});
+});
 
+// footer 로고 클릭 상단
+const footerLogo = document.querySelector('#footer-right-img');
+const footerLogoMob = document.querySelector('.footer-logo-img');
+
+footerLogo.addEventListener('click', () => {
+  scrollTo(0,0);
+});
+
+try {
+  footerLogoMob.addEventListener('click', () => {
+    scrollTo(0,0);
+  });
+} catch {
+  console.log('screeeeeeen');
+}
+
+// 비밀번호 분실
+const btnLostPw = document.getElementById('lost-password');
+const formLostPw = document.getElementById('form-lost-pw');
+const emailHidden = document.getElementById('lost-pw-email');
+const idHidden = document.getElementById('lost-id');
+btnLostPw.addEventListener('click', () => {
+    const lostPwId = prompt('비밀번호를 재설정합니다.\n회원님의 아이디를 입력하세요.');
+    idHidden.value = lostPwId;
+    const lostPwEmail = prompt('비밀번호를 재설정합니다.\n재설정된 비밀번호를 받을 이메일을 작성하세요.');
+    emailHidden.value = lostPwEmail;
+
+    if (lostPwId !== null && lostPwEmail !== null) {
+      formLostPw.submit();
+    }
+});

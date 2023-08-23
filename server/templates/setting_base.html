@@ -13,15 +13,27 @@
     <div class="container">
         <section class="icon-bar">
             <div class="top-icons">
-                <i class="ri-team-line"></i>
-                <i class="ri-chat-3-line"></i>
+                {% if urlType == 'friends' %}
+                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-fill friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line room-icon"></i></a>
+                {% elif urlType == 'main' %}
+                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-fill room-icon"></i></a>
+                {% else %}
+                <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line friend-icon"></i></a>
+                <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line room-icon"></i></a>
+                {% endif %}
             </div>
             <div class="bottom-icons">
-                <i class="ri-settings-3-line"></i>
+                <i id="settings" class="ri-settings-3-line icon"></i>
                 {% if request.user.profile_img %}
-                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필"></a>
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/">
+                        <img src="{{ request.user.profile_img.url }}" alt="프로필">
+                    </a>
                 {% else %}
-                    <a href="/user/setting/{{ channel.id }}"><img class="profile-icon" src="{{ channel.default_image.url }}" alt="프로필"></a>
+                    <a class="profile-icon" href="/user/setting/{{ channel.id }}/">
+                        <img src="{{ channel.default_image.url }}" alt="프로필">
+                    </a>
                 {% endif %}
             </div>
         </section>
@@ -29,12 +41,100 @@
             {% block content %}
             {% endblock %}    
         </section>
-    </div>      
+    </div>
+
+    <div class="mob-icons hide-element">
+        <section class="mob-icon-bar">
+            <i class="ri-menu-2-line mob-menu-icon"></i>
+            {% if urlType == 'friends' %}
+            <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-fill mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line mob-room-icon"></i></a>
+            {% elif urlType == 'main' %}
+            <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-fill mob-room-icon"></i></a>
+            {% else %}
+            <a href="/room/{{ channel.id }}/friends/"><i class="ri-team-line mob-friend-icon"></i></a>
+            <a href="/room/{{ channel.id }}/main/"><i class="ri-chat-3-line mob-room-icon"></i></a>
+            {% endif %}
+            {% if request.user.profile_img %}
+                <a class="profile-icon" href="/user/setting/{{ channel.id }}/">
+                    <img class="mob-profile-icon" src="{{ request.user.profile_img.url }}" alt="프로필">
+                </a>
+            {% else %}
+                <a class="profile-icon" href="/user/setting/{{ channel.id }}/">
+                    <img class="mob-profile-icon" src="{{ channel.default_image.url }}" alt="프로필">
+                </a>
+            {% endif %}
+        </section>
+    </div>
+
+    <!-- 모바일 반응형 'mob' -->
+    <!-- <div class="mob-container">
+        <div class="warning">
+            본 웹서비스는 쾌적한 사용환경을 위해
+            <br> 모바일 화면을 지원하지 않습니다
+        </div>
+    </div> -->
+
+    <form action="/user/preferences/" method="post">
+        {% csrf_token %}
+        <dialog class="modal settings-modal">
+            <i id="close-btn" class="ri-close-fill"></i>
+            <div class="modal-content">
+                <div class="title">
+                    전체 설정
+                </div>
+                <div class="theme-select">
+                    <div class="theme-title">
+                        테마설정
+                    </div>
+                    <div class="theme-modes">
+                        <div class="checkbox-wrapper-13">
+                            <input name="theme" value="lightMode" id="lightMode" type="checkbox" {% if request.user.theme == 'lightMode' %}checked{% endif %}>
+                            <label for="lightMode">라이트</label>
+                        </div>
+                        <div class="checkbox-wrapper-13">
+                            <input name="theme" value="darkMode" id="darkMode" type="checkbox" {% if request.user.theme == 'darkMode' %}checked{% endif %}>
+                            <label for="darkMode">다크</label>
+                        </div>
+                        <div class="checkbox-wrapper-13">
+                            <input name="theme" value="bwMode" id="bwMode" type="checkbox" {% if request.user.theme == 'bwMode' %}checked{% endif %}>
+                            <label for="bwMode">B&W</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="alarm-select">
+                    <div class="alarm-title">
+                        알람 설정
+                    </div>
+                    <div class="checkbox-wrapper-22 alarm-toggle">
+                        <label class="switch" for="checkbox2">
+                            <input name="alarm" value="1" type="checkbox" id="checkbox2" {% if request.user.notice == 1 %}checked{% endif %}/>
+                            <div onclick="onClickAlarm()" class="slider round"></div>
+                        </label>
+                    </div>
+                </div>
+                <input type="hidden" name="channelId" id="" value="{{ channel.id }}">
+                <input type="hidden" name="userObj" id="" value="{{ request.user }}">
+                <input id="settings-save" type="submit" value="저장하기">
+                <a href="/user/logout/" id="settings-logout">
+                    <i class="ri-logout-box-r-line"></i>
+                    로그아웃
+                </a>
+            </div>
+        </dialog>
+    </form>
     <script src="https://kit.fontawesome.com/bee9aa6983.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+    <script>
+        let curUserTheme = '{{ request.user.theme }}'
+        let curUserNotice = '{{ request.user.notice }}'
+    </script>
     {% block extra %}
     {% endblock %}
-    <script src="{% static 'js/base.js' %}"></script>
-</body>
+    <script src="{% static 'js/iconBar.js' %}"></script>
+    <script src="{% static 'js/settingsModal.js' %}"></script>
+    <script src="{% static 'js/theme.js' %}"></script>
+    <script src="{% static 'js/alarm.js' %}"></script>
 </body>
 </html>

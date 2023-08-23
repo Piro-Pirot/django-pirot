@@ -1,10 +1,15 @@
+from django.conf import settings
 from django.shortcuts import render, redirect
-from .models import Passer, Join, Staff, Channel
+from .models import *
 import random
 import string
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from .searchHangul import *
+from django.core.mail import EmailMessage
+import base64, imghdr, os
+from datetime import datetime
 
 def index(request):
     myJoinInfo = ''
@@ -18,24 +23,55 @@ def index(request):
 
 # 운영진 : 운영진 페이지
 def profile_staff(request, channelID):
-
     channel = Channel.objects.get(id=channelID) # 임시!! 위에 모델 임포트도 지우기 나중에
+
+    # 운영진 여부
     current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
+
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
+        
+    channelPasser = Passer.objects.filter(channel=channel, passer_name=current_user.name, passer_phone=current_user.phone_number).get()
+    level = channelPasser.level
 
     if request.method == 'POST':
-        if 'delete' in request.POST:
-            current_user.profile_img.delete()
-        elif 'change' in request.POST:
+        if 'change' in request.POST:
             if request.FILES.get('profile_img'):
-                current_user.profile_img = request.FILES.get('profile_img')
+                inputImg = request.FILES['profile_img']
+
+                today = datetime.today().strftime("%Y%m%d")
+
+                # 디렉토리가 없으면 만들기
+                if not os.path.isdir(f'media/{today}/'):
+                    os.makedirs(f'media/{today}/')
+
+                file_list = os.listdir(f'media/{today}')
+
+                # 파일 쓰기
+                with open(f'media/{today}/upload{len(file_list)}', 'wb') as output_file:
+                    output_file.write(inputImg.read())
+
+                filename = f'media/{today}/upload{len(file_list)}'
+
+                img_type = imghdr.what(f'media/{today}/upload{len(file_list)}')
+
+                if img_type != None:
+                    os.rename(filename, f'{filename}.{img_type}')
+                    inputImg = f'/{today}/upload{len(file_list)}.{img_type}'
+                    current_user.profile_img = inputImg
+
+        elif 'level' in request.POST:
+            channelPasser.level = request.POST.get('level')
         current_user.save()
+        channelPasser.save()
 
         url = '/staff/setting/%s' % (channelID)
 
         return redirect(url) # 프로필 설정 페이지에 머무름
     
-    channelPasser = Passer.objects.filter(channel=channel, passer_name=current_user.name, passer_phone=current_user.phone_number).get()
-    level = channelPasser.level
+    
 
     context = {
         'user':current_user,
@@ -53,26 +89,51 @@ def passer_create_level(request, channelID):
     channel = Channel.objects.get(id=channelID)
     passers = Passer.objects.filter(channel=channel)
 
+    # 운영진 여부
+    current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
+
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
+
     if request.method == "POST":
         level = request.POST["level"]
         url = '/staff/passer_create/passer/%s/?level=%s' % (channelID, level)
 
         return redirect(url)
     
-    return render(request, 'staff/passerlevel.html', {"channel":channel, "passers":passers})
+    return render(request, 'staff/passerlevel.html', {"channel":channel})
 
 
 #  합격자 명단 추가 : 이름, 전화번호 등록
 def passer_create(request, channelID):
     level = request.GET.get("level")
     channel = Channel.objects.get(id=channelID)
-    passers = Passer.objects.filter(channel=channel)
+    passers = Passer.objects.filter(channel=channel, level=level)
+    all_passers = Passer.objects.filter(channel=channel)
+
+    # 운영진 여부
+    current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
+
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
     
     if request.method == "POST":
+        inputName = request.POST['name']
+        inputPhone = request.POST['phone']
+
+        # 같은 기수에서 같은 이름, 같은 전화번호인 passer가 이미 존재하면 에러페이지로
+        if all_passers.filter(passer_name=inputName, passer_phone=inputPhone).exists():
+            errorMsg = '동일한 정보의 합격자가 이미 존재합니다.'
+            return render(request, 'error.html', {'errorMsg': errorMsg})
+
         if 'save' in request.POST:
             Passer.objects.create(
-                passer_name = request.POST["name"],
-                passer_phone = request.POST["phone"],
+                passer_name = inputName,
+                passer_phone = inputPhone,
                 level = level,
                 channel = channel,
             )
@@ -82,8 +143,8 @@ def passer_create(request, channelID):
 
         elif 'keepgoing' in request.POST:
             Passer.objects.create(
-                passer_name = request.POST["name"],
-                passer_phone = request.POST["phone"],
+                passer_name = inputName,
+                passer_phone = inputPhone,
                 level = level,
                 channel = channel,
             )
@@ -91,12 +152,20 @@ def passer_create(request, channelID):
 
             return redirect(url)
     
-    return render(request, 'staff/passer.html', {"channel":channel, "passers":passers})
+    return render(request, 'staff/passer.html', {"channel":channel, "passers":passers, "level":level})
 
 
 # 참여 코드 생성
 def code_create(request, channelID):
     channel = Channel.objects.get(id=channelID)
+
+    # 운영진 여부
+    current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
+
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
 
     alphabet_list = string.ascii_letters
     digits_list = string.digits
@@ -110,7 +179,7 @@ def code_create(request, channelID):
     
     # 참여 코드 생성
     if request.method == "POST":
-        random_list = random.sample(sample_list,5)
+        random_list = random.sample(sample_list,6)
         created_code = ''.join(random_list)
         channel.channel_code = created_code
         channel.save()
@@ -129,48 +198,283 @@ def code_create(request, channelID):
 def default_profile(request, channelID):
     channel = Channel.objects.get(id=channelID)
 
-    if request.method == "POST":
-        if request.FILES.get("default_image"):
-            channel.default_image = request.FILES["default_image"]
-            channel.save()
-        
-        url = '/staff/channel/setting/%s' % (channelID)
+    # 운영진 여부
+    current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
 
-        return redirect(url)
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
+
+    if request.method == "POST":
+        if request.POST.get("channelDelete"):
+            channel.delete()
+
+            return redirect("/")
+        else:
+            if request.FILES.get("default_image"):
+                inputImg = request.FILES["default_image"]
+                
+                today = datetime.today().strftime("%Y%m%d")
+
+                # 디렉토리가 없으면 만들기
+                if not os.path.isdir(f'media/{today}/'):
+                    os.makedirs(f'media/{today}/')
+
+                file_list = os.listdir(f'media/{today}')
+
+                # 파일 쓰기
+                with open(f'media/{today}/upload{len(file_list)}', 'wb') as output_file:
+                    output_file.write(inputImg.read())
+
+                filename = f'media/{today}/upload{len(file_list)}'
+
+                img_type = imghdr.what(f'media/{today}/upload{len(file_list)}')
+
+                if img_type != None:
+                    os.rename(filename, f'{filename}.{img_type}')
+                    inputImg = f'/{today}/upload{len(file_list)}.{img_type}'
+                    channel.default_image = inputImg
+                    channel.save()
+
+            if request.POST.get("this_level"):
+                channel.this_level = request.POST["this_level"]
+                channel.save()
+            
+            url = '/staff/channel/setting/%s' % (channelID)
+
+            return redirect(url)
     
     return render(request, 'staff/default_profile.html', {"channel":channel})
 
 
 # 운영진 권한 설정
-@csrf_exempt
 def staff_authority(request, channelID):
-    joins = Join.objects.all()
-    staffs = Staff.objects.all()
     channel = Channel.objects.get(id=channelID)
+    thisjoins = Join.objects.filter(passer__channel=channel) # 얘를 쓴 이유가 처음에 뭐였을까? 아.. User 모델이 여기에만 연결되어 있음(고유성)
+    staffs = Staff.objects.filter(channel=channel)
+    staffPassers = staffs.only('user')
+    staffPassers = list(staffPassers.values_list('user__username', flat=True))
 
-    # toggle() 사용 on/off ajax
-    # js : 버튼 on/off 조작 ... 완료 ! -> 저장 POST
-    # -> if 버튼이 on인 회원 객체가 staff 목록에 없으면 추가
-    #    if 버튼이 off인 회원 객체가 staff 목록에 있으면 삭제
-    # -> staff.save() 이건 view에서?
+    # 운영진 여부
+    current_user = request.user
 
-    return render(request, 'staff/staff_authority.html', {"joins":joins, "staffs":staffs, "channel":channel})
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
+
+    # 현재 기수를 설정하지 않은 경우에는 전체 회원을 불러오기
+    if channel.this_level:
+        thislevelPassers = Passer.objects.filter(channel=channel, level=channel.this_level)
+    else:
+        thislevelPassers = Passer.objects.filter(channel=channel)
+
+    # 원래 저장 상태 불러오기
+
+    if request.method == 'POST':
+        if request.POST.get('checked'):
+            staffs.delete() # 아무것도 선택하지 않는 경우는 안 됨
+            for checked in request.POST.getlist('checked'):
+                name, phone = checked.split(' ')
+                passerObj = thislevelPassers.get(passer_name=name, passer_phone=phone)
+                userObj = thisjoins.get(passer=passerObj).user
+                if staffs.filter(user=userObj).count() == 0:
+                    newStaff = Staff.objects.create(
+                        user = userObj,
+                        channel = channel
+                    )
+                    newStaff.save()
+
+        url = '/staff/staff_authority/%s' % (channelID)
+
+        return redirect(url)
+
+
+    return render(request, 'staff/staff_authority.html', {"channel":channel, "staffs":staffPassers, "thisjoins":thisjoins, "thislevelPassers":thislevelPassers})
 
 
 # 회원 삭제
-@csrf_exempt
 def join_delete(request, channelID):
-    joins = Join.objects.all()
     channel = Channel.objects.get(id=channelID)
+    channelPassers = Passer.objects.filter(channel=channel)
+
+    # 운영진 여부
+    current_user = request.user
+    staffs = Staff.objects.filter(channel=channel)
+
+    if not staffs.filter(user=current_user).exists():
+        errorMsg = '잘못된 접근입니다.'
+        return render(request, 'error.html', {'errorMsg': errorMsg})
 
     if request.method == "POST":
-        user = request.POST['user']
-        print(user)
-        join = Join.objects.get(user=user)
-        join.delete() # 회원 삭제
-        passer = Passer.objects.get(passer_name=user.name)
-        passer.delete() # 합격자 명단에서도 삭제
+        passerId = request.POST.get('passerId')
+        passer = Passer.objects.get(id=passerId)
 
-        return redirect("/staff/join_delete/%s") % (channelID)
+        try:
+            join = Join.objects.get(passer=passer)
+            join.delete() # 동아리 회원이면 회원 삭제
+            passer.delete() # 합격자 명단에서도 삭제
+        except:
+            passer.delete() # 아직 가입하지 않은 경우, 합격자 명단에서만 삭제     
 
-    return render(request, 'staff/join_delete.html', {"joins":joins, "channel":channel}) # 회원 실명, 기수 참조 가능
+        url = '/staff/join_delete/%s' % (channelID)
+        
+        return redirect(url)
+
+    return render(request, 'staff/join_delete.html', {"channel":channel, "channelPassers":channelPassers}) # 회원 실명, 기수 참조 가능
+
+
+# 즐겨찾기
+def bookmark(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        req = json.loads(request.body)
+        user = request.user
+        curChannel = Channel.objects.get(id=req['channelId'])
+        target = req['target']
+        target_passer = Passer.objects.get(passer_name=target, channel=curChannel)
+
+        try:
+            # 즐겨찾기 되어 있으면 취소
+            Bookmark.objects.get(user=user, bookmarked_user=target_passer).delete()
+            return JsonResponse({'type': 'deleted'})
+        except:
+            # 즐겨찾기 하기
+            Bookmark.objects.create(
+                user = user,
+                bookmarked_user = target_passer
+            ).save()
+
+            return JsonResponse({'type': 'added'})
+
+
+# 친구 검색
+def search_friends_ajax(request):
+    if request.method == 'POST':
+        req = json.loads(request.body)
+        channel_id = req['channelId']
+        curChannel = Channel.objects.get(id=channel_id)
+        search_input_value = req['inputValue']
+
+        # 나를 제외한 search_input_value를 포함하는 채널 구성원
+        search_members = Passer.objects.filter(channel=curChannel, passer_name__contains=search_input_value).exclude(passer_name=request.user.name)
+
+        # 채널 구성원들 id를 모은 리스트
+        result_member_list = []
+        for member in search_members:
+            result_member_list.append(member.id)
+
+
+        # search_cho: 검색어의 초성 모두 추출
+        # search_letter: 검색어 중 자모 결합인 경우
+        search_cho, search_letter = get_chosung_from_input(search_input_value)
+
+
+        # 나를 제외한 search_letter를 포함하는 채널 구성원
+        search_letter_members = Passer.objects.filter(channel=curChannel, passer_name__contains=search_letter).exclude(passer_name=request.user.name)
+        
+
+        for member in search_letter_members:
+            member_cho = get_chosung_from_str(member.passer_name)
+            # 검색어의 초성에 해당하고 result_member_list에 존재하지 않으면 추가
+            for ch in member_cho:
+                if len(search_cho) != 0 and ch in search_cho and member.id not in result_member_list:
+                    result_member_list.append(member.id)
+
+        print(result_member_list)
+
+        result_member_list = json.dumps(result_member_list)
+
+
+        return JsonResponse({'result_list': result_member_list})
+
+
+
+def start(request):
+    return render(request, template_name="users/channel.html")
+
+def channel_create(request):
+    if request.method == 'POST':
+        channel_name = request.POST['channel-create-name']
+        channel_desc = request.POST['channel-create-desc']
+        if channel_name == '':
+            return render(request, 'error.html', {'errorMsg': '채널 이름을 정확하게 입력해 주세요.'})
+        
+        new_channel = Channel.objects.create(
+            channel_name = channel_name,
+            channel_desc = channel_desc
+        )
+        new_channel.save()
+
+        # Passer와 Join에 신청자 추가
+        new_passer = Passer.objects.create(
+            passer_name = request.user.name,
+            passer_phone = request.user.phone_number,
+            channel = new_channel
+        )
+        new_passer.save()
+        Join.objects.create(
+            user = request.user,
+            passer = new_passer
+        ).save()
+        # 신청자에게 운영진 권한 부여
+        Staff.objects.create(
+            user=request.user,
+            channel = new_channel
+        ).save()
+
+        # 채널 개설 요청 메일
+
+        email = EmailMessage(
+            f'[Pirot_{channel_name}] 🥕새로운 채널 개설 요청이 왔어요!🐇',
+            f'''
+            <p style="font-size: 1rem; font-weight: 500;">새로운 채널 개설 요청입니다.</p>
+            <table style="font-size: 1rem;">
+            <tr>
+            <td style="vertical-align: initial; padding: 1rem;">👀 채널 이름</td>
+            <td style="white-space: pre-wrap; vertical-align: initial; padding: 1rem;">{channel_name}</td>
+            </tr>
+            <tr>
+            <td style="vertical-align: initial; padding: 1rem;">💌 채널 이용 목적</td>
+            <td style="white-space: pre-wrap; vertical-align: initial; padding: 1rem;">{channel_desc}<tr>
+            </td>
+            </table>
+            <p>허용하시려면 pirot web 페이지에서 admin 계정으로 관리가 필요합니다.</p>
+            ''',
+            to=[getattr(settings, 'EMAIL_MANAGER1')],
+        )
+        email.content_subtype = "html"
+        if not email.send():
+            print('error!')
+
+        return render(request, template_name='users/channelCreateDone.html')
+    else:
+        return render(request, template_name='users/channelCreate.html')
+    
+def channel_code(request):
+    if request.method == 'POST':
+        req_code = request.POST['channel-code-input']
+        try:
+            channel_info = Channel.objects.get(channel_code=req_code)
+            passer_info = Passer.objects.filter(passer_name=request.user.name, channel=channel_info)[0]
+        except:
+            return render(request, template_name='error.html', context={'errorMsg': '입력하신 정보에 오류가 있습니다.'})
+
+        if channel_info and passer_info:
+            Join.objects.create(
+                user = request.user,
+                passer = passer_info
+            ).save()
+            return redirect(f'/room/{channel_info.id}/friends/')
+        else:
+            return render(request, template_name='error.html', context={'errorMsg': '회원님의 참여 코드와 일치하는 소속된 채널이 없습니다.'})
+    else:
+        return render(request, template_name='users/channelCode.html')
+
+
+# def autoChannelDelete(request, channelId):
+#     channel = Channel.objects.get(id=channelId)
+
+#     if request.method == 'POST':
+#         channel.delete()
+
+#         return 
