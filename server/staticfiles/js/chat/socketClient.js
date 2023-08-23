@@ -1,5 +1,5 @@
 // 서버와 Socket 연결 설정
-const socket = io();
+const socket = io({transports: ['websocket']});
 
 // 연결 성공 시 이벤트 리스너
 socket.on('connect', async () => {
@@ -38,7 +38,7 @@ socket.on('display_message', async (data) => {
     // console.log('calcScroll is...', calcScroll());
     // console.log('bScroll is...', bScroll);
     // 스크롤을 너무 많이 올린 게 아니라면 맨 아래로
-    if(bScroll - 500 <= offsetH) {
+    if(bScroll - 700 <= offsetH) {
         console.log('controlling!');
         controlScroll();
     }
