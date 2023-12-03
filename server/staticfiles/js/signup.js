@@ -79,20 +79,24 @@ password2.addEventListener('input', () => {
 });
 
 /* 인증번호 엔터 */
+/*
 document.getElementById('input_authnum').addEventListener('keydown', (event) => {
     if (event.key == 'Enter') {
         event.preventDefault();
         document.querySelector('.signup-input-container #confirm').click();
     }
 });
+*/
 
 const autoHyphen = (target) => {
     target.value = target.value
       .replace(/[^0-9]/g, '')
       .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+    /*
     let btnSendSMS = document.getElementById("send_sms");
     btnSendSMS.classList.add('auth-btn-active');
     btnSendSMS.disabled = false;
+    */
 }
 
 const delete_hypen = (target) => {
@@ -100,6 +104,7 @@ const delete_hypen = (target) => {
 }
 
 // 문자인증+타이머 부분
+/*
 function initButton(){
     document.getElementById("send_sms").disabled = true;
     document.getElementById("confirm").disabled = true;
@@ -226,6 +231,7 @@ function confirm_authnum(){
     // 요청 보내기
     onAuthReq(phonenum_without_hypen, inputAuthNumber, inputPhoneNumber);
 }
+*/
 
 function validateForm() {
     let form = document.forms["signup-form"];

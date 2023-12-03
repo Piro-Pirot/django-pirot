@@ -54,9 +54,9 @@ def signup(request):
             return render(request, 'error.html', {'errorMsg': '비밀번호가 다릅니다.'})
         
         # 비밀번호 제약 조건 확인
-        PASSWORD_VALIDATION = r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$'
-        if not re.match(PASSWORD_VALIDATION, password1):
-            return render(request, 'error.html', {'errorMsg': '비밀번호는 8자-16자, 특수문자[!@#$%^*+=-] 1개 이상, 숫자를 포함하여야 합니다.'})
+        # PASSWORD_VALIDATION = r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$'
+        # if not re.match(PASSWORD_VALIDATION, password1):
+        #     return render(request, 'error.html', {'errorMsg': '비밀번호는 8자-16자, 특수문자[!@#$%^*+=-] 1개 이상, 숫자를 포함하여야 합니다.'})
         
         new_user = User.objects.create_user(
             username = username,

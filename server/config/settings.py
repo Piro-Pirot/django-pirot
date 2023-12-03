@@ -17,10 +17,7 @@ import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-env = environ.Env(
-        # set casting, default value
-        DEBUG=(bool, False)
-        )
+env = environ.Env()
 # reading .env file
 environ.Env.read_env(BASE_DIR / '.env')
 
@@ -47,7 +44,7 @@ EMAIL_MANAGER1=env('EMAIL_MANAGER1')
 SECRET_KEY = 'django-insecure-j@xy26^y4!oqyf@7q=1y7cdd=!8+$v_q1ohhx6+ibayr7a66@y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
