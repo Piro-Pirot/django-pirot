@@ -1,0 +1,128 @@
+{% extends 'demo/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+
+<input type="hidden" name="username" id="username">
+<input type="hidden" name="profile-color-r" id="profile-color-r">
+<input type="hidden" name="profile-color-g" id="profile-color-g">
+<input type="hidden" name="profile-color-b" id="profile-color-b">
+
+<div class="chat-name">
+    <div class="chat-name-container">
+        <div class="orange-stick">
+        </div>
+        <div class="chat-name-content">
+            <div class="chat-name-name">
+                {{ title }}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="chat-container">
+    <div class="chat-conversation-container">
+        <div class="board-header">
+            Chat
+        </div>
+        <div class="conversation"></div>
+        <div class="chat-input">
+            <div class="chat-input-container">
+                <textarea class="input" id="chat_input_textarea"></textarea>
+                <div class="code-input" id="editor-container"></div>
+                <div class="chat-icons">                
+                    <div id="imageIcon">
+                        <label for="upload-file" class="attach-label"><i class="ri-image-2-fill"></i></label>
+                        <input type="file" name="upload-file" id="upload-file" accept="image/*">
+                    </div>
+                    <div id="codeIcon">
+                        <i class="ri-code-line"></i>
+                    </div>
+                </div>
+                <button type="button" class='btn-send' onclick="onClickSendMessage()">
+                    <span>SEND</span>
+                    <i class="ri-send-plane-fill"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="board-container">
+        <div class="board-header">
+            Board
+        </div>
+        <i id="boardOpen" class="ri-arrow-left-double-line"></i>
+        <div class="board"></div>
+        <div class="post-input">
+            <div class="post-input-container">
+                <textarea class="post" rows="3"></textarea>
+                <i id="widthControl" class="ri-arrow-right-double-line"></i>
+                <button type="button" onclick="onClickSendPost()">작성</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 닉네임 설정 모달 -->
+<dialog class="modal modal-room-setting">
+    <div class="modal-content">
+        {% csrf_token %}
+        <div class="room-detail-container">
+            <h1 class="modal-title">이름을 알려주세요</h1>
+            <div class="room-name-container">
+                <input type="text" name='room-new-name' class="edit-room-name">
+            </div>
+            <button id="settings-save">저장</button>
+        </div>
+    </div>
+</dialog>
+{% endblock %}
+
+{% block extra %}
+
+<script>
+    let NAME = '';
+    let R = 0;
+    let G = 0;
+    let B = 0;
+    const setNameModal = document.querySelector('.modal-room-setting');
+    setNameModal.style.opacity = 100;
+    setNameModal.showModal();
+    const setNameBtn = document.getElementById('settings-save');
+    setNameBtn.addEventListener('click', async () => {
+        const myname = document.querySelector('.edit-room-name');
+        if(myname.value.length) {
+            // 이름 설정
+            const nameInput = document.getElementById('username');
+            nameInput.value = myname.value;
+            NAME = myname.value;
+            // 프로필 색상 설정
+            R = Math.trunc(Math.random() * 255);
+            document.getElementById('profile-color-r').value = R;
+            G = Math.trunc(Math.random() * 255);
+            document.getElementById('profile-color-g').value = G;
+            B = Math.trunc(Math.random() * 255);
+            document.getElementById('profile-color-b').value = B;
+
+            setNameModal.close();
+
+            await loadBubbles(0);
+            await loadPosts();
+        }
+    })
+    // 말풍선을 담을 곳
+    let conversations = document.querySelector('.conversation');
+
+    // 게시글을 담을 곳
+    let posts = document.querySelector('.board');
+</script>
+
+<script src="{% static 'js/demo/demoSocketClient.js' %}"></script>
+<script src="{% static 'js/demo/demoBubble.js' %}"></script>
+<script src="{% static 'js/demo/demoPost.js' %}"></script>
+
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<script src="{% static 'js/demo/demoFileSocketClient.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.23.0/min/vs/loader.js"></script>
+<script src="{% static 'js/demo/demoCodeSnippet.js' %}"></script>
+
+
+{% endblock %}

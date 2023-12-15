@@ -44,7 +44,7 @@ EMAIL_MANAGER1=env('EMAIL_MANAGER1')
 SECRET_KEY = 'django-insecure-j@xy26^y4!oqyf@7q=1y7cdd=!8+$v_q1ohhx6+ibayr7a66@y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
         'server.apps.chat',
         'server.apps.local_users',
         'server.apps.posts',
+        'server.apps.demo',
 
         'django.contrib.admin',
         'django.contrib.auth',
@@ -103,18 +104,20 @@ ASGI_APPLICATION = 'config.asgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': MYSQL_DBNAME,
-            'USER': MYSQL_USERNAME,
-            'PASSWORD': MYSQL_PASSWD,
-            'HOST': MYSQL_HOST,
-            'PORT': MYSQL_PORT,
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1;",
-                }
-            }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': MYSQL_DBNAME,
+        'USER': MYSQL_USERNAME,
+        'PASSWORD': MYSQL_PASSWD,
+        'HOST': MYSQL_HOST,
+        'PORT': MYSQL_PORT,
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1;",
+            'charset' : 'utf8mb4',
+            'use_unicode': True,
         }
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -198,7 +201,7 @@ MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
             }
         }
 
-CSRF_TRUSTED_ORIGINS = ["https://hello.pirot.p-e.kr"]
+CSRF_TRUSTED_ORIGINS = ["https://hello.pirot.o-r.kr"]
 
 '''
 LOGGING = {

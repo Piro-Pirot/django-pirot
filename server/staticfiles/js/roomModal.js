@@ -89,6 +89,9 @@ inviteButton.onclick = () => {
   inviteContent.style.opacity = "0";
   roomNameContent.style.visibility = "visible";
   roomNameContent.style.opacity = "1";
+
+
+
 };
 
 addRoomButton.onclick = () => {

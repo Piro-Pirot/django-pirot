@@ -19,6 +19,7 @@ Cython==0.29.36
 distlib==0.3.7
 Django==4.2.4
 django-environ==0.10.0
+django-markdownx==4.0.5
 dnspython==1.16.0
 eventlet==0.30.1
 exceptiongroup==1.1.2

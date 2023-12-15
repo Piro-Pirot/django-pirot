@@ -32,17 +32,6 @@ dialog {
   z-index: 9999;
 }
 
-.room-add-modal #close-btn {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-  font-size: 2rem;
-  color: var(--subtitle);
-  transition: 0.2s;
-  cursor: pointer;
-  z-index: 9999;
-}
-
 .modal-content {
   display: flex;
   flex-direction: column;

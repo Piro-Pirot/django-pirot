@@ -43,7 +43,7 @@
     display: inline;
 }
 
-.bubble-header .bubble-profile-img img {
+.bubble-header .bubble-profile-img div {
     /* border: 1px solid var(--font-color); */
     width: 2rem;
     height: 2rem;

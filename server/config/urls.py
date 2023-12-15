@@ -19,12 +19,15 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 import server.apps.channels.views
+import server.apps.demo.views
 from django.urls import re_path as url
 from django.views.static import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', server.apps.channels.views.index),
+    # path('', server.apps.channels.views.index),
+    path('', server.apps.demo.views.demo_chat),
+    path('demo/', include('server.apps.demo.urls')),
     path('bubbles/', include('server.apps.bubbles.urls')),
     path('room/', include('server.apps.chat.urls')),
     path('posts/', include('server.apps.posts.urls')),
