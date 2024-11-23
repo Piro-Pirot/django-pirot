@@ -61,7 +61,7 @@
 |||
 |---|---|
 |[정혜인](https://github.com/hyeinj)|[김선우](https://github.com/SSunwo)|
-|- 백엔드<br>- Naver Cloud PlatForm SMS 문자인증<br>- 회원 가입 및 로그인<br>- 채팅방 입력창 잠금/해제<br>- 익명 채팅방 프로필 수정|- 프론트엔드|
+|- 백엔드<br>- Naver Cloud Platform SMS 문자인증<br>- 회원 가입 및 로그인<br>- 채팅방 입력창 잠금/해제<br>- 익명 채팅방 프로필 수정|- 프론트엔드|
 
 ||||
 |---|---|---|
